@@ -24,15 +24,8 @@
       --font-display: 'Syne', sans-serif;
       --font-body: 'DM Sans', sans-serif;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: var(--font-body);
       background: var(--bg);
@@ -43,562 +36,142 @@
       line-height: 1.5;
     }
     .bg-mesh {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124, 58, 237, 0.1) 0%, transparent 60%),
         radial-gradient(ellipse 60% 50% at 80% 80%, rgba(99, 179, 237, 0.08) 0%, transparent 60%),
         radial-gradient(ellipse 40% 30% at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
     .grid-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background-image: linear-gradient(rgba(99, 179, 237, 0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(99, 179, 237, 0.04) 1px, transparent 1px);
-      background-size: 50px 50px;
-      pointer-events: none;
-      z-index: 0;
+      background-size: 50px 50px; pointer-events: none; z-index: 0;
     }
-    .app {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 16px 130px;
-    }
-    .header {
-      text-align: center;
-      padding: 40px 0 30px;
-    }
+    .app { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px 16px 130px; }
+    .header { text-align: center; padding: 40px 0 30px; }
     .header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: rgba(99, 179, 237, 0.05);
-      font-family: var(--font-mono);
-      font-size: 0.7em;
-      letter-spacing: 2.5px;
-      color: var(--accent);
-      margin-bottom: 20px;
-      backdrop-filter: blur(10px);
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 100px;
+      border: 1px solid var(--border); background: rgba(99, 179, 237, 0.05);
+      font-family: var(--font-mono); font-size: 0.7em; letter-spacing: 2.5px; color: var(--accent); margin-bottom: 20px;
     }
     .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent3);
-      box-shadow: 0 0 12px var(--accent3);
-      animation: blink 2s infinite;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent3);
+      box-shadow: 0 0 12px var(--accent3); animation: blink 2s infinite;
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     .header-title {
-      font-family: var(--font-display);
-      font-size: clamp(2em, 6vw, 3.2em);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 10px;
+      font-family: var(--font-display); font-size: clamp(2em, 6vw, 3.2em); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 10px;
     }
     .header-title span {
       background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
-    .header-sub {
-      color: var(--text2);
-      font-size: 0.95em;
-      letter-spacing: 1.2px;
-      font-weight: 300;
-    }
-    .search-zone {
-      margin-bottom: 28px;
-    }
+    .header-sub { color: var(--text2); font-size: 0.95em; letter-spacing: 1.2px; }
+    .search-zone { margin-bottom: 28px; }
     .search-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4px 4px 4px 20px;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      position: relative; display: flex; align-items: center; gap: 12px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 4px 4px 4px 20px; transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .search-wrap:focus-within {
-      border-color: rgba(99, 179, 237, 0.5);
-      box-shadow: 0 0 0 4px rgba(99, 179, 237, 0.1);
-    }
+    .search-wrap:focus-within { border-color: rgba(99, 179, 237, 0.5); box-shadow: 0 0 0 4px rgba(99, 179, 237, 0.1); }
     #search-input {
-      flex: 1;
-      background: none;
-      border: none;
-      outline: none;
-      font-family: var(--font-body);
-      font-size: 1.05em;
-      color: var(--text);
-      padding: 14px 0;
-      font-weight: 400;
+      flex: 1; background: none; border: none; outline: none;
+      font-family: var(--font-body); font-size: 1.05em; color: var(--text); padding: 14px 0;
     }
-    #search-input::placeholder {
-      color: var(--text3);
-    }
+    #search-input::placeholder { color: var(--text3); }
     .mic-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4em;
-      background: rgba(99, 179, 237, 0.1);
-      border: 1px solid rgba(99, 179, 237, 0.2);
-      color: var(--accent);
-      transition: all 0.25s;
-      flex-shrink: 0;
-      backdrop-filter: blur(10px);
+      width: 52px; height: 52px; border-radius: 16px; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4em;
+      background: rgba(99, 179, 237, 0.1); border: 1px solid rgba(99, 179, 237, 0.2);
+      color: var(--accent); transition: all 0.25s; flex-shrink: 0;
     }
-    .mic-btn.active {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.5);
-      color: #ef4444;
-      animation: mic-pulse 1.2s infinite;
-    }
-    @keyframes mic-pulse {
-      0%, 100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); }
-      50% { box-shadow: 0 0 28px rgba(239, 68, 68, 0.6); }
-    }
-    .search-hint {
-      text-align: center;
-      font-size: 0.8em;
-      color: var(--text3);
-      margin-top: 10px;
-      line-height: 1.7;
-      letter-spacing: 0.3px;
-    }
+    .mic-btn.active { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: #ef4444; animation: mic-pulse 1.2s infinite; }
+    @keyframes mic-pulse { 0%, 100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); } 50% { box-shadow: 0 0 28px rgba(239, 68, 68, 0.6); } }
+    .search-hint { text-align: center; font-size: 0.8em; color: var(--text3); margin-top: 10px; line-height: 1.7; }
     .status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 20px;
-      border-radius: 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      margin-bottom: 28px;
-      font-size: 0.8em;
-      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between; padding: 12px 20px;
+      border-radius: 14px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 28px; font-size: 0.8em;
     }
-    .status-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--accent3);
-      font-weight: 500;
-    }
-    .status-right {
-      color: var(--text3);
-      font-family: var(--font-mono);
-      letter-spacing: 1.5px;
-      font-weight: 400;
-    }
-    .wave {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      height: 18px;
-      margin-left: 10px;
-    }
-    .wave-bar {
-      width: 4px;
-      border-radius: 2px;
-      background: var(--danger);
-      animation: wave 0.6s ease-in-out infinite alternate;
-    }
+    .status-left { display: flex; align-items: center; gap: 10px; color: var(--accent3); font-weight: 500; }
+    .status-right { color: var(--text3); font-family: var(--font-mono); letter-spacing: 1.5px; }
+    .wave { display: flex; align-items: center; gap: 3px; height: 18px; margin-left: 10px; }
+    .wave-bar { width: 4px; border-radius: 2px; background: var(--danger); animation: wave 0.6s ease-in-out infinite alternate; }
     .wave-bar:nth-child(1){height:6px;animation-delay:0s}
     .wave-bar:nth-child(2){height:14px;animation-delay:0.12s}
     .wave-bar:nth-child(3){height:18px;animation-delay:0.24s}
     .wave-bar:nth-child(4){height:12px;animation-delay:0.36s}
     .wave-bar:nth-child(5){height:8px;animation-delay:0.48s}
     @keyframes wave{from{transform:scaleY(0.3)}to{transform:scaleY(1)}}
-    .ai-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      overflow: hidden;
-      margin-bottom: 28px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    }
+    .ai-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 28px; }
     .ai-panel-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(99, 179, 237, 0.03);
+      display: flex; align-items: center; gap: 12px; padding: 16px 24px;
+      border-bottom: 1px solid var(--border); background: rgba(99, 179, 237, 0.03);
     }
     .ai-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 0.7em;
-      color: #fff;
-      font-weight: 700;
+      width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center; font-family: var(--font-mono);
+      font-size: 0.7em; color: #fff; font-weight: 700;
     }
-    .ai-name {
-      font-weight: 600;
-      font-size: 0.95em;
-      letter-spacing: 0.3px;
-    }
-    .ai-status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent3);
-      box-shadow: 0 0 10px var(--accent3);
-      margin-left: auto;
-    }
-    .chat-body {
-      height: 240px;
-      overflow-y: auto;
-      padding: 20px;
-      scroll-behavior: smooth;
-      display: flex;
-      flex-direction: column;
-    }
+    .ai-name { font-weight: 600; font-size: 0.95em; }
+    .ai-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent3); box-shadow: 0 0 10px var(--accent3); margin-left: auto; }
+    .chat-body { height: 240px; overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
     .chat-body::-webkit-scrollbar { width: 4px; }
     .chat-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-    .msg {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-      align-items: flex-start;
-    }
-    .msg.user {
-      flex-direction: row-reverse;
-    }
-    .msg-bubble {
-      padding: 12px 18px;
-      border-radius: 16px;
-      font-size: 0.9em;
-      line-height: 1.6;
-      max-width: 85%;
-      word-break: break-word;
-    }
-    .msg.ai .msg-bubble {
-      background: rgba(99, 179, 237, 0.08);
-      border: 1px solid rgba(99, 179, 237, 0.15);
-      border-radius: 4px 16px 16px 16px;
-    }
-    .msg.user .msg-bubble {
-      background: rgba(124, 58, 237, 0.18);
-      border: 1px solid rgba(124, 58, 237, 0.25);
-      border-radius: 16px 4px 16px 16px;
-    }
-    .msg-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9em;
-    }
+    .msg { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-bubble { padding: 12px 18px; border-radius: 16px; font-size: 0.9em; line-height: 1.6; max-width: 85%; }
+    .msg.ai .msg-bubble { background: rgba(99, 179, 237, 0.08); border: 1px solid rgba(99, 179, 237, 0.15); border-radius: 4px 16px 16px 16px; }
+    .msg.user .msg-bubble { background: rgba(124, 58, 237, 0.18); border: 1px solid rgba(124, 58, 237, 0.25); border-radius: 16px 4px 16px 16px; }
+    .msg-icon { width: 30px; height: 30px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.9em; }
     .msg.ai .msg-icon { background: linear-gradient(135deg, var(--accent2), var(--accent)); }
     .msg.user .msg-icon { background: var(--surface2); }
-    .typing-indicator {
-      display: none;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 0;
-    }
-    .typing-indicator.show {
-      display: flex;
-    }
-    .t-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: tdot 1.3s infinite;
-    }
-    .t-dot:nth-child(2){animation-delay:0.2s}
-    .t-dot:nth-child(3){animation-delay:0.4s}
+    .typing-indicator { display: none; align-items: center; gap: 5px; padding: 6px 0; }
+    .typing-indicator.show { display: flex; }
+    .t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: tdot 1.3s infinite; }
+    .t-dot:nth-child(2){animation-delay:0.2s}.t-dot:nth-child(3){animation-delay:0.4s}
     @keyframes tdot{0%,60%,100%{opacity:0.2}30%{opacity:1}}
-    .step-card {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 12px;
-      padding: 14px 18px;
-      margin-top: 8px;
-      font-size: 0.88em;
-    }
-    .step-card .step-num {
-      font-family: var(--font-mono);
-      font-size: 0.75em;
-      color: var(--accent3);
-      letter-spacing: 1.5px;
-      margin-bottom: 6px;
-    }
-    .choice-btns {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-    .choice-btn {
-      padding: 8px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      color: var(--text);
-      cursor: pointer;
-      font-size: 0.85em;
-      font-family: var(--font-body);
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    .choice-btn.yes {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: var(--accent3);
-    }
-    .choice-btn.no {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.5);
-      color: var(--danger);
-    }
-    .link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 10px;
-      margin-top: 8px;
-      margin-right: 6px;
-      background: rgba(99, 179, 237, 0.08);
-      border: 1px solid rgba(99, 179, 237, 0.2);
-      color: var(--accent);
-      font-size: 0.85em;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: var(--font-body);
-      font-weight: 500;
-    }
-    .link-btn.red {
-      background: rgba(239, 68, 68, 0.1);
-      border-color: rgba(239, 68, 68, 0.25);
-      color: var(--danger);
-    }
-    .link-btn.green {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.3);
-      color: var(--accent3);
-    }
-    .ios-panel {
-      display: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      overflow: hidden;
-      margin-bottom: 28px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    }
-    .ios-panel.show {
-      display: block;
-      animation: fadeUp 0.35s ease;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .ios-panel-header {
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .ios-code-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 1.2em;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-    .ios-type-tag {
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 0.6em;
-      background: rgba(99, 179, 237, 0.15);
-      border: 1px solid rgba(99, 179, 237, 0.3);
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-    .ios-priority {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8em;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-    .ios-priority.high { color: var(--danger); }
-    .ios-priority.med { color: var(--warn); }
-    .ios-priority.low { color: var(--accent3); }
-    .ios-desc {
-      color: var(--text2);
-      font-size: 0.95em;
-      margin-top: 8px;
-      font-weight: 400;
-    }
-    .ios-body {
-      padding: 20px 24px;
-    }
-    .ios-section {
-      margin-bottom: 20px;
-    }
-    .ios-section-title {
-      font-family: var(--font-display);
-      font-size: 0.75em;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-    .action-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      margin-bottom: 6px;
-      font-size: 0.88em;
-      line-height: 1.5;
-    }
+    .step-card { background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 14px 18px; margin-top: 8px; font-size: 0.88em; }
+    .step-card .step-num { font-family: var(--font-mono); font-size: 0.75em; color: var(--accent3); letter-spacing: 1.5px; margin-bottom: 6px; }
+    .choice-btns { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .choice-btn { padding: 8px 18px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); cursor: pointer; font-size: 0.85em; font-family: var(--font-body); transition: all 0.2s; }
+    .choice-btn.yes { background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); color: var(--accent3); }
+    .choice-btn.no { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: var(--danger); }
+    .link-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; margin-top: 8px; margin-right: 6px; background: rgba(99, 179, 237, 0.08); border: 1px solid rgba(99, 179, 237, 0.2); color: var(--accent); font-size: 0.85em; text-decoration: none; cursor: pointer; transition: all 0.2s; font-family: var(--font-body); }
+    .link-btn.red { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.25); color: var(--danger); }
+    .link-btn.green { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: var(--accent3); }
+    .ios-panel { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 28px; }
+    .ios-panel.show { display: block; animation: fadeUp 0.35s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .ios-panel-header { padding: 22px 24px; border-bottom: 1px solid var(--border); }
+    .ios-code-badge { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 1.2em; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .ios-type-tag { padding: 3px 10px; border-radius: 6px; font-size: 0.6em; background: rgba(99, 179, 237, 0.15); border: 1px solid rgba(99, 179, 237, 0.3); color: var(--accent); letter-spacing: 1px; }
+    .ios-priority { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8em; font-weight: 600; letter-spacing: 1px; }
+    .ios-priority.high { color: var(--danger); } .ios-priority.med { color: var(--warn); } .ios-priority.low { color: var(--accent3); }
+    .ios-desc { color: var(--text2); font-size: 0.95em; margin-top: 8px; }
+    .ios-body { padding: 20px 24px; }
+    .ios-section { margin-bottom: 20px; }
+    .ios-section-title { font-family: var(--font-display); font-size: 0.75em; font-weight: 700; letter-spacing: 2.5px; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+    .action-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; font-size: 0.88em; line-height: 1.5; }
     .action-item.warn { background: rgba(239, 68, 68, 0.06); border-left: 3px solid var(--danger); }
     .action-item.check { background: rgba(16, 185, 129, 0.06); border-left: 3px solid var(--accent3); }
     .action-item.info { background: rgba(99, 179, 237, 0.06); border-left: 3px solid var(--accent); }
-    .voice-guide {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(13, 17, 23, 0.98);
-      backdrop-filter: blur(30px);
-      border-top: 1px solid var(--border);
-      padding: 14px 20px;
-      z-index: 100;
-      display: none;
-      box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
-    }
-    .voice-guide.show {
-      display: block;
-    }
-    .vg-inner {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .vg-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-    .vg-text {
-      flex: 1;
-    }
-    .vg-step {
-      font-family: var(--font-mono);
-      font-size: 0.7em;
-      color: var(--accent3);
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-    .vg-step-text {
-      font-size: 0.92em;
-      color: var(--text);
-      line-height: 1.5;
-      font-weight: 500;
-    }
-    .vg-btns {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .vg-btn {
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      color: var(--text);
-      cursor: pointer;
-      font-size: 0.82em;
-      font-family: var(--font-body);
-      transition: all 0.2s;
-      white-space: nowrap;
-      font-weight: 500;
-    }
+    .voice-guide { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13, 17, 23, 0.98); backdrop-filter: blur(30px); border-top: 1px solid var(--border); padding: 14px 20px; z-index: 100; display: none; }
+    .voice-guide.show { display: block; }
+    .vg-inner { max-width: 900px; margin: 0 auto; }
+    .vg-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px; }
+    .vg-text { flex: 1; }
+    .vg-step { font-family: var(--font-mono); font-size: 0.7em; color: var(--accent3); letter-spacing: 2px; margin-bottom: 4px; }
+    .vg-step-text { font-size: 0.92em; color: var(--text); line-height: 1.5; }
+    .vg-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .vg-btn { padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); cursor: pointer; font-size: 0.82em; font-family: var(--font-body); transition: all 0.2s; white-space: nowrap; }
     .vg-btn.oui { background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); color: var(--accent3); }
     .vg-btn.non { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: var(--danger); }
     .vg-btn.nav { background: rgba(99, 179, 237, 0.1); border-color: rgba(99, 179, 237, 0.25); color: var(--accent); }
-    .no-results {
-      display: none;
-      text-align: center;
-      padding: 20px;
-      color: var(--text3);
-      font-size: 0.95em;
-    }
-    .footer {
-      text-align: center;
-      padding: 30px 0 10px;
-      font-size: 0.75em;
-      color: var(--text3);
-      font-family: var(--font-mono);
-      letter-spacing: 1.5px;
-    }
-    .toast {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-size: 0.85em;
-      color: var(--text);
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 200;
-      white-space: nowrap;
-      max-width: 90vw;
-      backdrop-filter: blur(20px);
-    }
+    .no-results { display: none; text-align: center; padding: 20px; color: var(--text3); font-size: 0.95em; }
+    .footer { text-align: center; padding: 30px 0 10px; font-size: 0.75em; color: var(--text3); font-family: var(--font-mono); letter-spacing: 1.5px; }
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 24px; font-size: 0.85em; color: var(--text); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 200; white-space: nowrap; max-width: 90vw; }
     .toast.show { opacity: 1; }
   </style>
 </head>
@@ -615,11 +188,11 @@
   <div class="search-zone">
     <div class="search-wrap">
       <span style="color:var(--text3);flex-shrink:0;font-size:1.1em;">🔍</span>
-      <input type="text" id="search-input" placeholder="Numéro IOS (ex: 061) ou nom du défaut..." autocomplete="off" spellcheck="false">
+      <input type="text" id="search-input" placeholder="Numéro IOS (ex: 096) ou nom du défaut..." autocomplete="off" spellcheck="false">
       <button class="mic-btn" id="mic-btn" title="Commande vocale (micro toujours actif en guidage)">🎙</button>
     </div>
     <div class="search-hint">
-      <strong style="color:var(--accent)">Vocal :</strong> "IOS 061" · "boîte chaude" · "frein friction"<br>
+      <strong style="color:var(--accent)">Vocal :</strong> "IOS 096" · "boîte chaude" · "frein friction"<br>
       <strong style="color:var(--accent3)">Navigation :</strong> "suivant" · "précédent" · "annuler" · "accueil" · "nouvel IOS"
     </div>
   </div>
@@ -637,7 +210,7 @@
       <div class="ai-status-dot"></div>
     </div>
     <div class="chat-body" id="chat-body">
-      <div class="msg ai"><div class="msg-icon">🤖</div><div class="msg-bubble">Bonjour. Je suis votre assistant de dépannage T4. Indiquez un numéro IOS ou décrivez votre problème — vocalement ou par écrit.<br><br>Exemples : <em>"IOS 061"</em>, <em>"boîte chaude"</em>, <em>"frein friction CE1"</em>, <em>"patin magnétique"</em>...</div></div>
+      <div class="msg ai"><div class="msg-icon">🤖</div><div class="msg-bubble">Bonjour. Je suis votre assistant de dépannage T4. Indiquez un numéro IOS ou décrivez votre problème — vocalement ou par écrit.<br><br>Exemples : <em>"IOS 096"</em>, <em>"boîte chaude"</em>, <em>"frein friction CE1"</em>, <em>"patin magnétique"</em>...</div></div>
       <div class="typing-indicator" id="typing"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>
     </div>
   </div>
@@ -661,7 +234,7 @@
 
   <div class="no-results" id="no-results">Aucun IOS trouvé. Essayez un autre numéro ou mot-clé.</div>
 
-  <div class="footer">IOS-US-U53700 · V3.1 AI FLUID · Zaber MOHAMMAD</div>
+  <div class="footer">IOS-US-U53700 · V3.2 AI BRANCHING · Zaber MOHAMMAD</div>
 </div>
 
 <div class="voice-guide" id="voice-guide">
@@ -689,91 +262,423 @@
 <script>
   (function() {
     // ================================================================
-    // BASE DE DONNÉES IOS (identique à votre version, conservée intégralement)
+    // BASE DE DONNÉES IOS AVEC BRANCHEMENTS CORRIGÉS
+    // Chaque étape avec question (d:true) a maintenant :
+    //   - oui: texte à afficher si OUI, puis nextStepOui (ou null si continue normalement)
+    //   - non: texte à afficher si NON, puis nextStepNon (ou null si continue normalement)
+    //   - nextStepOui: index de la prochaine étape après OUI (null = étape suivante)
+    //   - nextStepNon: index de la prochaine étape après NON (null = étape suivante)
+    //   - endAfterOui: true si la procédure se termine après OUI
+    //   - endAfterNon: true si la procédure se termine après NON
     // ================================================================
     const IOS_DB = {
-      '000':{id:'000',type:'MA',priority:'high',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle securite','porte verrou','isolee'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Arrêtez le train au 1er quai disponible.',d:false},{t:'Avisez le PC immédiatement.',d:false},{t:'Appliquez le GD.',d:false},{t:'Évacuez les voyageurs si nécessaire.',d:false}]},
-      '001':{id:'001',type:'FU',priority:'med',desc:'FU inhibé si SAI en zone de quai',kw:['001','fu inhibe','sai'],instr:['Aviser PC'],steps:[{t:'Le système fonctionne normalement — FU inhibé en zone de quai est prévu.',d:false},{t:'Avisez le PC pour information.',d:false}]},
-      '002':{id:'002',type:'BP',priority:'high',desc:'Défaut majeur du relais de freinage d\'urgence',kw:['002','relais freinage urgence','majeur','bp','secours'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Symbole H affiché. Appliquez immédiatement le CHAPITRE 4 — SECOURS.',d:false}]},
-      '003':{id:'003',type:'MA',priority:'high',desc:'FU SAI intempestif',kw:['003','fu sai','intempestif','fms'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Placez le commutateur Z(IS)FMSQUA en AEL1 sur ISOLÉ.',d:false},{t:'L\'IOS n°001 est-il apparu ?',d:true,oui:'IOS 001 apparu — système partiellement opérationnel. Avisez le PC.',non:'IOS 001 non apparu — situation anormale. Avisez le PC immédiatement.'}]},
-      '004':{id:'004',type:'IDA',priority:'high',desc:'Défaut relais freinage d\'urgence bogie 1 C2B',kw:['004','relais freinage','bogie','c2b1','c2b'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(SE) en AEL1 sur SECOURS.',d:false},{t:'Placez Z(IS)F en AEL1 sur C2B1 (bogie à isoler).',d:false},{t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},{t:'Le symbole Frein à friction isolé est-il affiché sur l\'écran principal ?',d:true,oui:'Bien. Contrôlez l\'IOS n°091. Effectuez un EFAS complet. Appliquez la page 499. Vitesse max 30 km/h.',non:'Anomalie — avisez le PC et demandez secours.'},{t:'Appliquez la page 499 — Incident de frein. Ne dépassez pas 30 km/h.',d:false},{t:'Avisez le PC pour instructions (évacuation éventuelle).',d:false}]},
-      '005':{id:'005',type:'IDA',priority:'high',desc:'Incohérence boucle de sécurité porte',kw:['005','incoherence boucle porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Effectuez une annonce aux voyageurs : fermeture imminente des portes.',d:false},{t:'Appuyez sur BPL(AUT-OP)DO et/ou BPL(AUT-OP)GA selon le côté desservi.',d:false},{t:'Commandez la fermeture des portes. Observez les lampes LS-FP-GA et LS-FP-DO.',d:false},{t:'Les lampes LS-FP-GA et LS-FP-DO sont-elles éteintes ?',d:true,oui:'Ne plus tenir compte de l\'IOS 005. Dépannage terminé.',non:'Appliquez le défaut 9501 — LS-FP ne s\'éteignent pas après fermeture.'}]},
-      '006':{id:'006',type:'FU',priority:'high',desc:'FU permanent suite à un défaut de la boucle porte',kw:['006','fu permanent','boucle porte','fermeture permanente'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Effectuez une annonce aux voyageurs : fermeture imminente des portes.',d:false},{t:'Commandez la fermeture des portes.',d:false},{t:'Les lampes LS-FP-GA et LS-FP-DO sont-elles éteintes ?',d:true,oui:'Essayez de reprendre la traction. La traction est-elle possible ?',non:'Appliquez le défaut 9501 — LS-FP ne s\'éteignent pas.'},{t:'La traction est-elle revenue ?',d:true,oui:'Ne plus tenir compte de l\'IOS 006. Avisez : Application IOS 006 1er cas.',non:'Recherchez sur la vue détaillée de l\'IHM une porte ou un comble-lacune en défaut.'},{t:'Un défaut de porte est-il détecté sur la vue détaillée ?',d:true,oui:'Réalisez une commande d\'ouverture centralisée via IHM CSL-PUP. Attendez 10 secondes. Refermez les portes.',non:'Déclenchez puis enclenchez CC(AUX)P et CC(AL)IP dans la ou les caisses concernées.'},{t:'L\'IOS 006 a-t-il disparu ?',d:true,oui:'Dépannage terminé. Avisez : Application IOS 006 1er cas.',non:'Condamnez la porte et comble-lacune (ANNEXE 1 art. 1). Avisez : Application IOS 006 3e cas.'}]},
-      '007':{id:'007',priority:'med',desc:'Anomalie commande pantographe',kw:['007','pantographe','anomalie commande'],instr:['Aviser PC'],steps:[{t:'Après une commande de descente du pantographe, celui-ci ne pourra PAS être relevé.',d:false},{t:'Si descente nécessaire : appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '008':{id:'008',priority:'low',desc:'Saisie des données dans ATESS impossible',kw:['008','atess','saisie donnees'],instr:['Aviser PC — Remplir la fiche suiveuse'],steps:[{t:'Avisez le PC.',d:false},{t:'Remplissez manuellement la fiche suiveuse.',d:false}]},
-      '009':{id:'009',priority:'high',desc:'Perte d\'informations tachymétriques dans la cabine inactive',kw:['009','tachymetrique','cabine inactive'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'L\'autre cabine de conduite de l\'élément est INUTILISABLE.',d:false},{t:'Avisez les voyageurs qu\'une porte sur deux ne fonctionne pas.',d:false},{t:'Au terminus : appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '010':{id:'010',priority:'high',desc:'Défaut boucle FS ou FU',kw:['010','boucle fs','boucle fu','defaut boucle'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'ATTENTION — Perte de redondance des contacteurs de la boucle de sécurité.',d:false},{t:'Ne JAMAIS utiliser le commutateur Z(SE)F en AEL1 : risque de perte TOTALE du freinage.',d:false},{t:'Avisez le PC immédiatement.',d:false}]},
-      '014':{id:'014',priority:'med',desc:'Perte totale de la climatisation cabine',kw:['014','climatisation cabine','perte clim'],instr:['Aviser PC'],steps:[{t:'Vérifiez les coupe-circuits CC-CLMC et CC1-CLMC en AEL2.',d:false},{t:'Enclenchez-les si nécessaire.',d:false},{t:'La climatisation cabine fonctionne-t-elle ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC — climatisation cabine hors service.'}]},
-      '015':{id:'015',priority:'high',desc:'Perte des deux chargeurs batteries sur un élément',kw:['015','chargeur batterie','perte chargeur'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Évacuez les voyageurs en station immédiatement.',d:false},{t:'Avisez le PC et définissez un lieu de garage pour éviter une demande de secours en ligne.',d:false},{t:'Risque important : perte de batterie en cours de route = mise en stationnement forcée.',d:false},{t:'Si arrêt en pleine voie : appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '017':{id:'017',priority:'high',desc:'Batteries faibles',kw:['017','batterie faible','tension basse','batterie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que le bouton-poussoir BP(F-SE) de la cabine en service est correctement relevé.',d:false},{t:'Relevez-le si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé. Continuez votre service.',non:'Appliquez le CHAPITRE 4 — SECOURS.'}]},
-      '041':{id:'041',priority:'med',desc:'Défaut CVS et redondance non assurée',kw:['041','cvs','redondance'],instr:['Aviser PC'],steps:[{t:'Symbole CVS en défaut affiché.',d:false},{t:'Avisez le PC pour information.',d:false}]},
-      '044':{id:'044',priority:'med',desc:'Perte d\'un chargeur batteries',kw:['044','chargeur batterie','perte un chargeur'],instr:['Aviser PC — Charge partielle des batteries'],steps:[{t:'Charge partielle des batteries en cours.',d:false},{t:'Avisez le PC pour information.',d:false}]},
-      '046':{id:'046',priority:'med',desc:'Défaut CVS — délestage assuré',kw:['046','cvs','decharge','climatisation ventilation'],instr:['Aviser PC — Délestage CVS assuré'],steps:[{t:'La climatisation salle passe en ventilation.',d:false},{t:'La climatisation cabine de la cabine en service fonctionne.',d:false},{t:'Perte du chauffage.',d:false},{t:'Avisez le PC pour information.',d:false}]},
-      '048':{id:'048',priority:'high',desc:'Perte totale des deux CVS sur un élément',kw:['048','cvs','perte totale','deux cvs'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Perte totale des 2 CVS. Appliquez immédiatement le CHAPITRE 4 — SECOURS.',d:false}]},
+      '000':{id:'000',type:'MA',priority:'high',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle securite','porte verrou','isolee'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Arrêtez le train au 1er quai disponible.',d:false},
+        {t:'Avisez le PC immédiatement.',d:false},
+        {t:'Appliquez le GD.',d:false},
+        {t:'Évacuez les voyageurs si nécessaire.',d:false}
+      ]},
+      '001':{id:'001',type:'FU',priority:'med',desc:'FU inhibé si SAI en zone de quai',kw:['001','fu inhibe','sai'],instr:['Aviser PC'],steps:[
+        {t:'Le système fonctionne normalement — FU inhibé en zone de quai est prévu.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
+      '002':{id:'002',type:'BP',priority:'high',desc:'Défaut majeur du relais de freinage d\'urgence',kw:['002','relais freinage urgence','majeur','bp','secours'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[
+        {t:'URGENCE — Symbole H affiché. Appliquez immédiatement le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '003':{id:'003',type:'MA',priority:'high',desc:'FU SAI intempestif',kw:['003','fu sai','intempestif','fms'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez le commutateur Z(IS)FMSQUA en AEL1 sur ISOLÉ.',d:false},
+        {t:'L\'IOS n°001 est-il apparu ?',d:true,
+          oui:'IOS 001 apparu — système partiellement opérationnel. Avisez le PC.', nextStepOui:null, endAfterOui:true,
+          non:'IOS 001 non apparu — situation anormale. Avisez le PC immédiatement.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '004':{id:'004',type:'IDA',priority:'high',desc:'Défaut relais freinage d\'urgence bogie 1 C2B',kw:['004','relais freinage','bogie','c2b1','c2b'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(SE) en AEL1 sur SECOURS.',d:false},
+        {t:'Placez Z(IS)F en AEL1 sur C2B1 (bogie à isoler).',d:false},
+        {t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},
+        {t:'Le symbole Frein à friction isolé est-il affiché sur l\'écran principal ?',d:true,
+          oui:'Bien. Contrôlez l\'IOS n°091. Effectuez un EFAS complet. Appliquez la page 499. Vitesse max 30 km/h.', nextStepOui:4,
+          non:'Anomalie — avisez le PC et demandez secours.', nextStepNon:null, endAfterNon:true},
+        {t:'Appliquez la page 499 — Incident de frein. Ne dépassez pas 30 km/h.',d:false},
+        {t:'Avisez le PC pour instructions (évacuation éventuelle).',d:false}
+      ]},
+      '005':{id:'005',type:'IDA',priority:'high',desc:'Incohérence boucle de sécurité porte',kw:['005','incoherence boucle porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Effectuez une annonce aux voyageurs : fermeture imminente des portes.',d:false},
+        {t:'Appuyez sur BPL(AUT-OP)DO et/ou BPL(AUT-OP)GA selon le côté desservi.',d:false},
+        {t:'Commandez la fermeture des portes. Observez les lampes LS-FP-GA et LS-FP-DO.',d:false},
+        {t:'Les lampes LS-FP-GA et LS-FP-DO sont-elles éteintes ?',d:true,
+          oui:'Ne plus tenir compte de l\'IOS 005. Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez le défaut 9501 — LS-FP ne s\'éteignent pas après fermeture.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '006':{id:'006',type:'FU',priority:'high',desc:'FU permanent suite à un défaut de la boucle porte',kw:['006','fu permanent','boucle porte','fermeture permanente'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Effectuez une annonce aux voyageurs : fermeture imminente des portes.',d:false},
+        {t:'Commandez la fermeture des portes.',d:false},
+        {t:'Les lampes LS-FP-GA et LS-FP-DO sont-elles éteintes ?',d:true,
+          oui:'Essayez de reprendre la traction. La traction est-elle possible ?', nextStepOui:3,
+          non:'Appliquez le défaut 9501 — LS-FP ne s\'éteignent pas.', nextStepNon:null, endAfterNon:true},
+        {t:'La traction est-elle revenue ?',d:true,
+          oui:'Ne plus tenir compte de l\'IOS 006. Avisez : Application IOS 006 1er cas.', nextStepOui:null, endAfterOui:true,
+          non:'Recherchez sur la vue détaillée de l\'IHM une porte ou un comble-lacune en défaut.', nextStepNon:4},
+        {t:'Un défaut de porte est-il détecté sur la vue détaillée ?',d:true,
+          oui:'Réalisez une commande d\'ouverture centralisée via IHM CSL-PUP. Attendez 10 secondes. Refermez les portes.', nextStepOui:5,
+          non:'Déclenchez puis enclenchez CC(AUX)P et CC(AL)IP dans la ou les caisses concernées.', nextStepNon:5},
+        {t:'L\'IOS 006 a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé. Avisez : Application IOS 006 1er cas.', nextStepOui:null, endAfterOui:true,
+          non:'Condamnez la porte et comble-lacune (ANNEXE 1 art. 1). Avisez : Application IOS 006 3e cas.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '007':{id:'007',priority:'med',desc:'Anomalie commande pantographe',kw:['007','pantographe','anomalie commande'],instr:['Aviser PC'],steps:[
+        {t:'Après une commande de descente du pantographe, celui-ci ne pourra PAS être relevé.',d:false},
+        {t:'Si descente nécessaire : appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '008':{id:'008',priority:'low',desc:'Saisie des données dans ATESS impossible',kw:['008','atess','saisie donnees'],instr:['Aviser PC — Remplir la fiche suiveuse'],steps:[
+        {t:'Avisez le PC.',d:false},
+        {t:'Remplissez manuellement la fiche suiveuse.',d:false}
+      ]},
+      '009':{id:'009',priority:'high',desc:'Perte d\'informations tachymétriques dans la cabine inactive',kw:['009','tachymetrique','cabine inactive'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'L\'autre cabine de conduite de l\'élément est INUTILISABLE.',d:false},
+        {t:'Avisez les voyageurs qu\'une porte sur deux ne fonctionne pas.',d:false},
+        {t:'Au terminus : appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '010':{id:'010',priority:'high',desc:'Défaut boucle FS ou FU',kw:['010','boucle fs','boucle fu','defaut boucle'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'ATTENTION — Perte de redondance des contacteurs de la boucle de sécurité.',d:false},
+        {t:'Ne JAMAIS utiliser le commutateur Z(SE)F en AEL1 : risque de perte TOTALE du freinage.',d:false},
+        {t:'Avisez le PC immédiatement.',d:false}
+      ]},
+      '014':{id:'014',priority:'med',desc:'Perte totale de la climatisation cabine',kw:['014','climatisation cabine','perte clim'],instr:['Aviser PC'],steps:[
+        {t:'Vérifiez les coupe-circuits CC-CLMC et CC1-CLMC en AEL2.',d:false},
+        {t:'Enclenchez-les si nécessaire.',d:false},
+        {t:'La climatisation cabine fonctionne-t-elle ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC — climatisation cabine hors service.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '015':{id:'015',priority:'high',desc:'Perte des deux chargeurs batteries sur un élément',kw:['015','chargeur batterie','perte chargeur'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Évacuez les voyageurs en station immédiatement.',d:false},
+        {t:'Avisez le PC et définissez un lieu de garage pour éviter une demande de secours en ligne.',d:false},
+        {t:'Risque important : perte de batterie en cours de route = mise en stationnement forcée.',d:false},
+        {t:'Si arrêt en pleine voie : appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '017':{id:'017',priority:'high',desc:'Batteries faibles',kw:['017','batterie faible','tension basse','batterie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que le bouton-poussoir BP(F-SE) de la cabine en service est correctement relevé.',d:false},
+        {t:'Relevez-le si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé. Continuez votre service.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '041':{id:'041',priority:'med',desc:'Défaut CVS et redondance non assurée',kw:['041','cvs','redondance'],instr:['Aviser PC'],steps:[
+        {t:'Symbole CVS en défaut affiché.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
+      '044':{id:'044',priority:'med',desc:'Perte d\'un chargeur batteries',kw:['044','chargeur batterie','perte un chargeur'],instr:['Aviser PC — Charge partielle des batteries'],steps:[
+        {t:'Charge partielle des batteries en cours.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
+      '046':{id:'046',priority:'med',desc:'Défaut CVS — délestage assuré',kw:['046','cvs','decharge','climatisation ventilation'],instr:['Aviser PC — Délestage CVS assuré'],steps:[
+        {t:'La climatisation salle passe en ventilation.',d:false},
+        {t:'La climatisation cabine de la cabine en service fonctionne.',d:false},
+        {t:'Perte du chauffage.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
+      '048':{id:'048',priority:'high',desc:'Perte totale des deux CVS sur un élément',kw:['048','cvs','perte totale','deux cvs'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[
+        {t:'URGENCE — Perte totale des 2 CVS. Appliquez immédiatement le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
       '049':{id:'049',priority:'low',desc:'Défaut contacteur de secours',kw:['049','contacteur secours'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '050':{id:'050',priority:'high',desc:'Défaut batterie 1 ou 2',kw:['050','batterie','patin','frein electromagnetique'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Les patins magnétiques ne fonctionnent plus.',d:false},{t:'Appliquez la page 499 — Incident de frein (défaut frein électromagnétique).',d:false}]},
-      '051':{id:'051',priority:'high',desc:'Défaut fusible batterie 1 et 2 sur un élément',kw:['051','fusible batterie'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '052':{id:'052',priority:'high',desc:'Perte d\'une des deux batteries à la PJ',kw:['052','batterie pj','perte batterie pj'],instr:['Échange de la rame demandé'],steps:[{t:'Isolez le poste de conduite.',d:false},{t:'Dé-préparez la rame en appuyant sur BP(DPRE).',d:false},{t:'Placez Z(IS)BA en C2B sur HORS SERVICE pendant 2 secondes.',d:false},{t:'Attendez 30 secondes.',d:false},{t:'Placez Z(IS)BA sur EN SERVICE jusqu\'à allumage de LS(BA1)SEV et LS(BA2)SEV.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC et conformez-vous aux instructions.'}]},
-      '053':{id:'053',priority:'high',desc:'Défaut commande pantographe',kw:['053','pantographe','commande','defaut'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '054':{id:'054',priority:'high',desc:'Non descente du pantographe',kw:['054','pantographe','non descente','descente'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'Placez BP-DJ sur OUVERTURE (position stable). Observez LS-DJ au BSI.',d:false},{t:'Vérifiez le symbole DJ captation ouvert sur l\'écran de conduite principal.',d:false},{t:'Si nécessaire : accédez au voussoir C2B. Récupérez la manivelle.',d:false},{t:'Vérifiez que le pantographe n\'est pas mécaniquement verrouillé. Déverrouillez si nécessaire via BV-CM.',d:false},{t:'Placez la manivelle — tournez vers la GAUCHE jusqu\'en butée pour descendre le pantographe.',d:false},{t:'Le pantographe est-il en position basse (LS(SI-0-HT) allumé) ?',d:true,oui:'Appliquez le CHAPITRE 4 — SECOURS.',non:'Problème mécanique — appelez un mainteneur. Appliquez le CHAPITRE 4 — SECOURS.'}]},
+      '050':{id:'050',priority:'high',desc:'Défaut batterie 1 ou 2',kw:['050','batterie','patin','frein electromagnetique'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Les patins magnétiques ne fonctionnent plus.',d:false},
+        {t:'Appliquez la page 499 — Incident de frein (défaut frein électromagnétique).',d:false}
+      ]},
+      '051':{id:'051',priority:'high',desc:'Défaut fusible batterie 1 et 2 sur un élément',kw:['051','fusible batterie'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[
+        {t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '052':{id:'052',priority:'high',desc:'Perte d\'une des deux batteries à la PJ',kw:['052','batterie pj','perte batterie pj'],instr:['Échange de la rame demandé'],steps:[
+        {t:'Isolez le poste de conduite.',d:false},
+        {t:'Dé-préparez la rame en appuyant sur BP(DPRE).',d:false},
+        {t:'Placez Z(IS)BA en C2B sur HORS SERVICE pendant 2 secondes.',d:false},
+        {t:'Attendez 30 secondes.',d:false},
+        {t:'Placez Z(IS)BA sur EN SERVICE jusqu\'à allumage de LS(BA1)SEV et LS(BA2)SEV.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC et conformez-vous aux instructions.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '053':{id:'053',priority:'high',desc:'Défaut commande pantographe',kw:['053','pantographe','commande','defaut'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[
+        {t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '054':{id:'054',priority:'high',desc:'Non descente du pantographe',kw:['054','pantographe','non descente','descente'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[
+        {t:'Placez BP-DJ sur OUVERTURE (position stable). Observez LS-DJ au BSI.',d:false},
+        {t:'Vérifiez le symbole DJ captation ouvert sur l\'écran de conduite principal.',d:false},
+        {t:'Si nécessaire : accédez au voussoir C2B. Récupérez la manivelle.',d:false},
+        {t:'Vérifiez que le pantographe n\'est pas mécaniquement verrouillé. Déverrouillez si nécessaire via BV-CM.',d:false},
+        {t:'Placez la manivelle — tournez vers la GAUCHE jusqu\'en butée pour descendre le pantographe.',d:false},
+        {t:'Le pantographe est-il en position basse (LS(SI-0-HT) allumé) ?',d:true,
+          oui:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Problème mécanique — appelez un mainteneur. Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
       '057':{id:'057',priority:'low',desc:'Défaut niveau bas sable d\'au moins un réservoir',kw:['057','sable','reservoir'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '058':{id:'058',priority:'med',desc:'Avarie STBS — Défaut système de reconnaissance Tram Train',kw:['058','stbs','tram train','reconnaissance'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Contrôlez CC1(TLC-PCF) et CC2(TLC-PCF) en AEL1. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC en précisant que le STBS est hors service.'}]},
+      '058':{id:'058',priority:'med',desc:'Avarie STBS — Défaut système de reconnaissance Tram Train',kw:['058','stbs','tram train','reconnaissance'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Contrôlez CC1(TLC-PCF) et CC2(TLC-PCF) en AEL1. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC en précisant que le STBS est hors service.', nextStepNon:null, endAfterNon:true}
+      ]},
       '060':{id:'060',priority:'low',desc:'Niveau bas réservoir de graisse',kw:['060','graisse','reservoir'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '061':{id:'061',priority:'high',desc:'Détection boîte chaude',kw:['061','boite chaude','boîte chaude','surchauffe','chaleur','temperature'],instr:['Arrêt immédiat','Aviser PC — Avarie MTI — Appliquer GD'],steps:[{t:'Accédez à l\'écran Commandes diverses. Sélectionnez BOITE CHAUDE.',d:false},{t:'Localisez sur l\'écran l\'élément et la roue concernée.',d:false},{t:'Effectuez une visite de la rame au niveau de la boîte incriminée.',d:false},{t:'Y a-t-il un dégagement de fumée ou une forte chaleur ?',d:true,oui:'Si incendie : prenez les mesures nécessaires. Isolez le bogie (art. 3 ANNEXE 1). Appliquez le CHAPITRE 4 — SECOURS.',non:'Tracez un trait sur les 2 roues du même côté du bogie. Posez une étiquette IN.'},{t:'Revenez en cabine. Isolez le bogie incriminé — appliquez art. 3 ANNEXE 1.',d:false},{t:'Vérifiez le symbole Frein isolé sur l\'écran principal. Appliquez la page 499.',d:false},{t:'Démarrez la rame. Les essieux du bogie tournent-ils normalement ?',d:true,oui:'Évacuez les voyageurs en station. Ne dépassez pas 30 km/h jusqu\'au point de garage désigné.',non:'Arrêtez-vous. Appliquez le CHAPITRE 4 — SECOURS. La rame doit être visitée par un mainteneur.'}]},
+      '061':{id:'061',priority:'high',desc:'Détection boîte chaude',kw:['061','boite chaude','boîte chaude','surchauffe','chaleur','temperature'],instr:['Arrêt immédiat','Aviser PC — Avarie MTI — Appliquer GD'],steps:[
+        {t:'Accédez à l\'écran Commandes diverses. Sélectionnez BOITE CHAUDE.',d:false},
+        {t:'Localisez sur l\'écran l\'élément et la roue concernée.',d:false},
+        {t:'Effectuez une visite de la rame au niveau de la boîte incriminée.',d:false},
+        {t:'Y a-t-il un dégagement de fumée ou une forte chaleur ?',d:true,
+          oui:'Si incendie : prenez les mesures nécessaires. Isolez le bogie (art. 3 ANNEXE 1). Appliquez le CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Tracez un trait sur les 2 roues du même côté du bogie. Posez une étiquette IN.', nextStepNon:4},
+        {t:'Revenez en cabine. Isolez le bogie incriminé — appliquez art. 3 ANNEXE 1.',d:false},
+        {t:'Vérifiez le symbole Frein isolé sur l\'écran principal. Appliquez la page 499.',d:false},
+        {t:'Démarrez la rame. Les essieux du bogie tournent-ils normalement ?',d:true,
+          oui:'Évacuez les voyageurs en station. Ne dépassez pas 30 km/h jusqu\'au point de garage désigné.', nextStepOui:null, endAfterOui:true,
+          non:'Arrêtez-vous. Appliquez le CHAPITRE 4 — SECOURS. La rame doit être visitée par un mainteneur.', nextStepNon:null, endAfterNon:true}
+      ]},
       '062':{id:'062',priority:'low',desc:'Perte totale de la climatisation salle',kw:['062','climatisation salle'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '063':{id:'063',priority:'low',desc:'Perte totale de la climatisation cabine',kw:['063','climatisation cabine'],instr:['Aviser PC'],steps:[{t:'Assurez-vous que le dérogateur de consigne de température n\'est pas placé entre 2 positions.',d:false},{t:'Avisez le PC pour information.',d:false}]},
+      '063':{id:'063',priority:'low',desc:'Perte totale de la climatisation cabine',kw:['063','climatisation cabine'],instr:['Aviser PC'],steps:[
+        {t:'Assurez-vous que le dérogateur de consigne de température n\'est pas placé entre 2 positions.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
       '064':{id:'064',priority:'low',desc:'Défaut climatisation salle ou cabine',kw:['064','climatisation','ventilation'],instr:['Aviser PC'],steps:[{t:'La climatisation salle ou cabine passe en ventilation. Avisez le PC.',d:false}]},
       '065':{id:'065',priority:'low',desc:'Retour maintenance demandé',kw:['065','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC — retour maintenance demandé.',d:false}]},
-      '071':{id:'071',priority:'high',desc:'Défaut patins magnétiques',kw:['071','patin','magnetique','frein electromagnetique'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'L\'IOS n°072 est-il également affiché ?',d:true,oui:'Appliquez directement l\'IOS n°072.',non:'Déterminez le lieu de l\'arrêt.'},{t:'L\'arrêt est-il obtenu à quai ou dans un garage ?',d:true,oui:'Réalisez un EFAS réduit sans tenir compte du non-allumage de BPL(CD)FEM. Appliquez page 499.',non:'En pleine voie — vérifiez et enclenchez CC1(CD)FEM et CC2(CD)FEM en AEL1.'},{t:'L\'IOS 071 a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Réalisez un EFAS réduit. Appliquez la page 499 — défaut frein électromagnétique.'}]},
-      '072':{id:'072',type:'UP',priority:'high',desc:'Une ou plusieurs paires de patins appliqués à tort',kw:['072','patin applique','tort'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez CC1(CD)FEM en AEL1 de la cabine en service.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Déclenchez les autres CC1(CD)FEM dans l\'ABT (C2B), le PDJ (C1), et l\'AEL1 de l\'autre cabine.'},{t:'L\'IOS a-t-il maintenant disparu ?',d:true,oui:'Dépannage terminé.',non:'Réalisez un EFAS réduit. Appliquez la page 499. Appliquez CHAPITRE 4 — SECOURS. Demandez intervention mainteneur.'}]},
+      '071':{id:'071',priority:'high',desc:'Défaut patins magnétiques',kw:['071','patin','magnetique','frein electromagnetique'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'L\'IOS n°072 est-il également affiché ?',d:true,
+          oui:'Appliquez directement l\'IOS n°072.', nextStepOui:null, endAfterOui:true,
+          non:'Déterminez le lieu de l\'arrêt.', nextStepNon:1},
+        {t:'L\'arrêt est-il obtenu à quai ou dans un garage ?',d:true,
+          oui:'Réalisez un EFAS réduit sans tenir compte du non-allumage de BPL(CD)FEM. Appliquez page 499.', nextStepOui:2,
+          non:'En pleine voie — vérifiez et enclenchez CC1(CD)FEM et CC2(CD)FEM en AEL1.', nextStepNon:2},
+        {t:'L\'IOS 071 a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Réalisez un EFAS réduit. Appliquez la page 499 — défaut frein électromagnétique.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '072':{id:'072',type:'UP',priority:'high',desc:'Une ou plusieurs paires de patins appliqués à tort',kw:['072','patin applique','tort'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez CC1(CD)FEM en AEL1 de la cabine en service.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Déclenchez les autres CC1(CD)FEM dans l\'ABT (C2B), le PDJ (C1), et l\'AEL1 de l\'autre cabine.', nextStepNon:2},
+        {t:'L\'IOS a-t-il maintenant disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Réalisez un EFAS réduit. Appliquez la page 499. Appliquez CHAPITRE 4 — SECOURS. Demandez intervention mainteneur.', nextStepNon:null, endAfterNon:true}
+      ]},
       '073':{id:'073',priority:'low',desc:'Fuite d\'air',kw:['073','fuite air','fuite'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '074':{id:'074',priority:'med',desc:'En FS ou FU, paire de patins appliqués à tort jusqu\'à l\'arrêt',kw:['074','patin','fs','fu'],instr:['Aviser PC — En FS, refermer le disjoncteur'],steps:[{t:'En FS : refermez le disjoncteur.',d:false},{t:'Avisez le PC pour information.',d:false}]},
+      '074':{id:'074',priority:'med',desc:'En FS ou FU, paire de patins appliqués à tort jusqu\'à l\'arrêt',kw:['074','patin','fs','fu'],instr:['Aviser PC — En FS, refermer le disjoncteur'],steps:[
+        {t:'En FS : refermez le disjoncteur.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
       '075':{id:'075',priority:'med',desc:'Perte d\'une unité de production d\'air',kw:['075','production air','compresseur'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '076':{id:'076',priority:'high',desc:'Perte totale de la production d\'air sur un élément',kw:['076','production air','perte totale'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Le défaut est effectif après un délai de 2 minutes depuis l\'arrêt.',d:false},{t:'Considérez que le sifflet ne fonctionne plus — appliquez les prescriptions réglementaires.',d:false},{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
-      '077':{id:'077',type:'INN',priority:'high',desc:'Défaut divergence vitesse STM/KVB',kw:['077','stm','kvb','divergence vitesse'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)STM-AUTO en AEL1 sur DMI.',d:false},{t:'Contrôlez l\'apparition de l\'IOS n°078.',d:false},{t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false}]},
-      '078':{id:'078',type:'AN',priority:'med',desc:'KVB isolé',kw:['078','kvb','isole'],instr:['Aviser PC'],steps:[{t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},{t:'Avisez le PC pour information.',d:false}]},
+      '076':{id:'076',priority:'high',desc:'Perte totale de la production d\'air sur un élément',kw:['076','production air','perte totale'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Le défaut est effectif après un délai de 2 minutes depuis l\'arrêt.',d:false},
+        {t:'Considérez que le sifflet ne fonctionne plus — appliquez les prescriptions réglementaires.',d:false},
+        {t:'Avisez le PC et conformez-vous aux instructions.',d:false}
+      ]},
+      '077':{id:'077',type:'INN',priority:'high',desc:'Défaut divergence vitesse STM/KVB',kw:['077','stm','kvb','divergence vitesse'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)STM-AUTO en AEL1 sur DMI.',d:false},
+        {t:'Contrôlez l\'apparition de l\'IOS n°078.',d:false},
+        {t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false}
+      ]},
+      '078':{id:'078',type:'AN',priority:'med',desc:'KVB isolé',kw:['078','kvb','isole'],instr:['Aviser PC'],steps:[
+        {t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},
+        {t:'Avisez le PC pour information.',d:false}
+      ]},
       '079':{id:'079',type:'AN',priority:'med',desc:'Répétition des signaux isolée',kw:['079','signal','repetition','isole'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '080':{id:'080',type:'AN',priority:'med',desc:'Retour maintenance demandé',kw:['080','maintenance'],instr:['Aviser PC'],steps:[{t:'L\'IOS apparaît-il dès la mise en service du poste ?',d:true,oui:'Déclenchez CC-BCE03 et CC-BCE04 en ABT (C2B). Enclenchez-les.',non:'Avisez le PC et conformez-vous aux instructions.'},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC et conformez-vous aux instructions.'}]},
-      '081':{id:'081',priority:'high',desc:'Isolement d\'un ou plusieurs freins non détecté',kw:['081','isolement frein','non detecte'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(CO-IS)LO en AEL1 sur ON.',d:false},{t:'Placez le manipulateur MP(TTF) sur FU avant de quitter la cabine.',d:false},{t:'Enfoncez les boutons BPx(IS-LO)F du même côté des bogies en défaut.',d:false},{t:'Les voyants LSx(IS-LO)F se sont-ils allumés ?',d:true,oui:'Retournez en cabine. Vérifiez symbole Frein isolé. Contrôlez l\'IOS correspondant. Effectuez un EFAS complet.',non:'Appliquez le CHAPITRE 4 — SECOURS. Demandez intervention mainteneur.'},{t:'Le test EFAS est-il satisfaisant ?',d:true,oui:'Appliquez la page 499 — Incident de frein. Évacuez les voyageurs en station.',non:'Appliquez le CHAPITRE 4 — SECOURS.'}]},
-      '083':{id:'083',priority:'high',desc:'Perte du frein à friction sur le bogie moteur CE1',kw:['083','frein friction','ce1','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)F en AEL1 sur CE1.',d:false},{t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},{t:'Vérifiez le symbole Frein isolé pour CE1 sur l\'écran principal.',d:false},{t:'Contrôlez l\'IOS n°088 — Frein isolé CE1.',d:false},{t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}]},
-      '084':{id:'084',priority:'high',desc:'Perte du frein à friction sur le bogie moteur C1',kw:['084','frein friction','c1','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)F en AEL1 sur C1.',d:false},{t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},{t:'Vérifiez le symbole Frein isolé pour C1 sur l\'écran principal.',d:false},{t:'Contrôlez l\'IOS n°089.',d:false},{t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}]},
-      '085':{id:'085',type:'SP',priority:'high',desc:'Perte du frein à friction sur le bogie moteur CE2',kw:['085','frein friction','ce2','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)F en AEL1 sur CE2.',d:false},{t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},{t:'Vérifiez le symbole Frein isolé pour CE2 sur l\'écran principal.',d:false},{t:'Contrôlez l\'IOS n°090.',d:false},{t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}]},
-      '086':{id:'086',priority:'high',desc:'Perte du frein à friction sur le premier bogie porteur C2B1',kw:['086','frein friction','c2b1','bogie porteur','premier bogie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Le bogie C2B2 est-il déjà isolé, ou la déclivité dépasse-t-elle 45‰ ?',d:true,oui:'Appliquez le CHAPITRE 4 — SECOURS.',non:'Placez Z(IS)F en AEL1 sur C2B1.'},{t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},{t:'Vérifiez le symbole Frein isolé C2B1. Contrôlez l\'IOS n°091.',d:false},{t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}]},
-      '087':{id:'087',priority:'high',desc:'Perte du frein à friction sur le deuxième bogie porteur C2B2',kw:['087','frein friction','c2b2','bogie porteur','deuxieme bogie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Le bogie C2B1 est-il déjà isolé, ou la déclivité dépasse-t-elle 45‰ ?',d:true,oui:'Appliquez le CHAPITRE 4 — SECOURS.',non:'Placez Z(IS)F en AEL1 sur C2B2.'},{t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},{t:'Vérifiez le symbole Frein isolé C2B2. Contrôlez l\'IOS n°092.',d:false},{t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}]},
+      '080':{id:'080',type:'AN',priority:'med',desc:'Retour maintenance demandé',kw:['080','maintenance'],instr:['Aviser PC'],steps:[
+        {t:'L\'IOS apparaît-il dès la mise en service du poste ?',d:true,
+          oui:'Déclenchez CC-BCE03 et CC-BCE04 en ABT (C2B). Enclenchez-les.', nextStepOui:1,
+          non:'Avisez le PC et conformez-vous aux instructions.', nextStepNon:null, endAfterNon:true},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC et conformez-vous aux instructions.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '081':{id:'081',priority:'high',desc:'Isolement d\'un ou plusieurs freins non détecté',kw:['081','isolement frein','non detecte'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(CO-IS)LO en AEL1 sur ON.',d:false},
+        {t:'Placez le manipulateur MP(TTF) sur FU avant de quitter la cabine.',d:false},
+        {t:'Enfoncez les boutons BPx(IS-LO)F du même côté des bogies en défaut.',d:false},
+        {t:'Les voyants LSx(IS-LO)F se sont-ils allumés ?',d:true,
+          oui:'Retournez en cabine. Vérifiez symbole Frein isolé. Contrôlez l\'IOS correspondant. Effectuez un EFAS complet.', nextStepOui:4,
+          non:'Appliquez le CHAPITRE 4 — SECOURS. Demandez intervention mainteneur.', nextStepNon:null, endAfterNon:true},
+        {t:'Le test EFAS est-il satisfaisant ?',d:true,
+          oui:'Appliquez la page 499 — Incident de frein. Évacuez les voyageurs en station.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '083':{id:'083',priority:'high',desc:'Perte du frein à friction sur le bogie moteur CE1',kw:['083','frein friction','ce1','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)F en AEL1 sur CE1.',d:false},
+        {t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},
+        {t:'Vérifiez le symbole Frein isolé pour CE1 sur l\'écran principal.',d:false},
+        {t:'Contrôlez l\'IOS n°088 — Frein isolé CE1.',d:false},
+        {t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}
+      ]},
+      '084':{id:'084',priority:'high',desc:'Perte du frein à friction sur le bogie moteur C1',kw:['084','frein friction','c1','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)F en AEL1 sur C1.',d:false},
+        {t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},
+        {t:'Vérifiez le symbole Frein isolé pour C1 sur l\'écran principal.',d:false},
+        {t:'Contrôlez l\'IOS n°089.',d:false},
+        {t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}
+      ]},
+      '085':{id:'085',type:'SP',priority:'high',desc:'Perte du frein à friction sur le bogie moteur CE2',kw:['085','frein friction','ce2','bogie moteur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)F en AEL1 sur CE2.',d:false},
+        {t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},
+        {t:'Vérifiez le symbole Frein isolé pour CE2 sur l\'écran principal.',d:false},
+        {t:'Contrôlez l\'IOS n°090.',d:false},
+        {t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}
+      ]},
+      '086':{id:'086',priority:'high',desc:'Perte du frein à friction sur le premier bogie porteur C2B1',kw:['086','frein friction','c2b1','bogie porteur','premier bogie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Le bogie C2B2 est-il déjà isolé, ou la déclivité dépasse-t-elle 45‰ ?',d:true,
+          oui:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(IS)F en AEL1 sur C2B1.', nextStepNon:1},
+        {t:'Placez Z(CO)EV en AEL1 sur ON — les cylindres de frein sont mis sous pression.',d:false},
+        {t:'Vérifiez le symbole Frein isolé C2B1. Contrôlez l\'IOS n°091.',d:false},
+        {t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}
+      ]},
+      '087':{id:'087',priority:'high',desc:'Perte du frein à friction sur le deuxième bogie porteur C2B2',kw:['087','frein friction','c2b2','bogie porteur','deuxieme bogie'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Le bogie C2B1 est-il déjà isolé, ou la déclivité dépasse-t-elle 45‰ ?',d:true,
+          oui:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(IS)F en AEL1 sur C2B2.', nextStepNon:1},
+        {t:'Placez Z(CO)EV en AEL1 sur ON.',d:false},
+        {t:'Vérifiez le symbole Frein isolé C2B2. Contrôlez l\'IOS n°092.',d:false},
+        {t:'Effectuez un EFAS complet puis appliquez la page 499.',d:false}
+      ]},
       '088':{id:'088',priority:'low',desc:'Frein à friction isolé sur le bogie moteur CE1',kw:['088','frein isole','ce1'],instr:[],steps:[{t:'Symbole Frein isolé CE1 affiché — état normal après isolation. Avisez le PC.',d:false}]},
       '089':{id:'089',priority:'low',desc:'Frein à friction isolé sur le bogie moteur C1',kw:['089','frein isole','c1'],instr:[],steps:[{t:'Symbole Frein isolé C1 affiché — état normal après isolation. Avisez le PC.',d:false}]},
       '090':{id:'090',priority:'low',desc:'Frein à friction isolé sur le bogie moteur CE2',kw:['090','frein isole','ce2'],instr:[],steps:[{t:'Symbole Frein isolé CE2 affiché — état normal après isolation. Avisez le PC.',d:false}]},
       '091':{id:'091',priority:'low',desc:'Frein à friction isolé sur le premier bogie porteur',kw:['091','frein isole','c2b1','premier porteur'],instr:[],steps:[{t:'Symbole Frein isolé C2B1 affiché — état normal après isolation. Avisez le PC.',d:false}]},
       '092':{id:'092',priority:'low',desc:'Frein à friction isolé sur le deuxième bogie porteur',kw:['092','frein isole','c2b2','deuxieme porteur'],instr:[],steps:[{t:'Symbole Frein isolé C2B2 affiché — état normal après isolation. Avisez le PC.',d:false}]},
-      '096':{id:'096',priority:'high',desc:'Frein non desserré en traction',kw:['096','frein desserre','traction','blocage','bloque'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez MP(TTF) sur NEUTRE. Placez Z(EFAS) sur BM. Passez en traction — repérez les bogies moteurs en défaut.',d:false},{t:'Placez Z(EFAS) sur BP. Passez en traction — repérez les bogies porteurs en défaut.',d:false},{t:'Remettez MP(TTF) sur NEUTRE et Z(EFAS) sur 0.',d:false},{t:'Un blocage a-t-il été détecté ?',d:true,oui:'Réalisez une mise en mouvement sur 2 mètres. Un blocage est-il toujours détecté ?',non:'Aucune action nécessaire — situation normale.'},{t:'Blocage confirmé au démarrage ?',d:true,oui:'Appliquez le CHAPITRE 4 — SECOURS. Demandez intervention mainteneur.',non:'Isolez le ou les bogies en défaut. Effectuez EFAS. Appliquez page 499.'}]},
+      '096':{id:'096',priority:'high',desc:'Frein non desserré en traction',kw:['096','frein desserre','traction','blocage','bloque'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez MP(TTF) sur NEUTRE. Placez Z(EFAS) sur BM. Passez en traction — repérez les bogies moteurs en défaut.',d:false},
+        {t:'Placez Z(EFAS) sur BP. Passez en traction — repérez les bogies porteurs en défaut.',d:false},
+        {t:'Remettez MP(TTF) sur NEUTRE et Z(EFAS) sur 0.',d:false},
+        {t:'Un blocage a-t-il été détecté ?',d:true,
+          oui:'Placez le manipulateur MP(TTF) dans la plage « TRACTION ». Réalisez une mise en mouvement sur 2 mètres environ en recherchant sur la vue détaillée de l\'IHM le ou les bogies en défaut (symbole Frein à friction en position serré affiché). Arrêtez-vous.', nextStepOui:4,
+          non:'AUCUNE ACTION NÉCESSAIRE — situation normale. Dépannage terminé.', nextStepNon:null, endAfterNon:true},
+        {t:'Un blocage est-il toujours détecté après la mise en mouvement ?',d:true,
+          oui:'Appliquez le CHAPITRE 4 — SECOURS. Demandez l\'intervention d\'un mainteneur du matériel.', nextStepOui:null, endAfterOui:true,
+          non:'Isolez le ou les bogies en défaut. Effectuez EFAS. Appliquez page 499.', nextStepNon:null, endAfterNon:true}
+      ]},
       '098':{id:'098',priority:'low',desc:'Retour maintenance demandé',kw:['098','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC — retour maintenance demandé.',d:false}]},
-      '099':{id:'099',priority:'med',desc:'Perte de la rétrovision et des rétroviseurs sur un élément',kw:['099','retrovision','retroviseur','camera'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez CC(ALI)B-RETRO en ABT. Attendez 10 secondes.',d:false},{t:'Enclenchez CC(ALI)B-RETRO. Attendez 1 minute.',d:false},{t:'Vérifiez que CC(ALI)CAM en AEL2 est enclenché. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Évacuez les voyageurs en station.'}]},
-      '100':{id:'100',priority:'med',desc:'Perte de la fonction rétroviseur',kw:['100','retroviseur','fonction'],instr:['Aviser PC'],steps:[{t:'Appliquez les prescriptions réglementaires relatives au réseau parcouru.',d:false},{t:'Avisez le PC.',d:false}]},
-      '101':{id:'101',priority:'high',desc:'Perte de la fonction rétrovision',kw:['101','retrovision','camera','perte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que CC(ALI)CAM en AEL2 est enclenché.',d:false},{t:'CC(ALI)CAM est-il déclenché ?',d:true,oui:'Tentez de l\'enclencher. L\'IOS a-t-il disparu ?',non:'Aucune action nécessaire sur ce coupe-circuit.'},{t:'L\'IOS a-t-il disparu après enclenchement ?',d:true,oui:'Dépannage terminé.',non:'Évacuez les voyageurs en station.'}]},
+      '099':{id:'099',priority:'med',desc:'Perte de la rétrovision et des rétroviseurs sur un élément',kw:['099','retrovision','retroviseur','camera'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez CC(ALI)B-RETRO en ABT. Attendez 10 secondes.',d:false},
+        {t:'Enclenchez CC(ALI)B-RETRO. Attendez 1 minute.',d:false},
+        {t:'Vérifiez que CC(ALI)CAM en AEL2 est enclenché. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Évacuez les voyageurs en station.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '100':{id:'100',priority:'med',desc:'Perte de la fonction rétroviseur',kw:['100','retroviseur','fonction'],instr:['Aviser PC'],steps:[
+        {t:'Appliquez les prescriptions réglementaires relatives au réseau parcouru.',d:false},
+        {t:'Avisez le PC.',d:false}
+      ]},
+      '101':{id:'101',priority:'high',desc:'Perte de la fonction rétrovision',kw:['101','retrovision','camera','perte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que CC(ALI)CAM en AEL2 est enclenché.',d:false},
+        {t:'CC(ALI)CAM est-il déclenché ?',d:true,
+          oui:'Tentez de l\'enclencher. L\'IOS a-t-il disparu ?', nextStepOui:2,
+          non:'Aucune action nécessaire sur ce coupe-circuit.', nextStepNon:2},
+        {t:'L\'IOS a-t-il disparu après enclenchement ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Évacuez les voyageurs en station.', nextStepNon:null, endAfterNon:true}
+      ]},
       '102':{id:'102',priority:'low',desc:'Défaut système de rétrovision',kw:['102','retrovision','systeme'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '103':{id:'103',priority:'med',desc:'Défaut réseau rétrovision',kw:['103','retrovision','reseau','um'],instr:['Aviser PC — Non possibilité de faire UM sinon perte totale rétrovision'],steps:[{t:'Déclenchez CC(ALI)B-RETRO en ABT et CC(ALL-CAM) en PDJ2. Attendez 10 secondes.',d:false},{t:'Enclenchez CC(ALI)B-RETRO et CC(ALL-CAM). Attendez 1 minute.',d:false},{t:'Le défaut a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC.'}]},
-      '104':{id:'104',priority:'med',desc:'Anomalie rétroviseurs',kw:['104','retroviseur','anomalie'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez CC(ALI)B-RETRO en ABT et CC(ALL-CAM) en PDJ2. Attendez 10 secondes.',d:false},{t:'Enclenchez CC(ALI)B-RETRO et CC(ALL-CAM). Attendez 1 minute.',d:false},{t:'Le défaut a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Contrôlez la présence de toutes les caméras à l\'écran de rétrovision et le clignotement du témoin de vie.'},{t:'Toutes les caméras sont-elles présentes et les écrans non figés ?',d:true,oui:'Annotez le carnet de bord. Avisez : Application IOS 104 1er cas.',non:'Évacuez les voyageurs. Avisez : Application IOS 104 2e cas.'}]},
-      '105':{id:'105',priority:'high',desc:'Une carte tachy isolée',kw:['105','tachy','carte','isole'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Ne replacez PAS Z(IS)VIT sur la position Neutre.',d:false},{t:'Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '106':{id:'106',priority:'high',desc:'Défaut indicateur de vitesse de la cabine en service',kw:['106','indicateur vitesse','vitesse','cabine'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que l\'écran IHM STM AUTONOME n\'est pas noir et que les informations KVB s\'affichent.',d:false},{t:'Vérifiez que le message KVB : Panne engin n\'est pas affiché.',d:false},{t:'Vérifiez que le drapeau indicateur de panne n\'apparaît pas sur l\'indicateur de vitesse.',d:false},{t:'Vérifiez que l\'indicateur de vitesse n\'est pas bloqué à 0.',d:false},{t:'Avisez le PC en précisant les anomalies constatées.',d:false}]},
-      '107':{id:'107',priority:'med',desc:'Enregistreur de la cabine en service en défaut',kw:['107','enregistreur','defaut'],instr:['Aviser PC'],steps:[{t:'Vérifiez CC(ALI)ENR, CC(MEM)ENR, CC-ENR-EL et CC-GPS-ATESS en AEL2. Enclenchez si nécessaire. Une seule tentative.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez : Enregistreur de la cabine en défaut.'}]},
-      '108':{id:'108',priority:'med',desc:'Au moins un enregistreur isolé',kw:['108','enregistreur','isole'],instr:['Aviser PC'],steps:[{t:'Vérifiez CC(ALI)ENR en AEL2. Enclenchez si nécessaire. Une seule tentative.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez : Au moins un enregistreur isolé.'}]},
+      '103':{id:'103',priority:'med',desc:'Défaut réseau rétrovision',kw:['103','retrovision','reseau','um'],instr:['Aviser PC — Non possibilité de faire UM sinon perte totale rétrovision'],steps:[
+        {t:'Déclenchez CC(ALI)B-RETRO en ABT et CC(ALL-CAM) en PDJ2. Attendez 10 secondes.',d:false},
+        {t:'Enclenchez CC(ALI)B-RETRO et CC(ALL-CAM). Attendez 1 minute.',d:false},
+        {t:'Le défaut a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '104':{id:'104',priority:'med',desc:'Anomalie rétroviseurs',kw:['104','retroviseur','anomalie'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez CC(ALI)B-RETRO en ABT et CC(ALL-CAM) en PDJ2. Attendez 10 secondes.',d:false},
+        {t:'Enclenchez CC(ALI)B-RETRO et CC(ALL-CAM). Attendez 1 minute.',d:false},
+        {t:'Le défaut a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Contrôlez la présence de toutes les caméras à l\'écran de rétrovision et le clignotement du témoin de vie.', nextStepNon:3},
+        {t:'Toutes les caméras sont-elles présentes et les écrans non figés ?',d:true,
+          oui:'Annotez le carnet de bord. Avisez : Application IOS 104 1er cas.', nextStepOui:null, endAfterOui:true,
+          non:'Évacuez les voyageurs. Avisez : Application IOS 104 2e cas.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '105':{id:'105',priority:'high',desc:'Une carte tachy isolée',kw:['105','tachy','carte','isole'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Ne replacez PAS Z(IS)VIT sur la position Neutre.',d:false},
+        {t:'Appliquez le CHAPITRE 4 — SECOURS.',d:false}
+      ]},
+      '106':{id:'106',priority:'high',desc:'Défaut indicateur de vitesse de la cabine en service',kw:['106','indicateur vitesse','vitesse','cabine'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que l\'écran IHM STM AUTONOME n\'est pas noir et que les informations KVB s\'affichent.',d:false},
+        {t:'Vérifiez que le message KVB : Panne engin n\'est pas affiché.',d:false},
+        {t:'Vérifiez que le drapeau indicateur de panne n\'apparaît pas sur l\'indicateur de vitesse.',d:false},
+        {t:'Vérifiez que l\'indicateur de vitesse n\'est pas bloqué à 0.',d:false},
+        {t:'Avisez le PC en précisant les anomalies constatées.',d:false}
+      ]},
+      '107':{id:'107',priority:'med',desc:'Enregistreur de la cabine en service en défaut',kw:['107','enregistreur','defaut'],instr:['Aviser PC'],steps:[
+        {t:'Vérifiez CC(ALI)ENR, CC(MEM)ENR, CC-ENR-EL et CC-GPS-ATESS en AEL2. Enclenchez si nécessaire. Une seule tentative.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez : Enregistreur de la cabine en défaut.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '108':{id:'108',priority:'med',desc:'Au moins un enregistreur isolé',kw:['108','enregistreur','isole'],instr:['Aviser PC'],steps:[
+        {t:'Vérifiez CC(ALI)ENR en AEL2. Enclenchez si nécessaire. Une seule tentative.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez : Au moins un enregistreur isolé.', nextStepNon:null, endAfterNon:true}
+      ]},
       '109':{id:'109',priority:'low',desc:'Défaut sur une carte tachy',kw:['109','tachy','carte defaut'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
-      '110':{id:'110',type:'BP',priority:'high',desc:'Défaut majeur relais freinage d\'urgence',kw:['110','relais freinage urgence','majeur','bp'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(SE) en AEL1 sur SECOURS.',d:false},{t:'Placez Z(IS)F en AEL1 sur C2B1. Placez Z(CO)EV en AEL1 sur ON.',d:false},{t:'Vérifiez le symbole Frein isolé. Effectuez un EFAS complet.',d:false},{t:'Appliquez la page 499. Ne dépassez pas 30 km/h. Perte de progressivité traction/freinage.',d:false}]},
-      '111':{id:'111',priority:'high',desc:'Déclenchement d\'un FS ou FU d\'origine indéterminée',kw:['111','fs','fu','origine indeterminee','declenchement'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'L\'IOS n°010 est-il apparu ?',d:true,oui:'Avisez PC : Application IOS 111 2e cas. Appliquez CHAPITRE 4 — SECOURS.',non:'Placez Z(ALI-SE) en AEL1 sur SECOURS. Refermez le disjoncteur si nécessaire.'},{t:'Le symbole a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Replacez Z(ALI-SE) sur NORMAL. Placez Z(SE)F en AEL1 sur SECOURS. Refermez le disjoncteur.'},{t:'Le symbole a-t-il disparu maintenant ?',d:true,oui:'Avisez PC : Application IOS 111 1er cas. Vitesse max 30 km/h. Ne dépassez pas 3 km/h en marche arrière.',non:'Placez Z(SE) sur SECOURS. Avisez PC : Application IOS 111 3e cas.'}]},
+      '110':{id:'110',type:'BP',priority:'high',desc:'Défaut majeur relais freinage d\'urgence',kw:['110','relais freinage urgence','majeur','bp'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(SE) en AEL1 sur SECOURS.',d:false},
+        {t:'Placez Z(IS)F en AEL1 sur C2B1. Placez Z(CO)EV en AEL1 sur ON.',d:false},
+        {t:'Vérifiez le symbole Frein isolé. Effectuez un EFAS complet.',d:false},
+        {t:'Appliquez la page 499. Ne dépassez pas 30 km/h. Perte de progressivité traction/freinage.',d:false}
+      ]},
+      '111':{id:'111',priority:'high',desc:'Déclenchement d\'un FS ou FU d\'origine indéterminée',kw:['111','fs','fu','origine indeterminee','declenchement'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'L\'IOS n°010 est-il apparu ?',d:true,
+          oui:'Avisez PC : Application IOS 111 2e cas. Appliquez CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(ALI-SE) en AEL1 sur SECOURS. Refermez le disjoncteur si nécessaire.', nextStepNon:1},
+        {t:'Le symbole a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Replacez Z(ALI-SE) sur NORMAL. Placez Z(SE)F en AEL1 sur SECOURS. Refermez le disjoncteur.', nextStepNon:2},
+        {t:'Le symbole a-t-il disparu maintenant ?',d:true,
+          oui:'Avisez PC : Application IOS 111 1er cas. Vitesse max 30 km/h. Ne dépassez pas 3 km/h en marche arrière.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(SE) sur SECOURS. Avisez PC : Application IOS 111 3e cas.', nextStepNon:null, endAfterNon:true}
+      ]},
       '112':{id:'112',priority:'low',desc:'Retour maintenance demandé',kw:['112','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC — retour maintenance demandé.',d:false}]},
-      '113':{id:'113',priority:'high',desc:'Défaut frein de sécurité dans la cabine en service',kw:['113','frein securite','fs','cabine service'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que CC-FSE est enclenché en AEL1. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Placez Z(ALL-SE) en AEL1 sur SECOURS. Refermez le disjoncteur.'},{t:'L\'IOS a-t-il disparu maintenant ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC. Appliquez le CHAPITRE 4 — SECOURS.'}]},
-      '114':{id:'114',type:'BP',priority:'high',desc:'Défaut frein de sécurité',kw:['114','frein securite','fs'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC1(F-SE) en AEL1 de la cabine en service. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Vérifiez CC1(F-SE) en AEL1 de l\'autre cabine. Enclenchez si nécessaire.'},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Appliquez le CHAPITRE 4 — SECOURS.'}]},
-      '115':{id:'115',priority:'high',desc:'Perte totale de l\'interphonie SAI',kw:['115','interphonie','sai','signal alarme'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez CC3(ALI)CAR en AEL1.',d:false},{t:'Enclenchez CC3(ALI)CAR.',d:false},{t:'Attendez 3 minutes.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'L\'interphonie SAI ne fonctionne plus — le signal d\'alarme ne fonctionne plus. Évacuez les voyageurs au terminus.'}]},
+      '113':{id:'113',priority:'high',desc:'Défaut frein de sécurité dans la cabine en service',kw:['113','frein securite','fs','cabine service'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que CC-FSE est enclenché en AEL1. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(ALL-SE) en AEL1 sur SECOURS. Refermez le disjoncteur.', nextStepNon:2},
+        {t:'L\'IOS a-t-il disparu maintenant ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC. Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '114':{id:'114',type:'BP',priority:'high',desc:'Défaut frein de sécurité',kw:['114','frein securite','fs'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC1(F-SE) en AEL1 de la cabine en service. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Vérifiez CC1(F-SE) en AEL1 de l\'autre cabine. Enclenchez si nécessaire.', nextStepNon:2},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '115':{id:'115',priority:'high',desc:'Perte totale de l\'interphonie SAI',kw:['115','interphonie','sai','signal alarme'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez CC3(ALI)CAR en AEL1.',d:false},
+        {t:'Enclenchez CC3(ALI)CAR.',d:false},
+        {t:'Attendez 3 minutes.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'L\'interphonie SAI ne fonctionne plus — le signal d\'alarme ne fonctionne plus. Évacuez les voyageurs au terminus.', nextStepNon:null, endAfterNon:true}
+      ]},
       '116':{id:'116',priority:'low',desc:'Perte du SIV de l\'autre cabine',kw:['116','siv','cabine'],instr:['Aviser PC'],steps:[{t:'Avisez le PC pour information.',d:false}]},
       '117':{id:'117',priority:'high',desc:'Perte totale de la sonorisation sur un élément',kw:['117','sonorisation','son','perte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Évacuez les voyageurs au terminus.',d:false}]},
       '118':{id:'118',priority:'low',desc:'Perte de deux interphones SAI dans une plateforme',kw:['118','interphone','sai'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '119':{id:'119',priority:'low',desc:'Perte d\'un ou plusieurs interphone(s) SAI',kw:['119','interphone','sai'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '120':{id:'120',priority:'med',desc:'Perte totale de la fonction interphonie cabine/cabine',kw:['120','interphonie','cabine cabine'],instr:['Aviser PC'],steps:[{t:'Vérifiez CC-RADIO et CC1(ALI)CAR en AEL1. Enclenchez si nécessaire. Une seule tentative.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez : Perte totale interphonie cabine/cabine.'}]},
+      '120':{id:'120',priority:'med',desc:'Perte totale de la fonction interphonie cabine/cabine',kw:['120','interphonie','cabine cabine'],instr:['Aviser PC'],steps:[
+        {t:'Vérifiez CC-RADIO et CC1(ALI)CAR en AEL1. Enclenchez si nécessaire. Une seule tentative.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez : Perte totale interphonie cabine/cabine.', nextStepNon:null, endAfterNon:true}
+      ]},
       '121':{id:'121',priority:'low',desc:'Perte totale ou partielle des afficheurs extérieurs/intérieurs',kw:['121','afficheur','siv'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '122':{id:'122',priority:'low',desc:'Retour maintenance demandé',kw:['122','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '123':{id:'123',priority:'low',desc:'Perte totale de la fonction vidéosurveillance',kw:['123','video','surveillance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '124':{id:'124',priority:'low',desc:'Perte d\'au moins une caméra de vidéosurveillance',kw:['124','camera','video'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '125':{id:'125',priority:'med',desc:'Défaut de communication avec le SAEIV',kw:['125','saeiv','itineraire','communication'],instr:['Aviser PC'],steps:[{t:'Les itinéraires ne sont plus tracés automatiquement.',d:false},{t:'Appliquez les prescriptions réglementaires relatives au défaut de réalisation automatique de l\'itinéraire.',d:false},{t:'Avisez le PC.',d:false}]},
+      '125':{id:'125',priority:'med',desc:'Défaut de communication avec le SAEIV',kw:['125','saeiv','itineraire','communication'],instr:['Aviser PC'],steps:[
+        {t:'Les itinéraires ne sont plus tracés automatiquement.',d:false},
+        {t:'Appliquez les prescriptions réglementaires relatives au défaut de réalisation automatique de l\'itinéraire.',d:false},
+        {t:'Avisez le PC.',d:false}
+      ]},
       '126':{id:'126',priority:'low',desc:'Anomalie informatique',kw:['126','informatique'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '127':{id:'127',priority:'low',desc:'Anomalie informatique',kw:['127','informatique'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '128':{id:'128',priority:'low',desc:'Anomalie informatique',kw:['128','informatique'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
@@ -786,54 +691,199 @@
       '135':{id:'135',priority:'low',desc:'Anomalie informatique',kw:['135','informatique'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '136':{id:'136',priority:'low',desc:'Retour maintenance demandé',kw:['136','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '139':{id:'139',priority:'med',desc:'Anomalie informatique — non possibilité UM',kw:['139','informatique','um','communication'],instr:['Aviser PC — Non possibilité de faire UM'],steps:[{t:'Avisez le PC — impossibilité UM sinon perte de communication.',d:false}]},
-      '141':{id:'141',priority:'med',desc:'Surchauffe dans une AEL',kw:['141','surchauffe','ael','ventilation'],instr:['Aviser PC'],steps:[{t:'Vérifiez CC(VT1) en AEL1 et CC(VT2) en AEL2 dans les deux cabines. Enclenchez si nécessaire. Une seule tentative.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez : Surchauffe dans une AEL.'}]},
+      '141':{id:'141',priority:'med',desc:'Surchauffe dans une AEL',kw:['141','surchauffe','ael','ventilation'],instr:['Aviser PC'],steps:[
+        {t:'Vérifiez CC(VT1) en AEL1 et CC(VT2) en AEL2 dans les deux cabines. Enclenchez si nécessaire. Une seule tentative.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez : Surchauffe dans une AEL.', nextStepNon:null, endAfterNon:true}
+      ]},
       '145':{id:'145',priority:'low',desc:'Défaillance du système de télémaintenance',kw:['145','telemaintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '150':{id:'150',priority:'low',desc:'Z(ALI-SE) sur SECOURS dans la cabine en service',kw:['150','ali-se','secours'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '151':{id:'151',priority:'low',desc:'FU dérive isolé',kw:['151','fu derive','isole'],instr:[],steps:[{t:'FU dérive isolé — état informatif. Avisez le PC.',d:false}]},
       '152':{id:'152',priority:'high',desc:'Ouverture DJ suite à un défaut majeur d\'un relais FS',kw:['152','dj','disjoncteur','relais fs'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '153':{id:'153',priority:'high',desc:'Défaut majeur relais freinage de sécurité bogies porteurs',kw:['153','relais freinage','securite','bogies porteurs'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'La déclivité est-elle supérieure à 45‰ sur le parcours restant ?',d:true,oui:'Appliquez le CHAPITRE 4 — SECOURS.',non:'Placez Z(CO-IS)LO en AEL1 sur ON.'},{t:'Placez MP(TT-F) sur FU avant de quitter la cabine.',d:false},{t:'Enfoncez BPx(IS-LO)F pour les 2 bogies porteurs C2B1 et C2B2.',d:false},{t:'Observez l\'allumage des voyants LSx(IS-LO)F.',d:false},{t:'Retournez en cabine. Vérifiez les symboles Frein isolé sur l\'écran principal.',d:false},{t:'Appliquez la page 499. Évacuez les voyageurs en station.',d:false}]},
-      '154':{id:'154',priority:'high',desc:'Absence traction due au coupleur',kw:['154','coupleur','attelage','traction'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Contrôlez visuellement la position de l\'attelage.',d:false},{t:'L\'attelage est-il rentré ?',d:true,oui:'Vérifiez CC1(BLC-TRAC) en AEL1. Enclenchez si nécessaire. Réalisez une manœuvre de l\'attelage via Z(MV)CPL (sortie totale puis rentrée).',non:'L\'attelage est sorti — procédure de repliage manuel nécessaire. Ouvrez le voussoir C2B.'},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC pour instructions complémentaires.'}]},
+      '153':{id:'153',priority:'high',desc:'Défaut majeur relais freinage de sécurité bogies porteurs',kw:['153','relais freinage','securite','bogies porteurs'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'La déclivité est-elle supérieure à 45‰ sur le parcours restant ?',d:true,
+          oui:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepOui:null, endAfterOui:true,
+          non:'Placez Z(CO-IS)LO en AEL1 sur ON.', nextStepNon:1},
+        {t:'Placez MP(TT-F) sur FU avant de quitter la cabine.',d:false},
+        {t:'Enfoncez BPx(IS-LO)F pour les 2 bogies porteurs C2B1 et C2B2.',d:false},
+        {t:'Observez l\'allumage des voyants LSx(IS-LO)F.',d:false},
+        {t:'Retournez en cabine. Vérifiez les symboles Frein isolé sur l\'écran principal.',d:false},
+        {t:'Appliquez la page 499. Évacuez les voyageurs en station.',d:false}
+      ]},
+      '154':{id:'154',priority:'high',desc:'Absence traction due au coupleur',kw:['154','coupleur','attelage','traction'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Contrôlez visuellement la position de l\'attelage.',d:false},
+        {t:'L\'attelage est-il rentré ?',d:true,
+          oui:'Vérifiez CC1(BLC-TRAC) en AEL1. Enclenchez si nécessaire. Réalisez une manœuvre de l\'attelage via Z(MV)CPL (sortie totale puis rentrée).', nextStepOui:2,
+          non:'L\'attelage est sorti — procédure de repliage manuel nécessaire. Ouvrez le voussoir C2B.', nextStepNon:2},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC pour instructions complémentaires.', nextStepNon:null, endAfterNon:true}
+      ]},
       '155':{id:'155',priority:'low',desc:'Retour maintenance demandé',kw:['155','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '156':{id:'156',priority:'med',desc:'Veille automatique isolée',kw:['156','veille','vacma'],instr:['Aviser'],steps:[{t:'La prise d\'appui sur un contact VACMA est TOUJOURS nécessaire avant chaque démarrage.',d:false},{t:'Avisez le PC.',d:false}]},
-      '160':{id:'160',priority:'high',desc:'Perte de la carte tachy cabine en service',kw:['160','tachy','carte','cabine service'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)STM-AUTO en AEL1 sur IS.',d:false},{t:'Contrôlez l\'apparition de l\'IOS n°078.',d:false},{t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},{t:'Une porte sur deux est inutilisable.',d:false},{t:'Évacuez les voyageurs en station.',d:false},{t:'Placez Z(ES)VA sur 1 en agissant sur un appui VA. À chaque arrêt : placez Z(ES)VA sur 0. Avant de repartir : replacez sur 1.',d:false}]},
-      '165':{id:'165',priority:'high',desc:'Défaut de sélection de côté',kw:['165','selection cote','porte cote'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que CC8-P en AEL2 est enclenché.',d:false},{t:'CC8-P est-il déclenché ?',d:true,oui:'Tentez de l\'enclencher. Enclenché ?',non:'Appuyez sur BPL(AUT-OP)DO ou BPL(AUT-OP)GA selon le côté à desservir.'},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Ouvrez les portes manuellement via les poignées de déverrouillage. Évacuez les voyageurs. Réarmez et condamnez les portes.'}]},
-      '166':{id:'166',priority:'med',desc:'Défaut de sélection de côté, auto-maintien impossible',kw:['166','selection cote','auto maintien'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC2-P en AEL2. Enclenchez si nécessaire.',d:false},{t:'L\'enclenchement est-il possible ?',d:true,oui:'Sélectionnez le côté d\'ouverture via BPL(AUT-OP)GA ou BPL(AUT-OP)DO.',non:'Avisez le PC pour instructions complémentaires.'},{t:'La sélection est-elle réalisée ?',d:true,oui:'Dépannage terminé.',non:'Maintenez appuyé BPL(AUT-OP)DO ou GA pour obtenir la sélection. Avant de relâcher : annoncez la fermeture aux voyageurs.'}]},
-      '167':{id:'167',priority:'high',desc:'Autorisation d\'ouverture porte intempestive',kw:['167','ouverture intempestive','porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Annoncez aux voyageurs la fermeture imminente.',d:false},{t:'Appuyez sur BPL(AUT-OP)DO et/ou GA. Commandez la fermeture des portes.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Évacuez les voyageurs. Condamnez les portes et comble-lacunes de l\'ensemble de la rame (ANNEXE 1 art. 1). Avisez le PC.'}]},
-      '168':{id:'168',priority:'med',desc:'Défaut de fermeture des portes',kw:['168','fermeture porte','defaut fermeture'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC3-P en AEL2. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Annoncez la fermeture aux voyageurs. Annulez la sélection de côté via BP(A-AUT-OP). Avisez le PC.'}]},
-      '169':{id:'169',priority:'med',desc:'Défaut d\'ouverture d\'une porte sur deux',kw:['169','ouverture','une porte sur deux'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC(VIT)P en AEL2 dans les 2 cabines. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC et conformez-vous aux instructions.'}]},
-      '170':{id:'170',priority:'med',desc:'Défaut de commande de fermeture porte côté gauche',kw:['170','fermeture porte','gauche'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Annoncez la fermeture imminente aux voyageurs.',d:false},{t:'Annulez la sélection de côté via BP(A-AUT-OP).',d:false}]},
-      '171':{id:'171',priority:'med',desc:'Défaut de commande de fermeture porte côté droit',kw:['171','fermeture porte','droit'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Annoncez la fermeture imminente aux voyageurs.',d:false},{t:'Annulez la sélection de côté via BP(A-AUT-OP).',d:false}]},
-      '172':{id:'172',priority:'high',desc:'Défaut portes droites et gauches sur une caisse',kw:['172','porte','droite','gauche','caisse'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez puis enclenchez CC(AUX)P et CC(ALI)P dans la ou les caisses concernées.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Annotez le carnet de bord. Dépannage terminé.',non:'Condamnez les portes et comble-lacunes de chaque côté de la caisse (ANNEXE 1 art. 1). Avisez le PC.'}]},
-      '173':{id:'173',type:'INN',priority:'high',desc:'Défaut porte',kw:['173','defaut porte','porte','fermeture'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Réalisez une commande d\'ouverture centralisée via le bouton tactile IHM CSL-PUP.',d:false},{t:'Vérifiez que toutes les portes du côté concerné sont à l\'état Porte ouverte sur la vue détaillée.',d:false},{t:'Appuyez à nouveau sur le bouton tactile. Attendez 10 secondes.',d:false},{t:'Commandez la fermeture des portes via BP(CO)FPD ou BP(CO)FPG.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Déclenchez puis enclenchez CC(AUX)P et CC(AL)P dans la caisse concernée.'},{t:'L\'IOS a-t-il disparu maintenant ?',d:true,oui:'Dépannage terminé.',non:'Annotez le carnet de bord. Condamnez la porte et comble-lacune concernés (ANNEXE 1 art. 1). Avisez le PC.'}]},
+      '156':{id:'156',priority:'med',desc:'Veille automatique isolée',kw:['156','veille','vacma'],instr:['Aviser'],steps:[
+        {t:'La prise d\'appui sur un contact VACMA est TOUJOURS nécessaire avant chaque démarrage.',d:false},
+        {t:'Avisez le PC.',d:false}
+      ]},
+      '160':{id:'160',priority:'high',desc:'Perte de la carte tachy cabine en service',kw:['160','tachy','carte','cabine service'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)STM-AUTO en AEL1 sur IS.',d:false},
+        {t:'Contrôlez l\'apparition de l\'IOS n°078.',d:false},
+        {t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},
+        {t:'Une porte sur deux est inutilisable.',d:false},
+        {t:'Évacuez les voyageurs en station.',d:false},
+        {t:'Placez Z(ES)VA sur 1 en agissant sur un appui VA. À chaque arrêt : placez Z(ES)VA sur 0. Avant de repartir : replacez sur 1.',d:false}
+      ]},
+      '165':{id:'165',priority:'high',desc:'Défaut de sélection de côté',kw:['165','selection cote','porte cote'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que CC8-P en AEL2 est enclenché.',d:false},
+        {t:'CC8-P est-il déclenché ?',d:true,
+          oui:'Tentez de l\'enclencher.', nextStepOui:2,
+          non:'Appuyez sur BPL(AUT-OP)DO ou BPL(AUT-OP)GA selon le côté à desservir.', nextStepNon:2},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Ouvrez les portes manuellement via les poignées de déverrouillage. Évacuez les voyageurs. Réarmez et condamnez les portes.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '166':{id:'166',priority:'med',desc:'Défaut de sélection de côté, auto-maintien impossible',kw:['166','selection cote','auto maintien'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC2-P en AEL2. Enclenchez si nécessaire.',d:false},
+        {t:'L\'enclenchement est-il possible ?',d:true,
+          oui:'Sélectionnez le côté d\'ouverture via BPL(AUT-OP)GA ou BPL(AUT-OP)DO.', nextStepOui:2,
+          non:'Avisez le PC pour instructions complémentaires.', nextStepNon:null, endAfterNon:true},
+        {t:'La sélection est-elle réalisée ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Maintenez appuyé BPL(AUT-OP)DO ou GA pour obtenir la sélection. Avant de relâcher : annoncez la fermeture aux voyageurs.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '167':{id:'167',priority:'high',desc:'Autorisation d\'ouverture porte intempestive',kw:['167','ouverture intempestive','porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Annoncez aux voyageurs la fermeture imminente.',d:false},
+        {t:'Appuyez sur BPL(AUT-OP)DO et/ou GA. Commandez la fermeture des portes.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Évacuez les voyageurs. Condamnez les portes et comble-lacunes de l\'ensemble de la rame (ANNEXE 1 art. 1). Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '168':{id:'168',priority:'med',desc:'Défaut de fermeture des portes',kw:['168','fermeture porte','defaut fermeture'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC3-P en AEL2. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Annoncez la fermeture aux voyageurs. Annulez la sélection de côté via BP(A-AUT-OP). Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '169':{id:'169',priority:'med',desc:'Défaut d\'ouverture d\'une porte sur deux',kw:['169','ouverture','une porte sur deux'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC(VIT)P en AEL2 dans les 2 cabines. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC et conformez-vous aux instructions.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '170':{id:'170',priority:'med',desc:'Défaut de commande de fermeture porte côté gauche',kw:['170','fermeture porte','gauche'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Annoncez la fermeture imminente aux voyageurs.',d:false},
+        {t:'Annulez la sélection de côté via BP(A-AUT-OP).',d:false}
+      ]},
+      '171':{id:'171',priority:'med',desc:'Défaut de commande de fermeture porte côté droit',kw:['171','fermeture porte','droit'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Annoncez la fermeture imminente aux voyageurs.',d:false},
+        {t:'Annulez la sélection de côté via BP(A-AUT-OP).',d:false}
+      ]},
+      '172':{id:'172',priority:'high',desc:'Défaut portes droites et gauches sur une caisse',kw:['172','porte','droite','gauche','caisse'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez puis enclenchez CC(AUX)P et CC(ALI)P dans la ou les caisses concernées.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Annotez le carnet de bord. Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Condamnez les portes et comble-lacunes de chaque côté de la caisse (ANNEXE 1 art. 1). Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '173':{id:'173',type:'INN',priority:'high',desc:'Défaut porte',kw:['173','defaut porte','porte','fermeture'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Réalisez une commande d\'ouverture centralisée via le bouton tactile IHM CSL-PUP.',d:false},
+        {t:'Vérifiez que toutes les portes du côté concerné sont à l\'état Porte ouverte sur la vue détaillée.',d:false},
+        {t:'Appuyez à nouveau sur le bouton tactile. Attendez 10 secondes.',d:false},
+        {t:'Commandez la fermeture des portes via BP(CO)FPD ou BP(CO)FPG.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Déclenchez puis enclenchez CC(AUX)P et CC(AL)P dans la caisse concernée.', nextStepNon:5},
+        {t:'L\'IOS a-t-il disparu maintenant ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Annotez le carnet de bord. Condamnez la porte et comble-lacune concernés (ANNEXE 1 art. 1). Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
       '174':{id:'174',priority:'low',desc:'Défaut mineur porte',kw:['174','porte','mineur'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '175':{id:'175',priority:'low',desc:'Porte condamnée',kw:['175','porte condamnee','condamnee'],instr:['Aviser PC'],steps:[{t:'Une porte est condamnée — localisation sur l\'écran principal vue détaillée. Avisez le PC.',d:false}]},
       '176':{id:'176',priority:'high',desc:'Au moins deux portes condamnées',kw:['176','deux portes','condamnees'],instr:['Arrêt 1er quai'],steps:[{t:'Au moins 2 portes condamnées. Localisez sur l\'écran. Avisez le PC et conformez-vous aux instructions.',d:false}]},
-      '177':{id:'177',priority:'high',desc:'Défaut seuil vitesse porte',kw:['177','seuil vitesse','porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'N\'appuyez PAS sur BPL(AUT-OP)DO ou GA avant arrêt total.',d:false},{t:'Évacuez les voyageurs en station.',d:false}]},
-      '181':{id:'181',priority:'high',desc:'ETF X isolé (X=1 à 6)',kw:['181','etf','isole','traction'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Accédez à l\'écran Commandes diverses. Sélectionnez RESET ETF.',d:false},{t:'Sélectionnez l\'élément concerné. Appuyez sur DESISOL PCE X pour le ou les ETF concernés.',d:false},{t:'Au moins un symbole ETF reste-t-il affiché ?',d:true,oui:'Au 1er arrêt, répétez l\'opération DESISOL. Si le symbole M apparaît : ETF définitivement isolé — appliquez page 499.',non:'Tous les symboles effacés — dépannage terminé.'}]},
+      '177':{id:'177',priority:'high',desc:'Défaut seuil vitesse porte',kw:['177','seuil vitesse','porte'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'N\'appuyez PAS sur BPL(AUT-OP)DO ou GA avant arrêt total.',d:false},
+        {t:'Évacuez les voyageurs en station.',d:false}
+      ]},
+      '181':{id:'181',priority:'high',desc:'ETF X isolé (X=1 à 6)',kw:['181','etf','isole','traction'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Accédez à l\'écran Commandes diverses. Sélectionnez RESET ETF.',d:false},
+        {t:'Sélectionnez l\'élément concerné. Appuyez sur DESISOL PCE X pour le ou les ETF concernés.',d:false},
+        {t:'Au moins un symbole ETF reste-t-il affiché ?',d:true,
+          oui:'Au 1er arrêt, répétez l\'opération DESISOL. Si le symbole M apparaît : ETF définitivement isolé — appliquez page 499.', nextStepOui:null, endAfterOui:true,
+          non:'Tous les symboles effacés — dépannage terminé.', nextStepNon:null, endAfterNon:true}
+      ]},
       '182':{id:'182',priority:'high',desc:'ETF X isolé (X=1 à 6)',kw:['182','etf','isole'],instr:['Aviser PC'],steps:[{t:'Même procédure que IOS 181 — voir IOS 181.',d:false}]},
       '183':{id:'183',priority:'high',desc:'ETF X isolé',kw:['183','etf'],instr:['Aviser PC'],steps:[{t:'Même procédure que IOS 181.',d:false}]},
       '184':{id:'184',priority:'high',desc:'ETF X isolé',kw:['184','etf'],instr:['Aviser PC'],steps:[{t:'Même procédure que IOS 181.',d:false}]},
       '185':{id:'185',priority:'high',desc:'ETF X isolé',kw:['185','etf'],instr:['Aviser PC'],steps:[{t:'Même procédure que IOS 181.',d:false}]},
       '186':{id:'186',priority:'high',desc:'ETF X isolé',kw:['186','etf'],instr:['Aviser PC'],steps:[{t:'Même procédure que IOS 181.',d:false}]},
-      '196':{id:'196',priority:'med',desc:'Défaut majeur SAEIV',kw:['196','saeiv','itineraire','majeur'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC1-SAE et CC2-SAE en AEL2. Enclenchez si nécessaire. Attendez 5 secondes.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Appliquez les prescriptions réglementaires — défaut de réalisation automatique de l\'itinéraire. Avisez le PC.'}]},
+      '196':{id:'196',priority:'med',desc:'Défaut majeur SAEIV',kw:['196','saeiv','itineraire','majeur'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC1-SAE et CC2-SAE en AEL2. Enclenchez si nécessaire. Attendez 5 secondes.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez les prescriptions réglementaires — défaut de réalisation automatique de l\'itinéraire. Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
       '197':{id:'197',priority:'low',desc:'Défaut mineur SAEIV',kw:['197','saeiv','mineur'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '198':{id:'198',priority:'med',desc:'Défaut radio TETRA',kw:['198','radio','tetra'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Une relance automatique est en cours — délai d\'environ 1 minute. Attendez.',d:false},{t:'L\'IOS 198 est-il toujours présent après la relance ?',d:true,oui:'La radio TETRA ne fonctionne plus. Avisez le PC.',non:'Dépannage terminé — radio TETRA rétablie.'}]},
-      '199':{id:'199',priority:'med',desc:'Défaut pupitre IHM SAE',kw:['199','pupitre','ihm','sae'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Déclenchez en AEL2 dans cet ordre : CC2-PU-SAE puis CC1-PU-SAE.',d:false},{t:'Enclenchez dans cet ordre : CC2-PU-SAE puis CC1-PU-SAE.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez que le tracé des itinéraires n\'est plus signalé sur l\'écran du SAE.'}]},
-      '200':{id:'200',priority:'med',desc:'Défaut alimentation enregistreur',kw:['200','enregistreur','alimentation'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC(AL)JENR en AEL2. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Enregistreur de la cabine en défaut. Annotez la fiche suiveuse. Avisez le PC.'}]},
+      '198':{id:'198',priority:'med',desc:'Défaut radio TETRA',kw:['198','radio','tetra'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Une relance automatique est en cours — délai d\'environ 1 minute. Attendez.',d:false},
+        {t:'L\'IOS 198 est-il toujours présent après la relance ?',d:true,
+          oui:'La radio TETRA ne fonctionne plus. Avisez le PC.', nextStepOui:null, endAfterOui:true,
+          non:'Dépannage terminé — radio TETRA rétablie.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '199':{id:'199',priority:'med',desc:'Défaut pupitre IHM SAE',kw:['199','pupitre','ihm','sae'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Déclenchez en AEL2 dans cet ordre : CC2-PU-SAE puis CC1-PU-SAE.',d:false},
+        {t:'Enclenchez dans cet ordre : CC2-PU-SAE puis CC1-PU-SAE.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez que le tracé des itinéraires n\'est plus signalé sur l\'écran du SAE.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '200':{id:'200',priority:'med',desc:'Défaut alimentation enregistreur',kw:['200','enregistreur','alimentation'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC(AL)JENR en AEL2. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Enregistreur de la cabine en défaut. Annotez la fiche suiveuse. Avisez le PC.', nextStepNon:null, endAfterNon:true}
+      ]},
       '201':{id:'201',priority:'high',desc:'Défaut palpage',kw:['201','palpage'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '202':{id:'202',priority:'high',desc:'Défaut alimentation circuit traction',kw:['202','alimentation traction'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '203':{id:'203',priority:'high',desc:'Défaut H(O-C)',kw:['203','h(o-c)','hoc'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '204':{id:'204',priority:'low',desc:'Perte fonction anti-dérive',kw:['204','antiderive','derive'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '205':{id:'205',priority:'high',desc:'FU anti-dérive intempestif',kw:['205','fu anti derive','antiderive','intempestif'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Placez Z(IS)FUDER en AEL1 sur ISOLÉ.',d:false},{t:'Le défaut a-t-il disparu ?',d:true,oui:'Le FU anti-dérive ne fonctionne plus. Contrôlez l\'IOS n°151. Avisez le PC.',non:'Appliquez le CHAPITRE 4 — SECOURS.'}]},
-      '206':{id:'206',priority:'high',desc:'Défaut commande traction',kw:['206','commande traction','defaut traction'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez CC-TTN en AEL1. Enclenchez si nécessaire.',d:false},{t:'Vérifiez CC-MP(TTF) en AEL1. Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Avisez PC : Application IOS 206 2e cas.',non:'Avisez PC : Application IOS 206 3e cas. Appliquez CHAPITRE 4 — SECOURS.'},{t:'Si CC-MP(TTF) ne peut être enclenché : règles de conduite spéciales — efforts max aux positions proches du neutre. Évacuez en station.',d:false}]},
-      '207':{id:'207',priority:'med',desc:'Commande linéaire du manipulateur en défaut',kw:['207','manipulateur','lineaire'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Le traitement linéaire du manipulateur MP(TTF) est défectueux.',d:false},{t:'Conduisez par palier en traction et en freinage.',d:false}]},
-      '208':{id:'208',priority:'high',desc:'Défaut majeur manipulateur',kw:['208','manipulateur','majeur'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Règles spéciales : aux positions proches du neutre, les efforts de traction et de freinage sont maximaux.',d:false},{t:'Évacuez les voyageurs en station.',d:false}]},
-      '209':{id:'209',priority:'med',desc:'Défaut frein d\'immobilisation',kw:['209','frein immobilisation'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Absence de frein d\'immobilisation à l\'arrêt quand le manipulateur est en position neutre.',d:false},{t:'À chaque arrêt : placez le manipulateur MP(TTF) sur FMS (freinage maximal de service).',d:false}]},
+      '205':{id:'205',priority:'high',desc:'FU anti-dérive intempestif',kw:['205','fu anti derive','antiderive','intempestif'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Placez Z(IS)FUDER en AEL1 sur ISOLÉ.',d:false},
+        {t:'Le défaut a-t-il disparu ?',d:true,
+          oui:'Le FU anti-dérive ne fonctionne plus. Contrôlez l\'IOS n°151. Avisez le PC.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez le CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '206':{id:'206',priority:'high',desc:'Défaut commande traction',kw:['206','commande traction','defaut traction'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez CC-TTN en AEL1. Enclenchez si nécessaire.',d:false},
+        {t:'Vérifiez CC-MP(TTF) en AEL1. Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Avisez PC : Application IOS 206 2e cas.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez PC : Application IOS 206 3e cas. Appliquez CHAPITRE 4 — SECOURS.', nextStepNon:null, endAfterNon:true},
+        {t:'Si CC-MP(TTF) ne peut être enclenché : règles de conduite spéciales — efforts max aux positions proches du neutre. Évacuez en station.',d:false}
+      ]},
+      '207':{id:'207',priority:'med',desc:'Commande linéaire du manipulateur en défaut',kw:['207','manipulateur','lineaire'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Le traitement linéaire du manipulateur MP(TTF) est défectueux.',d:false},
+        {t:'Conduisez par palier en traction et en freinage.',d:false}
+      ]},
+      '208':{id:'208',priority:'high',desc:'Défaut majeur manipulateur',kw:['208','manipulateur','majeur'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Règles spéciales : aux positions proches du neutre, les efforts de traction et de freinage sont maximaux.',d:false},
+        {t:'Évacuez les voyageurs en station.',d:false}
+      ]},
+      '209':{id:'209',priority:'med',desc:'Défaut frein d\'immobilisation',kw:['209','frein immobilisation'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Absence de frein d\'immobilisation à l\'arrêt quand le manipulateur est en position neutre.',d:false},
+        {t:'À chaque arrêt : placez le manipulateur MP(TTF) sur FMS (freinage maximal de service).',d:false}
+      ]},
       '210':{id:'210',priority:'high',desc:'Défaut de sélection de sens de marche avant',kw:['210','sens marche','marche avant'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '211':{id:'211',priority:'low',desc:'Perte totale de la fonction mesure de charge',kw:['211','mesure charge'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '212':{id:'212',priority:'high',desc:'Défaut transformateur principal',kw:['212','transformateur'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '220':{id:'220',priority:'high',desc:'Perte de deux coffres traction',kw:['220','coffre traction','deux coffres','etf'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Ne plus tenir compte de l\'allumage de LS(DEF)TEC.',d:false},{t:'Appliquez la page 499 — Incident de frein.',d:false},{t:'Considérez que le frein électrique de 2 essieux moteurs est en défaut.',d:false}]},
-      '221':{id:'221',priority:'high',desc:'Perte de trois coffres traction',kw:['221','coffre traction','trois coffres','etf'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Ne plus tenir compte de l\'allumage de LS(DEF)TEC.',d:false},{t:'Appliquez la page 499 — 3 essieux moteurs en défaut.',d:false},{t:'Évacuez les voyageurs en station.',d:false}]},
+      '220':{id:'220',priority:'high',desc:'Perte de deux coffres traction',kw:['220','coffre traction','deux coffres','etf'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Ne plus tenir compte de l\'allumage de LS(DEF)TEC.',d:false},
+        {t:'Appliquez la page 499 — Incident de frein.',d:false},
+        {t:'Considérez que le frein électrique de 2 essieux moteurs est en défaut.',d:false}
+      ]},
+      '221':{id:'221',priority:'high',desc:'Perte de trois coffres traction',kw:['221','coffre traction','trois coffres','etf'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Ne plus tenir compte de l\'allumage de LS(DEF)TEC.',d:false},
+        {t:'Appliquez la page 499 — 3 essieux moteurs en défaut.',d:false},
+        {t:'Évacuez les voyageurs en station.',d:false}
+      ]},
       '222':{id:'222',priority:'high',desc:'Perte d\'au moins quatre coffres traction',kw:['222','coffre traction','quatre coffres','etf'],instr:['Arrêt immédiat','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — 4 coffres traction ou plus perdus. Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '223':{id:'223',priority:'med',desc:'Défaut commande mode secours',kw:['223','mode secours'],instr:['Aviser PC'],steps:[{t:'Non possibilité de passer en mode SECOURS en cas de perte de l\'informatique embarqué. Avisez le PC.',d:false}]},
       '224':{id:'224',priority:'low',desc:'Défaut de la ventilation TFP',kw:['224','ventilation','tfp'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
@@ -842,23 +892,60 @@
       '227':{id:'227',priority:'low',desc:'Défaut descente automatique pantographe',kw:['227','pantographe','descente auto'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '228':{id:'228',priority:'high',desc:'Descente automatique pantographe intempestive',kw:['228','pantographe','intempestif','descente'],instr:['Arrêt 1er quai','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
       '229':{id:'229',priority:'high',desc:'Défaut d\'un contacteur de ligne',kw:['229','contacteur ligne'],instr:['Arrêt 1er quai','Aviser PC — DEMANDER SECOURS'],steps:[{t:'URGENCE — Appliquez le CHAPITRE 4 — SECOURS.',d:false}]},
-      '230':{id:'230',priority:'high',desc:'Défaillance d\'un BM imposant une limitation de vitesse',kw:['230','bm','limitation vitesse'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Appliquez la page 499 — Incident de frein.',d:false},{t:'Considérez que le frein électrique de 2 essieux moteurs est en défaut.',d:false}]},
+      '230':{id:'230',priority:'high',desc:'Défaillance d\'un BM imposant une limitation de vitesse',kw:['230','bm','limitation vitesse'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Appliquez la page 499 — Incident de frein.',d:false},
+        {t:'Considérez que le frein électrique de 2 essieux moteurs est en défaut.',d:false}
+      ]},
       '231':{id:'231',priority:'low',desc:'Retour maintenance demandé',kw:['231','maintenance'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
-      '232':{id:'232',priority:'med',desc:'Défaut capteur MSAV',kw:['232','msav','capteur'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez le coupe-circuit CC-CE en ABT (C2B). Enclenchez si nécessaire.',d:false},{t:'L\'IOS a-t-il disparu ?',d:true,oui:'Dépannage terminé.',non:'Avisez le PC et conformez-vous aux instructions.'}]},
-      '233':{id:'233',priority:'high',desc:'Défaut interne moteur de traction',kw:['233','moteur traction','defaut interne'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'Effectuez une visite de la rame. Vérifiez l\'absence de fumée ou d\'incendie au niveau du bogie.',d:false},{t:'Y a-t-il de la fumée ou un début d\'incendie ?',d:true,oui:'Appliquez le défaut n°9808 — bruits anormaux, dégagement de fumée ou d\'étincelles.',non:'Appliquez la page 499 — frein électrique d\'1 essieu moteur en défaut. Ne dépassez pas 10 km/h jusqu\'au prochain quai.'},{t:'Évacuez les voyageurs en station.',d:false},{t:'Avisez le PC pour l\'acheminement vers le centre de maintenance à 10 km/h max.',d:false}]},
+      '232':{id:'232',priority:'med',desc:'Défaut capteur MSAV',kw:['232','msav','capteur'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez le coupe-circuit CC-CE en ABT (C2B). Enclenchez si nécessaire.',d:false},
+        {t:'L\'IOS a-t-il disparu ?',d:true,
+          oui:'Dépannage terminé.', nextStepOui:null, endAfterOui:true,
+          non:'Avisez le PC et conformez-vous aux instructions.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '233':{id:'233',priority:'high',desc:'Défaut interne moteur de traction',kw:['233','moteur traction','defaut interne'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'Effectuez une visite de la rame. Vérifiez l\'absence de fumée ou d\'incendie au niveau du bogie.',d:false},
+        {t:'Y a-t-il de la fumée ou un début d\'incendie ?',d:true,
+          oui:'Appliquez le défaut n°9808 — bruits anormaux, dégagement de fumée ou d\'étincelles.', nextStepOui:null, endAfterOui:true,
+          non:'Appliquez la page 499 — frein électrique d\'1 essieu moteur en défaut. Ne dépassez pas 10 km/h jusqu\'au prochain quai.', nextStepNon:2},
+        {t:'Évacuez les voyageurs en station.',d:false},
+        {t:'Avisez le PC pour l\'acheminement vers le centre de maintenance à 10 km/h max.',d:false}
+      ]},
       '234':{id:'234',type:'INN',priority:'high',desc:'Défaut d\'annulation de déblocage d\'une ligne',kw:['234','annulation deblocage','ligne'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
       '235':{id:'235',type:'INN',priority:'med',desc:'Défaut d\'annulation de déblocage d\'une porte',kw:['235','annulation deblocage','porte'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
-      '236':{id:'236',type:'INN',priority:'high',desc:'Bouton poussoir d\'annulation de déblocage enfoncé',kw:['236','annulation deblocage','bouton'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'En cas d\'évacuation nécessaire : maintenez appuyé BPL-ADS(GA) ou BPL-ADS(DO) pour permettre l\'ouverture des portes.',d:false},{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
-      '237':{id:'237',type:'INN',priority:'high',desc:'Fonction de section de séparation en défaut',kw:['237','section separation','defaut'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
+      '236':{id:'236',type:'INN',priority:'high',desc:'Bouton poussoir d\'annulation de déblocage enfoncé',kw:['236','annulation deblocage','bouton'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'En cas d\'évacuation nécessaire : maintenez appuyé BPL-ADS(GA) ou BPL-ADS(DO) pour permettre l\'ouverture des portes.',d:false},
+        {t:'Avisez le PC et conformez-vous aux instructions.',d:false}
+      ]},
+      '237':{id:'237',type:'INN',priority:'high',desc:'Fonction de section de séparation en défaut',kw:['237','section separation','defaut'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Le franchissement des sections de séparation doit être effectué en mode MANUEL.',d:false},
+        {t:'Avisez le PC et conformez-vous aux instructions.',d:false}
+      ]},
       '238':{id:'238',type:'INN',priority:'med',desc:'Autorisation de déverrouillage d\'une porte à vitesse non nulle',kw:['238','deverrouillage','vitesse non nulle'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
       '239':{id:'239',type:'INN',priority:'low',desc:'Autorisation de déverrouillage des portes à vitesse non nulle',kw:['239','deverrouillage','portes'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '241':{id:'241',priority:'high',desc:'Charge batterie insuffisante à la PJ',kw:['241','charge batterie','pj','insuffisante'],instr:['Aviser agent sédentaire'],steps:[{t:'Avisez que la rame est inutilisable. Conformez-vous aux instructions.',d:false}]},
-      '242':{id:'242',priority:'high',desc:'Accès conducteur permanent',kw:['242','acces conducteur','porte conducteur'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[{t:'Vérifiez que le verrou d\'accès conducteur est dans sa position initiale. Replacez-le si nécessaire.',d:false},{t:'Le défaut est-il toujours présent ?',d:true,oui:'Effectuez la même opération sur les autres accès conducteur et maintenance de la rame.',non:'Dépannage terminé.'},{t:'Le défaut persiste-t-il encore ?',d:true,oui:'Condamnez les portes et comble-lacunes concernés. Avisez le PC en précisant le n° de porte.',non:'Dépannage terminé.'}]},
-      '243':{id:'243',priority:'high',desc:'Commutateur Z(SE) sur position SECOURS',kw:['243','z(se)','secours','commutateur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[{t:'La position SECOURS du commutateur Z(SE) est-elle justifiée (application GDA, annotation carnet) ?',d:true,oui:'Évacuez les voyageurs en station. Vitesse max 30 km/h. Ne dépassez pas 3 km/h en marche arrière.',non:'Placez le commutateur Z(SE) sur la position NORMAL. Dépannage terminé.'}]},
+      '242':{id:'242',priority:'high',desc:'Accès conducteur permanent',kw:['242','acces conducteur','porte conducteur'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
+        {t:'Vérifiez que le verrou d\'accès conducteur est dans sa position initiale. Replacez-le si nécessaire.',d:false},
+        {t:'Le défaut est-il toujours présent ?',d:true,
+          oui:'Effectuez la même opération sur les autres accès conducteur et maintenance de la rame.', nextStepOui:2,
+          non:'Dépannage terminé.', nextStepNon:null, endAfterNon:true},
+        {t:'Le défaut persiste-t-il encore ?',d:true,
+          oui:'Condamnez les portes et comble-lacunes concernés. Avisez le PC en précisant le n° de porte.', nextStepOui:null, endAfterOui:true,
+          non:'Dépannage terminé.', nextStepNon:null, endAfterNon:true}
+      ]},
+      '243':{id:'243',priority:'high',desc:'Commutateur Z(SE) sur position SECOURS',kw:['243','z(se)','secours','commutateur'],instr:['Arrêt immédiat','Aviser PC — Appliquer GD'],steps:[
+        {t:'La position SECOURS du commutateur Z(SE) est-elle justifiée (application GDA, annotation carnet) ?',d:true,
+          oui:'Évacuez les voyageurs en station. Vitesse max 30 km/h. Ne dépassez pas 3 km/h en marche arrière.', nextStepOui:null, endAfterOui:true,
+          non:'Placez le commutateur Z(SE) sur la position NORMAL. Dépannage terminé.', nextStepNon:null, endAfterNon:true}
+      ]},
       '244':{id:'244',priority:'low',desc:'Perte d\'un équipement 400 V',kw:['244','400v','equipement'],instr:['Aviser PC'],steps:[{t:'Avisez le PC.',d:false}]},
       '245':{id:'245',priority:'med',desc:'Défaut refroidissement STM',kw:['245','refroidissement','stm'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Avisez le PC.',d:false}]},
       '246':{id:'246',priority:'med',desc:'Isolation de la surveillance d\'UM homogène par le commutateur',kw:['246','um','surveillance'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Avisez le PC et conformez-vous aux instructions.',d:false}]},
-      '247':{id:'247',priority:'med',desc:'Présence d\'une composition d\'UM hétérogène',kw:['247','um','heterogene'],instr:['Aviser PC — Appliquer GD'],steps:[{t:'Séparez les éléments si en UM.',d:false},{t:'Placez Z(IS-UM-HO) sur ISOLÉ si le train est en US.',d:false},{t:'Avisez le PC.',d:false}]}
+      '247':{id:'247',priority:'med',desc:'Présence d\'une composition d\'UM hétérogène',kw:['247','um','heterogene'],instr:['Aviser PC — Appliquer GD'],steps:[
+        {t:'Séparez les éléments si en UM.',d:false},
+        {t:'Placez Z(IS-UM-HO) sur ISOLÉ si le train est en US.',d:false},
+        {t:'Avisez le PC.',d:false}
+      ]}
     };
 
     const ALIASES = {
@@ -886,7 +973,7 @@
     // État global
     let curIOS = null, stepIdx = 0, guideOn = false, voiceOn = false;
     let recognition = null, synth = window.speechSynthesis, listeningForAnswer = false;
-    let autoRestartRecognition = true; // Pour le micro toujours actif
+    let autoRestartRecognition = true;
 
     // Éléments DOM
     const searchInput = document.getElementById('search-input');
@@ -933,12 +1020,12 @@
       noResults.style.display = ios ? 'none' : 'block';
       if (!ios) {
         addMsg('ai', 'Aucun IOS trouvé pour <em>"' + q + '"</em>. Essayez un numéro ou un autre mot-clé.');
-        speak('Aucun IOS trouvé. Essayez un autre numéro ou mot-clé.');
+        speak('Aucun IOS trouvé.');
         return;
       }
       showIOS(ios);
-      addMsg('ai', '<strong>IOS ' + ios.id + '</strong> — ' + ios.desc + '.<br>Dites <em>"démarrer"</em> ou appuyez sur ▶ Guidage vocal pour commencer.');
-      speak('IOS ' + ios.id + ' chargé. ' + ios.desc + '. Dites démarrer pour le guidage.');
+      addMsg('ai', '<strong>IOS ' + ios.id + '</strong> — ' + ios.desc + '.<br>Dites <em>"démarrer"</em> ou appuyez sur ▶ Guidage vocal.');
+      speak('IOS ' + ios.id + ' chargé. Dites démarrer pour le guidage.');
     }
 
     function showIOS(ios) {
@@ -970,7 +1057,7 @@
       setStatus('IOS ' + ios.id + ' chargé', 'MODE DÉPANNAGE');
     }
 
-    // Guidage pas à pas
+    // Guidage pas à pas avec branchements
     function startStepByStep() {
       if (!curIOS) { addMsg('ai', 'Aucun IOS sélectionné.'); return; }
       guideOn = true; stepIdx = 0;
@@ -978,7 +1065,6 @@
       setStatus('Guidage actif — IOS ' + curIOS.id, 'MODE GUIDAGE');
       addMsg('ai', 'Guidage démarré pour <strong>IOS ' + curIOS.id + '</strong>. Le micro reste actif — répondez vocalement.');
       renderStep();
-      // Activer le micro automatiquement
       if (!voiceOn) startRecognition(true);
     }
 
@@ -995,7 +1081,6 @@
       addMsg('ai', '<div class="step-card"><div class="step-num">ÉTAPE ' + (stepIdx + 1) + '/' + tot + '</div>' + s.t + extra + '</div>');
       speak(s.t);
       listeningForAnswer = s.d;
-      // Redémarrer la reconnaissance si elle n'est pas active
       if (!voiceOn && guideOn) startRecognition(true);
     }
 
@@ -1005,7 +1090,16 @@
       listeningForAnswer = false;
       addMsg('user', '✓ OUI');
       if (s.oui) { addMsg('ai', s.oui); speak(s.oui); }
-      setTimeout(() => { stepIdx++; renderStep(); }, 2200);
+      // Déterminer la prochaine étape
+      if (s.endAfterOui) {
+        endGuide();
+      } else if (s.nextStepOui !== undefined && s.nextStepOui !== null) {
+        stepIdx = s.nextStepOui;
+        setTimeout(() => renderStep(), 2200);
+      } else {
+        stepIdx++;
+        setTimeout(() => renderStep(), 2200);
+      }
     }
 
     function answerNo() {
@@ -1014,7 +1108,16 @@
       listeningForAnswer = false;
       addMsg('user', '✗ NON');
       if (s.non) { addMsg('ai', s.non); speak(s.non); }
-      setTimeout(() => { stepIdx++; renderStep(); }, 2200);
+      // Déterminer la prochaine étape
+      if (s.endAfterNon) {
+        endGuide();
+      } else if (s.nextStepNon !== undefined && s.nextStepNon !== null) {
+        stepIdx = s.nextStepNon;
+        setTimeout(() => renderStep(), 2200);
+      } else {
+        stepIdx++;
+        setTimeout(() => renderStep(), 2200);
+      }
     }
 
     function nextStep() {
@@ -1054,7 +1157,7 @@
       searchInput.value = '';
       setStatus('En attente', 'MODE VEILLE');
       addMsg('ai', 'Retour à l\'accueil. Quel IOS souhaitez-vous consulter ?');
-      speak('Retour accueil. Indiquez un numéro IOS.');
+      speak('Retour accueil.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1097,8 +1200,6 @@
           voiceOn = false;
           micBtn.classList.remove('active');
           waveIndicator.style.display = 'none';
-          if (e.error === 'not-allowed') showToast('Microphone non autorisé.');
-          // Redémarrer automatiquement si en guidage
           if (guideOn && autoRestartRecognition) {
             setTimeout(() => { if (guideOn && !voiceOn) startRecognition(listeningForAnswer); }, 1500);
           }
@@ -1107,7 +1208,6 @@
           voiceOn = false;
           micBtn.classList.remove('active');
           waveIndicator.style.display = 'none';
-          // Redémarrer automatiquement si en guidage
           if (guideOn && autoRestartRecognition) {
             setTimeout(() => { if (guideOn && !voiceOn) startRecognition(listeningForAnswer); }, 800);
           }
@@ -1115,7 +1215,6 @@
         recognition.start();
       } catch (e) {
         voiceOn = false;
-        showToast('Erreur de reconnaissance vocale.');
       }
     }
 
@@ -1130,8 +1229,6 @@
 
     function processVoice(txt) {
       addMsg('user', '🎙 "' + txt + '"');
-
-      // Commandes de navigation
       if (/accueil|page.*(accueil|principale|debut)|retour.*(maison|accueil|debut)/.test(txt)) { goHome(); return; }
       if (/nouvel? ios|nouvelle recherche|autre ios|chercher|rechercher/.test(txt)) { searchNew(); return; }
       if (/annul|arrêter|stopper|cancel/.test(txt)) { cancelProcedure(); return; }
@@ -1142,8 +1239,6 @@
         if (guideOn) { prevStep(); } return;
       }
       if (/démarrer|demarrer|commencer|lancer|start|guidage/.test(txt)) { startStepByStep(); return; }
-
-      // Réponse OUI/NON pendant le guidage
       if (guideOn && listeningForAnswer && curIOS && curIOS.steps[stepIdx] && curIOS.steps[stepIdx].d) {
         const oui = /^(oui|yes|affirmatif|confirmé|correct|present|présent|toujours|allumé|allumé|pas disparu|encore|si|ouais)/.test(txt)
           || /toujours présent|pas disparu|encore affiché|ios present|ios affiché|est apparu/.test(txt);
@@ -1152,16 +1247,13 @@
         if (oui && !non) { answerYes(); return; }
         if (non && !oui) { answerNo(); return; }
         addMsg('ai', 'Je n\'ai pas compris. Dites <strong>"oui"</strong> ou <strong>"non"</strong>.');
-        speak('Je n\'ai pas compris. Dites oui ou non.');
+        speak('Dites oui ou non.');
         return;
       }
-
-      // Recherche
       doSearch(txt);
       searchInput.value = '';
     }
 
-    // Synthèse vocale
     function speak(txt) {
       if (!synth) return;
       synth.cancel();
@@ -1174,7 +1266,6 @@
       synth.speak(u);
     }
 
-    // Chat
     function addMsg(type, html) {
       const div = document.createElement('div');
       div.className = 'msg ' + type;
@@ -1185,7 +1276,6 @@
       chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    // UI
     function setStatus(t, m) {
       statusText.textContent = t;
       statusMode.textContent = m;
@@ -1195,7 +1285,6 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Événements
     searchInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         const v = searchInput.value.trim();
@@ -1208,7 +1297,6 @@
       else { autoRestartRecognition = true; startRecognition(guideOn && listeningForAnswer); }
     });
 
-    // Exposer les fonctions globalement pour les onclick
     window.answerYes = answerYes;
     window.answerNo = answerNo;
     window.nextStep = nextStep;
@@ -1218,7 +1306,6 @@
     window.searchNew = searchNew;
     window.startStepByStep = startStepByStep;
 
-    // Message initial
     window.addEventListener('load', () => {
       setTimeout(() => speak('Assistant T4 prêt. Indiquez un numéro IOS ou décrivez votre problème.'), 1000);
     });
