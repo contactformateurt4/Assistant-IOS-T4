@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=yes, viewport-fit=cover">
-  <title>Assistant IOS T4 — DUALIS U53700</title>
+  <title>Assistant I O S T4 — DUALIS U53700</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -190,7 +190,7 @@
     <div class="search-wrap">
       <span style="color:var(--text3);flex-shrink:0;font-size:1.1em;">🔍</span>
       <input type="text" id="search-input" placeholder="Numéro I O S (ex: 096) ou nom du défaut..." autocomplete="off" spellcheck="false">
-      <button class="mic-btn" id="mic-btn" title="Commande vocale">🎙</button>
+      <button class="mic-btn" id="mic-btn" title="Micro toujours actif en guidage">🎙</button>
     </div>
     <div class="search-hint">
       <strong style="color:var(--accent)">Vocal :</strong> "I O S 096" · "boîte chaude" · "frein friction"<br>
@@ -235,7 +235,7 @@
 
   <div class="no-results" id="no-results">Aucun I O S trouvé. Essayez un autre numéro ou mot-clé.</div>
 
-  <div class="footer">I O S - U S - U 5 3 7 0 0 · V4.0 · Zaber MOHAMMAD</div>
+  <div class="footer">I O S - U S - U 5 3 7 0 0 · V5.0 · Zaber MOHAMMAD</div>
 </div>
 
 <div class="voice-guide" id="voice-guide">
@@ -264,11 +264,6 @@
   (function() {
     // ================================================================
     // BASE DE DONNÉES I O S COMPLÈTE AVEC BRANCHEMENTS EXACTS
-    // Chaque étape avec question (d:true) :
-    //   nextStepOui: index après réponse OUI
-    //   nextStepNon: index après réponse NON
-    //   endAfterOui: true si fin après OUI
-    //   endAfterNon: true si fin après NON
     // ================================================================
     const IOS_DB = {
       '000':{id:'000',type:'MA',priority:'high',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle securite','porte verrou','isolee'],instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],steps:[
@@ -970,10 +965,11 @@
     };
 
     // État global
-    let curIOS = null, stepIdx = 0, guideOn = false, voiceOn = false, micPaused = false;
-    let recognition = null, synth = window.speechSynthesis, listeningForAnswer = false;
-    let autoRestartRecognition = true;
+    let curIOS = null, stepIdx = 0, guideOn = false;
+    let recognition = null, synth = window.speechSynthesis;
+    let listeningForAnswer = false;
     let isSpeaking = false;
+    let micShouldRestart = false; // Pour savoir si on doit redémarrer le micro après la parole
 
     // Éléments DOM
     const searchInput = document.getElementById('search-input');
@@ -992,8 +988,7 @@
     function searchIOS(q) {
       if (!q) return null;
       q = q.toLowerCase().trim();
-      // Accepter "ios" ou "i o s"
-      q = q.replace(/i\s*o\s*s/i, 'ios');
+      q = q.replace(/i\s*o\s*s/g, 'ios');
       const m = q.match(/\d+/);
       if (m) {
         const k = m[0].padStart(3, '0');
@@ -1021,7 +1016,7 @@
       const ios = searchIOS(q);
       noResults.style.display = ios ? 'none' : 'block';
       if (!ios) {
-        addMsg('ai', 'Aucun I O S trouvé pour <em>"' + q + '"</em>. Essayez un numéro ou un autre mot-clé.');
+        addMsg('ai', 'Aucun I O S trouvé pour <em>"' + q + '"</em>.');
         speak('Aucun I O S trouvé.');
         return;
       }
@@ -1059,13 +1054,13 @@
       setStatus('I O S ' + ios.id + ' chargé', 'MODE DÉPANNAGE');
     }
 
-    // Guidage pas à pas avec branchements
+    // Guidage pas à pas
     function startStepByStep() {
       if (!curIOS) { addMsg('ai', 'Aucun I O S sélectionné.'); return; }
-      guideOn = true; stepIdx = 0;
+      guideOn = true; stepIdx = 0; micShouldRestart = true;
       voiceGuide.classList.add('show');
       setStatus('Guidage actif — I O S ' + curIOS.id, 'MODE GUIDAGE');
-      addMsg('ai', 'Guidage démarré pour <strong>I O S ' + curIOS.id + '</strong>. Le micro reste actif — répondez vocalement.');
+      addMsg('ai', 'Guidage démarré pour <strong>I O S ' + curIOS.id + '</strong>. Le micro est actif — parlez librement.');
       renderStep();
     }
 
@@ -1081,26 +1076,16 @@
       const extra = s.d ? '<div class="choice-btns"><button class="choice-btn yes" onclick="answerYes()">✓ OUI</button><button class="choice-btn no" onclick="answerNo()">✗ NON</button></div>' : '';
       addMsg('ai', '<div class="step-card"><div class="step-num">ÉTAPE ' + (stepIdx + 1) + '/' + tot + '</div>' + s.t + extra + '</div>');
       
-      // Dire "I O S" lettre par lettre
       const plainText = s.t.replace(/IOS/g, 'I O S').replace(/ios/g, 'I O S');
       speak(plainText);
       
       listeningForAnswer = s.d;
-      // Réactiver le micro après la parole si en guidage
-      if (guideOn) {
-        setTimeout(() => {
-          if (guideOn && !voiceOn && !isSpeaking) {
-            startRecognition(listeningForAnswer);
-          }
-        }, 500);
-      }
     }
 
     function answerYes() {
       if (!guideOn || !curIOS) return;
       const s = curIOS.steps[stepIdx];
       listeningForAnswer = false;
-      stopRecognition();
       addMsg('user', '✓ OUI');
       if (s.oui) { 
         const txt = s.oui.replace(/IOS/g, 'I O S').replace(/ios/g, 'I O S');
@@ -1108,13 +1093,13 @@
         speak(txt); 
       }
       if (s.endAfterOui) {
-        setTimeout(() => endGuide(), 2200);
+        setTimeout(() => endGuide(), 2500);
       } else if (s.nextStepOui !== undefined && s.nextStepOui !== null) {
         stepIdx = s.nextStepOui;
-        setTimeout(() => renderStep(), 2200);
+        setTimeout(() => renderStep(), 2500);
       } else {
         stepIdx++;
-        setTimeout(() => renderStep(), 2200);
+        setTimeout(() => renderStep(), 2500);
       }
     }
 
@@ -1122,7 +1107,6 @@
       if (!guideOn || !curIOS) return;
       const s = curIOS.steps[stepIdx];
       listeningForAnswer = false;
-      stopRecognition();
       addMsg('user', '✗ NON');
       if (s.non) { 
         const txt = s.non.replace(/IOS/g, 'I O S').replace(/ios/g, 'I O S');
@@ -1130,20 +1114,19 @@
         speak(txt); 
       }
       if (s.endAfterNon) {
-        setTimeout(() => endGuide(), 2200);
+        setTimeout(() => endGuide(), 2500);
       } else if (s.nextStepNon !== undefined && s.nextStepNon !== null) {
         stepIdx = s.nextStepNon;
-        setTimeout(() => renderStep(), 2200);
+        setTimeout(() => renderStep(), 2500);
       } else {
         stepIdx++;
-        setTimeout(() => renderStep(), 2200);
+        setTimeout(() => renderStep(), 2500);
       }
     }
 
     function nextStep() {
       if (!guideOn) return;
       listeningForAnswer = false;
-      stopRecognition();
       if (curIOS.steps[stepIdx] && !curIOS.steps[stepIdx].d) { 
         stepIdx++; 
         renderStep(); 
@@ -1151,21 +1134,18 @@
       else { 
         addMsg('ai', 'Cette étape nécessite une réponse Oui ou Non.'); 
         speak('Répondez oui ou non.'); 
-        setTimeout(() => { if (guideOn && !voiceOn) startRecognition(true); }, 1500);
       }
     }
 
     function prevStep() {
       if (!guideOn) return;
       listeningForAnswer = false;
-      stopRecognition();
       if (stepIdx > 0) { stepIdx--; renderStep(); }
       else { addMsg('ai', 'Vous êtes déjà à la première étape.'); speak('Première étape.'); }
     }
 
     function endGuide() {
-      guideOn = false; listeningForAnswer = false;
-      stopRecognition();
+      guideOn = false; listeningForAnswer = false; micShouldRestart = false;
       voiceGuide.classList.remove('show');
       setStatus('Procédure terminée', 'MODE VEILLE');
       addMsg('ai', '✅ <strong>Procédure terminée.</strong> Si le problème persiste, avisez le PC.');
@@ -1173,17 +1153,15 @@
     }
 
     function cancelProcedure() {
-      guideOn = false; listeningForAnswer = false;
-      stopRecognition();
+      guideOn = false; listeningForAnswer = false; micShouldRestart = false;
       voiceGuide.classList.remove('show');
       setStatus('Procédure annulée', 'MODE VEILLE');
-      addMsg('ai', 'Procédure annulée. Dites <em>"nouvel I O S"</em> ou saisissez un numéro.');
+      addMsg('ai', 'Procédure annulée.');
       speak('Procédure annulée.');
     }
 
     function goHome() {
-      guideOn = false; listeningForAnswer = false;
-      stopRecognition();
+      guideOn = false; listeningForAnswer = false; micShouldRestart = false;
       curIOS = null; stepIdx = 0;
       voiceGuide.classList.remove('show');
       iosPanel.classList.remove('show');
@@ -1196,8 +1174,7 @@
     }
 
     function searchNew() {
-      guideOn = false; listeningForAnswer = false;
-      stopRecognition();
+      guideOn = false; listeningForAnswer = false; micShouldRestart = false;
       curIOS = null;
       voiceGuide.classList.remove('show');
       iosPanel.classList.remove('show');
@@ -1205,88 +1182,151 @@
       searchInput.value = '';
       searchInput.focus();
       setStatus('Recherche nouvelle', 'MODE VEILLE');
-      addMsg('ai', 'Entrez un nouveau numéro I O S ou décrivez le problème.');
+      addMsg('ai', 'Entrez un nouveau numéro I O S.');
       speak('Entrez un nouveau numéro I O S.');
     }
 
-    // Reconnaissance vocale avec pause pendant la parole
+    // === SYSTÈME DE MICRO AMÉLIORÉ ===
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    function startRecognition(forAnswer) {
-      if (!SpeechRecognition) { showToast('Reconnaissance vocale non disponible.'); return; }
-      if (voiceOn || isSpeaking) return;
+    function ensureMicRunning() {
+      // Ne pas démarrer si on est en train de parler
+      if (isSpeaking) return;
+      // Ne pas démarrer si déjà en cours
+      if (recognition && isRecognitionActive) return;
+      // Démarrer la reconnaissance
+      startRecognitionInternal();
+    }
+
+    let isRecognitionActive = false;
+
+    function startRecognitionInternal() {
+      if (!SpeechRecognition) { 
+        console.log('API reconnaissance non disponible');
+        return; 
+      }
       try {
+        // Arrêter d'abord si une instance existe
+        if (recognition) {
+          try { recognition.abort(); } catch(e) {}
+          recognition = null;
+        }
+        isRecognitionActive = false;
+        
         recognition = new SpeechRecognition();
         recognition.lang = 'fr-FR';
-        recognition.continuous = false;
+        recognition.continuous = true; // IMPORTANT : écoute continue
         recognition.interimResults = false;
+        
         recognition.onstart = () => {
-          voiceOn = true;
+          isRecognitionActive = true;
           micBtn.classList.add('active');
           micBtn.classList.remove('paused');
           waveIndicator.style.display = 'flex';
+          setStatus(guideOn ? 'Micro actif — Parlez' : 'Micro actif', 'MODE VOCAL');
         };
+        
         recognition.onresult = (e) => {
-          let txt = e.results[0][0].transcript.toLowerCase().trim();
-          // Normaliser "i o s" en "ios" pour le traitement
-          txt = txt.replace(/i\s*o\s*s/g, 'ios');
-          searchInput.value = txt;
-          processVoice(txt);
+          // Prendre le dernier résultat
+          const last = e.results[e.results.length - 1];
+          if (last.isFinal) {
+            let txt = last[0].transcript.toLowerCase().trim();
+            txt = txt.replace(/i\s*o\s*s/g, 'ios');
+            searchInput.value = txt;
+            processVoice(txt);
+          }
         };
+        
         recognition.onerror = (e) => {
-          voiceOn = false;
+          console.log('Erreur reco:', e.error);
+          isRecognitionActive = false;
           micBtn.classList.remove('active');
           waveIndicator.style.display = 'none';
-          if (guideOn && autoRestartRecognition && !isSpeaking) {
-            setTimeout(() => { if (guideOn && !voiceOn && !isSpeaking) startRecognition(listeningForAnswer); }, 1500);
+          
+          // Toujours essayer de redémarrer sauf si annulé volontairement
+          if (e.error === 'not-allowed') {
+            showToast('Microphone non autorisé. Vérifiez les paramètres.');
+            return;
           }
+          if (e.error === 'aborted') {
+            // Abandon volontaire, on redémarre si nécessaire
+            setTimeout(() => {
+              if (micShouldRestart && !isSpeaking && guideOn) {
+                startRecognitionInternal();
+              }
+            }, 500);
+            return;
+          }
+          // Pour les autres erreurs, redémarrer après un délai
+          setTimeout(() => {
+            if (micShouldRestart && !isSpeaking && (guideOn || !guideOn)) {
+              startRecognitionInternal();
+            }
+          }, 1000);
         };
+        
         recognition.onend = () => {
-          voiceOn = false;
+          isRecognitionActive = false;
           micBtn.classList.remove('active');
           waveIndicator.style.display = 'none';
-          if (guideOn && autoRestartRecognition && !isSpeaking) {
-            setTimeout(() => { if (guideOn && !voiceOn && !isSpeaking) startRecognition(listeningForAnswer); }, 800);
+          
+          // Redémarrer immédiatement si on est en guidage et qu'on ne parle pas
+          if (micShouldRestart && !isSpeaking && guideOn) {
+            setTimeout(() => startRecognitionInternal(), 300);
           }
         };
+        
         recognition.start();
       } catch (e) {
-        voiceOn = false;
+        console.log('Exception reco:', e);
+        isRecognitionActive = false;
+        // Réessayer
+        setTimeout(() => {
+          if (micShouldRestart && !isSpeaking) startRecognitionInternal();
+        }, 1000);
       }
     }
 
-    function stopRecognition() {
-      autoRestartRecognition = false;
-      voiceOn = false;
-      if (recognition) { try { recognition.stop(); } catch (e) {} recognition = null; }
-      micBtn.classList.remove('active');
+    function stopMicCompletely() {
+      micShouldRestart = false;
+      isRecognitionActive = false;
+      if (recognition) {
+        try { recognition.abort(); } catch(e) {}
+        recognition = null;
+      }
+      micBtn.classList.remove('active', 'paused');
       waveIndicator.style.display = 'none';
-      listeningForAnswer = false;
+      setStatus(guideOn ? 'Micro en pause' : 'En attente', 'MODE VEILLE');
     }
 
     function pauseMicForSpeech() {
-      if (voiceOn && recognition) {
-        try { recognition.stop(); } catch (e) {}
-        voiceOn = false;
-        micBtn.classList.remove('active');
-        micBtn.classList.add('paused');
-        waveIndicator.style.display = 'none';
-      }
       isSpeaking = true;
+      // On ne coupe pas le micro, on le met juste en pause visuelle
+      micBtn.classList.add('paused');
+      waveIndicator.style.display = 'none';
+      // Arrêter la reconnaissance pendant la parole pour éviter qu'elle capte la synthèse
+      if (recognition && isRecognitionActive) {
+        try { recognition.abort(); } catch(e) {}
+        recognition = null;
+        isRecognitionActive = false;
+      }
     }
 
     function resumeMicAfterSpeech() {
       isSpeaking = false;
       micBtn.classList.remove('paused');
-      if (guideOn && autoRestartRecognition && !voiceOn) {
+      // Redémarrer le micro si on est en guidage
+      if (guideOn && micShouldRestart) {
         setTimeout(() => {
-          if (guideOn && !voiceOn && !isSpeaking) startRecognition(listeningForAnswer);
-        }, 300);
+          if (!isSpeaking) startRecognitionInternal();
+        }, 400);
       }
     }
 
     function processVoice(txt) {
       addMsg('user', '🎙 "' + txt + '"');
+      
+      // Navigation
       if (/accueil|page.*(accueil|principale|debut)|retour.*(maison|accueil|debut)/.test(txt)) { goHome(); return; }
       if (/nouvel? ios|nouvel? i o s|nouvelle recherche|autre ios|chercher|rechercher/.test(txt)) { searchNew(); return; }
       if (/annul|arrêter|stopper|cancel/.test(txt)) { cancelProcedure(); return; }
@@ -1297,6 +1337,8 @@
         if (guideOn) { prevStep(); } return;
       }
       if (/démarrer|demarrer|commencer|lancer|start|guidage/.test(txt)) { startStepByStep(); return; }
+      
+      // Réponse OUI/NON
       if (guideOn && listeningForAnswer && curIOS && curIOS.steps[stepIdx] && curIOS.steps[stepIdx].d) {
         const oui = /^(oui|yes|affirmatif|confirmé|correct|present|présent|toujours|allumé|allumé|pas disparu|encore|si|ouais)/.test(txt)
           || /toujours présent|pas disparu|encore affiché|ios present|ios affiché|est apparu/.test(txt);
@@ -1308,6 +1350,8 @@
         speak('Dites oui ou non.');
         return;
       }
+      
+      // Recherche
       doSearch(txt);
       searchInput.value = '';
     }
@@ -1316,14 +1360,24 @@
       if (!synth) return;
       synth.cancel();
       pauseMicForSpeech();
+      
       const plain = txt.replace(/<[^>]*>/g, '').replace(/&[a-z]+;/g, ' ');
       const u = new SpeechSynthesisUtterance(plain);
       u.lang = 'fr-FR'; u.rate = 0.93; u.pitch = 1.0;
+      
       const voices = synth.getVoices();
       const frV = voices.find(v => v.lang.startsWith('fr'));
       if (frV) u.voice = frV;
-      u.onend = () => { resumeMicAfterSpeech(); };
-      u.onerror = () => { resumeMicAfterSpeech(); };
+      
+      u.onend = () => { 
+        console.log('Parole terminée, réactivation micro');
+        resumeMicAfterSpeech(); 
+      };
+      u.onerror = () => { 
+        console.log('Erreur parole, réactivation micro');
+        resumeMicAfterSpeech(); 
+      };
+      
       synth.speak(u);
     }
 
@@ -1341,11 +1395,13 @@
       statusText.textContent = t;
       statusMode.textContent = m;
     }
+    
     function showToast(msg) {
       toast.textContent = msg; toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+    // Événements
     searchInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
         const v = searchInput.value.trim();
@@ -1354,19 +1410,26 @@
     });
 
     micBtn.addEventListener('click', () => {
-      if (voiceOn || isSpeaking) { 
-        stopRecognition(); 
-        autoRestartRecognition = false; 
+      if (isSpeaking) {
+        // Si l'assistant parle, on coupe la parole
         synth.cancel();
-        isSpeaking = false;
         resumeMicAfterSpeech();
+        return;
       }
-      else { 
-        autoRestartRecognition = true; 
-        startRecognition(guideOn && listeningForAnswer); 
+      
+      if (isRecognitionActive) {
+        // Si le micro est actif, on le coupe
+        stopMicCompletely();
+        showToast('Micro désactivé');
+      } else {
+        // Si le micro est inactif, on l'active
+        micShouldRestart = true;
+        startRecognitionInternal();
+        showToast('Micro activé');
       }
     });
 
+    // Exposer les fonctions globalement
     window.answerYes = answerYes;
     window.answerNo = answerNo;
     window.nextStep = nextStep;
@@ -1376,8 +1439,14 @@
     window.searchNew = searchNew;
     window.startStepByStep = startStepByStep;
 
+    // Démarrer le micro automatiquement au chargement
     window.addEventListener('load', () => {
-      setTimeout(() => speak('Assistant T4 prêt. Indiquez un numéro I O S ou décrivez votre problème.'), 1000);
+      // Petit délai pour laisser la page se charger
+      setTimeout(() => {
+        micShouldRestart = true;
+        startRecognitionInternal();
+        speak('Assistant T4 prêt. Indiquez un numéro I O S ou décrivez votre problème.');
+      }, 1500);
     });
 
   })();
