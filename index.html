@@ -3,1346 +3,439 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>IAOS T4 · DUALIS U53700 · Assistant Holographique</title>
+<title>IAOS T4 · DUALIS U53700 · Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-:root {
-  --bg-dark: #010208;
-  --bg-panel: rgba(2, 5, 15, 0.96);
-  --cyan: #0ff;
-  --purple: #c084fc;
-  --green: #22c55e;
-  --red: #ef4444;
-  --amber: #f59e0b;
-  --text: #e2e8f0;
-  --text-dim: #7f8ea3;
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg-dark);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Fond simple */
-.holo-bg {
-  position: fixed;
-  inset: 0;
-  background: 
-    radial-gradient(circle at 15% 25%, rgba(0, 200, 255, 0.04), transparent 50%),
-    radial-gradient(circle at 85% 70%, rgba(180, 100, 255, 0.03), transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Conteneur principal */
-.main-container {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding: 1.5rem;
-  gap: 1.5rem;
-  padding-bottom: 120px;
-}
-
-/* Titre */
-.title-wrap {
-  text-align: center;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.6rem 2rem;
-  border-radius: 80px;
-  background: rgba(0, 20, 40, 0.35);
-  border: 1px solid rgba(0, 255, 255, 0.15);
-  width: 100%;
-  max-width: 600px;
-}
-
-.hero {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: clamp(2.5rem, 8vw, 4.2rem);
-  background: linear-gradient(135deg, #ffffff, #00ffff, #c084fc, #00ffff);
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: -0.02em;
-  animation: titleShimmer 4s ease-in-out infinite;
-}
-
-@keyframes titleShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.hero-sub {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 4px;
-  color: var(--cyan);
-  text-shadow: 0 0 8px cyan, 0 0 16px rgba(0, 255, 255, 0.5);
-}
-
-/* ==================== AFFICHAGE IOS SUR L'ÉCRAN PRINCIPAL ==================== */
-.active-ios-display {
-  width: 100%;
-  max-width: 600px;
-  background: rgba(5, 12, 25, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 20px;
-  padding: 18px;
-  display: none;
-  animation: fadeUp 0.3s ease;
-  backdrop-filter: blur(8px);
-}
-
-.active-ios-display.show {
-  display: block;
-}
-
-.active-ios-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.active-ios-id {
-  font-family: 'Space Mono', monospace;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-}
-
-.active-ios-desc {
-  font-size: 0.9rem;
-  color: #e2e8f0;
-  margin-bottom: 6px;
-}
-
-.active-ios-meta {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 0.7rem;
-  font-family: 'Space Mono', monospace;
-}
-
-/* ==================== WAVE ANIMÉE DU MICRO ==================== */
-.mic-wave-container {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.mic-wave-container:active {
-  transform: scale(0.95);
-}
-
-.mic-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1.5px solid rgba(0, 255, 255, 0.3);
-  animation: pulseRing 2.8s infinite ease-in-out;
-}
-
-.mic-ring:nth-child(1) { width: 95px; height: 95px; animation-delay: 0s; }
-.mic-ring:nth-child(2) { width: 135px; height: 135px; animation-delay: 0.5s; }
-.mic-ring:nth-child(3) { width: 175px; height: 175px; animation-delay: 1s; }
-
-@keyframes pulseRing {
-  0% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
-  50% { transform: scale(1.04); opacity: 1; border-color: rgba(0, 255, 255, 0.9); box-shadow: 0 0 18px rgba(0, 255, 255, 0.4); }
-  100% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
-}
-
-.wave-bars {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: 60px;
-  width: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%);
-  transition: all 0.3s ease;
-}
-
-.wave-bar {
-  width: 5px;
-  border-radius: 3px;
-  background: var(--cyan);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-  transition: all 0.15s ease;
-  animation: waveBarAnim 0.8s infinite ease-in-out;
-}
-
-.wave-bar:nth-child(1) { height: 18px; animation-delay: 0s; }
-.wave-bar:nth-child(2) { height: 30px; animation-delay: 0.1s; }
-.wave-bar:nth-child(3) { height: 42px; animation-delay: 0.2s; }
-.wave-bar:nth-child(4) { height: 30px; animation-delay: 0.3s; }
-.wave-bar:nth-child(5) { height: 18px; animation-delay: 0.4s; }
-
-@keyframes waveBarAnim {
-  0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
-  50% { transform: scaleY(1); opacity: 1; }
-}
-
-.wave-bars.idle .wave-bar { background: var(--cyan); box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); }
-.wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 12px rgba(34, 197, 94, 0.7), 0 0 24px rgba(34, 197, 94, 0.3); animation-duration: 0.5s; }
-.wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 12px rgba(192, 132, 252, 0.7), 0 0 24px rgba(192, 132, 252, 0.3); animation-duration: 0.6s; }
-.wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 10px rgba(239, 68, 68, 0.6); animation: errorShake 0.4s; }
-
-@keyframes errorShake {
-  0%, 100% { transform: translateX(0) scaleY(1); }
-  20% { transform: translateX(-5px) scaleY(0.7); }
-  40% { transform: translateX(5px) scaleY(1.2); }
-  60% { transform: translateX(-3px) scaleY(0.8); }
-  80% { transform: translateX(3px) scaleY(1.1); }
-}
-
-.mic-wave-container.listening .mic-ring { border-color: rgba(34, 197, 94, 0.5) !important; animation-duration: 1.8s; }
-.mic-wave-container.speaking .mic-ring { border-color: rgba(192, 132, 252, 0.5) !important; animation-duration: 1.6s; }
-.mic-wave-container.error .mic-ring { border-color: rgba(239, 68, 68, 0.5) !important; }
-
-/* Barre de statut */
-.status-pill {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  background: rgba(0, 10, 25, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 60px;
-  padding: 10px 26px;
-  font-size: 0.8rem;
-  font-family: 'Space Mono', monospace;
-}
-
-.status-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #475569;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.status-dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); }
-.status-dot.speaking { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
-
-/* Overlay du panneau */
-.panel-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 98;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.panel-overlay.active { opacity: 1; pointer-events: auto; }
-
-/* Panneau d'information */
-.info-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(94%, 450px);
-  height: 100%;
-  background: var(--bg-panel);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-left: 1px solid rgba(0, 255, 255, 0.35);
-  z-index: 100;
-  transform: translateX(105%);
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-  display: flex;
-  flex-direction: column;
-  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.6);
-}
-
-.info-panel.open { transform: translateX(0); }
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.panel-header h3 {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  color: var(--cyan);
-  text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
-}
-
-.close-panel {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  color: var(--text-dim);
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.close-panel:hover { background: rgba(239, 68, 68, 0.2); border-color: var(--red); color: var(--red); }
-
-.panel-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-/* Bouton toggle */
-.panel-toggle {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 56px;
-  height: 56px;
-  border-radius: 30px;
-  background: rgba(0, 20, 40, 0.9);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(0, 255, 255, 0.5);
-  color: var(--cyan);
-  font-size: 1.6rem;
-  cursor: pointer;
-  z-index: 102;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 18px rgba(0, 255, 255, 0.25), 0 4px 18px rgba(0, 0, 0, 0.5);
-}
-
-.panel-toggle:hover { transform: scale(1.06); box-shadow: 0 0 28px rgba(0, 255, 255, 0.4); }
-.panel-toggle:active { transform: scale(0.94); }
-.panel-toggle .gear-icon { display: inline-block; transition: transform 0.5s ease; }
-.panel-toggle:hover .gear-icon { transform: rotate(90deg); }
-.panel-toggle.panel-open .gear-icon { transform: rotate(180deg); }
-
-/* Zone de recherche */
-.search-box {
-  background: rgba(0, 15, 30, 0.7);
-  border: 1px solid rgba(0, 255, 255, 0.25);
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  padding: 5px 6px 5px 20px;
-  gap: 10px;
-}
-
-.search-box input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-size: 0.9rem;
-  padding: 12px 0;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.search-box input::placeholder { color: var(--text-dim); }
-
-.search-box button {
-  background: rgba(0, 255, 255, 0.15);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  padding: 9px 20px;
-  border-radius: 40px;
-  color: var(--cyan);
-  cursor: pointer;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  transition: all 0.2s;
-}
-
-.search-box button:hover { background: rgba(0, 255, 255, 0.3); }
-
-/* Carte de détail IOS */
-.ios-detail-card {
-  background: rgba(5, 12, 25, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 22px;
-  overflow: hidden;
-  display: none;
-  animation: fadeUp 0.3s ease;
-}
-
-.ios-detail-card.show { display: block; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.card-header { padding: 18px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); }
-
-.ios-code {
-  font-family: 'Space Mono', monospace;
-  font-size: 1.3rem;
-  font-weight: 700;
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  flex-wrap: wrap;
-  color: #fff;
-}
-
-.prio-badge {
-  font-size: 0.6rem;
-  padding: 4px 10px;
-  border-radius: 20px;
-  display: inline-block;
-  margin-top: 6px;
-  font-family: 'Space Mono', monospace;
-  letter-spacing: 1px;
-}
-
-.prio-h { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); animation: prioUrgentPulse 1.5s infinite; }
-@keyframes prioUrgentPulse {
-  0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
-  50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
-}
-.prio-m { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-.prio-l { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-
-.card-actions {
-  padding: 14px 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-}
-
-.action-btn {
-  background: rgba(0, 255, 255, 0.06);
-  border: 1px solid rgba(0, 255, 255, 0.25);
-  padding: 7px 16px;
-  border-radius: 30px;
-  color: var(--cyan);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.action-btn:hover { background: rgba(0, 255, 255, 0.18); transform: translateY(-1px); }
-.action-btn:active { transform: translateY(0); }
-.action-btn.green { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.5); color: #22c55e; }
-.action-btn.green:hover { background: rgba(34, 197, 94, 0.25); box-shadow: 0 0 15px rgba(34, 197, 94, 0.25); }
-.action-btn.red { background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
-.action-btn.red:hover { background: rgba(239, 68, 68, 0.2); box-shadow: 0 0 15px rgba(239, 68, 68, 0.25); }
-
-.card-body { padding: 18px; font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
-
-/* Zone de chat */
-.chat-area {
-  background: rgba(0, 10, 22, 0.6);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  overflow: hidden;
-}
-
-.chat-messages {
-  height: 240px;
-  overflow-y: auto;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-track { background: transparent; }
-.chat-messages::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.25); border-radius: 2px; }
-
-.message { display: flex; gap: 8px; max-width: 88%; animation: messageIn 0.25s ease; }
-@keyframes messageIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.message.user { align-self: flex-end; flex-direction: row-reverse; }
-.message.ai .bubble { background: rgba(0, 120, 200, 0.15); border-radius: 6px 16px 16px 16px; border: 1px solid rgba(0, 255, 255, 0.2); }
-.message.user .bubble { background: rgba(124, 58, 237, 0.15); border-radius: 16px 6px 16px 16px; border: 1px solid rgba(168, 85, 247, 0.4); }
-.bubble { padding: 10px 14px; font-size: 0.82rem; line-height: 1.5; word-break: break-word; }
-
-/* Barre de guidage */
-.guide-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(1, 3, 12, 0.97);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(0, 255, 255, 0.4);
-  padding: 16px 22px;
-  z-index: 90;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.5);
-}
-
-.guide-bar.active { transform: translateY(0); }
-
-.guide-step {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--green);
-  letter-spacing: 2px;
-}
-
-.guide-text { font-size: 0.95rem; margin: 10px 0; line-height: 1.5; font-weight: 500; }
-
-.guide-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-
-.guide-btn {
-  background: rgba(0, 30, 50, 0.8);
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  padding: 8px 18px;
-  border-radius: 40px;
-  color: white;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.guide-btn:hover { background: rgba(0, 255, 255, 0.2); }
-.guide-btn:active { transform: scale(0.95); }
-.guide-btn.yes { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); color: #22c55e; font-weight: 600; }
-.guide-btn.yes:hover { background: rgba(34, 197, 94, 0.35); box-shadow: 0 0 18px rgba(34, 197, 94, 0.25); }
-.guide-btn.no { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: #ef4444; font-weight: 600; }
-.guide-btn.no:hover { background: rgba(239, 68, 68, 0.35); box-shadow: 0 0 18px rgba(239, 68, 68, 0.25); }
-
-/* Toast */
-.toast {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0a0f1e;
-  border: 1px solid cyan;
-  border-radius: 40px;
-  padding: 10px 24px;
-  font-size: 0.8rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 200;
-  pointer-events: none;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  font-family: 'Space Mono', monospace;
-}
-
-.toast.show { opacity: 1; }
-
-/* ==================== LISTE DES IOS ==================== */
-.ios-list-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 150;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.ios-list-overlay.active { opacity: 1; pointer-events: auto; }
-
-.ios-list-panel {
-  background: rgba(2, 5, 18, 0.98);
-  border: 1px solid rgba(0, 255, 255, 0.4);
-  border-radius: 24px;
-  width: min(90%, 500px);
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-  overflow: hidden;
-}
-
-.ios-list-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.ios-list-header h3 {
-  font-family: 'Space Mono', monospace;
-  color: var(--cyan);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-}
-
-.ios-list-close {
-  background: none;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  color: var(--text-dim);
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.ios-list-scroll {
-  overflow-y: auto;
-  flex: 1;
-  padding: 10px;
-}
-
-.ios-list-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-radius: 10px;
-  margin: 2px 0;
-}
-
-.ios-list-item:hover {
-  background: rgba(0, 255, 255, 0.1);
-}
-
-.ios-list-num {
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  color: var(--cyan);
-  min-width: 45px;
-  font-size: 0.9rem;
-}
-
-.ios-list-desc {
-  font-size: 0.85rem;
-  color: var(--text);
-}
-
-.ios-list-prio {
-  margin-left: auto;
-  font-size: 0.6rem;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-family: 'Space Mono', monospace;
-}
-
-.ios-list-prio.h { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-.ios-list-prio.m { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-.ios-list-prio.l { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-
-/* ==================== MODALE RÉCAPITULATIF ==================== */
-.recap-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: 160;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.recap-overlay.active { opacity: 1; pointer-events: auto; }
-
-.recap-panel {
-  background: #ffffff;
-  border-radius: 16px;
-  width: min(92%, 550px);
-  max-height: 85vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-}
-
-.recap-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #f8fafc;
-}
-
-.recap-header h3 {
-  font-family: 'Space Mono', monospace;
-  color: #1e293b;
-  font-size: 0.85rem;
-}
-
-.recap-close {
-  background: none;
-  border: 1px solid #cbd5e1;
-  color: #64748b;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.recap-content {
-  padding: 24px;
-  overflow-y: auto;
-  flex: 1;
-  color: #1e293b;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  white-space: pre-wrap;
-}
-
-.recap-actions {
-  padding: 14px 20px;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  background: #f8fafc;
-}
-
-.recap-btn {
-  padding: 8px 18px;
-  border-radius: 30px;
-  border: 1px solid #cbd5e1;
-  background: white;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.8rem;
-  transition: all 0.2s;
-}
-
-.recap-btn.primary {
-  background: #1e293b;
-  color: white;
-  border-color: #1e293b;
-}
-
-.recap-btn:hover { transform: translateY(-1px); }
-
-/* ==================== QUESTIONS FIN DE PROCÉDURE ==================== */
-.end-questions {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(1, 3, 12, 0.97);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(0, 255, 255, 0.4);
-  padding: 16px 22px;
-  z-index: 91;
-  transform: translateY(100%);
-  transition: transform 0.35s ease;
-  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.5);
-}
-
-.end-questions.active { transform: translateY(0); }
-
-.end-questions-text {
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-.end-questions-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .main-container { padding: 1rem; gap: 1rem; padding-bottom: 100px; }
-  .mic-wave-container { width: 150px; height: 150px; }
-  .mic-ring:nth-child(1) { width: 70px; height: 70px; }
-  .mic-ring:nth-child(2) { width: 100px; height: 100px; }
-  .mic-ring:nth-child(3) { width: 130px; height: 130px; }
-  .wave-bars { height: 45px; width: 60px; gap: 3px; }
-  .wave-bar { width: 4px; }
-  .wave-bar:nth-child(1) { height: 14px; }
-  .wave-bar:nth-child(2) { height: 22px; }
-  .wave-bar:nth-child(3) { height: 32px; }
-  .wave-bar:nth-child(4) { height: 22px; }
-  .wave-bar:nth-child(5) { height: 14px; }
-  .info-panel { width: 100%; }
-}
-
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0); border: 0;
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg-dark:#010208;--bg-panel:rgba(2,5,15,0.96);--cyan:#0ff;--purple:#c084fc;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--text:#e2e8f0;--text-dim:#7f8ea3}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
+.holo-bg{position:fixed;inset:0;background:radial-gradient(circle at 15% 25%,rgba(0,200,255,0.04),transparent 50%),radial-gradient(circle at 85% 70%,rgba(180,100,255,0.03),transparent 50%);pointer-events:none;z-index:0}
+.main-container{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100vh;padding:1.5rem;gap:1.5rem;padding-bottom:120px}
+.title-wrap{text-align:center;padding:0.6rem 2rem;border-radius:80px;background:rgba(0,20,40,0.35);border:1px solid rgba(0,255,255,0.15);width:100%;max-width:600px}
+.hero{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.5rem,8vw,4.2rem);color:#fff;letter-spacing:-0.02em}
+.hero-sub{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:4px;color:var(--cyan)}
+.active-ios-display{width:100%;max-width:600px;background:rgba(5,12,25,0.8);border:1px solid rgba(0,255,255,0.3);border-radius:20px;padding:18px;display:none;animation:fadeUp 0.3s ease}
+.active-ios-display.show{display:block}
+.active-ios-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.active-ios-id{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;color:#fff}
+.active-ios-desc{font-size:0.9rem;color:#e2e8f0;margin-bottom:6px}
+.active-ios-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:0.7rem;font-family:'Space Mono',monospace}
+.mic-wave-container{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.2s ease;user-select:none;flex-shrink:0}
+.mic-wave-container:active{transform:scale(0.95)}
+.mic-ring{position:absolute;border-radius:50%;border:1.5px solid rgba(0,255,255,0.3);animation:pulseRing 2.8s infinite ease-in-out}
+.mic-ring:nth-child(1){width:95px;height:95px;animation-delay:0s}
+.mic-ring:nth-child(2){width:135px;height:135px;animation-delay:0.5s}
+.mic-ring:nth-child(3){width:175px;height:175px;animation-delay:1s}
+@keyframes pulseRing{0%{transform:scale(0.93);opacity:0.5;border-color:rgba(0,255,255,0.4)}50%{transform:scale(1.04);opacity:1;border-color:rgba(0,255,255,0.9);box-shadow:0 0 18px rgba(0,255,255,0.4)}100%{transform:scale(0.93);opacity:0.5}}
+.wave-bars{position:relative;z-index:5;display:flex;align-items:center;justify-content:center;gap:4px;height:60px;width:80px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,255,0.1),transparent 70%);transition:all 0.3s ease}
+.wave-bar{width:5px;border-radius:3px;background:var(--cyan);box-shadow:0 0 8px rgba(0,255,255,0.5);transition:all 0.15s ease;animation:waveBarAnim 0.8s infinite ease-in-out}
+.wave-bar:nth-child(1){height:18px;animation-delay:0s}
+.wave-bar:nth-child(2){height:30px;animation-delay:0.1s}
+.wave-bar:nth-child(3){height:42px;animation-delay:0.2s}
+.wave-bar:nth-child(4){height:30px;animation-delay:0.3s}
+.wave-bar:nth-child(5){height:18px;animation-delay:0.4s}
+@keyframes waveBarAnim{0%,100%{transform:scaleY(0.5);opacity:0.5}50%{transform:scaleY(1);opacity:1}}
+.wave-bars.idle .wave-bar{background:var(--cyan);box-shadow:0 0 8px rgba(0,255,255,0.5)}
+.wave-bars.listening .wave-bar{background:var(--green);box-shadow:0 0 12px rgba(34,197,94,0.7);animation-duration:0.5s}
+.wave-bars.speaking .wave-bar{background:var(--purple);box-shadow:0 0 12px rgba(192,132,252,0.7);animation-duration:0.6s}
+.wave-bars.error .wave-bar{background:var(--red);box-shadow:0 0 10px rgba(239,68,68,0.6);animation:errorShake 0.4s}
+@keyframes errorShake{0%,100%{transform:translateX(0) scaleY(1)}20%{transform:translateX(-5px) scaleY(0.7)}40%{transform:translateX(5px) scaleY(1.2)}60%{transform:translateX(-3px) scaleY(0.8)}80%{transform:translateX(3px) scaleY(1.1)}}
+.mic-wave-container.listening .mic-ring{border-color:rgba(34,197,94,0.5)!important;animation-duration:1.8s}
+.mic-wave-container.speaking .mic-ring{border-color:rgba(192,132,252,0.5)!important;animation-duration:1.6s}
+.status-pill{display:flex;gap:12px;align-items:center;background:rgba(0,10,25,0.7);backdrop-filter:blur(8px);border:1px solid rgba(0,255,255,0.3);border-radius:60px;padding:10px 26px;font-size:0.8rem;font-family:'Space Mono',monospace}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#475569;transition:all 0.3s ease;flex-shrink:0}
+.status-dot.active{background:var(--green);box-shadow:0 0 10px var(--green)}
+.status-dot.speaking{background:var(--purple);box-shadow:0 0 10px var(--purple)}
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.panel-overlay.active{opacity:1;pointer-events:auto}
+.info-panel{position:fixed;top:0;right:0;width:min(94%,450px);height:100%;background:var(--bg-panel);backdrop-filter:blur(20px);border-left:1px solid rgba(0,255,255,0.35);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.6)}
+.info-panel.open{transform:translateX(0)}
+.panel-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(0,255,255,0.2);background:rgba(0,0,0,0.4)}
+.panel-header h3{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:3px;color:var(--cyan)}
+.close-panel{background:rgba(0,0,0,0.3);border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.panel-content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px}
+.panel-toggle{position:fixed;bottom:28px;right:28px;width:56px;height:56px;border-radius:30px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.6rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 18px rgba(0,255,255,0.25)}
+.panel-toggle:hover{transform:scale(1.06)}
+.panel-toggle .gear-icon{transition:transform 0.5s ease}
+.panel-toggle:hover .gear-icon{transform:rotate(90deg)}
+.panel-toggle.panel-open .gear-icon{transform:rotate(180deg)}
+.search-box{background:rgba(0,15,30,0.7);border:1px solid rgba(0,255,255,0.25);border-radius:50px;display:flex;align-items:center;padding:5px 6px 5px 20px;gap:10px}
+.search-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.9rem;padding:12px 0}
+.search-box input::placeholder{color:var(--text-dim)}
+.search-box button{background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.3);padding:9px 20px;border-radius:40px;color:var(--cyan);cursor:pointer;font-family:'Space Mono',monospace;font-size:0.75rem}
+.ios-detail-card{background:rgba(5,12,25,0.8);border:1px solid rgba(0,255,255,0.3);border-radius:22px;overflow:hidden;display:none;animation:fadeUp 0.3s ease}
+.ios-detail-card.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card-header{padding:18px;border-bottom:1px solid rgba(0,255,255,0.2)}
+.ios-code{font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:#fff}
+.prio-badge{font-size:0.6rem;padding:4px 10px;border-radius:20px;display:inline-block;margin-top:6px;font-family:'Space Mono',monospace;letter-spacing:1px}
+.prio-h{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.4);animation:prioUrgentPulse 1.5s infinite}
+@keyframes prioUrgentPulse{0%,100%{box-shadow:0 0 5px rgba(239,68,68,0.3)}50%{box-shadow:0 0 15px rgba(239,68,68,0.6)}}
+.prio-m{background:rgba(245,158,11,0.2);color:#fbbf24;border:1px solid rgba(245,158,11,0.4)}
+.prio-l{background:rgba(34,197,94,0.2);color:#4ade80;border:1px solid rgba(34,197,94,0.4)}
+.card-actions{padding:14px 18px;display:flex;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(0,255,255,0.1)}
+.action-btn{background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.25);padding:7px 16px;border-radius:30px;color:var(--cyan);font-size:0.75rem;cursor:pointer;transition:all 0.2s}
+.action-btn:hover{background:rgba(0,255,255,0.18)}
+.action-btn.green{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.5);color:#22c55e}
+.action-btn.red{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.4);color:#ef4444}
+.card-body{padding:18px;font-size:0.85rem;color:var(--text-dim);line-height:1.6}
+.chat-area{background:rgba(0,10,22,0.6);border-radius:20px;border:1px solid rgba(0,255,255,0.2);overflow:hidden}
+.chat-messages{height:240px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.message{display:flex;gap:8px;max-width:88%;animation:messageIn 0.25s ease}
+@keyframes messageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.message.user{align-self:flex-end;flex-direction:row-reverse}
+.message.ai .bubble{background:rgba(0,120,200,0.15);border-radius:6px 16px 16px 16px;border:1px solid rgba(0,255,255,0.2)}
+.message.user .bubble{background:rgba(124,58,237,0.15);border-radius:16px 6px 16px 16px;border:1px solid rgba(168,85,247,0.4)}
+.bubble{padding:10px 14px;font-size:0.82rem;line-height:1.5;word-break:break-word}
+.guide-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(1,3,12,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,255,255,0.4);padding:16px 22px;z-index:90;transform:translateY(100%);transition:transform 0.35s ease;box-shadow:0 -6px 30px rgba(0,0,0,0.5)}
+.guide-bar.active{transform:translateY(0)}
+.guide-step{font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--green);letter-spacing:2px}
+.guide-text{font-size:0.95rem;margin:10px 0;line-height:1.5;font-weight:500}
+.guide-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.guide-btn{background:rgba(0,30,50,0.8);border:1px solid rgba(0,255,255,0.3);padding:8px 18px;border-radius:40px;color:#fff;font-size:0.75rem;cursor:pointer;transition:all 0.2s}
+.guide-btn.yes{background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.5);color:#22c55e;font-weight:600}
+.guide-btn.no{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.5);color:#ef4444;font-weight:600}
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:#0a0f1e;border:1px solid cyan;border-radius:40px;padding:10px 24px;font-size:0.8rem;opacity:0;transition:opacity 0.3s ease;z-index:200;pointer-events:none;font-family:'Space Mono',monospace}
+.toast.show{opacity:1}
+.ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.ios-list-overlay.active{opacity:1;pointer-events:auto}
+.ios-list-panel{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:24px;width:min(90%,500px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
+.ios-list-header{padding:16px 20px;border-bottom:1px solid rgba(0,255,255,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.4)}
+.ios-list-header h3{font-family:'Space Mono',monospace;color:var(--cyan);font-size:0.8rem;letter-spacing:2px}
+.ios-list-close{background:none;border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:30px;height:30px;border-radius:8px;cursor:pointer}
+.ios-list-scroll{overflow-y:auto;flex:1;padding:10px}
+.ios-list-item{padding:12px 16px;border-bottom:1px solid rgba(0,255,255,0.1);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:12px;border-radius:10px;margin:2px 0}
+.ios-list-item:hover{background:rgba(0,255,255,0.1)}
+.ios-list-num{font-family:'Space Mono',monospace;font-weight:700;color:var(--cyan);min-width:50px;font-size:0.85rem}
+.ios-list-desc{font-size:0.82rem;color:var(--text);flex:1}
+.ios-list-prio{font-size:0.6rem;padding:2px 8px;border-radius:12px;font-family:'Space Mono',monospace}
+.ios-list-prio.h{background:rgba(239,68,68,0.2);color:#f87171}
+.ios-list-prio.m{background:rgba(245,158,11,0.2);color:#fbbf24}
+.ios-list-prio.l{background:rgba(34,197,94,0.2);color:#4ade80}
+.recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.recap-overlay.active{opacity:1;pointer-events:auto}
+.recap-panel{background:#fff;border-radius:16px;width:min(92%,550px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 10px 50px rgba(0,0,0,0.5);overflow:hidden}
+.recap-header{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc}
+.recap-header h3{font-family:'Space Mono',monospace;color:#1e293b;font-size:0.85rem}
+.recap-close{background:none;border:1px solid #cbd5e1;color:#64748b;width:30px;height:30px;border-radius:8px;cursor:pointer}
+.recap-content{padding:24px;overflow-y:auto;flex:1;color:#1e293b;font-size:0.85rem;line-height:1.7;white-space:pre-wrap}
+.recap-actions{padding:14px 20px;border-top:1px solid #e2e8f0;display:flex;gap:10px;justify-content:flex-end;background:#f8fafc}
+.recap-btn{padding:8px 18px;border-radius:30px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-size:0.8rem}
+.recap-btn.primary{background:#1e293b;color:#fff;border-color:#1e293b}
+.end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(1,3,12,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,255,255,0.4);padding:16px 22px;z-index:91;transform:translateY(100%);transition:transform 0.35s ease}
+.end-questions.active{transform:translateY(0)}
+.end-questions-text{font-size:0.9rem;margin-bottom:10px}
+.end-questions-buttons{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:480px){.mic-wave-container{width:150px;height:150px}.mic-ring:nth-child(1){width:70px;height:70px}.mic-ring:nth-child(2){width:100px;height:100px}.mic-ring:nth-child(3){width:130px;height:130px}.wave-bars{height:45px;width:60px;gap:3px}.wave-bar{width:4px}.wave-bar:nth-child(1){height:14px}.wave-bar:nth-child(2){height:22px}.wave-bar:nth-child(3){height:32px}.wave-bar:nth-child(4){height:22px}.wave-bar:nth-child(5){height:14px}}
 </style>
 </head>
 <body>
-
 <div class="holo-bg" aria-hidden="true"></div>
 <div class="panel-overlay" id="panelOverlay"></div>
 
-<!-- Conteneur principal -->
 <div class="main-container">
-  <div class="title-wrap">
-    <h1 class="hero">IAOS T4</h1>
-    <p class="hero-sub">DUALIS U53700 · ASSISTANT HOLOGRAMME</p>
-  </div>
-
-  <!-- AFFICHAGE IOS ACTIF SUR L'ÉCRAN PRINCIPAL -->
+  <div class="title-wrap"><h1 class="hero">IAOS T4</h1><p class="hero-sub">DUALIS U53700 · ASSISTANT</p></div>
   <div class="active-ios-display" id="activeIosDisplay">
-    <div class="active-ios-header">
-      <span class="active-ios-id" id="activeIosId"></span>
-      <span class="prio-badge" id="activeIosPrio"></span>
-    </div>
+    <div class="active-ios-header"><span class="active-ios-id" id="activeIosId"></span><span class="prio-badge" id="activeIosPrio"></span></div>
     <div class="active-ios-desc" id="activeIosDesc"></div>
-    <div class="active-ios-meta">
-      <span id="activeIosSteps"></span>
-      <span id="activeIosStatus"></span>
-    </div>
+    <div class="active-ios-meta"><span id="activeIosSteps"></span><span id="activeIosStatus"></span></div>
   </div>
-
-  <!-- Micro avec wave animée -->
-  <div class="mic-wave-container" id="micWaveContainer" role="button" aria-label="Activer/désactiver le microphone" tabindex="0">
-    <div class="mic-ring" aria-hidden="true"></div>
-    <div class="mic-ring" aria-hidden="true"></div>
-    <div class="mic-ring" aria-hidden="true"></div>
-    <div class="wave-bars idle" id="waveBars" aria-hidden="true">
-      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-      <div class="wave-bar"></div><div class="wave-bar"></div>
-    </div>
+  <div class="mic-wave-container" id="micWaveContainer" role="button" tabindex="0">
+    <div class="mic-ring"></div><div class="mic-ring"></div><div class="mic-ring"></div>
+    <div class="wave-bars idle" id="waveBars"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
   </div>
-
-  <div class="status-pill" aria-live="polite">
-    <div class="status-dot" id="statusDot" role="status"></div>
-    <span id="statusText">Micro actif · Dites bonjour</span>
-  </div>
+  <div class="status-pill"><div class="status-dot" id="statusDot"></div><span id="statusText">Micro actif · Dites bonjour</span></div>
 </div>
 
-<!-- Bouton toggle du panneau avec engrenage -->
-<button class="panel-toggle" id="panelToggle" aria-label="Ouvrir le panneau de diagnostic">
-  <span class="gear-icon">⚙️</span>
-</button>
+<button class="panel-toggle" id="panelToggle"><span class="gear-icon">⚙️</span></button>
 
-<!-- Panneau d'information -->
 <div class="info-panel" id="infoPanel" aria-hidden="true">
-  <div class="panel-header">
-    <h3>⚡ IAOS T4 · DIAGNOSTIC</h3>
-    <button class="close-panel" id="closePanel" aria-label="Fermer le panneau">✕</button>
-  </div>
+  <div class="panel-header"><h3>⚡ IAOS T4 · DIAGNOSTIC</h3><button class="close-panel" id="closePanel">✕</button></div>
   <div class="panel-content">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="IOS 061, boîte chaude, frein...">
-      <button id="searchBtn">🔍</button>
-    </div>
-    <button class="action-btn" id="showAllIosBtn" style="width:100%;text-align:center;">📋 Liste de tous les IOS</button>
-    <div class="ios-detail-card" id="iosCard" aria-live="polite">
-      <div class="card-header">
-        <div class="ios-code"><span id="iosId">---</span></div>
-        <div class="prio-badge" id="iosPrio"></div>
-        <div id="iosDesc" style="margin-top:8px;font-size:0.88rem;color:#e2e8f0;"></div>
-      </div>
-      <div class="card-actions">
-        <button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button>
-        <button class="action-btn red" id="cancelGuideBtn">✕ ANNULER</button>
-        <button class="action-btn" id="homeBtn">⌂ ACCUEIL</button>
-        <button class="action-btn" id="newSearchBtn">🔍 NOUVEAU</button>
-      </div>
+    <div class="search-box"><input type="text" id="searchInput" placeholder="IOS 061, boîte chaude, frein..."><button id="searchBtn">🔍</button></div>
+    <button class="action-btn" id="showAllIosBtn" style="width:100%;text-align:center">📋 Liste de tous les IOS</button>
+    <div class="ios-detail-card" id="iosCard">
+      <div class="card-header"><div class="ios-code"><span id="iosId">---</span></div><div class="prio-badge" id="iosPrio"></div><div id="iosDesc" style="margin-top:8px;font-size:0.88rem;color:#e2e8f0"></div></div>
+      <div class="card-actions"><button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button><button class="action-btn red" id="cancelGuideBtn">✕ ANNULER</button><button class="action-btn" id="homeBtn">⌂ ACCUEIL</button><button class="action-btn" id="newSearchBtn">🔍 NOUVEAU</button></div>
       <div class="card-body" id="iosBody"></div>
     </div>
-    <div class="chat-area" aria-label="Historique">
-      <div class="chat-messages" id="chatMsgs" role="log" aria-live="polite">
-        <div class="message ai"><div class="bubble">✨ Micro actif. Dites un numéro IOS ou décrivez une panne.</div></div>
-      </div>
-    </div>
+    <div class="chat-area"><div class="chat-messages" id="chatMsgs"><div class="message ai"><div class="bubble">✨ Micro actif. Dites un numéro IOS ou décrivez une panne.</div></div></div></div>
   </div>
 </div>
 
-<!-- Liste des IOS -->
 <div class="ios-list-overlay" id="iosListOverlay">
-  <div class="ios-list-panel">
-    <div class="ios-list-header">
-      <h3>📋 LISTE DES IOS</h3>
-      <button class="ios-list-close" id="iosListClose">✕</button>
-    </div>
-    <div class="ios-list-scroll" id="iosListScroll"></div>
-  </div>
+  <div class="ios-list-panel"><div class="ios-list-header"><h3>📋 LISTE DES IOS</h3><button class="ios-list-close" id="iosListClose">✕</button></div><div class="ios-list-scroll" id="iosListScroll"></div></div>
 </div>
 
-<!-- Modale récapitulatif -->
 <div class="recap-overlay" id="recapOverlay">
-  <div class="recap-panel">
-    <div class="recap-header">
-      <h3>📄 BULLETIN DE SERVICE</h3>
-      <button class="recap-close" id="recapClose">✕</button>
-    </div>
-    <div class="recap-content" id="recapContent"></div>
-    <div class="recap-actions">
-      <button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button>
-      <button class="recap-btn primary" id="recapCloseBtn">Fermer</button>
-    </div>
-  </div>
+  <div class="recap-panel"><div class="recap-header"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapClose">✕</button></div><div class="recap-content" id="recapContent"></div><div class="recap-actions"><button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button><button class="recap-btn primary" id="recapCloseBtn">Fermer</button></div></div>
 </div>
 
-<!-- Barre de guidage -->
-<div class="guide-bar" id="guideBar" aria-live="polite">
-  <div class="guide-step" id="guideStepLabel">ÉTAPE</div>
-  <div class="guide-text" id="guideText"></div>
-  <div class="guide-buttons">
-    <button class="guide-btn yes" id="yesBtn" style="display:none;">✓ OUI</button>
-    <button class="guide-btn no" id="noBtn" style="display:none;">✗ NON</button>
-    <button class="guide-btn" id="prevStepBtn">← PRÉCÉDENT</button>
-    <button class="guide-btn" id="nextStepBtn">SUIVANT →</button>
-    <button class="guide-btn" id="cancelGuideBtn2">ANNULER</button>
-  </div>
+<div class="guide-bar" id="guideBar">
+  <div class="guide-step" id="guideStepLabel">ÉTAPE</div><div class="guide-text" id="guideText"></div>
+  <div class="guide-buttons"><button class="guide-btn yes" id="yesBtn" style="display:none">✓ OUI</button><button class="guide-btn no" id="noBtn" style="display:none">✗ NON</button><button class="guide-btn" id="prevStepBtn">← PRÉCÉDENT</button><button class="guide-btn" id="nextStepBtn">SUIVANT →</button><button class="guide-btn" id="cancelGuideBtn2">ANNULER</button></div>
 </div>
 
-<!-- Questions fin de procédure -->
-<div class="end-questions" id="endQuestions">
-  <div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div>
-  <div class="end-questions-buttons">
-    <button class="guide-btn yes" id="endRecapYes">📄 Récapitulatif</button>
-    <button class="guide-btn no" id="endRecapNo">✕ Fermer</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toastMsg" aria-live="assertive"></div>
+<div class="end-questions" id="endQuestions"><div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div><div class="end-questions-buttons"><button class="guide-btn yes" id="endRecapYes">📄 Récapitulatif</button><button class="guide-btn no" id="endRecapNo">✕ Fermer</button></div></div>
+<div class="toast" id="toastMsg"></div>
 
 <script>
-// ==================== BASE DE DONNÉES IOS ====================
-const IOS = {
-  '061':{id:'061',pri:'h',desc:'Détection boîte chaude',kw:['boite','chaude','surchauffe','échauffement','essieu','roue chaude'],tree:[{t:"Accédez à l'écran Commandes diverses → BOITE CHAUDE.",d:0},{t:"Localisez l'élément et la roue concernée, visitez.",d:0},{t:"Y a-t-il fumée ou forte chaleur ?",d:1,oui:[{t:"Incendie → isolement freins + CHAPITRE 4 SECOURS.",d:0,fin:1}],non:[{t:"Tracez un trait sur les 2 roues, étiquette. Isolez frein (article 3). Vitesse max 30 kilomètres par heure vers garage.",d:0,fin:1}]}]},
-  '002':{id:'002',pri:'h',desc:"Défaut majeur relais freinage d'urgence",kw:['freinage','urgence','relais','majeur'],tree:[{t:"🚨 URGENCE — Appliquez immédiatement CHAPITRE 4 — SECOURS.",d:0,fin:1}]},
-  '017':{id:'017',pri:'h',desc:'Batteries faibles',kw:['batterie','faible','tension','baisse'],tree:[{t:"Vérifiez BP(F-SE) relevé.",d:0},{t:"L'IOS a-t-il disparu ?",d:1,oui:[{t:"✅ Terminé",d:0,fin:1}],non:[{t:"🚨 Appliquez CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
-  '083':{id:'083',pri:'h',desc:'Perte frein friction bogie CE1',kw:['frein','friction','bogie','ce1','perte'],tree:[{t:"Placez Z(IS)F sur CE1, Z(CO)EV sur ON.",d:0},{t:"Symbole Frein isolé affiché ?",d:1,oui:[{t:"Appliquez page 499, EFAS complet. OK",d:0,fin:1}],non:[{t:"🚨 AVISEZ PC, secours.",d:0,fin:1}]}]},
-  '173':{id:'173',pri:'h',desc:'Défaut porte',kw:['porte','portière','défaut','bloquée'],tree:[{t:"Commande centralisée CSL-PUP.",d:0},{t:"L'IOS a disparu ?",d:1,oui:[{t:"✅ Terminé",d:0,fin:1}],non:[{t:"Condamnez la porte (ANNEXE 1).",d:0,fin:1}]}]},
-  '111':{id:'111',pri:'h',desc:'Déclenchement FS/FU',kw:['fs','fu','déclenchement','disjoncteur','déclenché'],tree:[{t:"IOS 010 présent ?",d:1,oui:[{t:"SECOURS immédiat",d:0,fin:1}],non:[{t:"Placez Z(ALI-SE) sur SECOURS",d:0},{t:"Disparu ?",d:1,oui:[{t:"✅ OK",d:0,fin:1}],non:[{t:"SECOURS demandé",d:0,fin:1}]}]}]},
-  '000':{id:'000',pri:'h',desc:'Boucle sécurité portes',kw:['boucle','sécurité','portes','bloquées'],tree:[{t:"Arrêt 1er quai, aviser PC, appliquer GD.",d:0,fin:1}]}
+// ==================== BASE DE DONNÉES IOS COMPLÈTE ====================
+const IOS={
+'000':{id:'000',pri:'h',type:'MA',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['boucle','sécurité','portes'],tree:[{t:"Arrêt 1er quai. Aviser PC - Appliquer GD.",d:0,fin:1},{t:"Évacuer les voyageurs à la prochaine station.",d:0,fin:1}]},
+'001':{id:'001',pri:'m',type:'FU',desc:'FU inhibé si SAI en zone de quai',kw:['fu','sai','quai'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'002':{id:'002',pri:'h',type:'BP',desc:'Défaut majeur du relais de freinage d\'urgence',kw:['freinage','urgence','relais'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1},{t:"Appliquer CHAPITRE 4 SECOURS.",d:0,fin:1}]},
+'003':{id:'003',pri:'m',type:'MA',desc:'FU SAI intempestif',kw:['fu','sai','intempestif'],tree:[{t:"Arrêt 1er quai. Aviser PC.",d:0},{t:"Z(IS)FMSQUA en AEL1 sur ISOLE.",d:0},{t:"Contrôler IOS n°001.",d:0,fin:1}]},
+'004':{id:'004',pri:'h',type:'IDA',desc:'Défaut relais freinage d\'urgence bogie 1 C2B',kw:['relais','freinage','bogie'],tree:[{t:"Arrêt 1er quai. Aviser PC.",d:0},{t:"Z(SE) sur SECOURS.",d:0},{t:"Z(IS)F sur C2B1, Z(CO)EV sur ON.",d:0},{t:"EFAS complet + page 499.",d:0},{t:"Vitesse max 30 km/h.",d:0,fin:1}]},
+'005':{id:'005',pri:'m',type:'IDA',desc:'Incohérence boucle de sécurité porte',kw:['incohérence','boucle','porte'],tree:[{t:"Arrêt 1er quai. Annonce fermeture portes.",d:0},{t:"Observer LS-FP-GA et LS-FP-DO.",d:1,oui:[{t:"Ne plus tenir compte.",d:0,fin:1}],non:[{t:"Appliquer défaut 9501.",d:0,fin:1}]}]},
+'006':{id:'006',pri:'h',type:'FU',desc:'FU permanent suite à un défaut de la boucle porte',kw:['fu','permanent','porte'],tree:[{t:"Arrêt 1er quai. Commander fermeture portes.",d:0},{t:"Observer LS-FP-GA/LS-FP-DO.",d:1,oui:[{t:"Essayer reprise traction.",d:1,oui:[{t:"Ne plus tenir compte.",d:0,fin:1}],non:[{t:"Rechercher porte en défaut.",d:0,fin:1}]}],non:[{t:"Appliquer défaut 9501.",d:0,fin:1}]}]},
+'007':{id:'007',pri:'m',type:'AN',desc:'Anomalie commande pantographe',kw:['pantographe','commande'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'008':{id:'008',pri:'m',type:'INN',desc:'Saisie des données dans ATESS impossible',kw:['atess','saisie'],tree:[{t:"Aviser PC - Remplir fiche suiveuse.",d:0,fin:1}]},
+'009':{id:'009',pri:'m',type:'AN',desc:'Perte d\'infos tachymétriques dans la cabine inactive',kw:['tachymétrique','cabine'],tree:[{t:"Aviser PC - Appliquer GD.",d:0,fin:1}]},
+'010':{id:'010',pri:'h',type:'BP',desc:'Défaut boucle FS ou FU',kw:['fs','fu','boucle'],tree:[{t:"Aviser PC. Ne jamais utiliser Z(SE)F.",d:0,fin:1}]},
+'014':{id:'014',pri:'m',type:'AN',desc:'Perte totale de la climatisation cabine',kw:['climatisation','cabine'],tree:[{t:"Aviser PC. Vérifier CC-CLMC et CC1-CLMC.",d:0,fin:1}]},
+'015':{id:'015',pri:'h',type:'BP',desc:'Perte des deux chargeurs batteries sur un élément',kw:['chargeur','batterie'],tree:[{t:"Arrêt 1er quai. Évacuer voyageurs.",d:0,fin:1}]},
+'017':{id:'017',pri:'h',type:'BP',desc:'Batteries faibles',kw:['batterie','faible','tension'],tree:[{t:"Arrêt immédiat. Vérifier BP(F-SE).",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Appliquer CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'041':{id:'041',pri:'m',type:'AN',desc:'Défaut CVS et redondance non assurée',kw:['cvs','redondance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'044':{id:'044',pri:'m',type:'AN',desc:'Perte d\'un chargeur batteries',kw:['chargeur','batterie'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'046':{id:'046',pri:'m',type:'AN',desc:'Défaut CVS',kw:['cvs','délestage'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'048':{id:'048',pri:'h',type:'BP',desc:'Perte totale des deux CVS sur un élément',kw:['cvs','perte'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'049':{id:'049',pri:'m',type:'AN',desc:'Défaut contacter de secours',kw:['contacter','secours'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'050':{id:'050',pri:'h',type:'BP',desc:'Défaut batterie 1 ou 2',kw:['batterie','patins'],tree:[{t:"Arrêt immédiat. Appliquer page 499.",d:0,fin:1}]},
+'051':{id:'051',pri:'h',type:'BP',desc:'Défaut fusible batterie 1 et 2 sur un élément',kw:['fusible','batterie'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'052':{id:'052',pri:'m',type:'MA',desc:'Perte d\'une des deux batteries à la PJ',kw:['batterie','pj'],tree:[{t:"Isoler poste, dé-préparer rame.",d:0},{t:"Z(IS)BA HORS SERVICE 2s, attente 30s.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser et se conformer.",d:0,fin:1}]}]},
+'053':{id:'053',pri:'h',type:'BP',desc:'Défaut commande pantographe',kw:['pantographe'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'054':{id:'054',pri:'h',type:'BP',desc:'Non descente du pantographe',kw:['pantographe','descente'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0},{t:"Ouvrir DJ, descendre manuellement.",d:0,fin:1}]},
+'057':{id:'057',pri:'m',type:'AN',desc:'Défaut niveau bas sable d\'au moins un réservoir',kw:['sable','réservoir'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'058':{id:'058',pri:'m',type:'MA',desc:'Avarie STBS - Défaut système reconnaissance Tram Train',kw:['stbs','tram'],tree:[{t:"Vérifier CC1/CC2(TLC-PCF).",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser STBS HS.",d:0,fin:1}]}]},
+'060':{id:'060',pri:'m',type:'AN',desc:'Niveau bas réservoir de graisse',kw:['graisse'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'061':{id:'061',pri:'h',type:'MA',desc:'Détection boîte chaude',kw:['boite','chaude','surchauffe','essieu'],tree:[{t:"Arrêt immédiat. Écran Commandes diverses → BOITE CHAUDE.",d:0},{t:"Localiser roue, visiter.",d:1,oui:[{t:"Incendie → isolement freins + CHAPITRE 4.",d:0,fin:1}],non:[{t:"Tracer trait, étiquette. Isoler frein (article 3). 30 km/h.",d:0,fin:1}]}]},
+'062':{id:'062',pri:'m',type:'AN',desc:'Perte totale de la climatisation salle',kw:['climatisation','salle'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'063':{id:'063',pri:'m',type:'AN',desc:'Perte totale de la climatisation cabine',kw:['climatisation'],tree:[{t:"Aviser PC. Vérifier dérogateur.",d:0,fin:1}]},
+'064':{id:'064',pri:'m',type:'AN',desc:'Défaut climatisation salle ou cabine',kw:['climatisation','ventilation'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'065':{id:'065',pri:'l',type:'AN',desc:'Retour maintenance demandé',kw:['maintenance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'071':{id:'071',pri:'h',type:'UP',desc:'Défaut patins magnétiques',kw:['patins','frein'],tree:[{t:"Arrêt immédiat. Vérifier IOS 072.",d:1,oui:[{t:"Appliquer IOS 072.",d:0,fin:1}],non:[{t:"EFAS réduit + page 499.",d:0,fin:1}]}]},
+'072':{id:'072',pri:'h',type:'UP',desc:'Une ou plusieurs paires de patins appliqués à tort',kw:['patins','appliqués'],tree:[{t:"Déclencher CC1(CD)FEM.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'073':{id:'073',pri:'m',type:'AN',desc:'Fuite d\'air',kw:['fuite','air'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'074':{id:'074',pri:'m',type:'AN',desc:'En FS ou FU, paire de patins appliqués à tort',kw:['fs','fu','patins'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'075':{id:'075',pri:'m',type:'AN',desc:'Perte d\'une unité de production d\'air',kw:['air','production'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'076':{id:'076',pri:'h',type:'BP',desc:'Perte totale de la production d\'air sur un élément',kw:['air','sifflet'],tree:[{t:"Arrêt 1er quai. Sifflet HS.",d:0,fin:1}]},
+'077':{id:'077',pri:'h',type:'INN',desc:'Défaut divergence vitesse STM/KVB',kw:['vitesse','stm','kvb'],tree:[{t:"Z(IS)STM-AUTO sur DMI.",d:0},{t:"Contrôler IOS n°078.",d:0,fin:1}]},
+'078':{id:'078',pri:'m',type:'AN',desc:'KVB isolé',kw:['kvb','isolé'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'079':{id:'079',pri:'m',type:'AN',desc:'Répétition des signaux isolée',kw:['signaux'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'080':{id:'080',pri:'m',type:'AN',desc:'Retour maintenance demandé',kw:['maintenance'],tree:[{t:"Déclencher/enclencher CC-BCE03/04.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'081':{id:'081',pri:'h',type:'BP',desc:'Isolement d\'un ou plusieurs freins non détecté',kw:['isolement','frein'],tree:[{t:"Z(CO-IS)LO sur ON.",d:0},{t:"Enfoncer BPx(IS-LO)F.",d:1,oui:[{t:"EFAS + page 499.",d:0,fin:1}],non:[{t:"CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'083':{id:'083',pri:'h',type:'BP',desc:'Perte du frein à friction sur bogie moteur CE1',kw:['frein','friction','ce1'],tree:[{t:"Z(IS)F sur CE1, Z(CO)EV ON.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'084':{id:'084',pri:'h',type:'BP',desc:'Perte du frein à friction sur bogie moteur C1',kw:['frein','friction','c1'],tree:[{t:"Z(IS)F sur C1, Z(CO)EV ON.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'085':{id:'085',pri:'h',type:'SP',desc:'Perte du frein à friction sur bogie moteur CE2',kw:['frein','ce2'],tree:[{t:"Z(IS)F sur CE2, Z(CO)EV ON.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'086':{id:'086',pri:'h',type:'SP',desc:'Perte du frein à friction sur bogie porteur C2B1',kw:['frein','c2b1'],tree:[{t:"Si C2B2 déjà isolé → SECOURS.",d:0},{t:"Z(IS)F sur C2B1, Z(CO)EV ON.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'087':{id:'087',pri:'h',type:'SP',desc:'Perte du frein à friction sur bogie porteur C2B2',kw:['frein','c2b2'],tree:[{t:"Si C2B1 déjà isolé → SECOURS.",d:0},{t:"Z(IS)F sur C2B2, Z(CO)EV ON.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'088':{id:'088',pri:'l',type:'SP',desc:'Frein à friction isolé sur bogie moteur CE1',kw:['frein','isolé','ce1'],tree:[{t:"Information - Frein isolé CE1.",d:0,fin:1}]},
+'089':{id:'089',pri:'l',type:'SP',desc:'Frein à friction isolé sur bogie moteur C1',kw:['frein','c1'],tree:[{t:"Information - Frein isolé C1.",d:0,fin:1}]},
+'090':{id:'090',pri:'l',type:'SP',desc:'Frein à friction isolé sur bogie moteur CE2',kw:['frein','ce2'],tree:[{t:"Information - Frein isolé CE2.",d:0,fin:1}]},
+'091':{id:'091',pri:'l',type:'SP',desc:'Frein à friction isolé sur bogie porteur C2B1',kw:['frein','c2b1'],tree:[{t:"Information - Frein isolé C2B1.",d:0,fin:1}]},
+'092':{id:'092',pri:'l',type:'SP',desc:'Frein à friction isolé sur bogie porteur C2B2',kw:['frein','c2b2'],tree:[{t:"Information - Frein isolé C2B2.",d:0,fin:1}]},
+'096':{id:'096',pri:'h',type:'BP',desc:'Frein non desserré en traction',kw:['frein','desserré'],tree:[{t:"Rechercher bogie en défaut.",d:1,oui:[{t:"Isoler bogie, EFAS, page 499.",d:0,fin:1}],non:[{t:"Aucune action.",d:0,fin:1}]}]},
+'098':{id:'098',pri:'l',type:'AN',desc:'Retour maintenance demandé',kw:['maintenance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'099':{id:'099',pri:'m',type:'MA',desc:'Perte rétrovision et rétroviseurs',kw:['rétrovision'],tree:[{t:"Déclencher/enclencher CC(ALI)B-RETRO.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Évacuer voyageurs.",d:0,fin:1}]}]},
+'100':{id:'100',pri:'m',type:'AN',desc:'Perte de la fonction rétroviseur',kw:['rétroviseur'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'101':{id:'101',pri:'m',type:'MA',desc:'Perte de la fonction rétrovision',kw:['rétrovision'],tree:[{t:"Vérifier CC(ALI)CAM.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Évacuer voyageurs.",d:0,fin:1}]}]},
+'102':{id:'102',pri:'m',type:'AN',desc:'Défaut système de rétrovision',kw:['rétrovision'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'103':{id:'103',pri:'m',type:'AN',desc:'Défaut réseau rétrovision',kw:['réseau'],tree:[{t:"Déclencher/enclencher CC(ALI)B-RETRO.",d:0,fin:1}]},
+'104':{id:'104',pri:'m',type:'MA',desc:'Anomalie rétroviseurs',kw:['rétroviseur'],tree:[{t:"Contrôler caméras et témoin de vie.",d:1,oui:[{t:"1er cas.",d:0,fin:1}],non:[{t:"Évacuer 2e cas.",d:0,fin:1}]}]},
+'105':{id:'105',pri:'h',type:'BP',desc:'Une carte tachy isolée',kw:['carte','tachy'],tree:[{t:"Arrêt immédiat. CHAPITRE 4 SECOURS.",d:0,fin:1}]},
+'106':{id:'106',pri:'h',type:'MA',desc:'Défaut indicateur de vitesse cabine',kw:['indicateur','vitesse'],tree:[{t:"Vérifier IHM STM, KVB, drapeau, blocage.",d:0,fin:1}]},
+'107':{id:'107',pri:'m',type:'AN',desc:'Enregistreur cabine en défaut',kw:['enregistreur'],tree:[{t:"Vérifier CC(ALI)ENR.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'108':{id:'108',pri:'m',type:'AN',desc:'Au moins un enregistreur isolé',kw:['enregistreur'],tree:[{t:"Vérifier CC(ALI)ENR.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'109':{id:'109',pri:'m',type:'AN',desc:'Défaut sur une carte tachy',kw:['carte','tachy'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'110':{id:'110',pri:'h',type:'BP',desc:'Défaut majeur relais freinage d\'urgence',kw:['relais','freinage'],tree:[{t:"Z(SE) sur SECOURS.",d:0},{t:"Isoler bogie C2B1.",d:0},{t:"EFAS + page 499. 30 km/h.",d:0,fin:1}]},
+'111':{id:'111',pri:'h',type:'BP',desc:'Déclenchement FS/FU d\'origine indéterminée',kw:['fs','fu','déclenchement'],tree:[{t:"Si IOS 010 absent: Z(ALI-SE) sur SECOURS.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'112':{id:'112',pri:'l',type:'AN',desc:'Retour maintenance demandé',kw:['maintenance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'113':{id:'113',pri:'h',type:'BP',desc:'Défaut frein de sécurité cabine',kw:['frein','sécurité'],tree:[{t:"Vérifier CC-FSE.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Z(ALL-SE) SECOURS.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"CHAPITRE 4.",d:0,fin:1}]}]}]},
+'114':{id:'114',pri:'h',type:'BP',desc:'Défaut frein de sécurité',kw:['frein','sécurité'],tree:[{t:"Vérifier CC1(F-SE) 2 cabines.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"CHAPITRE 4.",d:0,fin:1}]}]},
+'115':{id:'115',pri:'h',type:'MA',desc:'Perte totale interphonie SAI',kw:['interphonie','sai'],tree:[{t:"Déclencher/enclencher CC3(ALI)CAR.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Évacuer terminus.",d:0,fin:1}]}]},
+'116':{id:'116',pri:'m',type:'AN',desc:'Perte du SIV de l\'autre cabine',kw:['siv'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'117':{id:'117',pri:'h',type:'MA',desc:'Perte totale sonorisation',kw:['sonorisation'],tree:[{t:"Évacuer voyageurs au terminus.",d:0,fin:1}]},
+'118':{id:'118',pri:'m',type:'AN',desc:'Perte de deux interphones SAI',kw:['interphone'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'119':{id:'119',pri:'m',type:'AN',desc:'Perte interphone(s) SAI',kw:['interphone'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'120':{id:'120',pri:'m',type:'AN',desc:'Perte totale interphonie cabine/cabine',kw:['interphonie'],tree:[{t:"Vérifier CC-RADIO et CC1(ALI)CAR.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'121':{id:'121',pri:'m',type:'AN',desc:'Perte afficheurs extérieurs/intérieurs',kw:['afficheur'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'122':{id:'122',pri:'l',type:'AN',desc:'Retour maintenance demandé',kw:['maintenance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'123':{id:'123',pri:'m',type:'AN',desc:'Perte totale vidéosurveillance',kw:['vidéosurveillance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'124':{id:'124',pri:'m',type:'AN',desc:'Perte d\'au moins une caméra',kw:['caméra'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'125':{id:'125',pri:'m',type:'AN',desc:'Défaut communication SAEIV',kw:['saeiv'],tree:[{t:"Aviser PC. Prescriptions réglementaires.",d:0,fin:1}]},
+'126':{id:'126',pri:'m',type:'AN',desc:'Anomalie informatique',kw:['informatique'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'127':{id:'127',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'128':{id:'128',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'129':{id:'129',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'130':{id:'130',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'131':{id:'131',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'132':{id:'132',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'133':{id:'133',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'134':{id:'134',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'135':{id:'135',pri:'m',type:'AN',desc:'Anomalie informatique',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'136':{id:'136',pri:'l',type:'AN',desc:'Retour maintenance demandé',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'139':{id:'139',pri:'m',type:'AN',desc:'Anomalie informatique - Non UM',kw:['um'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'141':{id:'141',pri:'m',type:'MA',desc:'Surchauffe dans une AEL',kw:['surchauffe','ael'],tree:[{t:"Vérifier CC(VT1) et CC(VT2).",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'145':{id:'145',pri:'m',type:'AN',desc:'Défaillance système télémaintenance',kw:['télémaintenance'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'150':{id:'150',pri:'m',type:'AN',desc:'Z(ALI-SE) sur SECOURS cabine',kw:['secours'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'151':{id:'151',pri:'m',type:'AN',desc:'FU dérive isolé',kw:['fu','dérive'],tree:[{t:"Information.",d:0,fin:1}]},
+'152':{id:'152',pri:'h',type:'BP',desc:'Ouverture DJ suite défaut majeur relais FS',kw:['dj','relais','fs'],tree:[{t:"Arrêt immédiat. CHAPITRE 4 SECOURS.",d:0,fin:1}]},
+'153':{id:'153',pri:'h',type:'BP',desc:'Défaut majeur relais freinage sécurité bogies porteurs',kw:['relais','porteur'],tree:[{t:"Z(CO-IS)LO ON. Isoler 2 bogies porteurs.",d:0},{t:"EFAS + page 499.",d:0,fin:1}]},
+'154':{id:'154',pri:'m',type:'MA',desc:'Absence traction due au coupleur',kw:['traction','coupleur','attelage'],tree:[{t:"Contrôler attelage.",d:1,oui:[{t:"Manœuvre Z(MV)CPL.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}],non:[{t:"Replier manuellement.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]}]},
+'155':{id:'155',pri:'l',type:'AN',desc:'Retour maintenance demandé',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'156':{id:'156',pri:'m',type:'AN',desc:'Veille automatique isolée',kw:['veille','vacma'],tree:[{t:"Aviser. VACMA toujours nécessaire.",d:0,fin:1}]},
+'160':{id:'160',pri:'h',type:'MA',desc:'Perte carte tachy cabine',kw:['carte','tachy'],tree:[{t:"Z(IS)STM-AUTO sur IS.",d:0},{t:"Évacuer voyageurs.",d:0,fin:1}]},
+'165':{id:'165',pri:'h',type:'MA',desc:'Défaut de sélection de côté',kw:['sélection','côté','porte'],tree:[{t:"Vérifier CC8-P.",d:1,oui:[{t:"BPL(AUT-OP).",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Déterminer cas.",d:0,fin:1}]}],non:[{t:"Enclencher CC8-P.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Évacuer, condamner.",d:0,fin:1}]}]}]},
+'166':{id:'166',pri:'m',type:'MA',desc:'Défaut sélection côté auto-maintien impossible',kw:['sélection'],tree:[{t:"Vérifier CC2-P.",d:1,oui:[{t:"Sélectionner BPL.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Maintenir BPL.",d:0,fin:1}]}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'167':{id:'167',pri:'h',type:'MA',desc:'Autorisation ouverture porte intempestive',kw:['porte','intempestive'],tree:[{t:"Commander fermeture portes.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Évacuer, condamner.",d:0,fin:1}]}]},
+'168':{id:'168',pri:'m',type:'MA',desc:'Défaut fermeture des portes',kw:['fermeture','porte'],tree:[{t:"Vérifier CC3-P.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Annonce, annuler sélection.",d:0,fin:1}]}]},
+'169':{id:'169',pri:'m',type:'MA',desc:'Défaut ouverture porte sur deux',kw:['ouverture','porte'],tree:[{t:"Vérifier CC(VIT)P 2 cabines.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'170':{id:'170',pri:'m',type:'MA',desc:'Défaut commande fermeture porte côté gauche',kw:['fermeture','gauche'],tree:[{t:"Annonce, annuler sélection.",d:0,fin:1}]},
+'171':{id:'171',pri:'m',type:'MA',desc:'Défaut commande fermeture porte côté droit',kw:['fermeture','droit'],tree:[{t:"Annonce, annuler sélection.",d:0,fin:1}]},
+'172':{id:'172',pri:'h',type:'MA',desc:'Défaut portes droites et gauches sur une caisse',kw:['porte','caisse'],tree:[{t:"Déclencher/enclencher CC(AUX)P et CC(ALI)P.",d:1,oui:[{t:"Annoter carnet.",d:0,fin:1}],non:[{t:"Condamner portes caisse.",d:0,fin:1}]}]},
+'173':{id:'173',pri:'h',type:'INN',desc:'Défaut porte',kw:['porte','défaut'],tree:[{t:"Commande CSL-PUP.",d:0},{t:"Commande fermeture.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Déclencher/enclencher CC(AUX)P/CC(ALI)P.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Condamner porte (ANNEXE 1).",d:0,fin:1}]}]}]},
+'174':{id:'174',pri:'l',type:'AN',desc:'Défaut mineur porte',kw:['porte','mineur'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'175':{id:'175',pri:'m',type:'AN',desc:'Porte condamnée',kw:['porte','condamnée'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'176':{id:'176',pri:'m',type:'MA',desc:'Au moins deux portes condamnées',kw:['porte','condamnée'],tree:[{t:"Arrêt 1er quai. Aviser.",d:0,fin:1}]},
+'177':{id:'177',pri:'h',type:'MA',desc:'Défaut seuil vitesse porte',kw:['seuil','vitesse'],tree:[{t:"Ne pas sélectionner côté avant arrêt.",d:0},{t:"Évacuer voyageurs.",d:0,fin:1}]},
+'181':{id:'181',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',kw:['etf','isolé'],tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'182':{id:'182',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'183':{id:'183',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'184':{id:'184',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'185':{id:'185',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'186':{id:'186',pri:'h',type:'SP',desc:'ETF X isolé (X=1 à 6)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'196':{id:'196',pri:'h',type:'MA',desc:'Défaut majeur SAEIV',kw:['saeiv'],tree:[{t:"Vérifier CC1-SAE et CC2-SAE.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Prescriptions réglementaires.",d:0,fin:1}]}]},
+'197':{id:'197',pri:'m',type:'AN',desc:'Défaut mineur SAEIV',kw:['saeiv'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'198':{id:'198',pri:'m',type:'MA',desc:'Défaut radio TETRA',kw:['radio','tetra'],tree:[{t:"Attendre relance 1 min.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser radio HS.",d:0,fin:1}]}]},
+'199':{id:'199',pri:'m',type:'MA',desc:'Défaut pupitre IHM SAE',kw:['pupitre','ihm','sae'],tree:[{t:"Déclencher/enclencher CC2-PU-SAE puis CC1-PU-SAE.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'200':{id:'200',pri:'m',type:'MA',desc:'Défaut alimentation enregistreur',kw:['enregistreur','alimentation'],tree:[{t:"Vérifier CC(AL)JENR en AEL2.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Enregistreur en défaut. Annoter fiche suiveuse.",d:0,fin:1}]}]},
+'201':{id:'201',pri:'h',type:'BP',desc:'Défaut palpage',kw:['palpage'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0},{t:"Appliquer CHAPITRE 4 SECOURS.",d:0,fin:1}]},
+'202':{id:'202',pri:'h',type:'BP',desc:'Défaut alimentation circuit traction',kw:['alimentation','traction'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'203':{id:'203',pri:'h',type:'BP',desc:'Défaut H(O-C)',kw:['h(o-c)'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'204':{id:'204',pri:'m',type:'AN',desc:'Perte fonction anti-derive',kw:['anti-derive'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'205':{id:'205',pri:'h',type:'BP',desc:'FU anti-derive intempestif',kw:['fu','anti-derive'],tree:[{t:"Z(IS)FUDER sur ISOLE.",d:1,oui:[{t:"Contrôler IOS n°151. Aviser.",d:0,fin:1}],non:[{t:"CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'206':{id:'206',pri:'h',type:'BP',desc:'Défaut commande traction',kw:['commande','traction'],tree:[{t:"Vérifier CC-TTN et CC-MP(TTF).",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+'207':{id:'207',pri:'m',type:'AN',desc:'Commande linéaire du manipulateur en défaut',kw:['manipulateur','linéaire'],tree:[{t:"Conduire par palier en traction et freinage.",d:0,fin:1}]},
+'208':{id:'208',pri:'h',type:'BP',desc:'Défaut majeur manipulateur',kw:['manipulateur'],tree:[{t:"Évacuer voyageurs en station.",d:0,fin:1}]},
+'209':{id:'209',pri:'m',type:'AN',desc:'Défaut frein d\'immobilisation',kw:['frein','immobilisation'],tree:[{t:"À chaque arrêt, placer MP(TTF) sur FMS.",d:0,fin:1}]},
+'210':{id:'210',pri:'h',type:'BP',desc:'Défaut sélection sens marche avant',kw:['sélection','marche'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'211':{id:'211',pri:'m',type:'AN',desc:'Perte totale fonction mesure de charge',kw:['mesure','charge'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'212':{id:'212',pri:'h',type:'BP',desc:'Défaut transformateur principal',kw:['transformateur'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'214':{id:'214',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',kw:['coffre','traction'],tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499. Frein électrique isolé.",d:0,fin:1}]}]},
+'215':{id:'215',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'216':{id:'216',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'217':{id:'217',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'218':{id:'218',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'219':{id:'219',pri:'h',type:'SP',desc:'Perte du coffre traction X (X=1 à 8)',tree:[{t:"RESET ETF + DESISOL PCE X.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Page 499.",d:0,fin:1}]}]},
+'220':{id:'220',pri:'h',type:'BP',desc:'Perte de deux coffres traction',kw:['coffre','traction'],tree:[{t:"Page 499. Frein électrique 2 essieux en défaut.",d:0,fin:1}]},
+'221':{id:'221',pri:'h',type:'BP',desc:'Perte de trois coffres traction',kw:['coffre'],tree:[{t:"Page 499. Frein électrique 3 essieux en défaut.",d:0},{t:"Évacuer voyageurs.",d:0,fin:1}]},
+'222':{id:'222',pri:'h',type:'BP',desc:'Perte d\'au moins quatre coffres traction',kw:['coffre'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'223':{id:'223',pri:'m',type:'AN',desc:'Défaut commande mode secours',kw:['mode','secours'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'224':{id:'224',pri:'m',type:'AN',desc:'Défaut de la ventilation TFP',kw:['ventilation','tfp'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'225':{id:'225',pri:'m',type:'AN',desc:'Défaut traction conduisant à la perte d\'un CVS',kw:['traction','cvs'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'226':{id:'226',pri:'h',type:'BP',desc:'Défaut traction conduisant à la perte des 2 CVS',kw:['traction','cvs'],tree:[{t:"Arrêt immédiat. DEMANDER SECOURS.",d:0,fin:1}]},
+'227':{id:'227',pri:'m',type:'AN',desc:'Défaut descente automatique pantographe',kw:['descente','pantographe'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'228':{id:'228',pri:'h',type:'BP',desc:'Descente automatique pantographe intempestive',kw:['pantographe','intempestive'],tree:[{t:"Arrêt 1er quai. DEMANDER SECOURS.",d:0,fin:1}]},
+'229':{id:'229',pri:'h',type:'BP',desc:'Défaut d\'un contacteur de ligne',kw:['contacter','ligne'],tree:[{t:"Arrêt 1er quai. DEMANDER SECOURS.",d:0,fin:1}]},
+'230':{id:'230',pri:'h',type:'BP',desc:'Défaillance d\'un BM imposant une limitation de vitesse',kw:['bm','limitation'],tree:[{t:"Page 499. Frein électrique 2 essieux en défaut.",d:0,fin:1}]},
+'231':{id:'231',pri:'l',type:'AN',desc:'Retour maintenance demandé',tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'232':{id:'232',pri:'m',type:'MA',desc:'Défaut capteur MSAV',kw:['capteur','msav'],tree:[{t:"Vérifier CC-CE en ABT.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Aviser.",d:0,fin:1}]}]},
+'233':{id:'233',pri:'h',type:'BP',desc:'Défaut interne moteur de traction',kw:['moteur','traction'],tree:[{t:"Visiter rame. Vérifier fumée.",d:0},{t:"Page 499. 10 km/h max. Évacuer.",d:0,fin:1}]},
+'234':{id:'234',pri:'h',type:'INN',desc:'Défaut d\'annulation de déblocage d\'une ligne',kw:['annulation','déblocage'],tree:[{t:"Arrêt 1er quai. Aviser.",d:0,fin:1}]},
+'235':{id:'235',pri:'m',type:'INN',desc:'Défaut d\'annulation de déblocage d\'une porte',kw:['annulation','porte'],tree:[{t:"Aviser.",d:0,fin:1}]},
+'236':{id:'236',pri:'h',type:'INN',desc:'BP d\'annulation de déblocage enfoncé',kw:['bp','annulation'],tree:[{t:"Arrêt 1er quai. Aviser.",d:0,fin:1}]},
+'237':{id:'237',pri:'h',type:'INN',desc:'Fonction section de séparation en défaut',kw:['section','séparation'],tree:[{t:"Arrêt 1er quai. Mode manuel requis.",d:0,fin:1}]},
+'238':{id:'238',pri:'m',type:'INN',desc:'Autorisation déverrouillage porte à vitesse non nulle',kw:['déverrouillage'],tree:[{t:"Aviser.",d:0,fin:1}]},
+'239':{id:'239',pri:'m',type:'INN',desc:'Autorisation déverrouillage portes à vitesse non nulle',kw:['déverrouillage'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'241':{id:'241',pri:'m',type:'MA',desc:'Charge batterie insuffisante à la PJ',kw:['batterie','pj'],tree:[{t:"Aviser agent sédentaire. Rame inutilisable.",d:0,fin:1}]},
+'242':{id:'242',pri:'h',type:'MA',desc:'Accès conducteur permanent',kw:['accès','conducteur'],tree:[{t:"Vérifier verrou accès conducteur.",d:1,oui:[{t:"Dépannage terminé.",d:0,fin:1}],non:[{t:"Condamner porte (ANNEXE 1).",d:0,fin:1}]}]},
+'243':{id:'243',pri:'h',type:'BP',desc:'Commutateur Z(SE) sur position SECOURS',kw:['z(se)','secours'],tree:[{t:"Vérifier si position justifiée.",d:1,oui:[{t:"Évacuer. 30 km/h max.",d:0,fin:1}],non:[{t:"Z(SE) sur NORMAL.",d:0,fin:1}]}]},
+'244':{id:'244',pri:'m',type:'AN',desc:'Perte d\'un équipement 400 V',kw:['400v'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'245':{id:'245',pri:'m',type:'MA',desc:'Défaut refroidissement STM',kw:['refroidissement','stm'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'246':{id:'246',pri:'m',type:'AN',desc:'Isolation surveillance UM homogène',kw:['um','isolation'],tree:[{t:"Aviser PC.",d:0,fin:1}]},
+'247':{id:'247',pri:'h',type:'BP',desc:'Présence d\'une composition d\'UM hétérogène',kw:['um','hétérogène'],tree:[{t:"Séparer éléments en UM.",d:0},{t:"Z(IS-UM-HO) sur ISOLE si US.",d:0,fin:1}]}
 };
-for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]};}
-const ALIAS={'boite chaude':'061','boîte chaude':'061','surchauffe':'061','échauffement essieu':'061','roue chaude':'061','frein friction':'083','bogie ce1':'083','perte frein':'083','batterie faible':'017','batterie':'017','tension basse':'017','urgence':'002','relais freinage':'002','défaut majeur':'002','porte defaut':'173','portière':'173','porte bloquée':'173','fs fu':'111','disjoncteur':'111','déclenchement':'111','boucle sécurité':'000','portes bloquées':'000'};
 
-// ==================== ÉTAT GLOBAL ====================
-let currentIOS=null,guideActive=false,guideSteps=[],stepIndex=0,listening=false,speakingFlag=false,micActive=true,recognition=null,recognitionTimeout=null,panelExplicitlyOpened=false;
-let procedureStartTime=null,procedureEndTime=null,procedureStepsLog=[];
+// Génération des IOS manquants
+for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',type:'AN',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]}}
 
+const ALIAS={'boite chaude':'061','surchauffe':'061','essieu chaud':'061','frein ce1':'083','frein c1':'084','frein ce2':'085','bogie ce1':'083','batterie faible':'017','batterie':'017','urgence':'002','porte defaut':'173','porte bloquée':'173','fs fu':'111','disjoncteur':'111','boucle sécurité':'000','climatisation':'062','pantographe':'053','rétrovision':'099','kvb':'077','stm':'077','saeiv':'125','attelage':'154','patins':'071','sable':'057','traction':'206','coffre traction':'214','anti-derive':'205','transformateur':'212','moteur traction':'233','section séparation':'237'};
+
+let currentIOS=null,guideActive=false,guideSteps=[],stepIndex=0,listening=false,speakingFlag=false,micActive=true,recognition=null,recognitionTimeout=null,procedureStartTime=null,procedureEndTime=null,procedureStepsLog=[];
 const synth=window.speechSynthesis,voiceSupport=!!synth;
 
-// DOM
-const micWaveContainer=document.getElementById('micWaveContainer'),waveBars=document.getElementById('waveBars');
-const statusDot=document.getElementById('statusDot'),statusText=document.getElementById('statusText');
-const panel=document.getElementById('infoPanel'),panelOverlay=document.getElementById('panelOverlay'),panelToggle=document.getElementById('panelToggle');
-const guideBar=document.getElementById('guideBar'),iosCard=document.getElementById('iosCard'),toastEl=document.getElementById('toastMsg');
-const activeIosDisplay=document.getElementById('activeIosDisplay');
-const iosListOverlay=document.getElementById('iosListOverlay'),recapOverlay=document.getElementById('recapOverlay');
-const endQuestions=document.getElementById('endQuestions');
-
-function toast(msg,d=3000){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toastEl._timeout);toastEl._timeout=setTimeout(()=>toastEl.classList.remove('show'),d);}
-
-function updateUIForState(state){
-  micWaveContainer.classList.remove('listening','speaking','error');waveBars.classList.remove('idle','listening','speaking','error');
-  switch(state){
-    case'listen':micWaveContainer.classList.add('listening');waveBars.classList.add('listening');statusDot.classList.add('active');statusDot.classList.remove('speaking');statusDot.style.background='';statusText.innerText='🎙️ ÉCOUTE ACTIVE ...';break;
-    case'speak':micWaveContainer.classList.add('speaking');waveBars.classList.add('speaking');statusDot.classList.add('speaking');statusDot.classList.remove('active');statusDot.style.background='';statusText.innerText='📢 PARLE ...';break;
-    case'error':micWaveContainer.classList.add('error');waveBars.classList.add('error');statusDot.classList.remove('active','speaking');statusDot.style.background='';setTimeout(()=>{micWaveContainer.classList.remove('error');waveBars.classList.remove('error');waveBars.classList.add('idle');},500);break;
-    default:waveBars.classList.add('idle');statusDot.classList.remove('active','speaking');statusDot.style.background='#475569';statusText.innerText='Micro actif · Dites bonjour';
-  }
+function toast(msg,d=3000){document.getElementById('toastMsg').textContent=msg;document.getElementById('toastMsg').classList.add('show');clearTimeout(document.getElementById('toastMsg')._timeout);document.getElementById('toastMsg')._timeout=setTimeout(()=>document.getElementById('toastMsg').classList.remove('show'),d)}
+function updateUIForState(s){
+  const wb=document.getElementById('waveBars'),mc=document.getElementById('micWaveContainer'),sd=document.getElementById('statusDot'),st=document.getElementById('statusText');
+  mc.classList.remove('listening','speaking','error');wb.classList.remove('idle','listening','speaking','error');
+  if(s==='listen'){mc.classList.add('listening');wb.classList.add('listening');sd.classList.add('active');sd.classList.remove('speaking');sd.style.background='';st.innerText='🎙️ ÉCOUTE ACTIVE ...'}
+  else if(s==='speak'){mc.classList.add('speaking');wb.classList.add('speaking');sd.classList.add('speaking');sd.classList.remove('active');sd.style.background='';st.innerText='📢 PARLE ...'}
+  else if(s==='error'){mc.classList.add('error');wb.classList.add('error');sd.classList.remove('active','speaking');sd.style.background='';setTimeout(()=>{mc.classList.remove('error');wb.classList.remove('error');wb.classList.add('idle')},500)}
+  else{wb.classList.add('idle');sd.classList.remove('active','speaking');sd.style.background='#475569';st.innerText='Micro actif · Dites bonjour'}
 }
-
-// Panneau
-function openPanel(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');panelOverlay.classList.add('active');panelToggle.classList.add('panel-open');panelExplicitlyOpened=true;}
-function closePanel(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');panelOverlay.classList.remove('active');panelToggle.classList.remove('panel-open');panelExplicitlyOpened=false;}
-function togglePanel(){panel.classList.contains('open')?closePanel():openPanel();}
-
-// Formatage heure
-function formatTime(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-function formatDate(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
-
-// Lecture améliorée
-function speakText(txt,callback){
-  if(!voiceSupport){if(callback)callback();return;}
+function openPanel(){document.getElementById('infoPanel').classList.add('open');document.getElementById('infoPanel').setAttribute('aria-hidden','false');document.getElementById('panelOverlay').classList.add('active');document.getElementById('panelToggle').classList.add('panel-open')}
+function closePanel(){document.getElementById('infoPanel').classList.remove('open');document.getElementById('infoPanel').setAttribute('aria-hidden','true');document.getElementById('panelOverlay').classList.remove('active');document.getElementById('panelToggle').classList.remove('panel-open')}
+function togglePanel(){document.getElementById('infoPanel').classList.contains('open')?closePanel():openPanel()}
+function formatTime(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+function formatDate(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function speakText(txt,cb){
+  if(!voiceSupport){if(cb)cb();return}
   if(speakingFlag)synth.cancel();
-  let clean=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'');
-  // km/h → kilomètres par heure, art. → article
-  clean=clean.replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ');
-  // Lire les numéros IOS comme un seul nombre
-  clean=clean.replace(/IOS\s*(\d)(\d)(\d)/gi,(m,d1,d2,d3)=>{
-    let num=parseInt(d1+d2+d3,10);
-    return 'IOS '+num;
-  });
-  // Enlever les zéros devant pour la lecture
-  clean=clean.replace(/\b0+(\d+)/g,'$1');
-  
-  const utter=new SpeechSynthesisUtterance(clean);
-  utter.lang='fr-FR';utter.rate=0.9;utter.volume=1;
-  const voices=synth.getVoices();const frenchVoice=voices.find(v=>v.lang.startsWith('fr'));
-  if(frenchVoice)utter.voice=frenchVoice;
-  speakingFlag=true;updateUIForState('speak');
-  utter.onend=()=>{speakingFlag=false;updateUIForState('idle');if(micActive&&!listening)startListening();if(callback)callback();};
-  utter.onerror=()=>{speakingFlag=false;updateUIForState('error');if(micActive&&!listening)startListening();if(callback)callback();};
-  synth.speak(utter);
+  let c=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'');c=c.replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ');c=c.replace(/IOS\s*(\d)(\d)(\d)/gi,(m,d1,d2,d3)=>'IOS '+parseInt(d1+d2+d3,10));c=c.replace(/\b0+(\d+)/g,'$1');
+  const u=new SpeechSynthesisUtterance(c);u.lang='fr-FR';u.rate=0.9;u.volume=1;const v=synth.getVoices(),fv=v.find(x=>x.lang.startsWith('fr'));if(fv)u.voice=fv;
+  speakingFlag=true;updateUIForState('speak');u.onend=()=>{speakingFlag=false;updateUIForState('idle');if(micActive&&!listening)startListening();if(cb)cb()};u.onerror=()=>{speakingFlag=false;updateUIForState('error');if(micActive&&!listening)startListening();if(cb)cb()};synth.speak(u)
 }
+function addMessage(text,role){const c=document.getElementById('chatMsgs'),d=document.createElement('div');d.className=`message ${role}`;d.innerHTML=`<div class="bubble">${text}</div>`;c.appendChild(d);c.scrollTop=c.scrollHeight;while(c.children.length>50)c.removeChild(c.firstChild)}
+function updateActiveIosDisplay(ios,stepInfo=null){const ad=document.getElementById('activeIosDisplay');if(!ios){ad.classList.remove('show');return}ad.classList.add('show');document.getElementById('activeIosId').textContent=`IOS-${ios.id}`;document.getElementById('activeIosDesc').textContent=ios.desc;let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l'),pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO'),pEl=document.getElementById('activeIosPrio');pEl.textContent=pt;pEl.className=`prio-badge ${pc}`;document.getElementById('activeIosSteps').textContent=`📋 ${ios.tree.length} étapes`;document.getElementById('activeIosStatus').textContent=stepInfo||''}
+function hideActiveIosDisplay(){document.getElementById('activeIosDisplay').classList.remove('show')}
+function findIOSByQuery(query){let q=query.toLowerCase().trim(),match=q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);if(match){let id=match[1].padStart(3,'0');if(IOS[id])return IOS[id]}for(let[alias,id]of Object.entries(ALIAS)){if(q.includes(alias))return IOS[id]}for(let ios of Object.values(IOS)){if(ios.desc.toLowerCase().includes(q))return ios;if(ios.kw&&ios.kw.some(k=>q.includes(k)))return ios}return null}
+function showIOSDetails(ios){currentIOS=ios;guideActive=false;document.getElementById('guideBar').classList.remove('active');document.getElementById('iosCard').classList.add('show');document.getElementById('iosId').innerHTML=`IOS-${ios.id}`;document.getElementById('iosDesc').innerText=ios.desc;let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l'),pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO');document.getElementById('iosPrio').innerHTML=pt;document.getElementById('iosPrio').className=`prio-badge ${pc}`;let bodyHtml=`<div style="font-family:monospace;font-size:0.75rem;">📋 ${ios.tree.length} étapes de guidage.</div>`;if(ios.pri==='h')bodyHtml+='<div style="color:#ef4444;margin-top:10px;font-weight:600;">⚠️ Procédure d\'urgence</div>';bodyHtml+='<div style="margin-top:10px;font-size:0.8rem;color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b>.</div>';document.getElementById('iosBody').innerHTML=bodyHtml;addMessage(`🔍 <strong>IOS ${ios.id}</strong> — ${ios.desc}.`,'ai');speakText(`IOS ${parseInt(ios.id,10)}. ${ios.desc.substring(0,80)}.`);updateActiveIosDisplay(ios);procedureStartTime=null;procedureEndTime=null;procedureStepsLog=[]}
+function buildIosList(){const s=document.getElementById('iosListScroll');s.innerHTML='';const ids=Object.keys(IOS).sort((a,b)=>parseInt(a)-parseInt(b));for(let id of ids){const ios=IOS[id],d=document.createElement('div');d.className='ios-list-item';const pc=ios.pri==='h'?'h':(ios.pri==='m'?'m':'l'),pt=ios.pri==='h'?'URG':(ios.pri==='m'?'MOY':'INF');d.innerHTML=`<span class="ios-list-num">IOS-${ios.id}</span><span class="ios-list-desc">${ios.desc}</span><span class="ios-list-prio ${pc}">${pt}</span>`;d.addEventListener('click',()=>{closeIosList();showIOSDetails(ios)});s.appendChild(d)}}
+function openIosList(){buildIosList();document.getElementById('iosListOverlay').classList.add('active')}
+function closeIosList(){document.getElementById('iosListOverlay').classList.remove('active')}
+function generateRecap(){if(!currentIOS||!procedureStartTime)return'';let e=procedureEndTime||new Date();return`═══════════════════════════════════\n  BULLETIN DE SERVICE - IAOS T4\n═══════════════════════════════════\n\n📅 Date : ${formatDate(procedureStartTime)}\n🔧 IOS : ${currentIOS.id}\n📝 Description : ${currentIOS.desc}\n⚠️ Priorité : ${currentIOS.pri==='h'?'URGENCE':(currentIOS.pri==='m'?'MOYEN':'INFO')}\n⏱️ Début : ${formatTime(procedureStartTime)}\n⏱️ Fin   : ${formatTime(e)}\n⏱️ Durée : ${Math.round((e-procedureStartTime)/60000)} min\n📋 Étapes :\n${procedureStepsLog.map((s,i)=>`   ${i+1}. ${s}`).join('\n')}\n✅ Statut : Terminé\n`}
+function showRecap(){document.getElementById('recapContent').textContent=generateRecap();document.getElementById('recapOverlay').classList.add('active')}
+function closeRecap(){document.getElementById('recapOverlay').classList.remove('active')}
+function printRecap(){const c=document.getElementById('recapContent').textContent,w=window.open('','','width=700,height=600');w.document.write(`<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">${c}</pre>`);w.document.close();w.print()}
+function showEndQuestions(){document.getElementById('endQuestions').classList.add('active')}
+function hideEndQuestions(){document.getElementById('endQuestions').classList.remove('active')}
+function startGuidage(){if(!currentIOS)return;if(guideActive)return;guideActive=true;guideSteps=[...currentIOS.tree];stepIndex=0;procedureStartTime=new Date();procedureEndTime=null;procedureStepsLog=[];document.getElementById('guideBar').classList.add('active');hideEndQuestions();updateActiveIosDisplay(currentIOS,'🟢 En cours');renderStep();addMessage("🚀 Guidage lancé pour IOS "+currentIOS.id,'ai')}
+function renderStep(){if(!guideActive||stepIndex>=guideSteps.length){finishProcedure("✅ Fin de la procédure.");return}let step=guideSteps[stepIndex];if(step.fin){finishProcedure(step.t||"Procédure achevée.");return}document.getElementById('guideStepLabel').innerHTML=`ÉTAPE ${stepIndex+1}/${guideSteps.length} · IOS ${currentIOS.id}`;document.getElementById('guideText').innerHTML=step.t;document.getElementById('yesBtn').style.display=step.d?'inline-flex':'none';document.getElementById('noBtn').style.display=step.d?'inline-flex':'none';addMessage(`📌 ${step.t}`,'ai');procedureStepsLog.push(step.t);speakText(step.t);updateActiveIosDisplay(currentIOS,`Étape ${stepIndex+1}/${guideSteps.length}`)}
+function answerYes(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(true)}
+function answerNo(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(false)}
+function processAnswer(yes){let step=guideSteps[stepIndex],next=yes?(step.oui||[]):(step.non||[]);addMessage(yes?"✓ OUI":"✗ NON",'user');procedureStepsLog.push(yes?"OUI":"NON");if(next.length===0){finishProcedure("✅ Fin de la procédure.");return}guideSteps=next;stepIndex=0;renderStep()}
+function nextStepAction(){if(!guideActive)return;let step=guideSteps[stepIndex];if(step&&step.d){speakText("Veuillez répondre par oui ou par non.");return}stepIndex++;renderStep()}
+function prevStepAction(){if(guideActive&&stepIndex>0){stepIndex--;renderStep()}else speakText("Première étape.")}
+function finishProcedure(msg){guideActive=false;procedureEndTime=new Date();document.getElementById('guideBar').classList.remove('active');addMessage(msg,'ai');speakText("Fin de la procédure.");if(currentIOS)addMessage(`🏁 Diagnostic terminé pour IOS ${currentIOS.id}.`,'ai');updateActiveIosDisplay(currentIOS,'✅ Terminé');showEndQuestions()}
+function cancelProcedure(){guideActive=false;document.getElementById('guideBar').classList.remove('active');hideEndQuestions();addMessage("❌ Procédure annulée.",'ai');speakText("Procédure annulée.");updateActiveIosDisplay(currentIOS,'❌ Annulé')}
+function homeReset(){cancelProcedure();currentIOS=null;document.getElementById('iosCard').classList.remove('show');document.getElementById('searchInput').value='';hideActiveIosDisplay();hideEndQuestions();addMessage("🏠 Retour accueil.",'ai');speakText("Retour à l'accueil.")}
 
-// Messages chat
-function addMessage(text,role){
-  const container=document.getElementById('chatMsgs');
-  const div=document.createElement('div');div.className=`message ${role}`;div.innerHTML=`<div class="bubble">${text}</div>`;
-  container.appendChild(div);container.scrollTop=container.scrollHeight;
-  while(container.children.length>50)container.removeChild(container.firstChild);
-}
+const CP={salutation:[/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|salamou?\s*al[ae]ykoum?|wesh|yo)\b/i],heure:[/\b(?:quelle heure|il est quelle heure|donne l'heure|heure)\b/i],date:[/\b(?:quelle date|donne la date|date aujourd'hui|date|quel jour)\b/i],liste_ios:[/\b(?:liste des ios|tous les ios|affiche la liste|liste ios)\b/i],demarrer:[/\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute)\b/i],suivant:[/\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé)\b/i],precedent:[/\b(?:précédent|reviens|retour|en arrière|recule|back|remonte)\b/i],oui:[/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i],non:[/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i],annuler:[/\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i],accueil:[/\b(?:accueil|menu|retour accueil|home|reset)\b/i],repeter:[/\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i],aide:[/\b(?:aide|help|commandes|options|quoi dire)\b/i]};
+function isCM(t,ty){const p=CP[ty];return p?p.some(r=>r.test(t)):false}
+function processVoiceCommand(txt){let l=txt.toLowerCase().trim();addMessage(`🎤 "${txt}"`,'user');if(isCM(l,'salutation')){if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)){addMessage("👋 Wa aleykoum salam.",'ai');speakText("Wa aleykoum salam.");return}speakText("Bonjour ! IAOS T4 à votre service.");return}if(isCM(l,'heure')){speakText(`Il est ${formatTime(new Date())}.`);return}if(isCM(l,'date')){speakText(`Nous sommes le ${formatDate(new Date())}.`);return}if(isCM(l,'liste_ios')){openIosList();return}if(isCM(l,'aide')){speakText("Commandes: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste.");return}if(isCM(l,'annuler')){cancelProcedure();return}if(isCM(l,'accueil')){homeReset();return}if(isCM(l,'demarrer')){if(currentIOS&&!guideActive)startGuidage();else speakText("Cherchez d'abord un IOS.");return}if(isCM(l,'oui')&&!isCM(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerYes();return}if(isCM(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerNo();return}if(isCM(l,'suivant')&&!isCM(l,'non')&&!isCM(l,'precedent')){if(guideActive)nextStepAction();return}if(isCM(l,'precedent')){if(guideActive)prevStepAction();return}if(isCM(l,'repeter')){if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);return}let f=findIOSByQuery(l);if(f)showIOSDetails(f);else speakText("Aucun IOS trouvé.")}
 
-// Affichage IOS sur écran principal
-function updateActiveIosDisplay(ios,stepInfo=null){
-  if(!ios){activeIosDisplay.classList.remove('show');return;}
-  activeIosDisplay.classList.add('show');
-  document.getElementById('activeIosId').textContent=`IOS-${ios.id}`;
-  document.getElementById('activeIosDesc').textContent=ios.desc;
-  let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l');
-  let pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO');
-  let pEl=document.getElementById('activeIosPrio');pEl.textContent=pt;pEl.className=`prio-badge ${pc}`;
-  document.getElementById('activeIosSteps').textContent=`📋 ${ios.tree.length} étapes`;
-  document.getElementById('activeIosStatus').textContent=stepInfo||'';
-}
-
-// Recherche IOS
-function findIOSByQuery(query){
-  let q=query.toLowerCase().trim();
-  let match=q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);
-  if(match){let id=match[1].padStart(3,'0');if(IOS[id])return IOS[id];}
-  for(let[alias,id]of Object.entries(ALIAS)){if(q.includes(alias))return IOS[id];}
-  for(let ios of Object.values(IOS)){if(ios.desc.toLowerCase().includes(q))return ios;if(ios.kw&&ios.kw.some(k=>q.includes(k)))return ios;}
-  if(q.length>=3){for(let ios of Object.values(IOS)){if(ios.desc.toLowerCase().includes(q.substring(0,3)))return ios;if(ios.kw&&ios.kw.some(k=>k.includes(q.substring(0,3))))return ios;}}
-  return null;
-}
-
-function showIOSDetails(ios){
-  currentIOS=ios;guideActive=false;guideBar.classList.remove('active');iosCard.classList.add('show');
-  document.getElementById('iosId').innerHTML=`IOS-${ios.id}`;document.getElementById('iosDesc').innerText=ios.desc;
-  let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l');
-  let pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO');
-  document.getElementById('iosPrio').innerHTML=pt;document.getElementById('iosPrio').className=`prio-badge ${pc}`;
-  let bodyHtml=`<div style="font-family:monospace;font-size:0.75rem;">📋 ${ios.tree.length} étapes de guidage disponibles.</div>`;
-  if(ios.pri==='h')bodyHtml+='<div style="color:#ef4444;margin-top:10px;font-weight:600;">⚠️ Procédure d\'urgence</div>';
-  bodyHtml+='<div style="margin-top:10px;font-size:0.8rem;color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b> ou cliquez sur <b>GUIDAGE</b>.</div>';
-  document.getElementById('iosBody').innerHTML=bodyHtml;
-  addMessage(`🔍 <strong>IOS ${ios.id}</strong> — ${ios.desc}. Dites "démarrer le guidage".`,'ai');
-  speakText(`IOS ${parseInt(ios.id,10)}. ${ios.desc.substring(0,80)}. Dites démarrer le guidage.`);
-  updateActiveIosDisplay(ios);
-  procedureStartTime=null;procedureEndTime=null;procedureStepsLog=[];
-}
-
-// Liste des IOS
-function buildIosList(){
-  const scroll=document.getElementById('iosListScroll');scroll.innerHTML='';
-  const ids=Object.keys(IOS).sort((a,b)=>parseInt(a)-parseInt(b));
-  for(let id of ids){
-    const ios=IOS[id];
-    const div=document.createElement('div');div.className='ios-list-item';
-    const pc=ios.pri==='h'?'h':(ios.pri==='m'?'m':'l');
-    const pt=ios.pri==='h'?'URG':(ios.pri==='m'?'MOY':'INF');
-    div.innerHTML=`<span class="ios-list-num">IOS-${ios.id}</span><span class="ios-list-desc">${ios.desc}</span><span class="ios-list-prio ${pc}">${pt}</span>`;
-    div.addEventListener('click',()=>{
-      closeIosList();showIOSDetails(ios);
-    });
-    scroll.appendChild(div);
-  }
-}
-function openIosList(){buildIosList();iosListOverlay.classList.add('active');}
-function closeIosList(){iosListOverlay.classList.remove('active');}
-
-// Récapitulatif
-function generateRecap(){
-  if(!currentIOS||!procedureStartTime)return'';
-  let end=procedureEndTime||new Date();
-  let recap=`═══════════════════════════════════
-  BULLETIN DE SERVICE - IAOS T4
-═══════════════════════════════════
-
-📅 Date : ${formatDate(procedureStartTime)}
-
-🔧 IOS : ${currentIOS.id}
-📝 Description : ${currentIOS.desc}
-⚠️ Priorité : ${currentIOS.pri==='h'?'URGENCE':(currentIOS.pri==='m'?'MOYEN':'INFO')}
-
-⏱️ Heure de début : ${formatTime(procedureStartTime)}
-⏱️ Heure de fin   : ${formatTime(end)}
-⏱️ Durée totale   : ${Math.round((end-procedureStartTime)/60000)} minutes
-
-📋 Étapes effectuées :
-${procedureStepsLog.map((s,i)=>`   ${i+1}. ${s}`).join('\n')}
-
-✅ Statut : Procédure terminée
-`;
-  return recap;
-}
-function showRecap(){
-  const content=document.getElementById('recapContent');
-  content.textContent=generateRecap();
-  recapOverlay.classList.add('active');
-}
-function closeRecap(){recapOverlay.classList.remove('active');}
-function printRecap(){
-  const content=document.getElementById('recapContent').textContent;
-  const win=window.open('','','width=700,height=600');
-  win.document.write(`<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">${content}</pre>`);
-  win.document.close();win.print();
-}
-
-// Questions fin de procédure
-function showEndQuestions(){
-  endQuestions.classList.add('active');
-}
-function hideEndQuestions(){
-  endQuestions.classList.remove('active');
-}
-
-// Guidage
-function startGuidage(){
-  if(!currentIOS){addMessage("Aucun IOS actif.",'ai');speakText("Aucun IOS sélectionné.");return;}
-  if(guideActive){addMessage("Guidage déjà en cours.",'ai');return;}
-  guideActive=true;guideSteps=[...currentIOS.tree];stepIndex=0;
-  procedureStartTime=new Date();procedureEndTime=null;procedureStepsLog=[];
-  guideBar.classList.add('active');hideEndQuestions();
-  updateActiveIosDisplay(currentIOS,'🟢 En cours');
-  renderStep();
-  addMessage("🚀 <strong>Guidage lancé</strong> pour IOS "+currentIOS.id,'ai');
-}
-function renderStep(){
-  if(!guideActive||stepIndex>=guideSteps.length){finishProcedure("✅ Fin de la procédure.");return;}
-  let step=guideSteps[stepIndex];
-  if(step.fin){finishProcedure(step.t||"Procédure achevée.");return;}
-  document.getElementById('guideStepLabel').innerHTML=`ÉTAPE ${stepIndex+1}/${guideSteps.length} · IOS ${currentIOS.id}`;
-  document.getElementById('guideText').innerHTML=step.t;
-  document.getElementById('yesBtn').style.display=step.d?'inline-flex':'none';
-  document.getElementById('noBtn').style.display=step.d?'inline-flex':'none';
-  addMessage(`📌 Étape ${stepIndex+1}: ${step.t}`,'ai');
-  procedureStepsLog.push(step.t);
-  speakText(step.t);
-  updateActiveIosDisplay(currentIOS,`Étape ${stepIndex+1}/${guideSteps.length}`);
-}
-function answerYes(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(true);}
-function answerNo(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(false);}
-function processAnswer(yes){
-  let step=guideSteps[stepIndex];let next=yes?(step.oui||[]):(step.non||[]);
-  addMessage(yes?"✓ OUI":"✗ NON",'user');
-  procedureStepsLog.push(yes?"Réponse: OUI":"Réponse: NON");
-  if(next.length===0){finishProcedure("✅ Fin de la procédure.");return;}
-  guideSteps=next;stepIndex=0;renderStep();
-}
-function nextStepAction(){
-  if(!guideActive)return;
-  let step=guideSteps[stepIndex];
-  if(step&&step.d){speakText("Veuillez répondre par oui ou par non.");addMessage("⚠️ Cette étape nécessite oui/non.",'ai');return;}
-  stepIndex++;renderStep();
-}
-function prevStepAction(){if(guideActive&&stepIndex>0){stepIndex--;renderStep();}else{speakText("Première étape.");}}
-function finishProcedure(msg){
-  guideActive=false;procedureEndTime=new Date();guideBar.classList.remove('active');
-  addMessage(msg,'ai');speakText("Fin de la procédure. "+msg.replace(/[✅🚨]/g,''));
-  if(currentIOS){addMessage(`🏁 Diagnostic terminé pour IOS ${currentIOS.id}.`,'ai');}
-  updateActiveIosDisplay(currentIOS,'✅ Terminé');
-  showEndQuestions();
-}
-function cancelProcedure(){
-  guideActive=false;guideBar.classList.remove('active');hideEndQuestions();
-  addMessage("❌ Procédure annulée.",'ai');speakText("Procédure annulée.");
-  updateActiveIosDisplay(currentIOS,'❌ Annulé');
-}
-function homeReset(){
-  cancelProcedure();currentIOS=null;iosCard.classList.remove('show');
-  document.getElementById('searchInput').value='';
-  updateActiveIosDisplay(null);
-  addMessage("🏠 Retour accueil.",'ai');speakText("Retour à l'accueil.");
-}
-
-// Commandes vocales
-const COMMAND_PATTERNS={
-  salutation:[/\b(?:bonjour|salut|salam|salem|coucou|hello|hi|hey|bonsoir|salamou? al[ae]ykoum?|salamou? aleikoum?|wesh|yo)\b/i],
-  heure:[/\b(?:quelle heure|il est quelle heure|donne l'heure|heure actuelle|heure|montre l'heure|dis l'heure)\b/i],
-  date:[/\b(?:quelle date|on est quel jour|donne la date|date aujourd'hui|date|quel jour|affiche la date)\b/i],
-  liste_ios:[/\b(?:liste des ios|tous les ios|affiche la liste|montre les ios|liste complète|voir tous les ios|liste ios)\b/i],
-  demarrer:[/\b(?:démarrer|démarre|commencer|lance|guidage|guide|start|go|on y va|c'est parti|exécute|procédure)\b/i],
-  suivant:[/\b(?:suivant|passe à la suite|étape suivante|après|ensuite|prochaine|la suite|continuer|continue|j'ai fini|c'est fait|ok|c'est bon|d'accord|ok suivant|next|j'ai terminé|terminé|effectué)\b/i],
-  precedent:[/\b(?:précédent|reviens|retour|en arrière|recule|back|étape d'avant|remonte|erreur)\b/i],
-  oui:[/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|absolument|confirmé|validé|présent|allumé|fonctionne|ça marche|actif)\b/i],
-  non:[/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|néant|marche pas|désactivé|inactif)\b/i],
-  annuler:[/\b(?:annuler|stop|arrête|interrompt|abandonne|abort|cancel|termine|quitte|j'arrête)\b/i],
-  accueil:[/\b(?:accueil|menu|retour accueil|home|reset|recommencer)\b/i],
-  repeter:[/\b(?:répète|redis|encore|répète ça|what|say again|repeat|quoi|pardon|hein|j'ai pas compris|peux-tu répéter|reformule)\b/i],
-  aide:[/\b(?:aide|help|commandes|options|quoi dire|comment faire|liste des commandes)\b/i]
-};
-function isCommandMatch(text,type){const p=COMMAND_PATTERNS[type];return p?p.some(r=>r.test(text)):false;}
-
-function processVoiceCommand(txt){
-  let lower=txt.toLowerCase().trim();
-  addMessage(`🎤 "${txt}"`,'user');
-
-  // Salutations
-  if(isCommandMatch(lower,'salutation')){
-    if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(lower)){
-      addMessage("👋 Wa aleykoum salam. IAOS T4 à votre service.",'ai');
-      speakText("Wa aleykoum salam. IAOS T4 à votre service.");return;
-    }
-    const g=["Bonjour ! IAOS T4 à votre service. Dites un numéro IOS.","Salut ! Prêt à vous assister.","Bonjour. Dites-moi quel code IOS vous concerne."];
-    addMessage(`👋 ${g[0]}`,'ai');speakText(g[Math.floor(Math.random()*g.length)]);return;
-  }
-
-  // Heure
-  if(isCommandMatch(lower,'heure')){
-    const now=new Date();const h=formatTime(now);
-    addMessage(`🕐 Il est ${h}.`,'ai');speakText(`Il est ${h}.`);return;
-  }
-
-  // Date
-  if(isCommandMatch(lower,'date')){
-    const now=new Date();const d=formatDate(now);
-    addMessage(`📅 Nous sommes le ${d}.`,'ai');speakText(`Nous sommes le ${d}.`);return;
-  }
-
-  // Liste IOS
-  if(isCommandMatch(lower,'liste_ios')){openIosList();addMessage("📋 Affichage de la liste des IOS.",'ai');speakText("Voici la liste de tous les IOS.");return;}
-
-  if(isCommandMatch(lower,'aide')){
-    addMessage("💡 Commandes: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste des ios.",'ai');
-    speakText("Commandes disponibles: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste des ios.");return;
-  }
-  if(isCommandMatch(lower,'annuler')){cancelProcedure();return;}
-  if(isCommandMatch(lower,'accueil')){homeReset();return;}
-  if(isCommandMatch(lower,'demarrer')){
-    if(currentIOS&&!guideActive)startGuidage();
-    else if(guideActive)addMessage("Guidage déjà en cours.",'ai');
-    else{addMessage("Aucun IOS sélectionné.",'ai');speakText("Cherchez d'abord un IOS.");}
-    return;
-  }
-  if(isCommandMatch(lower,'oui')&&!isCommandMatch(lower,'non')){
-    if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerYes();
-    else addMessage("Pas de question en attente.",'ai');
-    return;
-  }
-  if(isCommandMatch(lower,'non')){
-    if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerNo();
-    else addMessage("Pas de question en attente.",'ai');
-    return;
-  }
-  if(isCommandMatch(lower,'suivant')&&!isCommandMatch(lower,'non')&&!isCommandMatch(lower,'precedent')){
-    if(guideActive)nextStepAction();else addMessage("Aucun guidage actif.",'ai');
-    return;
-  }
-  if(isCommandMatch(lower,'precedent')){if(guideActive)prevStepAction();return;}
-  if(isCommandMatch(lower,'repeter')){
-    if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);
-    else if(currentIOS)speakText(currentIOS.desc);
-    else speakText("Aucune information.");
-    return;
-  }
-  let iosFound=findIOSByQuery(lower);
-  if(iosFound)showIOSDetails(iosFound);
-  else{addMessage(`Aucun résultat.`,'ai');speakText("Aucun IOS trouvé.");}
-}
-
-// Reconnaissance vocale
 function startListening(){
-  if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window)){toast("Reconnaissance non supportée");return;}
-  if(speakingFlag||listening)return;
-  try{
-    let SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();
-    recognition.lang='fr-FR';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=3;
-    recognition.onstart=()=>{listening=true;updateUIForState('listen');};
-    recognition.onresult=(e)=>{
-      let best='',bestC=0;
-      for(let i=0;i<e.results[0].length;i++){if(e.results[0][i].confidence>bestC){bestC=e.results[0][i].confidence;best=e.results[0][i].transcript;}}
-      if(bestC<0.2){addMessage("Je n'ai pas compris.",'ai');speakText("Je n'ai pas compris.");return;}
-      processVoiceCommand(best);
-    };
-    recognition.onerror=(e)=>{
-      listening=false;
-      if(e.error==='no-speech'){}
-      else if(e.error==='audio-capture'){toast("Micro non disponible");micActive=false;}
-      else if(e.error==='not-allowed'){toast("Permission micro refusée");micActive=false;}
-      updateUIForState('idle');
-      if(micActive&&!speakingFlag){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,800);}
-    };
-    recognition.onend=()=>{
-      listening=false;
-      if(micActive&&!speakingFlag){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,500);}
-      else updateUIForState('idle');
-    };
-    recognition.start();
-  }catch(e){if(micActive){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,1000);}}
+  if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window))return;if(speakingFlag||listening)return;
+  try{let SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='fr-FR';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=3;recognition.onstart=()=>{listening=true;updateUIForState('listen')};recognition.onresult=(e)=>{let best='',bestC=0;for(let i=0;i<e.results[0].length;i++){if(e.results[0][i].confidence>bestC){bestC=e.results[0][i].confidence;best=e.results[0][i].transcript}}if(bestC<0.2)return;processVoiceCommand(best)};recognition.onerror=()=>{listening=false;updateUIForState('idle');if(micActive&&!speakingFlag)setTimeout(startListening,800)};recognition.onend=()=>{listening=false;if(micActive&&!speakingFlag)setTimeout(startListening,500);else updateUIForState('idle')};recognition.start()}catch(e){if(micActive)setTimeout(startListening,1000)}
 }
-function stopListening(){if(recognition){try{recognition.stop();}catch(e){}recognition=null;}clearTimeout(recognitionTimeout);listening=false;updateUIForState('idle');}
+function stopListening(){if(recognition){try{recognition.stop()}catch(e){}recognition=null}listening=false;updateUIForState('idle')}
 
-// Événements
-document.getElementById('micWaveContainer').addEventListener('click',()=>{
-  if(speakingFlag){synth.cancel();speakingFlag=false;updateUIForState('idle');return;}
-  micActive=!micActive;
-  if(micActive){startListening();statusDot.style.background='';statusText.innerText='Micro actif · Dites bonjour';}
-  else{stopListening();statusText.innerText='Micro en pause';statusDot.style.background='#ef4444';statusDot.classList.remove('active','speaking');}
-});
-document.getElementById('micWaveContainer').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('micWaveContainer').click();}});
-panelToggle.addEventListener('click',togglePanel);
-panelOverlay.addEventListener('click',closePanel);
+document.getElementById('micWaveContainer').addEventListener('click',()=>{if(speakingFlag)return;micActive=!micActive;if(micActive){startListening();document.getElementById('statusDot').style.background='';document.getElementById('statusText').innerText='Micro actif'}else{stopListening();document.getElementById('statusText').innerText='Micro en pause';document.getElementById('statusDot').style.background='#ef4444'}});
+document.getElementById('panelToggle').addEventListener('click',togglePanel);
+document.getElementById('panelOverlay').addEventListener('click',closePanel);
 document.getElementById('closePanel').addEventListener('click',closePanel);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(recapOverlay.classList.contains('active'))closeRecap();else if(iosListOverlay.classList.contains('active'))closeIosList();else if(panel.classList.contains('open'))closePanel();}});
-document.getElementById('searchBtn').addEventListener('click',()=>{let v=document.getElementById('searchInput').value;if(v){processVoiceCommand(v);document.getElementById('searchInput').value='';}});
-document.getElementById('searchInput').addEventListener('keypress',e=>{if(e.key==='Enter'){let v=e.target.value;if(v){processVoiceCommand(v);e.target.value='';}}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('recapOverlay').classList.contains('active'))closeRecap();else if(document.getElementById('iosListOverlay').classList.contains('active'))closeIosList();else closePanel()}});
+document.getElementById('searchBtn').addEventListener('click',()=>{let v=document.getElementById('searchInput').value;if(v){processVoiceCommand(v);document.getElementById('searchInput').value=''}});
+document.getElementById('searchInput').addEventListener('keypress',e=>{if(e.key==='Enter'){let v=e.target.value;if(v){processVoiceCommand(v);e.target.value=''}}});
 document.getElementById('showAllIosBtn').addEventListener('click',openIosList);
 document.getElementById('iosListClose').addEventListener('click',closeIosList);
-iosListOverlay.addEventListener('click',e=>{if(e.target===iosListOverlay)closeIosList();});
+document.getElementById('iosListOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('iosListOverlay'))closeIosList()});
 document.getElementById('recapClose').addEventListener('click',closeRecap);
 document.getElementById('recapCloseBtn').addEventListener('click',closeRecap);
 document.getElementById('recapPrintBtn').addEventListener('click',printRecap);
-recapOverlay.addEventListener('click',e=>{if(e.target===recapOverlay)closeRecap();});
+document.getElementById('recapOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('recapOverlay'))closeRecap()});
 document.getElementById('guideStartBtn').addEventListener('click',startGuidage);
 document.getElementById('cancelGuideBtn').addEventListener('click',cancelProcedure);
 document.getElementById('homeBtn').addEventListener('click',homeReset);
@@ -1352,31 +445,12 @@ document.getElementById('noBtn').addEventListener('click',answerNo);
 document.getElementById('nextStepBtn').addEventListener('click',nextStepAction);
 document.getElementById('prevStepBtn').addEventListener('click',prevStepAction);
 document.getElementById('cancelGuideBtn2').addEventListener('click',cancelProcedure);
-document.getElementById('endRecapYes').addEventListener('click',()=>{hideEndQuestions();showRecap();});
-document.getElementById('endRecapNo').addEventListener('click',hideEndQuestions);
+document.getElementById('endRecapYes').addEventListener('click',()=>{hideEndQuestions();hideActiveIosDisplay();showRecap()});
+document.getElementById('endRecapNo').addEventListener('click',()=>{hideEndQuestions();hideActiveIosDisplay()});
 
-// Cycle de vie
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){if(listening)stopListening();if(speakingFlag)synth.cancel();}
-  else{if(micActive&&!speakingFlag)startListening();}
-});
-
-// Swipe panneau
-let tsX=0,tsY=0,tMoved=false;
-panel.addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;tsY=e.touches[0].clientY;tMoved=false;},{passive:true});
-panel.addEventListener('touchmove',e=>{
-  let cx=e.touches[0].clientX,cy=e.touches[0].clientY,dx=cx-tsX,dy=Math.abs(cy-tsY);
-  if(dx>30&&dx>dy){tMoved=true;panel.style.transform=`translateX(${dx}px)`;panel.style.transition='none';}
-},{passive:true});
-panel.addEventListener('touchend',e=>{
-  panel.style.transition='';
-  if(tMoved){let ex=e.changedTouches[0].clientX;if(ex-tsX>80)closePanel();else panel.style.transform='';}
-});
-
-// Init
-function initMic(){micActive=true;updateUIForState('idle');startListening();}
+function initMic(){micActive=true;updateUIForState('idle');startListening()}
 initMic();
-console.log('✅ IAOS T4 initialisé');
+console.log('✅ IAOS T4 initialisé - '+Object.keys(IOS).length+' IOS');
 </script>
 </body>
 </html>
