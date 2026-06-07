@@ -35,7 +35,7 @@ body {
   position: relative;
 }
 
-/* Fond simple et performant */
+/* Fond simple */
 .holo-bg {
   position: fixed;
   inset: 0;
@@ -96,41 +96,35 @@ body {
   text-shadow: 0 0 8px cyan, 0 0 16px rgba(0, 255, 255, 0.5);
 }
 
-/* Micro */
-.holo-mic-container {
+/* ==================== WAVE ANIMÉE DU MICRO ==================== */
+.mic-wave-container {
   position: relative;
   width: 200px;
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.holo-mic {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
-.holo-mic:active {
+.mic-wave-container:active {
   transform: scale(0.95);
 }
 
-.mic-holo-ring {
+/* Anneaux */
+.mic-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid rgba(0, 255, 255, 0.35);
+  border: 1.5px solid rgba(0, 255, 255, 0.3);
   animation: pulseRing 2.8s infinite ease-in-out;
 }
 
-.ring1 { width: 95px; height: 95px; animation-delay: 0s; }
-.ring2 { width: 135px; height: 135px; animation-delay: 0.5s; }
-.ring3 { width: 175px; height: 175px; animation-delay: 1s; }
+.mic-ring:nth-child(1) { width: 95px; height: 95px; animation-delay: 0s; }
+.mic-ring:nth-child(2) { width: 135px; height: 135px; animation-delay: 0.5s; }
+.mic-ring:nth-child(3) { width: 175px; height: 175px; animation-delay: 1s; }
 
 @keyframes pulseRing {
   0% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
@@ -138,62 +132,99 @@ body {
   100% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
 }
 
-.mic-core {
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at 35% 35%, rgba(0, 255, 255, 0.2), rgba(0, 80, 120, 0.4));
-  border-radius: 50%;
+/* Barres de la wave au centre */
+.wave-bars {
+  position: relative;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(0, 255, 255, 0.6);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
-  transition: all 0.25s ease;
-  z-index: 5;
-  position: relative;
+  gap: 4px;
+  height: 60px;
+  width: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 70%);
+  transition: all 0.3s ease;
 }
 
-.mic-core.listening {
-  border-color: var(--green);
-  box-shadow: 0 0 35px rgba(34, 197, 94, 0.6), 0 0 60px rgba(34, 197, 94, 0.2);
-  animation: micPulseListening 0.9s infinite;
-  background: radial-gradient(circle at 35% 35%, rgba(34, 197, 94, 0.25), rgba(0, 120, 60, 0.4));
+.wave-bar {
+  width: 5px;
+  border-radius: 3px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  transition: all 0.15s ease;
+  animation: waveBarAnim 0.8s infinite ease-in-out;
 }
 
-@keyframes micPulseListening {
-  0% { box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); transform: scale(1); }
-  50% { box-shadow: 0 0 45px rgba(34, 197, 94, 0.8); transform: scale(1.03); }
-  100% { box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); transform: scale(1); }
+.wave-bar:nth-child(1) { height: 18px; animation-delay: 0s; }
+.wave-bar:nth-child(2) { height: 30px; animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { height: 42px; animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { height: 30px; animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { height: 18px; animation-delay: 0.4s; }
+
+@keyframes waveBarAnim {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+  50% { transform: scaleY(1); opacity: 1; }
 }
 
-.mic-core.speaking {
-  border-color: var(--purple);
-  box-shadow: 0 0 35px rgba(192, 132, 252, 0.6), 0 0 60px rgba(192, 132, 252, 0.2);
-  animation: micPulseSpeaking 0.7s infinite;
-  background: radial-gradient(circle at 35% 35%, rgba(192, 132, 252, 0.25), rgba(100, 60, 180, 0.4));
+/* ÉTAT IDLE - wave cyan normale */
+.wave-bars.idle .wave-bar {
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
 }
 
-@keyframes micPulseSpeaking {
-  0% { box-shadow: 0 0 25px rgba(192, 132, 252, 0.5); transform: scale(1); }
-  50% { box-shadow: 0 0 50px rgba(192, 132, 252, 0.8); transform: scale(1.03); }
-  100% { box-shadow: 0 0 25px rgba(192, 132, 252, 0.5); transform: scale(1); }
+/* ÉTAT ÉCOUTE - wave verte */
+.wave-bars.listening .wave-bar {
+  background: var(--green);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7), 0 0 24px rgba(34, 197, 94, 0.3);
+  animation-duration: 0.5s;
 }
 
-.mic-core.error {
-  border-color: var(--red);
-  box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+/* ÉTAT PAROLE - wave violette */
+.wave-bars.speaking .wave-bar {
+  background: var(--purple);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.7), 0 0 24px rgba(192, 132, 252, 0.3);
+  animation-duration: 0.6s;
+}
+
+/* ÉTAT ERREUR - wave rouge */
+.wave-bars.error .wave-bar {
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
   animation: errorShake 0.4s;
 }
 
 @keyframes errorShake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-5px); }
-  40% { transform: translateX(5px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
+  0%, 100% { transform: translateX(0) scaleY(1); }
+  20% { transform: translateX(-5px) scaleY(0.7); }
+  40% { transform: translateX(5px) scaleY(1.2); }
+  60% { transform: translateX(-3px) scaleY(0.8); }
+  80% { transform: translateX(3px) scaleY(1.1); }
+}
+
+/* Animation des anneaux selon l'état */
+.mic-wave-container.listening .mic-ring {
+  border-color: rgba(34, 197, 94, 0.5) !important;
+  animation-duration: 1.8s;
+}
+
+.mic-wave-container.listening .mic-ring:nth-child(2) {
+  border-color: rgba(34, 197, 94, 0.7) !important;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4) !important;
+}
+
+.mic-wave-container.speaking .mic-ring {
+  border-color: rgba(192, 132, 252, 0.5) !important;
+  animation-duration: 1.6s;
+}
+
+.mic-wave-container.speaking .mic-ring:nth-child(2) {
+  border-color: rgba(192, 132, 252, 0.7) !important;
+  box-shadow: 0 0 20px rgba(192, 132, 252, 0.4) !important;
+}
+
+.mic-wave-container.error .mic-ring {
+  border-color: rgba(239, 68, 68, 0.5) !important;
 }
 
 /* Barre de statut */
@@ -228,30 +259,6 @@ body {
 .status-dot.speaking {
   background: var(--purple);
   box-shadow: 0 0 10px var(--purple);
-}
-
-.wave {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  height: 20px;
-}
-
-.wave span {
-  width: 3px;
-  background: var(--cyan);
-  border-radius: 2px;
-  animation: waveAnim 0.7s infinite alternate;
-}
-
-.wave span:nth-child(1) { height: 8px; animation-delay: 0s; }
-.wave span:nth-child(2) { height: 14px; animation-delay: 0.12s; }
-.wave span:nth-child(3) { height: 20px; animation-delay: 0.24s; }
-.wave span:nth-child(4) { height: 12px; animation-delay: 0.36s; }
-
-@keyframes waveAnim {
-  from { transform: scaleY(0.3); opacity: 0.4; }
-  to { transform: scaleY(1); opacity: 1; }
 }
 
 /* Overlay du panneau */
@@ -387,7 +394,6 @@ body {
   transform: scale(0.94);
 }
 
-/* Animation de rotation de l'engrenage */
 .panel-toggle .gear-icon {
   display: inline-block;
   transition: transform 0.5s ease;
@@ -757,20 +763,30 @@ body {
     gap: 1.5rem;
   }
   
-  .holo-mic-container {
+  .mic-wave-container {
     width: 160px;
     height: 160px;
   }
   
-  .ring1 { width: 75px; height: 75px; }
-  .ring2 { width: 105px; height: 105px; }
-  .ring3 { width: 135px; height: 135px; }
+  .mic-ring:nth-child(1) { width: 75px; height: 75px; }
+  .mic-ring:nth-child(2) { width: 105px; height: 105px; }
+  .mic-ring:nth-child(3) { width: 135px; height: 135px; }
   
-  .mic-core {
-    width: 62px;
-    height: 62px;
-    font-size: 1.8rem;
+  .wave-bars {
+    height: 50px;
+    width: 70px;
+    gap: 3px;
   }
+  
+  .wave-bar {
+    width: 4px;
+  }
+  
+  .wave-bar:nth-child(1) { height: 14px; }
+  .wave-bar:nth-child(2) { height: 24px; }
+  .wave-bar:nth-child(3) { height: 34px; }
+  .wave-bar:nth-child(4) { height: 24px; }
+  .wave-bar:nth-child(5) { height: 14px; }
   
   .panel-toggle {
     bottom: 18px;
@@ -822,19 +838,23 @@ body {
     <p class="hero-sub">DUALIS U53700 · ASSISTANT HOLOGRAMME</p>
   </div>
   
-  <!-- Micro -->
-  <div class="holo-mic-container">
-    <div class="holo-mic" id="holoMic" role="button" aria-label="Activer le microphone" tabindex="0">
-      <div class="mic-holo-ring ring1" aria-hidden="true"></div>
-      <div class="mic-holo-ring ring2" aria-hidden="true"></div>
-      <div class="mic-holo-ring ring3" aria-hidden="true"></div>
-      <div class="mic-core" id="micCore" aria-hidden="true">🎤</div>
+  <!-- Micro avec wave animée -->
+  <div class="mic-wave-container" id="micWaveContainer" role="button" aria-label="Activer le microphone" tabindex="0">
+    <div class="mic-ring" aria-hidden="true"></div>
+    <div class="mic-ring" aria-hidden="true"></div>
+    <div class="mic-ring" aria-hidden="true"></div>
+    <div class="wave-bars idle" id="waveBars" aria-hidden="true">
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
     </div>
   </div>
   
   <div class="status-pill" aria-live="polite">
     <div class="status-dot" id="statusDot" role="status"></div>
-    <span id="statusText">Appuyez sur l'hologramme</span>
+    <span id="statusText">Micro actif · Dites bonjour</span>
     <div class="wave" id="waveAnim" style="display:none;" aria-hidden="true">
       <span></span><span></span><span></span><span></span>
     </div>
@@ -879,7 +899,7 @@ body {
     <div class="chat-area" aria-label="Historique des messages">
       <div class="chat-messages" id="chatMsgs" role="log" aria-live="polite">
         <div class="message ai">
-          <div class="bubble">✨ Interface active. Dites un numéro IOS ou décrivez une panne.</div>
+          <div class="bubble">✨ Micro actif en permanence. Dites un numéro IOS ou décrivez une panne.</div>
         </div>
       </div>
     </div>
@@ -1067,7 +1087,7 @@ let guideSteps = [];
 let stepIndex = 0;
 let listening = false;
 let speakingFlag = false;
-let micActive = false;
+let micActive = true; // MICRO ACTIF EN PERMANENCE
 let recognition = null;
 let recognitionTimeout = null;
 let panelExplicitlyOpened = false;
@@ -1077,7 +1097,8 @@ const synth = window.speechSynthesis;
 const voiceSupport = !!synth;
 
 // ==================== ÉLÉMENTS DOM ====================
-const micCore = document.getElementById('micCore');
+const micWaveContainer = document.getElementById('micWaveContainer');
+const waveBars = document.getElementById('waveBars');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
 const waveAnim = document.getElementById('waveAnim');
@@ -1099,10 +1120,14 @@ function toast(msg, duration = 3000) {
 }
 
 function updateUIForState(state) {
+  // Mise à jour de la wave et des anneaux
+  micWaveContainer.classList.remove('listening', 'speaking', 'error');
+  waveBars.classList.remove('idle', 'listening', 'speaking', 'error');
+  
   switch(state) {
     case 'listen':
-      micCore.classList.add('listening');
-      micCore.classList.remove('speaking', 'error');
+      micWaveContainer.classList.add('listening');
+      waveBars.classList.add('listening');
       statusDot.classList.add('active');
       statusDot.classList.remove('speaking');
       statusDot.style.background = '';
@@ -1110,8 +1135,8 @@ function updateUIForState(state) {
       waveAnim.style.display = 'flex';
       break;
     case 'speak':
-      micCore.classList.remove('listening', 'error');
-      micCore.classList.add('speaking');
+      micWaveContainer.classList.add('speaking');
+      waveBars.classList.add('speaking');
       statusDot.classList.add('speaking');
       statusDot.classList.remove('active');
       statusDot.style.background = '';
@@ -1119,18 +1144,22 @@ function updateUIForState(state) {
       waveAnim.style.display = 'none';
       break;
     case 'error':
-      micCore.classList.add('error');
-      micCore.classList.remove('listening', 'speaking');
+      micWaveContainer.classList.add('error');
+      waveBars.classList.add('error');
       statusDot.classList.remove('active', 'speaking');
       statusDot.style.background = '';
       waveAnim.style.display = 'none';
-      setTimeout(() => micCore.classList.remove('error'), 500);
+      setTimeout(() => {
+        micWaveContainer.classList.remove('error');
+        waveBars.classList.remove('error');
+        waveBars.classList.add('idle');
+      }, 500);
       break;
     default:
-      micCore.classList.remove('listening', 'speaking', 'error');
+      waveBars.classList.add('idle');
       statusDot.classList.remove('active', 'speaking');
       statusDot.style.background = '#475569';
-      statusText.innerText = 'Hologramme prêt · Appuyez';
+      statusText.innerText = 'Micro actif · Dites bonjour';
       waveAnim.style.display = 'none';
   }
 }
@@ -1187,12 +1216,16 @@ function speakText(txt, callback) {
   speakingFlag = true;
   updateUIForState('speak');
   
-  if (listening) stopListening();
+  // Ne pas arrêter l'écoute, le micro reste actif
+  // if (listening) stopListening(); // SUPPRIMÉ
   
   utter.onend = () => {
     speakingFlag = false;
     updateUIForState('idle');
-    if (micActive && !guideActive) startListening();
+    // Redémarrer l'écoute automatiquement (micro permanent)
+    if (micActive && !listening) {
+      startListening();
+    }
     if (callback) callback();
   };
   
@@ -1200,7 +1233,9 @@ function speakText(txt, callback) {
     console.error('Erreur synthèse vocale:', e);
     speakingFlag = false;
     updateUIForState('error');
-    if (micActive && !guideActive) startListening();
+    if (micActive && !listening) {
+      startListening();
+    }
     if (callback) callback();
   };
   
@@ -1274,8 +1309,6 @@ function showIOSDetails(ios) {
   
   addMessage(`🔍 <strong>IOS ${ios.id}</strong> — ${ios.desc}. Dites "démarrer le guidage" pour lancer la procédure.`, 'ai');
   speakText(`IOS ${ios.id.split('').join(' ')}. ${ios.desc.substring(0, 80)}. Dites démarrer le guidage pour lancer la procédure.`);
-  
-  // NE PAS OUVRIR LE PANNEAU automatiquement
 }
 
 // ==================== GUIDAGE ====================
@@ -1418,9 +1451,9 @@ function newSearchReset() {
 
 // ==================== COMMANDES VOCALES ====================
 const COMMAND_PATTERNS = {
-  // Salutations (NOUVEAU)
+  // Salutations
   salutation: [
-    /\b(?:bonjour|salut|salam|salem|coucou|hello|hi|hey|bonsoir|salut à toi|salam alaykoum|salam alaikum|salam aleikoum|salut la compagnie|wesh|yo|bonjour à tous|salutations)\b/i
+    /\b(?:bonjour|salut|salam|salem|coucou|hello|hi|hey|bonsoir|salut à toi|salam alaykoum|salam alaikum|salam aleikoum|salamou alaykoum|salamou aleykoum|salamou aleikoum|salut la compagnie|wesh|yo|bonjour à tous|salutations)\b/i
   ],
   
   // Démarrer / guidage
@@ -1479,13 +1512,20 @@ function processVoiceCommand(txt) {
   let lower = txt.toLowerCase().trim();
   addMessage(`🎤 "${txt}"`, 'user');
   
-  // 1. Salutations (NOUVEAU - priorité haute pour les salutations)
+  // 1. Salutations - réponse spécifique pour salam alaykoum
   if (isCommandMatch(lower, 'salutation')) {
+    // Détection spécifique pour salam alaykoum
+    if (/\b(?:salam|salem|salamou)\s*(?:alaykoum|alaikum|aleikoum|aleykoum)\b/i.test(lower)) {
+      addMessage("👋 Wa aleykoum salam. IAOS T4 à votre service.", 'ai');
+      speakText("Wa aleykoum salam. IAOS T4 à votre service.");
+      return;
+    }
+    
+    // Autres salutations
     const greetings = [
-      "Bonjour ! Je suis IAOS T4, votre assistant holographique. Dites un numéro IOS ou décrivez une panne pour que je vous guide.",
+      "Bonjour ! Je suis IAOS T4, votre assistant. Dites un numéro IOS ou décrivez une panne.",
       "Salut ! Prêt à vous assister. Quel IOS ou quelle panne souhaitez-vous traiter ?",
-      "Bonjour à vous. Je suis à votre écoute. Dites-moi quel code IOS ou quelle panne vous concerne.",
-      "Salam alaykoum. IAOS T4 à votre service. Dites un numéro d'IOS ou décrivez votre problème."
+      "Bonjour à vous. Je suis à votre écoute. Dites-moi quel code IOS ou quelle panne vous concerne."
     ];
     const greeting = greetings[Math.floor(Math.random() * greetings.length)];
     addMessage(`👋 ${greeting}`, 'ai');
@@ -1495,7 +1535,7 @@ function processVoiceCommand(txt) {
   
   // 2. Aide
   if (isCommandMatch(lower, 'aide')) {
-    const helpText = "Commandes disponibles : démarrer le guidage, suivant, précédent, oui, non, annuler, accueil, répète, aide. Vous pouvez aussi dire bonjour, ou chercher un IOS par son numéro ou sa description.";
+    const helpText = "Commandes disponibles : démarrer le guidage, suivant, précédent, oui, non, annuler, accueil, répète, aide. Vous pouvez aussi dire bonjour, salam alaykoum, ou chercher un IOS par son numéro ou sa description.";
     addMessage(`💡 ${helpText}`, 'ai');
     speakText("Voici les commandes disponibles. Dites démarrer pour lancer un guidage, suivant pour continuer, précédent pour revenir, oui ou non pour répondre, annuler pour arrêter, accueil pour revenir au menu, répète pour réécouter, ou cherchez un IOS.");
     return;
@@ -1619,7 +1659,6 @@ function startListening() {
     
     recognition.onstart = () => {
       listening = true;
-      micActive = true;
       updateUIForState('listen');
     };
     
@@ -1649,38 +1688,34 @@ function startListening() {
       console.error('Erreur reconnaissance:', e.error);
       listening = false;
       
-      switch(e.error) {
-        case 'no-speech':
-          break;
-        case 'audio-capture':
-          toast("Microphone non disponible");
-          micActive = false;
-          break;
-        case 'not-allowed':
-          toast("Permission microphone refusée");
-          micActive = false;
-          break;
-        case 'network':
-          toast("Erreur réseau - reconnaissance vocale");
-          break;
-        default:
-          break;
+      if (e.error === 'no-speech') {
+        // Normal, on redémarre
+      } else if (e.error === 'audio-capture') {
+        toast("Microphone non disponible");
+        micActive = false;
+      } else if (e.error === 'not-allowed') {
+        toast("Permission microphone refusée");
+        micActive = false;
+      } else if (e.error === 'network') {
+        toast("Erreur réseau - reconnaissance vocale");
       }
       
       updateUIForState('idle');
       
+      // Redémarrer automatiquement (micro permanent)
       if (micActive && !speakingFlag) {
         clearTimeout(recognitionTimeout);
-        recognitionTimeout = setTimeout(startListening, 600);
+        recognitionTimeout = setTimeout(startListening, 800);
       }
     };
     
     recognition.onend = () => {
       listening = false;
       
-      if (micActive && !speakingFlag && !guideActive) {
+      // Redémarrer automatiquement (micro permanent)
+      if (micActive && !speakingFlag) {
         clearTimeout(recognitionTimeout);
-        recognitionTimeout = setTimeout(startListening, 400);
+        recognitionTimeout = setTimeout(startListening, 500);
       } else {
         updateUIForState('idle');
       }
@@ -1690,6 +1725,12 @@ function startListening() {
   } catch (e) {
     console.error('Erreur initialisation reconnaissance:', e);
     toast("Erreur d'initialisation du microphone");
+    
+    // Réessayer
+    if (micActive) {
+      clearTimeout(recognitionTimeout);
+      recognitionTimeout = setTimeout(startListening, 1000);
+    }
   }
 }
 
@@ -1702,14 +1743,13 @@ function stopListening() {
   }
   clearTimeout(recognitionTimeout);
   listening = false;
-  micActive = false;
   updateUIForState('idle');
 }
 
 // ==================== GESTIONNAIRES D'ÉVÉNEMENTS ====================
 
-// Micro
-document.getElementById('holoMic').addEventListener('click', () => {
+// Micro (clic pour désactiver/réactiver)
+document.getElementById('micWaveContainer').addEventListener('click', () => {
   if (speakingFlag) {
     synth.cancel();
     speakingFlag = false;
@@ -1717,20 +1757,26 @@ document.getElementById('holoMic').addEventListener('click', () => {
     return;
   }
   
-  if (!micActive) {
+  if (micActive) {
+    // Désactiver temporairement
+    micActive = false;
+    stopListening();
+    statusText.innerText = 'Micro en pause · Appuyez';
+    statusDot.style.background = '#ef4444';
+    statusDot.classList.remove('active', 'speaking');
+  } else {
+    // Réactiver
     micActive = true;
     startListening();
-  } else {
-    stopListening();
-    micActive = false;
+    statusDot.style.background = '';
   }
 });
 
 // Accessibilité clavier pour le micro
-document.getElementById('holoMic').addEventListener('keydown', (e) => {
+document.getElementById('micWaveContainer').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     e.preventDefault();
-    document.getElementById('holoMic').click();
+    document.getElementById('micWaveContainer').click();
   }
 });
 
@@ -1788,7 +1834,7 @@ document.addEventListener('visibilitychange', () => {
     if (listening) stopListening();
     if (speakingFlag) synth.cancel();
   } else {
-    if (micActive && !speakingFlag && !guideActive) {
+    if (micActive && !speakingFlag) {
       startListening();
     }
   }
@@ -1833,11 +1879,20 @@ panel.addEventListener('touchend', (e) => {
   }
 });
 
+// ==================== DÉMARRAGE AUTOMATIQUE DU MICRO ====================
+function initMic() {
+  micActive = true;
+  updateUIForState('idle');
+  startListening();
+  console.log('🎤 Micro activé en permanence');
+}
+
 // ==================== INITIALISATION ====================
-updateUIForState('idle');
+initMic();
 console.log('✅ IAOS T4 · DUALIS U53700 · Assistant Holographique initialisé');
-console.log('👋 Salutations vocales activées : bonjour, salut, salam alaykoum, coucou, hello...');
-console.log('⚙️ Bouton engrenage pour le panneau de diagnostic');
+console.log('🎤 Micro permanent activé');
+console.log('👋 Salam alaykoum → Wa aleykoum salam');
+console.log('🌈 Wave animée selon état : cyan=idle, vert=écoute, violet=parole, rouge=erreur');
 </script>
 </body>
 </html>
