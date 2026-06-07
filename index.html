@@ -53,10 +53,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
   padding: 1.5rem;
-  gap: 2.5rem;
+  gap: 1.5rem;
+  padding-bottom: 120px;
 }
 
 /* Titre */
@@ -68,6 +69,8 @@ body {
   border-radius: 80px;
   background: rgba(0, 20, 40, 0.35);
   border: 1px solid rgba(0, 255, 255, 0.15);
+  width: 100%;
+  max-width: 600px;
 }
 
 .hero {
@@ -96,6 +99,55 @@ body {
   text-shadow: 0 0 8px cyan, 0 0 16px rgba(0, 255, 255, 0.5);
 }
 
+/* ==================== AFFICHAGE IOS SUR L'ÉCRAN PRINCIPAL ==================== */
+.active-ios-display {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(5, 12, 25, 0.8);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 18px;
+  display: none;
+  animation: fadeUp 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.active-ios-display.show {
+  display: block;
+}
+
+.active-ios-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.active-ios-id {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.active-ios-desc {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  margin-bottom: 6px;
+}
+
+.active-ios-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+  font-family: 'Space Mono', monospace;
+}
+
 /* ==================== WAVE ANIMÉE DU MICRO ==================== */
 .mic-wave-container {
   position: relative;
@@ -108,13 +160,13 @@ body {
   transition: transform 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .mic-wave-container:active {
   transform: scale(0.95);
 }
 
-/* Anneaux */
 .mic-ring {
   position: absolute;
   border-radius: 50%;
@@ -132,7 +184,6 @@ body {
   100% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
 }
 
-/* Barres de la wave au centre */
 .wave-bars {
   position: relative;
   z-index: 5;
@@ -167,32 +218,10 @@ body {
   50% { transform: scaleY(1); opacity: 1; }
 }
 
-/* ÉTAT IDLE - wave cyan normale */
-.wave-bars.idle .wave-bar {
-  background: var(--cyan);
-  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-}
-
-/* ÉTAT ÉCOUTE - wave verte */
-.wave-bars.listening .wave-bar {
-  background: var(--green);
-  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7), 0 0 24px rgba(34, 197, 94, 0.3);
-  animation-duration: 0.5s;
-}
-
-/* ÉTAT PAROLE - wave violette */
-.wave-bars.speaking .wave-bar {
-  background: var(--purple);
-  box-shadow: 0 0 12px rgba(192, 132, 252, 0.7), 0 0 24px rgba(192, 132, 252, 0.3);
-  animation-duration: 0.6s;
-}
-
-/* ÉTAT ERREUR - wave rouge */
-.wave-bars.error .wave-bar {
-  background: var(--red);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-  animation: errorShake 0.4s;
-}
+.wave-bars.idle .wave-bar { background: var(--cyan); box-shadow: 0 0 8px rgba(0, 255, 255, 0.5); }
+.wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 12px rgba(34, 197, 94, 0.7), 0 0 24px rgba(34, 197, 94, 0.3); animation-duration: 0.5s; }
+.wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 12px rgba(192, 132, 252, 0.7), 0 0 24px rgba(192, 132, 252, 0.3); animation-duration: 0.6s; }
+.wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 10px rgba(239, 68, 68, 0.6); animation: errorShake 0.4s; }
 
 @keyframes errorShake {
   0%, 100% { transform: translateX(0) scaleY(1); }
@@ -202,30 +231,9 @@ body {
   80% { transform: translateX(3px) scaleY(1.1); }
 }
 
-/* Animation des anneaux selon l'état */
-.mic-wave-container.listening .mic-ring {
-  border-color: rgba(34, 197, 94, 0.5) !important;
-  animation-duration: 1.8s;
-}
-
-.mic-wave-container.listening .mic-ring:nth-child(2) {
-  border-color: rgba(34, 197, 94, 0.7) !important;
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4) !important;
-}
-
-.mic-wave-container.speaking .mic-ring {
-  border-color: rgba(192, 132, 252, 0.5) !important;
-  animation-duration: 1.6s;
-}
-
-.mic-wave-container.speaking .mic-ring:nth-child(2) {
-  border-color: rgba(192, 132, 252, 0.7) !important;
-  box-shadow: 0 0 20px rgba(192, 132, 252, 0.4) !important;
-}
-
-.mic-wave-container.error .mic-ring {
-  border-color: rgba(239, 68, 68, 0.5) !important;
-}
+.mic-wave-container.listening .mic-ring { border-color: rgba(34, 197, 94, 0.5) !important; animation-duration: 1.8s; }
+.mic-wave-container.speaking .mic-ring { border-color: rgba(192, 132, 252, 0.5) !important; animation-duration: 1.6s; }
+.mic-wave-container.error .mic-ring { border-color: rgba(239, 68, 68, 0.5) !important; }
 
 /* Barre de statut */
 .status-pill {
@@ -234,7 +242,6 @@ body {
   align-items: center;
   background: rgba(0, 10, 25, 0.7);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(0, 255, 255, 0.3);
   border-radius: 60px;
   padding: 10px 26px;
@@ -251,15 +258,8 @@ body {
   flex-shrink: 0;
 }
 
-.status-dot.active {
-  background: var(--green);
-  box-shadow: 0 0 10px var(--green);
-}
-
-.status-dot.speaking {
-  background: var(--purple);
-  box-shadow: 0 0 10px var(--purple);
-}
+.status-dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); }
+.status-dot.speaking { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
 
 /* Overlay du panneau */
 .panel-overlay {
@@ -272,12 +272,9 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.panel-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+.panel-overlay.active { opacity: 1; pointer-events: auto; }
 
-/* Panneau d'information (caché par défaut) */
+/* Panneau d'information */
 .info-panel {
   position: fixed;
   top: 0;
@@ -294,12 +291,9 @@ body {
   display: flex;
   flex-direction: column;
   box-shadow: -8px 0 40px rgba(0, 0, 0, 0.6);
-  will-change: transform;
 }
 
-.info-panel.open {
-  transform: translateX(0);
-}
+.info-panel.open { transform: translateX(0); }
 
 .panel-header {
   display: flex;
@@ -333,11 +327,7 @@ body {
   transition: all 0.2s;
 }
 
-.close-panel:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: var(--red);
-  color: var(--red);
-}
+.close-panel:hover { background: rgba(239, 68, 68, 0.2); border-color: var(--red); color: var(--red); }
 
 .panel-content {
   flex: 1;
@@ -348,20 +338,7 @@ body {
   gap: 18px;
 }
 
-.panel-content::-webkit-scrollbar {
-  width: 5px;
-}
-
-.panel-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.panel-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 255, 0.2);
-  border-radius: 3px;
-}
-
-/* Bouton toggle du panneau avec engrenage */
+/* Bouton toggle */
 .panel-toggle {
   position: fixed;
   bottom: 28px;
@@ -371,7 +348,6 @@ body {
   border-radius: 30px;
   background: rgba(0, 20, 40, 0.9);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1.5px solid rgba(0, 255, 255, 0.5);
   color: var(--cyan);
   font-size: 1.6rem;
@@ -382,30 +358,13 @@ body {
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 0 18px rgba(0, 255, 255, 0.25), 0 4px 18px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
 }
 
-.panel-toggle:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 28px rgba(0, 255, 255, 0.4), 0 6px 22px rgba(0, 0, 0, 0.6);
-}
-
-.panel-toggle:active {
-  transform: scale(0.94);
-}
-
-.panel-toggle .gear-icon {
-  display: inline-block;
-  transition: transform 0.5s ease;
-}
-
-.panel-toggle:hover .gear-icon {
-  transform: rotate(90deg);
-}
-
-.panel-toggle.panel-open .gear-icon {
-  transform: rotate(180deg);
-}
+.panel-toggle:hover { transform: scale(1.06); box-shadow: 0 0 28px rgba(0, 255, 255, 0.4); }
+.panel-toggle:active { transform: scale(0.94); }
+.panel-toggle .gear-icon { display: inline-block; transition: transform 0.5s ease; }
+.panel-toggle:hover .gear-icon { transform: rotate(90deg); }
+.panel-toggle.panel-open .gear-icon { transform: rotate(180deg); }
 
 /* Zone de recherche */
 .search-box {
@@ -429,9 +388,7 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 
-.search-box input::placeholder {
-  color: var(--text-dim);
-}
+.search-box input::placeholder { color: var(--text-dim); }
 
 .search-box button {
   background: rgba(0, 255, 255, 0.15);
@@ -443,12 +400,9 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: 0.75rem;
   transition: all 0.2s;
-  white-space: nowrap;
 }
 
-.search-box button:hover {
-  background: rgba(0, 255, 255, 0.3);
-}
+.search-box button:hover { background: rgba(0, 255, 255, 0.3); }
 
 /* Carte de détail IOS */
 .ios-detail-card {
@@ -460,19 +414,14 @@ body {
   animation: fadeUp 0.3s ease;
 }
 
-.ios-detail-card.show {
-  display: block;
-}
+.ios-detail-card.show { display: block; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.card-header {
-  padding: 18px;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-}
+.card-header { padding: 18px; border-bottom: 1px solid rgba(0, 255, 255, 0.2); }
 
 .ios-code {
   font-family: 'Space Mono', monospace;
@@ -495,29 +444,13 @@ body {
   letter-spacing: 1px;
 }
 
-.prio-h { 
-  background: rgba(239, 68, 68, 0.2); 
-  color: #f87171; 
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  animation: prioUrgentPulse 1.5s infinite;
-}
-
+.prio-h { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); animation: prioUrgentPulse 1.5s infinite; }
 @keyframes prioUrgentPulse {
   0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
   50% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
 }
-
-.prio-m { 
-  background: rgba(245, 158, 11, 0.2); 
-  color: #fbbf24; 
-  border: 1px solid rgba(245, 158, 11, 0.4);
-}
-
-.prio-l { 
-  background: rgba(34, 197, 94, 0.2); 
-  color: #4ade80; 
-  border: 1px solid rgba(34, 197, 94, 0.4);
-}
+.prio-m { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+.prio-l { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
 
 .card-actions {
   padding: 14px 18px;
@@ -537,46 +470,16 @@ body {
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'DM Sans', sans-serif;
-  white-space: nowrap;
 }
 
-.action-btn:hover {
-  background: rgba(0, 255, 255, 0.18);
-  transform: translateY(-1px);
-}
+.action-btn:hover { background: rgba(0, 255, 255, 0.18); transform: translateY(-1px); }
+.action-btn:active { transform: translateY(0); }
+.action-btn.green { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.5); color: #22c55e; }
+.action-btn.green:hover { background: rgba(34, 197, 94, 0.25); box-shadow: 0 0 15px rgba(34, 197, 94, 0.25); }
+.action-btn.red { background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
+.action-btn.red:hover { background: rgba(239, 68, 68, 0.2); box-shadow: 0 0 15px rgba(239, 68, 68, 0.25); }
 
-.action-btn:active {
-  transform: translateY(0);
-}
-
-.action-btn.green { 
-  background: rgba(34, 197, 94, 0.12); 
-  border-color: rgba(34, 197, 94, 0.5); 
-  color: #22c55e; 
-}
-
-.action-btn.green:hover {
-  background: rgba(34, 197, 94, 0.25);
-  box-shadow: 0 0 15px rgba(34, 197, 94, 0.25);
-}
-
-.action-btn.red { 
-  background: rgba(239, 68, 68, 0.08); 
-  border-color: rgba(239, 68, 68, 0.4); 
-  color: #ef4444; 
-}
-
-.action-btn.red:hover {
-  background: rgba(239, 68, 68, 0.2);
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
-}
-
-.card-body {
-  padding: 18px;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
+.card-body { padding: 18px; font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
 
 /* Zone de chat */
 .chat-area {
@@ -595,54 +498,19 @@ body {
   gap: 10px;
 }
 
-.chat-messages::-webkit-scrollbar {
-  width: 4px;
-}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.25); border-radius: 2px; }
 
-.chat-messages::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(0, 255, 255, 0.25);
-  border-radius: 2px;
-}
-
-.message {
-  display: flex;
-  gap: 8px;
-  max-width: 88%;
-  animation: messageIn 0.25s ease;
-}
-
+.message { display: flex; gap: 8px; max-width: 88%; animation: messageIn 0.25s ease; }
 @keyframes messageIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.message.user { 
-  align-self: flex-end; 
-  flex-direction: row-reverse; 
-}
-
-.message.ai .bubble { 
-  background: rgba(0, 120, 200, 0.15); 
-  border-radius: 6px 16px 16px 16px; 
-  border: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-.message.user .bubble { 
-  background: rgba(124, 58, 237, 0.15); 
-  border-radius: 16px 6px 16px 16px; 
-  border: 1px solid rgba(168, 85, 247, 0.4);
-}
-
-.bubble {
-  padding: 10px 14px;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  word-break: break-word;
-}
+.message.user { align-self: flex-end; flex-direction: row-reverse; }
+.message.ai .bubble { background: rgba(0, 120, 200, 0.15); border-radius: 6px 16px 16px 16px; border: 1px solid rgba(0, 255, 255, 0.2); }
+.message.user .bubble { background: rgba(124, 58, 237, 0.15); border-radius: 16px 6px 16px 16px; border: 1px solid rgba(168, 85, 247, 0.4); }
+.bubble { padding: 10px 14px; font-size: 0.82rem; line-height: 1.5; word-break: break-word; }
 
 /* Barre de guidage */
 .guide-bar {
@@ -652,40 +520,26 @@ body {
   width: 100%;
   background: rgba(1, 3, 12, 0.97);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(0, 255, 255, 0.4);
   padding: 16px 22px;
   z-index: 90;
   transform: translateY(100%);
   transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
   box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.5);
-  will-change: transform;
 }
 
-.guide-bar.active {
-  transform: translateY(0);
-}
+.guide-bar.active { transform: translateY(0); }
 
 .guide-step {
   font-family: 'Space Mono', monospace;
   font-size: 0.65rem;
   color: var(--green);
   letter-spacing: 2px;
-  text-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
 }
 
-.guide-text {
-  font-size: 0.95rem;
-  margin: 10px 0;
-  line-height: 1.5;
-  font-weight: 500;
-}
+.guide-text { font-size: 0.95rem; margin: 10px 0; line-height: 1.5; font-weight: 500; }
 
-.guide-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+.guide-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
 
 .guide-btn {
   background: rgba(0, 30, 50, 0.8);
@@ -699,37 +553,12 @@ body {
   font-family: 'DM Sans', sans-serif;
 }
 
-.guide-btn:hover {
-  background: rgba(0, 255, 255, 0.2);
-}
-
-.guide-btn:active {
-  transform: scale(0.95);
-}
-
-.guide-btn.yes { 
-  background: rgba(34, 197, 94, 0.2); 
-  border-color: rgba(34, 197, 94, 0.5); 
-  color: #22c55e; 
-  font-weight: 600;
-}
-
-.guide-btn.yes:hover {
-  background: rgba(34, 197, 94, 0.35);
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.25);
-}
-
-.guide-btn.no { 
-  background: rgba(239, 68, 68, 0.2); 
-  border-color: rgba(239, 68, 68, 0.5); 
-  color: #ef4444; 
-  font-weight: 600;
-}
-
-.guide-btn.no:hover {
-  background: rgba(239, 68, 68, 0.35);
-  box-shadow: 0 0 18px rgba(239, 68, 68, 0.25);
-}
+.guide-btn:hover { background: rgba(0, 255, 255, 0.2); }
+.guide-btn:active { transform: scale(0.95); }
+.guide-btn.yes { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); color: #22c55e; font-weight: 600; }
+.guide-btn.yes:hover { background: rgba(34, 197, 94, 0.35); box-shadow: 0 0 18px rgba(34, 197, 94, 0.25); }
+.guide-btn.no { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: #ef4444; font-weight: 600; }
+.guide-btn.no:hover { background: rgba(239, 68, 68, 0.35); box-shadow: 0 0 18px rgba(239, 68, 68, 0.25); }
 
 /* Toast */
 .toast {
@@ -747,88 +576,259 @@ body {
   z-index: 200;
   pointer-events: none;
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   font-family: 'Space Mono', monospace;
 }
 
-.toast.show {
-  opacity: 1;
+.toast.show { opacity: 1; }
+
+/* ==================== LISTE DES IOS ==================== */
+.ios-list-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.ios-list-overlay.active { opacity: 1; pointer-events: auto; }
+
+.ios-list-panel {
+  background: rgba(2, 5, 18, 0.98);
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  border-radius: 24px;
+  width: min(90%, 500px);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.ios-list-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.ios-list-header h3 {
+  font-family: 'Space Mono', monospace;
+  color: var(--cyan);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+.ios-list-close {
+  background: none;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: var(--text-dim);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ios-list-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 10px;
+}
+
+.ios-list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 10px;
+  margin: 2px 0;
+}
+
+.ios-list-item:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.ios-list-num {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: var(--cyan);
+  min-width: 45px;
+  font-size: 0.9rem;
+}
+
+.ios-list-desc {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.ios-list-prio {
+  margin-left: auto;
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-family: 'Space Mono', monospace;
+}
+
+.ios-list-prio.h { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.ios-list-prio.m { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+.ios-list-prio.l { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+
+/* ==================== MODALE RÉCAPITULATIF ==================== */
+.recap-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 160;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.recap-overlay.active { opacity: 1; pointer-events: auto; }
+
+.recap-panel {
+  background: #ffffff;
+  border-radius: 16px;
+  width: min(92%, 550px);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.recap-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.recap-header h3 {
+  font-family: 'Space Mono', monospace;
+  color: #1e293b;
+  font-size: 0.85rem;
+}
+
+.recap-close {
+  background: none;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.recap-content {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+  color: #1e293b;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.recap-actions {
+  padding: 14px 20px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  background: #f8fafc;
+}
+
+.recap-btn {
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.recap-btn.primary {
+  background: #1e293b;
+  color: white;
+  border-color: #1e293b;
+}
+
+.recap-btn:hover { transform: translateY(-1px); }
+
+/* ==================== QUESTIONS FIN DE PROCÉDURE ==================== */
+.end-questions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(1, 3, 12, 0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 255, 255, 0.4);
+  padding: 16px 22px;
+  z-index: 91;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  box-shadow: 0 -6px 30px rgba(0, 0, 0, 0.5);
+}
+
+.end-questions.active { transform: translateY(0); }
+
+.end-questions-text {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.end-questions-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
-  .main-container {
-    padding: 1rem;
-    gap: 1.5rem;
-  }
-  
-  .mic-wave-container {
-    width: 160px;
-    height: 160px;
-  }
-  
-  .mic-ring:nth-child(1) { width: 75px; height: 75px; }
-  .mic-ring:nth-child(2) { width: 105px; height: 105px; }
-  .mic-ring:nth-child(3) { width: 135px; height: 135px; }
-  
-  .wave-bars {
-    height: 50px;
-    width: 70px;
-    gap: 3px;
-  }
-  
-  .wave-bar {
-    width: 4px;
-  }
-  
+  .main-container { padding: 1rem; gap: 1rem; padding-bottom: 100px; }
+  .mic-wave-container { width: 150px; height: 150px; }
+  .mic-ring:nth-child(1) { width: 70px; height: 70px; }
+  .mic-ring:nth-child(2) { width: 100px; height: 100px; }
+  .mic-ring:nth-child(3) { width: 130px; height: 130px; }
+  .wave-bars { height: 45px; width: 60px; gap: 3px; }
+  .wave-bar { width: 4px; }
   .wave-bar:nth-child(1) { height: 14px; }
-  .wave-bar:nth-child(2) { height: 24px; }
-  .wave-bar:nth-child(3) { height: 34px; }
-  .wave-bar:nth-child(4) { height: 24px; }
+  .wave-bar:nth-child(2) { height: 22px; }
+  .wave-bar:nth-child(3) { height: 32px; }
+  .wave-bar:nth-child(4) { height: 22px; }
   .wave-bar:nth-child(5) { height: 14px; }
-  
-  .panel-toggle {
-    bottom: 18px;
-    right: 18px;
-    width: 48px;
-    height: 48px;
-    font-size: 1.3rem;
-  }
-  
-  .guide-buttons {
-    gap: 6px;
-  }
-  
-  .guide-btn {
-    padding: 6px 12px;
-    font-size: 0.7rem;
-  }
-  
-  .info-panel {
-    width: 100%;
-  }
+  .info-panel { width: 100%; }
 }
 
-/* Accessibilité */
 .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); border: 0;
 }
 </style>
 </head>
 <body>
 
-<!-- Fond simple -->
 <div class="holo-bg" aria-hidden="true"></div>
-
-<!-- Overlay du panneau -->
 <div class="panel-overlay" id="panelOverlay"></div>
 
 <!-- Conteneur principal -->
@@ -837,27 +837,34 @@ body {
     <h1 class="hero">IAOS T4</h1>
     <p class="hero-sub">DUALIS U53700 · ASSISTANT HOLOGRAMME</p>
   </div>
-  
+
+  <!-- AFFICHAGE IOS ACTIF SUR L'ÉCRAN PRINCIPAL -->
+  <div class="active-ios-display" id="activeIosDisplay">
+    <div class="active-ios-header">
+      <span class="active-ios-id" id="activeIosId"></span>
+      <span class="prio-badge" id="activeIosPrio"></span>
+    </div>
+    <div class="active-ios-desc" id="activeIosDesc"></div>
+    <div class="active-ios-meta">
+      <span id="activeIosSteps"></span>
+      <span id="activeIosStatus"></span>
+    </div>
+  </div>
+
   <!-- Micro avec wave animée -->
-  <div class="mic-wave-container" id="micWaveContainer" role="button" aria-label="Activer le microphone" tabindex="0">
+  <div class="mic-wave-container" id="micWaveContainer" role="button" aria-label="Activer/désactiver le microphone" tabindex="0">
     <div class="mic-ring" aria-hidden="true"></div>
     <div class="mic-ring" aria-hidden="true"></div>
     <div class="mic-ring" aria-hidden="true"></div>
     <div class="wave-bars idle" id="waveBars" aria-hidden="true">
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
-      <div class="wave-bar"></div>
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      <div class="wave-bar"></div><div class="wave-bar"></div>
     </div>
   </div>
-  
+
   <div class="status-pill" aria-live="polite">
     <div class="status-dot" id="statusDot" role="status"></div>
     <span id="statusText">Micro actif · Dites bonjour</span>
-    <div class="wave" id="waveAnim" style="display:none;" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
-    </div>
   </div>
 </div>
 
@@ -866,7 +873,7 @@ body {
   <span class="gear-icon">⚙️</span>
 </button>
 
-<!-- Panneau d'information (caché par défaut) -->
+<!-- Panneau d'information -->
 <div class="info-panel" id="infoPanel" aria-hidden="true">
   <div class="panel-header">
     <h3>⚡ IAOS T4 · DIAGNOSTIC</h3>
@@ -874,18 +881,15 @@ body {
   </div>
   <div class="panel-content">
     <div class="search-box">
-      <label for="searchInput" class="sr-only">Rechercher un code IOS ou une panne</label>
-      <input type="text" id="searchInput" placeholder="IOS 061, boîte chaude, frein..." autocomplete="off">
+      <input type="text" id="searchInput" placeholder="IOS 061, boîte chaude, frein...">
       <button id="searchBtn">🔍</button>
     </div>
-    
+    <button class="action-btn" id="showAllIosBtn" style="width:100%;text-align:center;">📋 Liste de tous les IOS</button>
     <div class="ios-detail-card" id="iosCard" aria-live="polite">
       <div class="card-header">
-        <div class="ios-code">
-          <span id="iosId">---</span>
-        </div>
+        <div class="ios-code"><span id="iosId">---</span></div>
         <div class="prio-badge" id="iosPrio"></div>
-        <div id="iosDesc" style="margin-top:8px; font-size:0.88rem; color:#e2e8f0;"></div>
+        <div id="iosDesc" style="margin-top:8px;font-size:0.88rem;color:#e2e8f0;"></div>
       </div>
       <div class="card-actions">
         <button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button>
@@ -895,13 +899,36 @@ body {
       </div>
       <div class="card-body" id="iosBody"></div>
     </div>
-    
-    <div class="chat-area" aria-label="Historique des messages">
+    <div class="chat-area" aria-label="Historique">
       <div class="chat-messages" id="chatMsgs" role="log" aria-live="polite">
-        <div class="message ai">
-          <div class="bubble">✨ Micro actif en permanence. Dites un numéro IOS ou décrivez une panne.</div>
-        </div>
+        <div class="message ai"><div class="bubble">✨ Micro actif. Dites un numéro IOS ou décrivez une panne.</div></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Liste des IOS -->
+<div class="ios-list-overlay" id="iosListOverlay">
+  <div class="ios-list-panel">
+    <div class="ios-list-header">
+      <h3>📋 LISTE DES IOS</h3>
+      <button class="ios-list-close" id="iosListClose">✕</button>
+    </div>
+    <div class="ios-list-scroll" id="iosListScroll"></div>
+  </div>
+</div>
+
+<!-- Modale récapitulatif -->
+<div class="recap-overlay" id="recapOverlay">
+  <div class="recap-panel">
+    <div class="recap-header">
+      <h3>📄 BULLETIN DE SERVICE</h3>
+      <button class="recap-close" id="recapClose">✕</button>
+    </div>
+    <div class="recap-content" id="recapContent"></div>
+    <div class="recap-actions">
+      <button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button>
+      <button class="recap-btn primary" id="recapCloseBtn">Fermer</button>
     </div>
   </div>
 </div>
@@ -910,12 +937,21 @@ body {
 <div class="guide-bar" id="guideBar" aria-live="polite">
   <div class="guide-step" id="guideStepLabel">ÉTAPE</div>
   <div class="guide-text" id="guideText"></div>
-  <div class="guide-buttons" id="guideBtns">
+  <div class="guide-buttons">
     <button class="guide-btn yes" id="yesBtn" style="display:none;">✓ OUI</button>
     <button class="guide-btn no" id="noBtn" style="display:none;">✗ NON</button>
     <button class="guide-btn" id="prevStepBtn">← PRÉCÉDENT</button>
     <button class="guide-btn" id="nextStepBtn">SUIVANT →</button>
     <button class="guide-btn" id="cancelGuideBtn2">ANNULER</button>
+  </div>
+</div>
+
+<!-- Questions fin de procédure -->
+<div class="end-questions" id="endQuestions">
+  <div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div>
+  <div class="end-questions-buttons">
+    <button class="guide-btn yes" id="endRecapYes">📄 Récapitulatif</button>
+    <button class="guide-btn no" id="endRecapNo">✕ Fermer</button>
   </div>
 </div>
 
@@ -925,974 +961,422 @@ body {
 <script>
 // ==================== BASE DE DONNÉES IOS ====================
 const IOS = {
-  '061': {
-    id: '061', 
-    pri: 'h', 
-    desc: 'Détection boîte chaude',
-    kw: ['boite', 'chaude', 'surchauffe', 'échauffement', 'essieu', 'roue chaude'],
-    tree: [
-      { t: "Accédez à l'écran Commandes diverses → BOITE CHAUDE.", d: 0 },
-      { t: "Localisez l'élément et la roue concernée, visitez.", d: 0 },
-      { t: "Y a-t-il fumée ou forte chaleur ?", d: 1, 
-        oui: [
-          { t: "Incendie → isolement freins + CHAPITRE 4 SECOURS.", d: 0, fin: 1 }
-        ], 
-        non: [
-          { t: "Tracez un trait sur les 2 roues, étiquette. Isolez frein (art.3). Vitesse max 30 km/h vers garage.", d: 0, fin: 1 }
-        ] 
-      }
-    ]
-  },
-  '002': {
-    id: '002', 
-    pri: 'h', 
-    desc: "Défaut majeur relais freinage d'urgence",
-    kw: ['freinage', 'urgence', 'relais', 'majeur'],
-    tree: [
-      { t: "🚨 URGENCE — Appliquez immédiatement CHAPITRE 4 — SECOURS.", d: 0, fin: 1 }
-    ]
-  },
-  '017': {
-    id: '017', 
-    pri: 'h', 
-    desc: 'Batteries faibles',
-    kw: ['batterie', 'faible', 'tension', 'baisse'],
-    tree: [
-      { t: "Vérifiez BP(F-SE) relevé.", d: 0 },
-      { t: "L'IOS a-t-il disparu ?", d: 1, 
-        oui: [
-          { t: "✅ Terminé", d: 0, fin: 1 }
-        ], 
-        non: [
-          { t: "🚨 Appliquez CHAPITRE 4 SECOURS.", d: 0, fin: 1 }
-        ] 
-      }
-    ]
-  },
-  '083': {
-    id: '083', 
-    pri: 'h', 
-    desc: 'Perte frein friction bogie CE1',
-    kw: ['frein', 'friction', 'bogie', 'ce1', 'perte'],
-    tree: [
-      { t: "Placez Z(IS)F sur CE1, Z(CO)EV sur ON.", d: 0 },
-      { t: "Symbole Frein isolé affiché ?", d: 1, 
-        oui: [
-          { t: "Appliquez page 499, EFAS complet. OK", d: 0, fin: 1 }
-        ], 
-        non: [
-          { t: "🚨 AVISEZ PC, secours.", d: 0, fin: 1 }
-        ] 
-      }
-    ]
-  },
-  '173': {
-    id: '173', 
-    pri: 'h', 
-    desc: 'Défaut porte',
-    kw: ['porte', 'portière', 'défaut', 'bloquée'],
-    tree: [
-      { t: "Commande centralisée CSL-PUP.", d: 0 },
-      { t: "L'IOS a disparu ?", d: 1, 
-        oui: [
-          { t: "✅ Terminé", d: 0, fin: 1 }
-        ], 
-        non: [
-          { t: "Condamnez la porte (ANNEXE 1).", d: 0, fin: 1 }
-        ] 
-      }
-    ]
-  },
-  '111': {
-    id: '111', 
-    pri: 'h', 
-    desc: 'Déclenchement FS/FU',
-    kw: ['fs', 'fu', 'déclenchement', 'disjoncteur', 'déclenché'],
-    tree: [
-      { t: "IOS 010 présent ?", d: 1, 
-        oui: [
-          { t: "SECOURS immédiat", d: 0, fin: 1 }
-        ], 
-        non: [
-          { t: "Placez Z(ALI-SE) sur SECOURS", d: 0 },
-          { t: "Disparu ?", d: 1, 
-            oui: [
-              { t: "✅ OK", d: 0, fin: 1 }
-            ], 
-            non: [
-              { t: "SECOURS demandé", d: 0, fin: 1 }
-            ] 
-          }
-        ] 
-      }
-    ]
-  },
-  '000': {
-    id: '000', 
-    pri: 'h', 
-    desc: 'Boucle sécurité portes',
-    kw: ['boucle', 'sécurité', 'portes', 'bloquées'],
-    tree: [
-      { t: "Arrêt 1er quai, aviser PC, appliquer GD.", d: 0, fin: 1 }
-    ]
-  }
+  '061':{id:'061',pri:'h',desc:'Détection boîte chaude',kw:['boite','chaude','surchauffe','échauffement','essieu','roue chaude'],tree:[{t:"Accédez à l'écran Commandes diverses → BOITE CHAUDE.",d:0},{t:"Localisez l'élément et la roue concernée, visitez.",d:0},{t:"Y a-t-il fumée ou forte chaleur ?",d:1,oui:[{t:"Incendie → isolement freins + CHAPITRE 4 SECOURS.",d:0,fin:1}],non:[{t:"Tracez un trait sur les 2 roues, étiquette. Isolez frein (article 3). Vitesse max 30 kilomètres par heure vers garage.",d:0,fin:1}]}]},
+  '002':{id:'002',pri:'h',desc:"Défaut majeur relais freinage d'urgence",kw:['freinage','urgence','relais','majeur'],tree:[{t:"🚨 URGENCE — Appliquez immédiatement CHAPITRE 4 — SECOURS.",d:0,fin:1}]},
+  '017':{id:'017',pri:'h',desc:'Batteries faibles',kw:['batterie','faible','tension','baisse'],tree:[{t:"Vérifiez BP(F-SE) relevé.",d:0},{t:"L'IOS a-t-il disparu ?",d:1,oui:[{t:"✅ Terminé",d:0,fin:1}],non:[{t:"🚨 Appliquez CHAPITRE 4 SECOURS.",d:0,fin:1}]}]},
+  '083':{id:'083',pri:'h',desc:'Perte frein friction bogie CE1',kw:['frein','friction','bogie','ce1','perte'],tree:[{t:"Placez Z(IS)F sur CE1, Z(CO)EV sur ON.",d:0},{t:"Symbole Frein isolé affiché ?",d:1,oui:[{t:"Appliquez page 499, EFAS complet. OK",d:0,fin:1}],non:[{t:"🚨 AVISEZ PC, secours.",d:0,fin:1}]}]},
+  '173':{id:'173',pri:'h',desc:'Défaut porte',kw:['porte','portière','défaut','bloquée'],tree:[{t:"Commande centralisée CSL-PUP.",d:0},{t:"L'IOS a disparu ?",d:1,oui:[{t:"✅ Terminé",d:0,fin:1}],non:[{t:"Condamnez la porte (ANNEXE 1).",d:0,fin:1}]}]},
+  '111':{id:'111',pri:'h',desc:'Déclenchement FS/FU',kw:['fs','fu','déclenchement','disjoncteur','déclenché'],tree:[{t:"IOS 010 présent ?",d:1,oui:[{t:"SECOURS immédiat",d:0,fin:1}],non:[{t:"Placez Z(ALI-SE) sur SECOURS",d:0},{t:"Disparu ?",d:1,oui:[{t:"✅ OK",d:0,fin:1}],non:[{t:"SECOURS demandé",d:0,fin:1}]}]}]},
+  '000':{id:'000',pri:'h',desc:'Boucle sécurité portes',kw:['boucle','sécurité','portes','bloquées'],tree:[{t:"Arrêt 1er quai, aviser PC, appliquer GD.",d:0,fin:1}]}
 };
-
-// Génération des IOS par défaut
-for (let i = 0; i <= 247; i++) {
-  let id = i.toString().padStart(3, '0');
-  if (!IOS[id]) {
-    IOS[id] = {
-      id: id, 
-      pri: 'l', 
-      desc: 'Information technique / retour maintenance',
-      tree: [
-        { t: "Avisez le PC, conformez-vous aux instructions.", d: 0, fin: 1 }
-      ], 
-      kw: []
-    };
-  }
-}
-
-// Alias de recherche
-const ALIAS = {
-  'boite chaude': '061',
-  'boîte chaude': '061',
-  'surchauffe': '061',
-  'échauffement essieu': '061',
-  'roue chaude': '061',
-  'frein friction': '083',
-  'bogie ce1': '083',
-  'perte frein': '083',
-  'batterie faible': '017',
-  'batterie': '017',
-  'tension basse': '017',
-  'urgence': '002',
-  'relais freinage': '002',
-  'défaut majeur': '002',
-  'porte defaut': '173',
-  'portière': '173',
-  'porte bloquée': '173',
-  'fs fu': '111',
-  'disjoncteur': '111',
-  'déclenchement': '111',
-  'boucle sécurité': '000',
-  'portes bloquées': '000'
-};
+for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]};}
+const ALIAS={'boite chaude':'061','boîte chaude':'061','surchauffe':'061','échauffement essieu':'061','roue chaude':'061','frein friction':'083','bogie ce1':'083','perte frein':'083','batterie faible':'017','batterie':'017','tension basse':'017','urgence':'002','relais freinage':'002','défaut majeur':'002','porte defaut':'173','portière':'173','porte bloquée':'173','fs fu':'111','disjoncteur':'111','déclenchement':'111','boucle sécurité':'000','portes bloquées':'000'};
 
 // ==================== ÉTAT GLOBAL ====================
-let currentIOS = null;
-let guideActive = false;
-let guideSteps = [];
-let stepIndex = 0;
-let listening = false;
-let speakingFlag = false;
-let micActive = true; // MICRO ACTIF EN PERMANENCE
-let recognition = null;
-let recognitionTimeout = null;
-let panelExplicitlyOpened = false;
+let currentIOS=null,guideActive=false,guideSteps=[],stepIndex=0,listening=false,speakingFlag=false,micActive=true,recognition=null,recognitionTimeout=null,panelExplicitlyOpened=false;
+let procedureStartTime=null,procedureEndTime=null,procedureStepsLog=[];
 
-// Vérification support
-const synth = window.speechSynthesis;
-const voiceSupport = !!synth;
+const synth=window.speechSynthesis,voiceSupport=!!synth;
 
-// ==================== ÉLÉMENTS DOM ====================
-const micWaveContainer = document.getElementById('micWaveContainer');
-const waveBars = document.getElementById('waveBars');
-const statusDot = document.getElementById('statusDot');
-const statusText = document.getElementById('statusText');
-const waveAnim = document.getElementById('waveAnim');
-const panel = document.getElementById('infoPanel');
-const panelOverlay = document.getElementById('panelOverlay');
-const panelToggle = document.getElementById('panelToggle');
-const guideBar = document.getElementById('guideBar');
-const iosCard = document.getElementById('iosCard');
-const toastEl = document.getElementById('toastMsg');
+// DOM
+const micWaveContainer=document.getElementById('micWaveContainer'),waveBars=document.getElementById('waveBars');
+const statusDot=document.getElementById('statusDot'),statusText=document.getElementById('statusText');
+const panel=document.getElementById('infoPanel'),panelOverlay=document.getElementById('panelOverlay'),panelToggle=document.getElementById('panelToggle');
+const guideBar=document.getElementById('guideBar'),iosCard=document.getElementById('iosCard'),toastEl=document.getElementById('toastMsg');
+const activeIosDisplay=document.getElementById('activeIosDisplay');
+const iosListOverlay=document.getElementById('iosListOverlay'),recapOverlay=document.getElementById('recapOverlay');
+const endQuestions=document.getElementById('endQuestions');
 
-// ==================== FONCTIONS UTILITAIRES ====================
-function toast(msg, duration = 3000) {
-  toastEl.textContent = msg;
-  toastEl.classList.add('show');
-  clearTimeout(toastEl._timeout);
-  toastEl._timeout = setTimeout(() => {
-    toastEl.classList.remove('show');
-  }, duration);
-}
+function toast(msg,d=3000){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toastEl._timeout);toastEl._timeout=setTimeout(()=>toastEl.classList.remove('show'),d);}
 
-function updateUIForState(state) {
-  // Mise à jour de la wave et des anneaux
-  micWaveContainer.classList.remove('listening', 'speaking', 'error');
-  waveBars.classList.remove('idle', 'listening', 'speaking', 'error');
-  
-  switch(state) {
-    case 'listen':
-      micWaveContainer.classList.add('listening');
-      waveBars.classList.add('listening');
-      statusDot.classList.add('active');
-      statusDot.classList.remove('speaking');
-      statusDot.style.background = '';
-      statusText.innerText = '🎙️ ÉCOUTE ACTIVE ...';
-      waveAnim.style.display = 'flex';
-      break;
-    case 'speak':
-      micWaveContainer.classList.add('speaking');
-      waveBars.classList.add('speaking');
-      statusDot.classList.add('speaking');
-      statusDot.classList.remove('active');
-      statusDot.style.background = '';
-      statusText.innerText = '📢 PARLE ...';
-      waveAnim.style.display = 'none';
-      break;
-    case 'error':
-      micWaveContainer.classList.add('error');
-      waveBars.classList.add('error');
-      statusDot.classList.remove('active', 'speaking');
-      statusDot.style.background = '';
-      waveAnim.style.display = 'none';
-      setTimeout(() => {
-        micWaveContainer.classList.remove('error');
-        waveBars.classList.remove('error');
-        waveBars.classList.add('idle');
-      }, 500);
-      break;
-    default:
-      waveBars.classList.add('idle');
-      statusDot.classList.remove('active', 'speaking');
-      statusDot.style.background = '#475569';
-      statusText.innerText = 'Micro actif · Dites bonjour';
-      waveAnim.style.display = 'none';
+function updateUIForState(state){
+  micWaveContainer.classList.remove('listening','speaking','error');waveBars.classList.remove('idle','listening','speaking','error');
+  switch(state){
+    case'listen':micWaveContainer.classList.add('listening');waveBars.classList.add('listening');statusDot.classList.add('active');statusDot.classList.remove('speaking');statusDot.style.background='';statusText.innerText='🎙️ ÉCOUTE ACTIVE ...';break;
+    case'speak':micWaveContainer.classList.add('speaking');waveBars.classList.add('speaking');statusDot.classList.add('speaking');statusDot.classList.remove('active');statusDot.style.background='';statusText.innerText='📢 PARLE ...';break;
+    case'error':micWaveContainer.classList.add('error');waveBars.classList.add('error');statusDot.classList.remove('active','speaking');statusDot.style.background='';setTimeout(()=>{micWaveContainer.classList.remove('error');waveBars.classList.remove('error');waveBars.classList.add('idle');},500);break;
+    default:waveBars.classList.add('idle');statusDot.classList.remove('active','speaking');statusDot.style.background='#475569';statusText.innerText='Micro actif · Dites bonjour';
   }
 }
 
-// ==================== OUVERTURE/FERMETURE PANNEAU ====================
-function openPanel() {
-  panel.classList.add('open');
-  panel.setAttribute('aria-hidden', 'false');
-  panelOverlay.classList.add('active');
-  panelToggle.classList.add('panel-open');
-  panelExplicitlyOpened = true;
-}
+// Panneau
+function openPanel(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');panelOverlay.classList.add('active');panelToggle.classList.add('panel-open');panelExplicitlyOpened=true;}
+function closePanel(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');panelOverlay.classList.remove('active');panelToggle.classList.remove('panel-open');panelExplicitlyOpened=false;}
+function togglePanel(){panel.classList.contains('open')?closePanel():openPanel();}
 
-function closePanel() {
-  panel.classList.remove('open');
-  panel.setAttribute('aria-hidden', 'true');
-  panelOverlay.classList.remove('active');
-  panelToggle.classList.remove('panel-open');
-  panelExplicitlyOpened = false;
-}
+// Formatage heure
+function formatTime(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function formatDate(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
 
-function togglePanel() {
-  if (panel.classList.contains('open')) {
-    closePanel();
-  } else {
-    openPanel();
-  }
-}
-
-// ==================== SYNTHÈSE VOCALE ====================
-function speakText(txt, callback) {
-  if (!voiceSupport) {
-    console.warn('Synthèse vocale non supportée');
-    if (callback) callback();
-    return;
-  }
+// Lecture améliorée
+function speakText(txt,callback){
+  if(!voiceSupport){if(callback)callback();return;}
+  if(speakingFlag)synth.cancel();
+  let clean=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'');
+  // km/h → kilomètres par heure, art. → article
+  clean=clean.replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ');
+  // Lire les numéros IOS comme un seul nombre
+  clean=clean.replace(/IOS\s*(\d)(\d)(\d)/gi,(m,d1,d2,d3)=>{
+    let num=parseInt(d1+d2+d3,10);
+    return 'IOS '+num;
+  });
+  // Enlever les zéros devant pour la lecture
+  clean=clean.replace(/\b0+(\d+)/g,'$1');
   
-  if (speakingFlag) {
-    synth.cancel();
-  }
-  
-  let clean = txt.replace(/[<[\]{}_*#✅🚨]/g, '').replace(/&[a-z]+;/g, '');
-  clean = clean.replace(/(\b[A-Z]{2,5}\b)/g, m => m.split('').join(' '));
-  
-  const utter = new SpeechSynthesisUtterance(clean);
-  utter.lang = 'fr-FR';
-  utter.rate = 0.9;
-  utter.volume = 1;
-  
-  const voices = synth.getVoices();
-  const frenchVoice = voices.find(v => v.lang.startsWith('fr'));
-  if (frenchVoice) utter.voice = frenchVoice;
-  
-  speakingFlag = true;
-  updateUIForState('speak');
-  
-  // Ne pas arrêter l'écoute, le micro reste actif
-  // if (listening) stopListening(); // SUPPRIMÉ
-  
-  utter.onend = () => {
-    speakingFlag = false;
-    updateUIForState('idle');
-    // Redémarrer l'écoute automatiquement (micro permanent)
-    if (micActive && !listening) {
-      startListening();
-    }
-    if (callback) callback();
-  };
-  
-  utter.onerror = (e) => {
-    console.error('Erreur synthèse vocale:', e);
-    speakingFlag = false;
-    updateUIForState('error');
-    if (micActive && !listening) {
-      startListening();
-    }
-    if (callback) callback();
-  };
-  
+  const utter=new SpeechSynthesisUtterance(clean);
+  utter.lang='fr-FR';utter.rate=0.9;utter.volume=1;
+  const voices=synth.getVoices();const frenchVoice=voices.find(v=>v.lang.startsWith('fr'));
+  if(frenchVoice)utter.voice=frenchVoice;
+  speakingFlag=true;updateUIForState('speak');
+  utter.onend=()=>{speakingFlag=false;updateUIForState('idle');if(micActive&&!listening)startListening();if(callback)callback();};
+  utter.onerror=()=>{speakingFlag=false;updateUIForState('error');if(micActive&&!listening)startListening();if(callback)callback();};
   synth.speak(utter);
 }
 
-// ==================== MESSAGES CHAT ====================
-function addMessage(text, role) {
-  const container = document.getElementById('chatMsgs');
-  const div = document.createElement('div');
-  div.className = `message ${role}`;
-  div.innerHTML = `<div class="bubble">${text}</div>`;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  
-  while (container.children.length > 50) {
-    container.removeChild(container.firstChild);
-  }
+// Messages chat
+function addMessage(text,role){
+  const container=document.getElementById('chatMsgs');
+  const div=document.createElement('div');div.className=`message ${role}`;div.innerHTML=`<div class="bubble">${text}</div>`;
+  container.appendChild(div);container.scrollTop=container.scrollHeight;
+  while(container.children.length>50)container.removeChild(container.firstChild);
 }
 
-// ==================== RECHERCHE IOS ====================
-function findIOSByQuery(query) {
-  let q = query.toLowerCase().trim();
-  
-  let match = q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);
-  if (match) {
-    let id = match[1].padStart(3, '0');
-    if (IOS[id]) return IOS[id];
-  }
-  
-  for (let [alias, id] of Object.entries(ALIAS)) {
-    if (q.includes(alias)) return IOS[id];
-  }
-  
-  for (let ios of Object.values(IOS)) {
-    if (ios.desc.toLowerCase().includes(q)) return ios;
-    if (ios.kw && ios.kw.some(k => q.includes(k))) return ios;
-  }
-  
-  if (q.length >= 3) {
-    for (let ios of Object.values(IOS)) {
-      if (ios.desc.toLowerCase().includes(q.substring(0, 3))) return ios;
-      if (ios.kw && ios.kw.some(k => k.includes(q.substring(0, 3)))) return ios;
-    }
-  }
-  
+// Affichage IOS sur écran principal
+function updateActiveIosDisplay(ios,stepInfo=null){
+  if(!ios){activeIosDisplay.classList.remove('show');return;}
+  activeIosDisplay.classList.add('show');
+  document.getElementById('activeIosId').textContent=`IOS-${ios.id}`;
+  document.getElementById('activeIosDesc').textContent=ios.desc;
+  let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l');
+  let pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO');
+  let pEl=document.getElementById('activeIosPrio');pEl.textContent=pt;pEl.className=`prio-badge ${pc}`;
+  document.getElementById('activeIosSteps').textContent=`📋 ${ios.tree.length} étapes`;
+  document.getElementById('activeIosStatus').textContent=stepInfo||'';
+}
+
+// Recherche IOS
+function findIOSByQuery(query){
+  let q=query.toLowerCase().trim();
+  let match=q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);
+  if(match){let id=match[1].padStart(3,'0');if(IOS[id])return IOS[id];}
+  for(let[alias,id]of Object.entries(ALIAS)){if(q.includes(alias))return IOS[id];}
+  for(let ios of Object.values(IOS)){if(ios.desc.toLowerCase().includes(q))return ios;if(ios.kw&&ios.kw.some(k=>q.includes(k)))return ios;}
+  if(q.length>=3){for(let ios of Object.values(IOS)){if(ios.desc.toLowerCase().includes(q.substring(0,3)))return ios;if(ios.kw&&ios.kw.some(k=>k.includes(q.substring(0,3))))return ios;}}
   return null;
 }
 
-// ==================== AFFICHAGE IOS (SANS OUVRIR LE PANNEAU) ====================
-function showIOSDetails(ios) {
-  currentIOS = ios;
-  guideActive = false;
-  guideBar.classList.remove('active');
-  iosCard.classList.add('show');
-  
-  document.getElementById('iosId').innerHTML = `IOS-${ios.id}`;
-  document.getElementById('iosDesc').innerText = ios.desc;
-  
-  let prioClass = ios.pri === 'h' ? 'prio-h' : (ios.pri === 'm' ? 'prio-m' : 'prio-l');
-  let prioText = ios.pri === 'h' ? '⚠️ URGENCE' : (ios.pri === 'm' ? '● MOYEN' : 'ℹ️ INFO');
-  document.getElementById('iosPrio').innerHTML = prioText;
-  document.getElementById('iosPrio').className = `prio-badge ${prioClass}`;
-  
-  let bodyHtml = `<div style="font-family:monospace; font-size:0.75rem;">📋 ${ios.tree.length} étapes de guidage disponibles.</div>`;
-  if (ios.pri === 'h') {
-    bodyHtml += '<div style="color:#ef4444; margin-top:10px; font-weight:600; display:flex; align-items:center; gap:6px;">⚠️ Procédure d\'urgence - Traitement immédiat requis</div>';
-  }
-  bodyHtml += '<div style="margin-top:10px; font-size:0.8rem; color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b> ou cliquez sur <b>GUIDAGE</b> pour lancer la procédure.</div>';
-  document.getElementById('iosBody').innerHTML = bodyHtml;
-  
-  addMessage(`🔍 <strong>IOS ${ios.id}</strong> — ${ios.desc}. Dites "démarrer le guidage" pour lancer la procédure.`, 'ai');
-  speakText(`IOS ${ios.id.split('').join(' ')}. ${ios.desc.substring(0, 80)}. Dites démarrer le guidage pour lancer la procédure.`);
+function showIOSDetails(ios){
+  currentIOS=ios;guideActive=false;guideBar.classList.remove('active');iosCard.classList.add('show');
+  document.getElementById('iosId').innerHTML=`IOS-${ios.id}`;document.getElementById('iosDesc').innerText=ios.desc;
+  let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l');
+  let pt=ios.pri==='h'?'⚠️ URGENCE':(ios.pri==='m'?'● MOYEN':'ℹ️ INFO');
+  document.getElementById('iosPrio').innerHTML=pt;document.getElementById('iosPrio').className=`prio-badge ${pc}`;
+  let bodyHtml=`<div style="font-family:monospace;font-size:0.75rem;">📋 ${ios.tree.length} étapes de guidage disponibles.</div>`;
+  if(ios.pri==='h')bodyHtml+='<div style="color:#ef4444;margin-top:10px;font-weight:600;">⚠️ Procédure d\'urgence</div>';
+  bodyHtml+='<div style="margin-top:10px;font-size:0.8rem;color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b> ou cliquez sur <b>GUIDAGE</b>.</div>';
+  document.getElementById('iosBody').innerHTML=bodyHtml;
+  addMessage(`🔍 <strong>IOS ${ios.id}</strong> — ${ios.desc}. Dites "démarrer le guidage".`,'ai');
+  speakText(`IOS ${parseInt(ios.id,10)}. ${ios.desc.substring(0,80)}. Dites démarrer le guidage.`);
+  updateActiveIosDisplay(ios);
+  procedureStartTime=null;procedureEndTime=null;procedureStepsLog=[];
 }
 
-// ==================== GUIDAGE ====================
-function startGuidage() {
-  if (!currentIOS) {
-    addMessage("Aucun IOS actif. Cherchez d'abord un code ou une panne.", 'ai');
-    speakText("Aucun IOS sélectionné. Veuillez d'abord chercher un code.");
-    return;
+// Liste des IOS
+function buildIosList(){
+  const scroll=document.getElementById('iosListScroll');scroll.innerHTML='';
+  const ids=Object.keys(IOS).sort((a,b)=>parseInt(a)-parseInt(b));
+  for(let id of ids){
+    const ios=IOS[id];
+    const div=document.createElement('div');div.className='ios-list-item';
+    const pc=ios.pri==='h'?'h':(ios.pri==='m'?'m':'l');
+    const pt=ios.pri==='h'?'URG':(ios.pri==='m'?'MOY':'INF');
+    div.innerHTML=`<span class="ios-list-num">IOS-${ios.id}</span><span class="ios-list-desc">${ios.desc}</span><span class="ios-list-prio ${pc}">${pt}</span>`;
+    div.addEventListener('click',()=>{
+      closeIosList();showIOSDetails(ios);
+    });
+    scroll.appendChild(div);
   }
-  
-  if (guideActive) {
-    addMessage("Un guidage est déjà en cours.", 'ai');
-    speakText("Guidage déjà en cours.");
-    return;
-  }
-  
-  guideActive = true;
-  guideSteps = [...currentIOS.tree];
-  stepIndex = 0;
-  guideBar.classList.add('active');
+}
+function openIosList(){buildIosList();iosListOverlay.classList.add('active');}
+function closeIosList(){iosListOverlay.classList.remove('active');}
+
+// Récapitulatif
+function generateRecap(){
+  if(!currentIOS||!procedureStartTime)return'';
+  let end=procedureEndTime||new Date();
+  let recap=`═══════════════════════════════════
+  BULLETIN DE SERVICE - IAOS T4
+═══════════════════════════════════
+
+📅 Date : ${formatDate(procedureStartTime)}
+
+🔧 IOS : ${currentIOS.id}
+📝 Description : ${currentIOS.desc}
+⚠️ Priorité : ${currentIOS.pri==='h'?'URGENCE':(currentIOS.pri==='m'?'MOYEN':'INFO')}
+
+⏱️ Heure de début : ${formatTime(procedureStartTime)}
+⏱️ Heure de fin   : ${formatTime(end)}
+⏱️ Durée totale   : ${Math.round((end-procedureStartTime)/60000)} minutes
+
+📋 Étapes effectuées :
+${procedureStepsLog.map((s,i)=>`   ${i+1}. ${s}`).join('\n')}
+
+✅ Statut : Procédure terminée
+`;
+  return recap;
+}
+function showRecap(){
+  const content=document.getElementById('recapContent');
+  content.textContent=generateRecap();
+  recapOverlay.classList.add('active');
+}
+function closeRecap(){recapOverlay.classList.remove('active');}
+function printRecap(){
+  const content=document.getElementById('recapContent').textContent;
+  const win=window.open('','','width=700,height=600');
+  win.document.write(`<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">${content}</pre>`);
+  win.document.close();win.print();
+}
+
+// Questions fin de procédure
+function showEndQuestions(){
+  endQuestions.classList.add('active');
+}
+function hideEndQuestions(){
+  endQuestions.classList.remove('active');
+}
+
+// Guidage
+function startGuidage(){
+  if(!currentIOS){addMessage("Aucun IOS actif.",'ai');speakText("Aucun IOS sélectionné.");return;}
+  if(guideActive){addMessage("Guidage déjà en cours.",'ai');return;}
+  guideActive=true;guideSteps=[...currentIOS.tree];stepIndex=0;
+  procedureStartTime=new Date();procedureEndTime=null;procedureStepsLog=[];
+  guideBar.classList.add('active');hideEndQuestions();
+  updateActiveIosDisplay(currentIOS,'🟢 En cours');
   renderStep();
-  addMessage("🚀 <strong>Guidage lancé</strong> pour IOS " + currentIOS.id + ". Suivez les étapes.", 'ai');
+  addMessage("🚀 <strong>Guidage lancé</strong> pour IOS "+currentIOS.id,'ai');
 }
-
-function renderStep() {
-  if (!guideActive || stepIndex >= guideSteps.length) {
-    finishProcedure("✅ Fin de la procédure.");
-    return;
-  }
-  
-  let step = guideSteps[stepIndex];
-  if (step.fin) {
-    finishProcedure(step.t || "Procédure achevée.");
-    return;
-  }
-  
-  document.getElementById('guideStepLabel').innerHTML = `ÉTAPE ${stepIndex+1}/${guideSteps.length} · IOS ${currentIOS.id}`;
-  document.getElementById('guideText').innerHTML = step.t;
-  
-  let yesBtn = document.getElementById('yesBtn');
-  let noBtn = document.getElementById('noBtn');
-  
-  if (step.d) {
-    yesBtn.style.display = 'inline-flex';
-    noBtn.style.display = 'inline-flex';
-  } else {
-    yesBtn.style.display = 'none';
-    noBtn.style.display = 'none';
-  }
-  
-  addMessage(`📌 Étape ${stepIndex+1}: ${step.t}`, 'ai');
+function renderStep(){
+  if(!guideActive||stepIndex>=guideSteps.length){finishProcedure("✅ Fin de la procédure.");return;}
+  let step=guideSteps[stepIndex];
+  if(step.fin){finishProcedure(step.t||"Procédure achevée.");return;}
+  document.getElementById('guideStepLabel').innerHTML=`ÉTAPE ${stepIndex+1}/${guideSteps.length} · IOS ${currentIOS.id}`;
+  document.getElementById('guideText').innerHTML=step.t;
+  document.getElementById('yesBtn').style.display=step.d?'inline-flex':'none';
+  document.getElementById('noBtn').style.display=step.d?'inline-flex':'none';
+  addMessage(`📌 Étape ${stepIndex+1}: ${step.t}`,'ai');
+  procedureStepsLog.push(step.t);
   speakText(step.t);
+  updateActiveIosDisplay(currentIOS,`Étape ${stepIndex+1}/${guideSteps.length}`);
+}
+function answerYes(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(true);}
+function answerNo(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)processAnswer(false);}
+function processAnswer(yes){
+  let step=guideSteps[stepIndex];let next=yes?(step.oui||[]):(step.non||[]);
+  addMessage(yes?"✓ OUI":"✗ NON",'user');
+  procedureStepsLog.push(yes?"Réponse: OUI":"Réponse: NON");
+  if(next.length===0){finishProcedure("✅ Fin de la procédure.");return;}
+  guideSteps=next;stepIndex=0;renderStep();
+}
+function nextStepAction(){
+  if(!guideActive)return;
+  let step=guideSteps[stepIndex];
+  if(step&&step.d){speakText("Veuillez répondre par oui ou par non.");addMessage("⚠️ Cette étape nécessite oui/non.",'ai');return;}
+  stepIndex++;renderStep();
+}
+function prevStepAction(){if(guideActive&&stepIndex>0){stepIndex--;renderStep();}else{speakText("Première étape.");}}
+function finishProcedure(msg){
+  guideActive=false;procedureEndTime=new Date();guideBar.classList.remove('active');
+  addMessage(msg,'ai');speakText("Fin de la procédure. "+msg.replace(/[✅🚨]/g,''));
+  if(currentIOS){addMessage(`🏁 Diagnostic terminé pour IOS ${currentIOS.id}.`,'ai');}
+  updateActiveIosDisplay(currentIOS,'✅ Terminé');
+  showEndQuestions();
+}
+function cancelProcedure(){
+  guideActive=false;guideBar.classList.remove('active');hideEndQuestions();
+  addMessage("❌ Procédure annulée.",'ai');speakText("Procédure annulée.");
+  updateActiveIosDisplay(currentIOS,'❌ Annulé');
+}
+function homeReset(){
+  cancelProcedure();currentIOS=null;iosCard.classList.remove('show');
+  document.getElementById('searchInput').value='';
+  updateActiveIosDisplay(null);
+  addMessage("🏠 Retour accueil.",'ai');speakText("Retour à l'accueil.");
 }
 
-function answerYes() {
-  if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) {
-    processAnswer(true);
-  } else {
-    addMessage("Aucune question oui/non en attente.", 'ai');
-  }
-}
-
-function answerNo() {
-  if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) {
-    processAnswer(false);
-  } else {
-    addMessage("Aucune question oui/non en attente.", 'ai');
-  }
-}
-
-function processAnswer(yes) {
-  let step = guideSteps[stepIndex];
-  let next = yes ? (step.oui || []) : (step.non || []);
-  addMessage(yes ? "✓ OUI" : "✗ NON", 'user');
-  
-  if (next.length === 0) {
-    finishProcedure("✅ Fin de la procédure.");
-    return;
-  }
-  
-  guideSteps = next;
-  stepIndex = 0;
-  renderStep();
-}
-
-function nextStepAction() {
-  if (!guideActive) return;
-  let step = guideSteps[stepIndex];
-  if (step && step.d) {
-    speakText("Veuillez répondre par oui ou par non.");
-    addMessage("⚠️ Cette étape nécessite une réponse oui/non.", 'ai');
-    return;
-  }
-  stepIndex++;
-  renderStep();
-}
-
-function prevStepAction() {
-  if (guideActive && stepIndex > 0) {
-    stepIndex--;
-    renderStep();
-  } else {
-    speakText("Vous êtes à la première étape.");
-    addMessage("ℹ️ Première étape.", 'ai');
-  }
-}
-
-function finishProcedure(msg) {
-  guideActive = false;
-  guideBar.classList.remove('active');
-  
-  const finalMsg = msg.includes("Fin de la procédure") ? msg : "✅ Fin de la procédure. " + msg;
-  addMessage(finalMsg, 'ai');
-  speakText("Fin de la procédure. " + msg.replace(/[✅🚨]/g, ''));
-  
-  if (currentIOS) {
-    addMessage(`🏁 Diagnostic terminé pour IOS ${currentIOS.id}.`, 'ai');
-  }
-}
-
-function cancelProcedure() {
-  guideActive = false;
-  guideBar.classList.remove('active');
-  addMessage("❌ Procédure annulée.", 'ai');
-  speakText("Procédure annulée.");
-}
-
-function homeReset() {
-  cancelProcedure();
-  currentIOS = null;
-  iosCard.classList.remove('show');
-  document.getElementById('searchInput').value = '';
-  addMessage("🏠 Retour à l'accueil. Dites un numéro IOS ou décrivez une panne.", 'ai');
-  speakText("Retour à l'accueil.");
-}
-
-function newSearchReset() {
-  homeReset();
-}
-
-// ==================== COMMANDES VOCALES ====================
-const COMMAND_PATTERNS = {
-  // Salutations
-  salutation: [
-    /\b(?:bonjour|salut|salam|salem|coucou|hello|hi|hey|bonsoir|salut à toi|salam alaykoum|salam alaikum|salam aleikoum|salamou alaykoum|salamou aleykoum|salamou aleikoum|salut la compagnie|wesh|yo|bonjour à tous|salutations)\b/i
-  ],
-  
-  // Démarrer / guidage
-  demarrer: [
-    /\b(?:démarrer|démarre|commencer|commence|lance|lancer|guidage|guide|guide moi|guider|start|go|let's go|ok go|on y va|allons-y|c'est parti|en route|top départ|feu vert|exécute|applique la procédure|active le guidage|montre les étapes|affiche les étapes|procédure)\b/i
-  ],
-  
-  // Suivant
-  suivant: [
-    /\b(?:suivant|suivante|passe à la suite|passe à l'étape suivante|étape suivante|après|ensuite|et ensuite|prochaine|prochaine étape|la suite|c'est quoi la suite|continuer|continue|on continue|j'ai fini|c'est fait|fait|ok|c'est bon|d'accord|okay|ok suivant|next|go on|poursuis|avance|avancer|plus loin|j'ai terminé|terminé|effectué|réalisé|ok c'est bon)\b/i
-  ],
-  
-  // Précédent
-  precedent: [
-    /\b(?:précédent|précédente|precedent|reviens|revenir|retour|retourne|en arrière|arrière|recule|reculer|back|étape d'avant|avant|l'étape d'avant|remonte|remonter|je veux revenir|j'ai fait une erreur|erreur|faux|je me suis trompé)\b/i
-  ],
-  
-  // Oui
-  oui: [
-    /\b(?:oui|ouais|yes|yep|yup|affirmatif|affirmative|exact|exactement|correct|correcte|c'est ça|c'est exact|bien sûr|bien sur|évidemment|tout à fait|absolument|oui oui|j'ai fait|c'est fait|confirmé|je confirme|validé|c'est validé|ok pour moi|ok oui|présent|allumé|fonctionne|marche|ça marche|ça fonctionne|actif|activé)\b/i
-  ],
-  
-  // Non
-  non: [
-    /\b(?:non|no|nope|nan|négatif|négative|pas du tout|pas ça|faux|c'est faux|incorrect|incorrecte|pas correct|disparu|absent|absente|éteint|éteinte|plus affiché|pas affiché|pas présent|pas de blocage|aucun|aucune|rien|néant|ne fonctionne pas|marche pas|ça marche pas|pas actif|désactivé|inactif|inactive)\b/i
-  ],
-  
-  // Annuler
-  annuler: [
-    /\b(?:annuler|annule|annulation|stop|arrête|arrêter|interrompt|interrompre|abandonne|abandonner|abort|cancel|stoppe|stoppez|termine|terminer|quitte|quitter|j'arrête|je quitte|je stoppe)\b/i
-  ],
-  
-  // Accueil
-  accueil: [
-    /\b(?:accueil|menu|menu principal|retour|retour accueil|home|racine|début|recommencer|reset|réinitialiser|nouveau départ|page d'accueil|écran principal)\b/i
-  ],
-  
-  // Répéter
-  repeter: [
-    /\b(?:répète|répéter|redis|redire|encore|dis encore|dis moi encore|répète ça|redis ça|what|say again|repeat|quoi|pardon|hein|j'ai pas compris|pas compris|j'ai mal entendu|mal entendu|peux-tu répéter|tu peux répéter|reformule|explique encore)\b/i
-  ],
-  
-  // Aide
-  aide: [
-    /\b(?:aide|help|commandes|que puis-je dire|que dire|options|quoi dire|comment faire|je suis perdu|je ne sais pas|incertain|que faire|liste des commandes|vocales|commandes vocales)\b/i
-  ]
+// Commandes vocales
+const COMMAND_PATTERNS={
+  salutation:[/\b(?:bonjour|salut|salam|salem|coucou|hello|hi|hey|bonsoir|salamou? al[ae]ykoum?|salamou? aleikoum?|wesh|yo)\b/i],
+  heure:[/\b(?:quelle heure|il est quelle heure|donne l'heure|heure actuelle|heure|montre l'heure|dis l'heure)\b/i],
+  date:[/\b(?:quelle date|on est quel jour|donne la date|date aujourd'hui|date|quel jour|affiche la date)\b/i],
+  liste_ios:[/\b(?:liste des ios|tous les ios|affiche la liste|montre les ios|liste complète|voir tous les ios|liste ios)\b/i],
+  demarrer:[/\b(?:démarrer|démarre|commencer|lance|guidage|guide|start|go|on y va|c'est parti|exécute|procédure)\b/i],
+  suivant:[/\b(?:suivant|passe à la suite|étape suivante|après|ensuite|prochaine|la suite|continuer|continue|j'ai fini|c'est fait|ok|c'est bon|d'accord|ok suivant|next|j'ai terminé|terminé|effectué)\b/i],
+  precedent:[/\b(?:précédent|reviens|retour|en arrière|recule|back|étape d'avant|remonte|erreur)\b/i],
+  oui:[/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|absolument|confirmé|validé|présent|allumé|fonctionne|ça marche|actif)\b/i],
+  non:[/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|néant|marche pas|désactivé|inactif)\b/i],
+  annuler:[/\b(?:annuler|stop|arrête|interrompt|abandonne|abort|cancel|termine|quitte|j'arrête)\b/i],
+  accueil:[/\b(?:accueil|menu|retour accueil|home|reset|recommencer)\b/i],
+  repeter:[/\b(?:répète|redis|encore|répète ça|what|say again|repeat|quoi|pardon|hein|j'ai pas compris|peux-tu répéter|reformule)\b/i],
+  aide:[/\b(?:aide|help|commandes|options|quoi dire|comment faire|liste des commandes)\b/i]
 };
+function isCommandMatch(text,type){const p=COMMAND_PATTERNS[type];return p?p.some(r=>r.test(text)):false;}
 
-function isCommandMatch(text, commandType) {
-  const patterns = COMMAND_PATTERNS[commandType];
-  if (!patterns) return false;
-  return patterns.some(pattern => pattern.test(text));
+function processVoiceCommand(txt){
+  let lower=txt.toLowerCase().trim();
+  addMessage(`🎤 "${txt}"`,'user');
+
+  // Salutations
+  if(isCommandMatch(lower,'salutation')){
+    if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(lower)){
+      addMessage("👋 Wa aleykoum salam. IAOS T4 à votre service.",'ai');
+      speakText("Wa aleykoum salam. IAOS T4 à votre service.");return;
+    }
+    const g=["Bonjour ! IAOS T4 à votre service. Dites un numéro IOS.","Salut ! Prêt à vous assister.","Bonjour. Dites-moi quel code IOS vous concerne."];
+    addMessage(`👋 ${g[0]}`,'ai');speakText(g[Math.floor(Math.random()*g.length)]);return;
+  }
+
+  // Heure
+  if(isCommandMatch(lower,'heure')){
+    const now=new Date();const h=formatTime(now);
+    addMessage(`🕐 Il est ${h}.`,'ai');speakText(`Il est ${h}.`);return;
+  }
+
+  // Date
+  if(isCommandMatch(lower,'date')){
+    const now=new Date();const d=formatDate(now);
+    addMessage(`📅 Nous sommes le ${d}.`,'ai');speakText(`Nous sommes le ${d}.`);return;
+  }
+
+  // Liste IOS
+  if(isCommandMatch(lower,'liste_ios')){openIosList();addMessage("📋 Affichage de la liste des IOS.",'ai');speakText("Voici la liste de tous les IOS.");return;}
+
+  if(isCommandMatch(lower,'aide')){
+    addMessage("💡 Commandes: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste des ios.",'ai');
+    speakText("Commandes disponibles: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste des ios.");return;
+  }
+  if(isCommandMatch(lower,'annuler')){cancelProcedure();return;}
+  if(isCommandMatch(lower,'accueil')){homeReset();return;}
+  if(isCommandMatch(lower,'demarrer')){
+    if(currentIOS&&!guideActive)startGuidage();
+    else if(guideActive)addMessage("Guidage déjà en cours.",'ai');
+    else{addMessage("Aucun IOS sélectionné.",'ai');speakText("Cherchez d'abord un IOS.");}
+    return;
+  }
+  if(isCommandMatch(lower,'oui')&&!isCommandMatch(lower,'non')){
+    if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerYes();
+    else addMessage("Pas de question en attente.",'ai');
+    return;
+  }
+  if(isCommandMatch(lower,'non')){
+    if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)answerNo();
+    else addMessage("Pas de question en attente.",'ai');
+    return;
+  }
+  if(isCommandMatch(lower,'suivant')&&!isCommandMatch(lower,'non')&&!isCommandMatch(lower,'precedent')){
+    if(guideActive)nextStepAction();else addMessage("Aucun guidage actif.",'ai');
+    return;
+  }
+  if(isCommandMatch(lower,'precedent')){if(guideActive)prevStepAction();return;}
+  if(isCommandMatch(lower,'repeter')){
+    if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);
+    else if(currentIOS)speakText(currentIOS.desc);
+    else speakText("Aucune information.");
+    return;
+  }
+  let iosFound=findIOSByQuery(lower);
+  if(iosFound)showIOSDetails(iosFound);
+  else{addMessage(`Aucun résultat.`,'ai');speakText("Aucun IOS trouvé.");}
 }
 
-function processVoiceCommand(txt) {
-  let lower = txt.toLowerCase().trim();
-  addMessage(`🎤 "${txt}"`, 'user');
-  
-  // 1. Salutations - réponse spécifique pour salam alaykoum
-  if (isCommandMatch(lower, 'salutation')) {
-    // Détection spécifique pour salam alaykoum
-    if (/\b(?:salam|salem|salamou)\s*(?:alaykoum|alaikum|aleikoum|aleykoum)\b/i.test(lower)) {
-      addMessage("👋 Wa aleykoum salam. IAOS T4 à votre service.", 'ai');
-      speakText("Wa aleykoum salam. IAOS T4 à votre service.");
-      return;
-    }
-    
-    // Autres salutations
-    const greetings = [
-      "Bonjour ! Je suis IAOS T4, votre assistant. Dites un numéro IOS ou décrivez une panne.",
-      "Salut ! Prêt à vous assister. Quel IOS ou quelle panne souhaitez-vous traiter ?",
-      "Bonjour à vous. Je suis à votre écoute. Dites-moi quel code IOS ou quelle panne vous concerne."
-    ];
-    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-    addMessage(`👋 ${greeting}`, 'ai');
-    speakText(greeting);
-    return;
-  }
-  
-  // 2. Aide
-  if (isCommandMatch(lower, 'aide')) {
-    const helpText = "Commandes disponibles : démarrer le guidage, suivant, précédent, oui, non, annuler, accueil, répète, aide. Vous pouvez aussi dire bonjour, salam alaykoum, ou chercher un IOS par son numéro ou sa description.";
-    addMessage(`💡 ${helpText}`, 'ai');
-    speakText("Voici les commandes disponibles. Dites démarrer pour lancer un guidage, suivant pour continuer, précédent pour revenir, oui ou non pour répondre, annuler pour arrêter, accueil pour revenir au menu, répète pour réécouter, ou cherchez un IOS.");
-    return;
-  }
-  
-  // 3. Annuler (priorité haute)
-  if (isCommandMatch(lower, 'annuler')) {
-    if (guideActive) {
-      cancelProcedure();
-    } else {
-      homeReset();
-    }
-    return;
-  }
-  
-  // 4. Accueil
-  if (isCommandMatch(lower, 'accueil')) {
-    homeReset();
-    return;
-  }
-  
-  // 5. Démarrer guidage
-  if (isCommandMatch(lower, 'demarrer')) {
-    if (currentIOS && !guideActive) {
-      startGuidage();
-    } else if (guideActive) {
-      addMessage("Un guidage est déjà en cours.", 'ai');
-      speakText("Guidage déjà en cours.");
-    } else {
-      addMessage("Aucun IOS sélectionné. Dites un numéro ou décrivez une panne d'abord.", 'ai');
-      speakText("Cherchez d'abord un IOS.");
-    }
-    return;
-  }
-  
-  // 6. OUI (dans le contexte du guidage)
-  if (isCommandMatch(lower, 'oui') && !isCommandMatch(lower, 'non')) {
-    if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) {
-      answerYes();
-    } else {
-      addMessage("Je n'attends pas de réponse oui/non actuellement.", 'ai');
-      speakText("Pas de question en attente.");
-    }
-    return;
-  }
-  
-  // 7. NON (dans le contexte du guidage)
-  if (isCommandMatch(lower, 'non')) {
-    if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) {
-      answerNo();
-    } else {
-      addMessage("Pas de question oui/non en cours.", 'ai');
-      speakText("Pas de question en attente.");
-    }
-    return;
-  }
-  
-  // 8. Suivant
-  if (isCommandMatch(lower, 'suivant') && !isCommandMatch(lower, 'non') && !isCommandMatch(lower, 'precedent')) {
-    if (guideActive) {
-      nextStepAction();
-    } else {
-      addMessage("Aucun guidage en cours. Dites démarrer pour lancer la procédure.", 'ai');
-      speakText("Aucun guidage actif.");
-    }
-    return;
-  }
-  
-  // 9. Précédent
-  if (isCommandMatch(lower, 'precedent')) {
-    if (guideActive) {
-      prevStepAction();
-    } else {
-      addMessage("Aucun guidage en cours.", 'ai');
-    }
-    return;
-  }
-  
-  // 10. Répéter
-  if (isCommandMatch(lower, 'repeter')) {
-    if (guideActive && guideSteps[stepIndex]) {
-      speakText(guideSteps[stepIndex].t);
-      addMessage("🔁 Je répète l'étape en cours.", 'ai');
-    } else if (currentIOS) {
-      speakText(currentIOS.desc);
-      addMessage(`🔁 IOS ${currentIOS.id}: ${currentIOS.desc}`, 'ai');
-    } else {
-      speakText("Aucune information à répéter. Dites un numéro d'IOS ou décrivez une panne.");
-      addMessage("ℹ️ Aucune information en mémoire.", 'ai');
-    }
-    return;
-  }
-  
-  // 11. Recherche d'IOS
-  let iosFound = findIOSByQuery(lower);
-  if (iosFound) {
-    showIOSDetails(iosFound);
-  } else {
-    const noResultMsg = `Aucun résultat pour "${txt}". Essayez "IOS 061", "boîte chaude", "frein", "batterie"...`;
-    addMessage(noResultMsg, 'ai');
-    speakText("Aucun IOS trouvé. Veuillez reformuler votre recherche.");
-  }
-}
-
-// ==================== RECONNAISSANCE VOCALE ====================
-function startListening() {
-  if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
-    toast("Reconnaissance vocale non supportée");
-    return;
-  }
-  
-  if (speakingFlag || listening) return;
-  
-  try {
-    let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SR();
-    recognition.lang = 'fr-FR';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 3;
-    
-    recognition.onstart = () => {
-      listening = true;
-      updateUIForState('listen');
+// Reconnaissance vocale
+function startListening(){
+  if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window)){toast("Reconnaissance non supportée");return;}
+  if(speakingFlag||listening)return;
+  try{
+    let SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();
+    recognition.lang='fr-FR';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=3;
+    recognition.onstart=()=>{listening=true;updateUIForState('listen');};
+    recognition.onresult=(e)=>{
+      let best='',bestC=0;
+      for(let i=0;i<e.results[0].length;i++){if(e.results[0][i].confidence>bestC){bestC=e.results[0][i].confidence;best=e.results[0][i].transcript;}}
+      if(bestC<0.2){addMessage("Je n'ai pas compris.",'ai');speakText("Je n'ai pas compris.");return;}
+      processVoiceCommand(best);
     };
-    
-    recognition.onresult = (e) => {
-      let bestTranscript = '';
-      let bestConfidence = 0;
-      
-      for (let i = 0; i < e.results[0].length; i++) {
-        if (e.results[0][i].confidence > bestConfidence) {
-          bestConfidence = e.results[0][i].confidence;
-          bestTranscript = e.results[0][i].transcript;
-        }
-      }
-      
-      console.log(`Reconnaissance: "${bestTranscript}" (confiance: ${bestConfidence.toFixed(2)})`);
-      
-      if (bestConfidence < 0.2) {
-        addMessage("Je n'ai pas bien compris. Pouvez-vous répéter ?", 'ai');
-        speakText("Je n'ai pas compris. Pouvez-vous répéter ?");
-        return;
-      }
-      
-      processVoiceCommand(bestTranscript);
-    };
-    
-    recognition.onerror = (e) => {
-      console.error('Erreur reconnaissance:', e.error);
-      listening = false;
-      
-      if (e.error === 'no-speech') {
-        // Normal, on redémarre
-      } else if (e.error === 'audio-capture') {
-        toast("Microphone non disponible");
-        micActive = false;
-      } else if (e.error === 'not-allowed') {
-        toast("Permission microphone refusée");
-        micActive = false;
-      } else if (e.error === 'network') {
-        toast("Erreur réseau - reconnaissance vocale");
-      }
-      
+    recognition.onerror=(e)=>{
+      listening=false;
+      if(e.error==='no-speech'){}
+      else if(e.error==='audio-capture'){toast("Micro non disponible");micActive=false;}
+      else if(e.error==='not-allowed'){toast("Permission micro refusée");micActive=false;}
       updateUIForState('idle');
-      
-      // Redémarrer automatiquement (micro permanent)
-      if (micActive && !speakingFlag) {
-        clearTimeout(recognitionTimeout);
-        recognitionTimeout = setTimeout(startListening, 800);
-      }
+      if(micActive&&!speakingFlag){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,800);}
     };
-    
-    recognition.onend = () => {
-      listening = false;
-      
-      // Redémarrer automatiquement (micro permanent)
-      if (micActive && !speakingFlag) {
-        clearTimeout(recognitionTimeout);
-        recognitionTimeout = setTimeout(startListening, 500);
-      } else {
-        updateUIForState('idle');
-      }
+    recognition.onend=()=>{
+      listening=false;
+      if(micActive&&!speakingFlag){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,500);}
+      else updateUIForState('idle');
     };
-    
     recognition.start();
-  } catch (e) {
-    console.error('Erreur initialisation reconnaissance:', e);
-    toast("Erreur d'initialisation du microphone");
-    
-    // Réessayer
-    if (micActive) {
-      clearTimeout(recognitionTimeout);
-      recognitionTimeout = setTimeout(startListening, 1000);
-    }
-  }
+  }catch(e){if(micActive){clearTimeout(recognitionTimeout);recognitionTimeout=setTimeout(startListening,1000);}}
 }
+function stopListening(){if(recognition){try{recognition.stop();}catch(e){}recognition=null;}clearTimeout(recognitionTimeout);listening=false;updateUIForState('idle');}
 
-function stopListening() {
-  if (recognition) {
-    try {
-      recognition.stop();
-    } catch (e) {}
-    recognition = null;
-  }
-  clearTimeout(recognitionTimeout);
-  listening = false;
-  updateUIForState('idle');
-}
+// Événements
+document.getElementById('micWaveContainer').addEventListener('click',()=>{
+  if(speakingFlag){synth.cancel();speakingFlag=false;updateUIForState('idle');return;}
+  micActive=!micActive;
+  if(micActive){startListening();statusDot.style.background='';statusText.innerText='Micro actif · Dites bonjour';}
+  else{stopListening();statusText.innerText='Micro en pause';statusDot.style.background='#ef4444';statusDot.classList.remove('active','speaking');}
+});
+document.getElementById('micWaveContainer').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('micWaveContainer').click();}});
+panelToggle.addEventListener('click',togglePanel);
+panelOverlay.addEventListener('click',closePanel);
+document.getElementById('closePanel').addEventListener('click',closePanel);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(recapOverlay.classList.contains('active'))closeRecap();else if(iosListOverlay.classList.contains('active'))closeIosList();else if(panel.classList.contains('open'))closePanel();}});
+document.getElementById('searchBtn').addEventListener('click',()=>{let v=document.getElementById('searchInput').value;if(v){processVoiceCommand(v);document.getElementById('searchInput').value='';}});
+document.getElementById('searchInput').addEventListener('keypress',e=>{if(e.key==='Enter'){let v=e.target.value;if(v){processVoiceCommand(v);e.target.value='';}}});
+document.getElementById('showAllIosBtn').addEventListener('click',openIosList);
+document.getElementById('iosListClose').addEventListener('click',closeIosList);
+iosListOverlay.addEventListener('click',e=>{if(e.target===iosListOverlay)closeIosList();});
+document.getElementById('recapClose').addEventListener('click',closeRecap);
+document.getElementById('recapCloseBtn').addEventListener('click',closeRecap);
+document.getElementById('recapPrintBtn').addEventListener('click',printRecap);
+recapOverlay.addEventListener('click',e=>{if(e.target===recapOverlay)closeRecap();});
+document.getElementById('guideStartBtn').addEventListener('click',startGuidage);
+document.getElementById('cancelGuideBtn').addEventListener('click',cancelProcedure);
+document.getElementById('homeBtn').addEventListener('click',homeReset);
+document.getElementById('newSearchBtn').addEventListener('click',homeReset);
+document.getElementById('yesBtn').addEventListener('click',answerYes);
+document.getElementById('noBtn').addEventListener('click',answerNo);
+document.getElementById('nextStepBtn').addEventListener('click',nextStepAction);
+document.getElementById('prevStepBtn').addEventListener('click',prevStepAction);
+document.getElementById('cancelGuideBtn2').addEventListener('click',cancelProcedure);
+document.getElementById('endRecapYes').addEventListener('click',()=>{hideEndQuestions();showRecap();});
+document.getElementById('endRecapNo').addEventListener('click',hideEndQuestions);
 
-// ==================== GESTIONNAIRES D'ÉVÉNEMENTS ====================
-
-// Micro (clic pour désactiver/réactiver)
-document.getElementById('micWaveContainer').addEventListener('click', () => {
-  if (speakingFlag) {
-    synth.cancel();
-    speakingFlag = false;
-    updateUIForState('idle');
-    return;
-  }
-  
-  if (micActive) {
-    // Désactiver temporairement
-    micActive = false;
-    stopListening();
-    statusText.innerText = 'Micro en pause · Appuyez';
-    statusDot.style.background = '#ef4444';
-    statusDot.classList.remove('active', 'speaking');
-  } else {
-    // Réactiver
-    micActive = true;
-    startListening();
-    statusDot.style.background = '';
-  }
+// Cycle de vie
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){if(listening)stopListening();if(speakingFlag)synth.cancel();}
+  else{if(micActive&&!speakingFlag)startListening();}
 });
 
-// Accessibilité clavier pour le micro
-document.getElementById('micWaveContainer').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    document.getElementById('micWaveContainer').click();
-  }
+// Swipe panneau
+let tsX=0,tsY=0,tMoved=false;
+panel.addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;tsY=e.touches[0].clientY;tMoved=false;},{passive:true});
+panel.addEventListener('touchmove',e=>{
+  let cx=e.touches[0].clientX,cy=e.touches[0].clientY,dx=cx-tsX,dy=Math.abs(cy-tsY);
+  if(dx>30&&dx>dy){tMoved=true;panel.style.transform=`translateX(${dx}px)`;panel.style.transition='none';}
+},{passive:true});
+panel.addEventListener('touchend',e=>{
+  panel.style.transition='';
+  if(tMoved){let ex=e.changedTouches[0].clientX;if(ex-tsX>80)closePanel();else panel.style.transform='';}
 });
 
-// Toggle du panneau (bouton flottant avec engrenage)
-panelToggle.addEventListener('click', togglePanel);
-
-// Overlay pour fermer le panneau
-panelOverlay.addEventListener('click', closePanel);
-
-// Bouton fermer dans le panneau
-document.getElementById('closePanel').addEventListener('click', closePanel);
-
-// Touche Échap pour fermer le panneau
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && panel.classList.contains('open')) {
-    closePanel();
-  }
-});
-
-// Recherche
-document.getElementById('searchBtn').addEventListener('click', () => {
-  let val = document.getElementById('searchInput').value;
-  if (val) {
-    processVoiceCommand(val);
-    document.getElementById('searchInput').value = '';
-  }
-});
-
-document.getElementById('searchInput').addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    let val = e.target.value;
-    if (val) {
-      processVoiceCommand(val);
-      e.target.value = '';
-    }
-  }
-});
-
-// Boutons de la carte IOS
-document.getElementById('guideStartBtn').addEventListener('click', startGuidage);
-document.getElementById('cancelGuideBtn').addEventListener('click', cancelProcedure);
-document.getElementById('homeBtn').addEventListener('click', homeReset);
-document.getElementById('newSearchBtn').addEventListener('click', newSearchReset);
-
-// Boutons de la barre de guidage
-document.getElementById('yesBtn').addEventListener('click', answerYes);
-document.getElementById('noBtn').addEventListener('click', answerNo);
-document.getElementById('nextStepBtn').addEventListener('click', nextStepAction);
-document.getElementById('prevStepBtn').addEventListener('click', prevStepAction);
-document.getElementById('cancelGuideBtn2').addEventListener('click', cancelProcedure);
-
-// ==================== GESTION CYCLE DE VIE ====================
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    if (listening) stopListening();
-    if (speakingFlag) synth.cancel();
-  } else {
-    if (micActive && !speakingFlag) {
-      startListening();
-    }
-  }
-});
-
-// Geste tactile pour fermer le panneau (swipe droite)
-let touchStartX = 0;
-let touchStartY = 0;
-let touchMoved = false;
-
-panel.addEventListener('touchstart', (e) => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-  touchMoved = false;
-}, { passive: true });
-
-panel.addEventListener('touchmove', (e) => {
-  const touchCurrentX = e.touches[0].clientX;
-  const touchCurrentY = e.touches[0].clientY;
-  const diffX = touchCurrentX - touchStartX;
-  const diffY = Math.abs(touchCurrentY - touchStartY);
-  
-  if (diffX > 30 && diffX > diffY) {
-    touchMoved = true;
-    panel.style.transform = `translateX(${diffX}px)`;
-    panel.style.transition = 'none';
-  }
-}, { passive: true });
-
-panel.addEventListener('touchend', (e) => {
-  panel.style.transition = '';
-  
-  if (touchMoved) {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchEndX - touchStartX;
-    
-    if (diff > 80) {
-      closePanel();
-    } else {
-      panel.style.transform = '';
-    }
-  }
-});
-
-// ==================== DÉMARRAGE AUTOMATIQUE DU MICRO ====================
-function initMic() {
-  micActive = true;
-  updateUIForState('idle');
-  startListening();
-  console.log('🎤 Micro activé en permanence');
-}
-
-// ==================== INITIALISATION ====================
+// Init
+function initMic(){micActive=true;updateUIForState('idle');startListening();}
 initMic();
-console.log('✅ IAOS T4 · DUALIS U53700 · Assistant Holographique initialisé');
-console.log('🎤 Micro permanent activé');
-console.log('👋 Salam alaykoum → Wa aleykoum salam');
-console.log('🌈 Wave animée selon état : cyan=idle, vert=écoute, violet=parole, rouge=erreur');
+console.log('✅ IAOS T4 initialisé');
 </script>
 </body>
 </html>
