@@ -653,7 +653,29 @@ function an(){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)pa(
 function pa(y){let s=guideSteps[stepIndex],n=y?(s.oui||[]):(s.non||[]);addMessage(y?'✓ OUI':'✗ NON','user');procedureStepsLog.push(y?'OUI':'NON');if(n.length===0){fp('✅ Fin de la procédure.');return}guideSteps=n;stepIndex=0;rs()}
 function ns(){if(!guideActive)return;let s=guideSteps[stepIndex];if(s&&s.d){speakText('Veuillez répondre par oui ou par non.');return}stepIndex++;rs()}
 function ps(){if(guideActive&&stepIndex>0){stepIndex--;rs()}else speakText('Première étape.')}
-function fp(msg){guideActive=false;procedureEndTime=new Date();document.getElementById('guideBar').classList.remove('active');addMessage(msg,'ai');speakText('Fin de la procédure.');if(currentIOS)addMessage('🏁 Diagnostic terminé pour IOS '+currentIOS.id+'.','ai');uad(currentIOS,'✅ Terminé');seq()}
+// ==================== FIN DE PROCÉDURE AVEC ANNONCE VOCALE DU RÉSULTAT ====================
+function fp(msg){
+  guideActive=false;
+  procedureEndTime=new Date();
+  document.getElementById('guideBar').classList.remove('active');
+  addMessage(msg,'ai');
+  procedureStepsLog.push(msg);
+  // Déterminer le type de fin et l'annoncer vocalement
+  let finMsg='Fin de la procédure. ';
+  if(msg.includes('DÉPANNAGE TERMINÉ')||msg.includes('dépannage terminé')||msg.includes('DEPANNAGE TERMINE')){
+    finMsg+='Dépannage terminé.';
+  }else if(msg.includes('SECOURS')||msg.includes('secours')||msg.includes('CHAPITRE 4')){
+    finMsg+='Demande de secours. Appliquez le chapitre 4.';
+  }else if(msg.includes('Aviser')||msg.includes('aviser')||msg.includes('PC')){
+    finMsg+='Aviser le PC et se conformer aux instructions.';
+  }else{
+    finMsg+=msg.replace(/[✅🚨]/g,'');
+  }
+  speakText(finMsg);
+  if(currentIOS)addMessage('🏁 Diagnostic terminé pour IOS '+currentIOS.id+'.','ai');
+  uad(currentIOS,'✅ Terminé');
+  seq();
+}
 function ccp(){guideActive=false;document.getElementById('guideBar').classList.remove('active');heq();addMessage('❌ Procédure annulée.','ai');speakText('Procédure annulée.');uad(currentIOS,'❌ Annulé')}
 function hr(){ccp();currentIOS=null;document.getElementById('iosCard').classList.remove('show');document.getElementById('searchInput').value='';had();heq();addMessage('🏠 Retour accueil.','ai');speakText("Retour à l'accueil.")}
 // ==================== COMMANDES VOCALES ====================
