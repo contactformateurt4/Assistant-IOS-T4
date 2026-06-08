@@ -147,10 +147,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);color:var(--text
 <div class="end-questions" id="endQuestions"><div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div><div class="end-questions-buttons"><button class="guide-btn yes" id="endRecapYes">📄 Récapitulatif</button><button class="guide-btn no" id="endRecapNo">✕ Fermer</button></div></div>
 <div class="toast" id="toastMsg"></div>
 <script>
-// ══════════════════════════════════════════════════════════════════
-// BASE IOS COMPLÈTE — 173 IOS (000→247)
-// ══════════════════════════════════════════════════════════════════
-const IOS = {
+// ==================== BASE DE DONNÉES IOS (À REMPLIR) ====================
+// Format: '000':{id:'000',pri:'h',type:'MA',desc:'Description',kw:['motclé'],tree:[{t:"Étape",d:0},{t:"Question ?",d:1,oui:[{t:"Si oui",d:0,fin:1}],non:[{t:"Si non",d:0,fin:1}]}]}
+// pri: 'h'=haute(rouge), 'm'=moyenne(orange), 'l'=basse(vert)
+// d: 0=étape simple, 1=question oui/non
+// fin: 1=dernière étape de la branche
+const IOS={
+
+// ==================== EXEMPLE (à supprimer après ajout des vrais IOS) ====================
+'061':{id:'061',pri:'h',type:'MA',desc:'Détection boîte chaude',kw:['boite','chaude','surchauffe'],tree:[{t:"Accédez à l'écran Commandes diverses → BOITE CHAUDE.",d:0},{t:"Localisez l'élément et la roue concernée, visitez.",d:0},{t:"Y a-t-il fumée ou forte chaleur ?",d:1,oui:[{t:"Incendie → isolement freins + CHAPITRE 4 SECOURS.",d:0,fin:1}],non:[{t:"Tracez un trait sur les 2 roues, étiquette. Isolez frein (article 3). Vitesse max 30 kilomètres par heure vers garage.",d:0,fin:1}]}]},
+
+// ==================== AJOUTEZ TOUS LES IOS CI-DESSOUS ====================
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
   tree:[{t:'Arrêtez le train au 1er quai disponible.',d:0},{t:'Avisez le PC immédiatement.',d:0},{t:'Appliquez le GD.',d:0},{t:'✅ Dépannage terminé.',d:0,fin:1}]},
@@ -597,63 +604,21 @@ const IOS = {
 '247':{id:'247',pri:'m',desc:"Présence d'une composition d'UM hétérogène",kw:['247','um','heterogene'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Séparez les éléments si en UM. Placez Z(IS-UM-HO) sur ISOLÉ si train en US. Avisez le PC.',d:0,fin:1}]}
 };
 
-// ══════════════════════════════════════════════════════════════════
-// ALIASES RECHERCHE
-// ══════════════════════════════════════════════════════════════════
-const ALIAS={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
-'secours':['002','048','222'],'urgence':['048','222'],
-'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
-'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
-'frein friction c2b1':['086'],'frein friction c2b2':['087'],'frein friction':['083'],
-'batterie faible':['017'],'batterie':['017','050','052'],'chargeur batterie':['015'],
-'pantographe':['054'],'panto':['054'],
-'porte dualis':['173'],'defaut porte':['173'],'porte':['173','167','172'],
-'frein desserre':['096'],'blocage':['096'],'frein bloque':['096'],
-'radio':['198'],'tetra':['198'],
-'cvs':['048'],'traction':['220','221','222'],'coffre traction':['220'],
-'interphonie':['115','120'],'sai':['115'],
-'retrovision':['099','101'],'retroviseur':['099','100'],
-'stm kvb':['077'],'kvb':['077'],'stm':['077'],
-'fs fu':['111'],'declenchement':['111'],
-'enregistreur':['107','108'],'etf':['181','220'],
-'relais freinage':['002','004','110','153'],'bogie':['004','083','084','085','086','087'],
-'climatisation':['014','062','063'],'compresseur':['076'],
-'saeiv':['196','125'],'itineraire':['196'],
-'drive':['205'],'antiderive':['205'],
-'msav':['232'],'moteur traction':['233'],
-'acces conducteur':['242'],'conducteur':['242']};
+// ==================== ALIAS DE RECHERCHE (À REMPLIR) ====================
+const ALIAS={
+'boite chaude':'061','surchauffe':'061'
+// Ajoutez les alias ici
+};
 
-// ══════════════════════════════════════════════════════════════════
-// ALIASES RECHERCHE
-// ══════════════════════════════════════════════════════════════════
-const ALIAS={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
-'secours':['002','048','222'],'urgence':['048','222'],
-'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
-'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
-'frein friction c2b1':['086'],'frein friction c2b2':['087'],'frein friction':['083'],
-'batterie faible':['017'],'batterie':['017','050','052'],'chargeur batterie':['015'],
-'pantographe':['054'],'panto':['054'],
-'porte dualis':['173'],'defaut porte':['173'],'porte':['173','167','172'],
-'frein desserre':['096'],'blocage':['096'],'frein bloque':['096'],
-'radio':['198'],'tetra':['198'],
-'cvs':['048'],'traction':['220','221','222'],'coffre traction':['220'],
-'interphonie':['115','120'],'sai':['115'],
-'retrovision':['099','101'],'retroviseur':['099','100'],
-'stm kvb':['077'],'kvb':['077'],'stm':['077'],
-'fs fu':['111'],'declenchement':['111'],
-'enregistreur':['107','108'],'etf':['181','220'],
-'relais freinage':['002','004','110','153'],'bogie':['004','083','084','085','086','087'],
-'climatisation':['014','062','063'],'compresseur':['076'],
-'saeiv':['196','125'],'itineraire':['196'],
-'drive':['205'],'antiderive':['205'],
-'msav':['232'],'moteur traction':['233'],
-'acces conducteur':['242'],'conducteur':['242']};
-// Génération des IOS par défaut pour les numéros manquants (seulement ceux qui n'ont pas été fournis)
+// ==================== GÉNÉRATION DES IOS PAR DÉFAUT POUR LES MANQUANTS ====================
 for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',type:'AN',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]}}
-const ALIAS={'boite chaude':'061','surchauffe':'061','essieu chaud':'061','frein ce1':'083','frein c1':'084','frein ce2':'085','bogie ce1':'083','batterie faible':'017','batterie':'017','urgence':'002','porte defaut':'173','porte bloquee':'173','fs fu':'111','disjoncteur':'111','boucle securite':'000','climatisation':'062','pantographe':'053','retrovision':'099','kvb':'077','stm':'077','saeiv':'125','attelage':'154','patins':'071','sable':'057','traction':'206','coffre traction':'214','anti derive':'205','transformateur':'212','moteur traction':'233'};
+
+// ==================== ÉTAT GLOBAL ====================
 let currentIOS=null,guideActive=false,guideSteps=[],stepIndex=0,listening=false,speakingFlag=false,micActive=true,recognition=null,recognitionTimeout=null,procedureStartTime=null,procedureEndTime=null,procedureStepsLog=[];
 const synth=window.speechSynthesis,voiceSupport=!!synth;
-function toast(m,d=3000){document.getElementById('toastMsg').textContent=m;document.getElementById('toastMsg').classList.add('show');clearTimeout(document.getElementById('toastMsg')._t);document.getElementById('toastMsg')._t=setTimeout(()=>document.getElementById('toastMsg').classList.remove('show'),d)}
+
+// ==================== FONCTIONS ====================
+function toast(m,d=3000){const t=document.getElementById('toastMsg');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),d)}
 function updateUIForState(s){const w=document.getElementById('waveBars'),m=document.getElementById('micWaveContainer'),d=document.getElementById('statusDot'),t=document.getElementById('statusText');m.classList.remove('listening','speaking','error');w.classList.remove('idle','listening','speaking','error');if(s==='listen'){m.classList.add('listening');w.classList.add('listening');d.classList.add('active');d.classList.remove('speaking');d.style.background='';t.innerText='🎙️ ÉCOUTE ACTIVE ...'}else if(s==='speak'){m.classList.add('speaking');w.classList.add('speaking');d.classList.add('speaking');d.classList.remove('active');d.style.background='';t.innerText='📢 PARLE ...'}else if(s==='error'){m.classList.add('error');w.classList.add('error');d.classList.remove('active','speaking');d.style.background='';setTimeout(()=>{m.classList.remove('error');w.classList.remove('error');w.classList.add('idle')},500)}else{w.classList.add('idle');d.classList.remove('active','speaking');d.style.background='#475569';t.innerText='Micro actif · Dites bonjour'}}
 function openPanel(){document.getElementById('infoPanel').classList.add('open');document.getElementById('infoPanel').setAttribute('aria-hidden','false');document.getElementById('panelOverlay').classList.add('active');document.getElementById('panelToggle').classList.add('panel-open')}
 function closePanel(){document.getElementById('infoPanel').classList.remove('open');document.getElementById('infoPanel').setAttribute('aria-hidden','true');document.getElementById('panelOverlay').classList.remove('active');document.getElementById('panelToggle').classList.remove('panel-open')}
@@ -685,11 +650,17 @@ function ps(){if(guideActive&&stepIndex>0){stepIndex--;rs()}else speakText('Prem
 function fp(msg){guideActive=false;procedureEndTime=new Date();document.getElementById('guideBar').classList.remove('active');addMessage(msg,'ai');speakText('Fin de la procédure.');if(currentIOS)addMessage('🏁 Diagnostic terminé pour IOS '+currentIOS.id+'.','ai');uad(currentIOS,'✅ Terminé');seq()}
 function ccp(){guideActive=false;document.getElementById('guideBar').classList.remove('active');heq();addMessage('❌ Procédure annulée.','ai');speakText('Procédure annulée.');uad(currentIOS,'❌ Annulé')}
 function hr(){ccp();currentIOS=null;document.getElementById('iosCard').classList.remove('show');document.getElementById('searchInput').value='';had();heq();addMessage('🏠 Retour accueil.','ai');speakText("Retour à l'accueil.")}
+
+// ==================== COMMANDES VOCALES ====================
 const CP={salutation:[/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|salamou?\s*al[ae]ykoum?|wesh|yo)\b/i],heure:[/\b(?:quelle heure|il est quelle heure|donne l'heure|heure)\b/i],date:[/\b(?:quelle date|donne la date|date aujourd'hui|date|quel jour)\b/i],liste_ios:[/\b(?:liste des ios|tous les ios|affiche la liste|liste ios)\b/i],demarrer:[/\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute)\b/i],suivant:[/\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé)\b/i],precedent:[/\b(?:précédent|reviens|retour|en arrière|recule|back|remonte)\b/i],oui:[/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i],non:[/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i],annuler:[/\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i],accueil:[/\b(?:accueil|menu|retour accueil|home|reset)\b/i],repeter:[/\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i],aide:[/\b(?:aide|help|commandes|options|quoi dire)\b/i]};
 function icm(t,ty){const p=CP[ty];return p?p.some(r=>r.test(t)):false}
 function pvc(txt){let l=txt.toLowerCase().trim();addMessage('🎤 "'+txt+'"','user');if(icm(l,'salutation')){if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)){addMessage('👋 Wa aleykoum salam.','ai');speakText('Wa aleykoum salam.');return}speakText('Bonjour ! IAOS T4 à votre service.');return}if(icm(l,'heure')){speakText('Il est '+ft(new Date())+'.');return}if(icm(l,'date')){speakText('Nous sommes le '+fd(new Date())+'.');return}if(icm(l,'liste_ios')){oil();return}if(icm(l,'aide')){speakText('Commandes: démarrer, suivant, précédent, oui, non, annuler, accueil, répète, heure, date, liste.');return}if(icm(l,'annuler')){ccp();return}if(icm(l,'accueil')){hr();return}if(icm(l,'demarrer')){if(currentIOS&&!guideActive)sg();else speakText("Cherchez d'abord un IOS.");return}if(icm(l,'oui')&&!icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)ay();return}if(icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)an();return}if(icm(l,'suivant')&&!icm(l,'non')&&!icm(l,'precedent')){if(guideActive)ns();return}if(icm(l,'precedent')){if(guideActive)ps();return}if(icm(l,'repeter')){if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);return}let f=fiq(l);if(f)sdi(f);else speakText('Aucun IOS trouvé.')}
+
+// ==================== RECONNAISSANCE VOCALE ====================
 function sl(){if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window))return;if(speakingFlag||listening)return;try{let SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='fr-FR';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=3;recognition.onstart=()=>{listening=true;updateUIForState('listen')};recognition.onresult=(e)=>{let b='',bc=0;for(let i=0;i<e.results[0].length;i++){if(e.results[0][i].confidence>bc){bc=e.results[0][i].confidence;b=e.results[0][i].transcript}}if(bc<0.2)return;pvc(b)};recognition.onerror=()=>{listening=false;updateUIForState('idle');if(micActive&&!speakingFlag)setTimeout(sl,800)};recognition.onend=()=>{listening=false;if(micActive&&!speakingFlag)setTimeout(sl,500);else updateUIForState('idle')};recognition.start()}catch(e){if(micActive)setTimeout(sl,1000)}}
 function stl(){if(recognition){try{recognition.stop()}catch(e){}recognition=null}listening=false;updateUIForState('idle')}
+
+// ==================== ÉVÉNEMENTS ====================
 document.getElementById('micWaveContainer').addEventListener('click',()=>{if(speakingFlag)return;micActive=!micActive;if(micActive){sl();document.getElementById('statusDot').style.background='';document.getElementById('statusText').innerText='Micro actif'}else{stl();document.getElementById('statusText').innerText='Micro en pause';document.getElementById('statusDot').style.background='#ef4444'}});
 document.getElementById('panelToggle').addEventListener('click',togglePanel);
 document.getElementById('panelOverlay').addEventListener('click',closePanel);
@@ -715,9 +686,11 @@ document.getElementById('prevStepBtn').addEventListener('click',ps);
 document.getElementById('cancelGuideBtn2').addEventListener('click',ccp);
 document.getElementById('endRecapYes').addEventListener('click',()=>{heq();had();sr()});
 document.getElementById('endRecapNo').addEventListener('click',()=>{heq();had()});
+
+// ==================== INITIALISATION ====================
 function im(){micActive=true;updateUIForState('idle');sl()}
 im();
-console.log('✅ IAOS T4 - '+Object.keys(IOS).length+' IOS fidèles');
+console.log('✅ IAOS T4 - Prêt. Base IOS à remplir.');
 </script>
 </body>
 </html>
