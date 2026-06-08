@@ -154,8 +154,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-dark);color:var(--text
 // fin: 1=dernière étape de la branche
 const IOS={
 
-// ==================== EXEMPLE (à supprimer après ajout des vrais IOS) ====================
-'061':{id:'061',pri:'h',type:'MA',desc:'Détection boîte chaude',kw:['boite','chaude','surchauffe'],tree:[{t:"Accédez à l'écran Commandes diverses → BOITE CHAUDE.",d:0},{t:"Localisez l'élément et la roue concernée, visitez.",d:0},{t:"Y a-t-il fumée ou forte chaleur ?",d:1,oui:[{t:"Incendie → isolement freins + CHAPITRE 4 SECOURS.",d:0,fin:1}],non:[{t:"Tracez un trait sur les 2 roues, étiquette. Isolez frein (article 3). Vitesse max 30 kilomètres par heure vers garage.",d:0,fin:1}]}]},
 
 // ==================== AJOUTEZ TOUS LES IOS CI-DESSOUS ====================
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
@@ -605,10 +603,29 @@ const IOS={
 };
 
 // ==================== ALIAS DE RECHERCHE (À REMPLIR) ====================
-const ALIAS={
-'boite chaude':'061','surchauffe':'061'
-// Ajoutez les alias ici
-};
+const ALIAS={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
+'secours':['002','048','222'],'urgence':['048','222'],
+'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
+'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
+'frein friction c2b1':['086'],'frein friction c2b2':['087'],'frein friction':['083'],
+'batterie faible':['017'],'batterie':['017','050','052'],'chargeur batterie':['015'],
+'pantographe':['054'],'panto':['054'],
+'porte dualis':['173'],'defaut porte':['173'],'porte':['173','167','172'],
+'frein desserre':['096'],'blocage':['096'],'frein bloque':['096'],
+'radio':['198'],'tetra':['198'],
+'cvs':['048'],'traction':['220','221','222'],'coffre traction':['220'],
+'interphonie':['115','120'],'sai':['115'],
+'retrovision':['099','101'],'retroviseur':['099','100'],
+'stm kvb':['077'],'kvb':['077'],'stm':['077'],
+'fs fu':['111'],'declenchement':['111'],
+'enregistreur':['107','108'],'etf':['181','220'],
+'relais freinage':['002','004','110','153'],'bogie':['004','083','084','085','086','087'],
+'climatisation':['014','062','063'],'compresseur':['076'],
+'saeiv':['196','125'],'itineraire':['196'],
+'drive':['205'],'antiderive':['205'],
+'msav':['232'],'moteur traction':['233'],
+'acces conducteur':['242'],'conducteur':['242']};
+
 
 // ==================== GÉNÉRATION DES IOS PAR DÉFAUT POUR LES MANQUANTS ====================
 for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',type:'AN',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]}}
