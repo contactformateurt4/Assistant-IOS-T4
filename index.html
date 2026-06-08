@@ -646,12 +646,25 @@ function closePanel(){document.getElementById('infoPanel').classList.remove('ope
 function togglePanel(){if(document.getElementById('infoPanel').classList.contains('open')){closePanel()}else{openPanel()}}
 function ft(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
 function fd(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})}
+// ==================== SYNTHÈSE VOCALE AVEC PRONONCIATION CORRECTE ====================
 function speakText(t,cb){
   if(!voiceSupport){if(cb)cb();return}
   if(speakingFlag)synth.cancel();
   let x=t.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'');
-  x=x.replace(/\bIOS\b/gi,'li os');x=x.replace(/\bios\b/gi,'li os');
-  x=x.replace(/\bAEL\b/gi,'a e l');x=x.replace(/\bael\b/gi,'a e l');
+  // "l'IOS" ou "l'ios" → prononcé "li oès" (avec liaison)
+  x=x.replace(/\bl'IOS\b/gi,"li oès");
+  x=x.replace(/\bl'ios\b/gi,"li oès");
+  // "un IOS" ou "d'IOS" ou "des IOS" → prononcé "un i o s", "d'i o s", "des i o s"
+  x=x.replace(/\bun IOS\b/gi,"un i o s");
+  x=x.replace(/\bd'IOS\b/gi,"d'i o s");
+  x=x.replace(/\bdes IOS\b/gi,"des i o s");
+  // IOS seul → prononcé "i o s" lettre par lettre
+  x=x.replace(/\bIOS\b/g,"i o s");
+  x=x.replace(/\bios\b/g,"i o s");
+  // AEL → prononcé "a e l" lettre par lettre
+  x=x.replace(/\bAEL\b/gi,"a e l");
+  x=x.replace(/\bael\b/gi,"a e l");
+  // Autres acronymes lettre par lettre
   x=x.replace(/\bFS\b/g,'F S');x=x.replace(/\bFU\b/g,'F U');x=x.replace(/\bDJ\b/g,'D J');
   x=x.replace(/\bCVS\b/g,'C V S');x=x.replace(/\bKVB\b/g,'K V B');x=x.replace(/\bSTM\b/g,'S T M');
   x=x.replace(/\bSAI\b/g,'S A I');x=x.replace(/\bSAEIV\b/g,'S A E I V');x=x.replace(/\bETF\b/g,'E T F');
@@ -659,12 +672,21 @@ function speakText(t,cb){
   x=x.replace(/\bUM\b/g,'U M');x=x.replace(/\bSTBS\b/g,'S T B S');x=x.replace(/\bBM\b/g,'B M');
   x=x.replace(/\bBP\b/g,'B P');x=x.replace(/\bBPL\b/g,'B P L');x=x.replace(/\bLS\b/g,'L S');
   x=x.replace(/\bCC\b/g,'C C');x=x.replace(/\bPC\b/g,'P C');x=x.replace(/\bPJ\b/g,'P J');
+  // Zaber → prononcé "Zabèr"
   x=x.replace(/\bZaber\b/gi,'Zabèr');
-  x=x.replace(/km\/h/gi,'kilomètres par heure');x=x.replace(/\bart\.\s*/gi,'article ');
-  x=x.replace(/li os\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li os '+parseInt(a+b+c,10));
-  x=x.replace(/\b0+(\d+)/g,'$1');x=x.replace(/\s+/g,' ');
-  const u=new SpeechSynthesisUtterance(x);u.lang='fr-FR';u.rate=0.9;u.volume=1;
-  const v=synth.getVoices(),fv=v.find(z=>z.lang.startsWith('fr'));if(fv)u.voice=fv;
+  // km/h → kilomètres par heure
+  x=x.replace(/km\/h/gi,'kilomètres par heure');
+  // art. → article
+  x=x.replace(/\bart\.\s*/gi,'article ');
+  // Numéros IOS lus comme un seul nombre (après "i o s")
+  x=x.replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10));
+  x=x.replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10));
+  x=x.replace(/\b0+(\d+)/g,'$1');
+  x=x.replace(/\s+/g,' ');
+  const u=new SpeechSynthesisUtterance(x);
+  u.lang='fr-FR';u.rate=0.9;u.volume=1;
+  const v=synth.getVoices(),fv=v.find(z=>z.lang.startsWith('fr'));
+  if(fv)u.voice=fv;
   speakingFlag=true;updateUIForState('speak');
   u.onend=()=>{speakingFlag=false;updateUIForState('idle');if(micActive&&!listening)sl();if(cb)cb()};
   u.onerror=()=>{speakingFlag=false;updateUIForState('error');if(micActive&&!listening)sl();if(cb)cb()};
@@ -675,7 +697,7 @@ function uad(ios,si=null){const a=document.getElementById('activeIosDisplay');if
 function had(){document.getElementById('activeIosDisplay').classList.remove('show')}
 function fiq(q){let l=q.toLowerCase().trim(),m=l.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);if(m){let id=m[1].padStart(3,'0');if(IOS[id])return IOS[id]}for(let[a,id]of Object.entries(ALIAS)){if(l.includes(a))return IOS[id]}for(let i of Object.values(IOS)){if(i.desc.toLowerCase().includes(l))return i;if(i.kw&&i.kw.some(k=>l.includes(k)))return i}return null}
 function containsIosNumber(txt){return /(?:ios\s*)?(\d{3}|\d{1,3})/i.test(txt.toLowerCase().trim())}
-function sdi(ios){currentIOS=ios;guideActive=false;document.getElementById('guideBar').classList.remove('active');document.getElementById('iosCard').classList.add('show');document.getElementById('iosId').innerHTML='IOS-'+ios.id;document.getElementById('iosDesc').innerText=ios.desc;let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l'),pt=ios.pri==='h'?'URGENCE':(ios.pri==='m'?'MOYEN':'INFO');document.getElementById('iosPrio').innerHTML=pt;document.getElementById('iosPrio').className='prio-badge '+pc;let b='';if(ios.instructions&&ios.instructions.length>0){b+='<div style="background:rgba(0,255,255,0.05);padding:10px;border-radius:10px;margin-bottom:10px;border-left:3px solid var(--cyan);"><strong>INSTRUCTIONS CONDUCTEUR :</strong><br>';for(let i of ios.instructions)b+=i.t+'<br>';b+='</div>'}if(ios.symboles){b+='<div style="margin-bottom:6px;"><strong>Symboles :</strong> '+ios.symboles+'</div>'}if(ios.vitesse){b+='<div style="margin-bottom:6px;"><strong>Vitesse limite :</strong> '+ios.vitesse+'</div>'}b+='<div style="font-family:monospace;font-size:0.75rem;">📋 '+ios.tree.length+' étapes de guidage.</div>';if(ios.pri==='h')b+='<div style="color:#ef4444;margin-top:10px;font-weight:600;">⚠️ Procédure d\'urgence</div>';b+='<div style="margin-top:10px;font-size:0.8rem;color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b> ou cliquez sur <b>GUIDAGE</b>.</div>';document.getElementById('iosBody').innerHTML=b;addMessage('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc+'. Dites "démarrer le guidage" pour lancer la procédure.','ai');speakText('li os '+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)+'. Dites démarrer le guidage pour appliquer la procédure.');uad(ios);procedureStartTime=null;procedureEndTime=null;procedureStepsLog=[]}
+function sdi(ios){currentIOS=ios;guideActive=false;document.getElementById('guideBar').classList.remove('active');document.getElementById('iosCard').classList.add('show');document.getElementById('iosId').innerHTML='IOS-'+ios.id;document.getElementById('iosDesc').innerText=ios.desc;let pc=ios.pri==='h'?'prio-h':(ios.pri==='m'?'prio-m':'prio-l'),pt=ios.pri==='h'?'URGENCE':(ios.pri==='m'?'MOYEN':'INFO');document.getElementById('iosPrio').innerHTML=pt;document.getElementById('iosPrio').className='prio-badge '+pc;let b='';if(ios.instructions&&ios.instructions.length>0){b+='<div style="background:rgba(0,255,255,0.05);padding:10px;border-radius:10px;margin-bottom:10px;border-left:3px solid var(--cyan);"><strong>INSTRUCTIONS CONDUCTEUR :</strong><br>';for(let i of ios.instructions)b+=i.t+'<br>';b+='</div>'}if(ios.symboles){b+='<div style="margin-bottom:6px;"><strong>Symboles :</strong> '+ios.symboles+'</div>'}if(ios.vitesse){b+='<div style="margin-bottom:6px;"><strong>Vitesse limite :</strong> '+ios.vitesse+'</div>'}b+='<div style="font-family:monospace;font-size:0.75rem;">📋 '+ios.tree.length+' étapes de guidage.</div>';if(ios.pri==='h')b+='<div style="color:#ef4444;margin-top:10px;font-weight:600;">⚠️ Procédure d\'urgence</div>';b+='<div style="margin-top:10px;font-size:0.8rem;color:#94a3b8;">💡 Dites <b>"démarrer le guidage"</b> ou cliquez sur <b>GUIDAGE</b>.</div>';document.getElementById('iosBody').innerHTML=b;addMessage('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc+'. Dites "démarrer le guidage" pour lancer la procédure.','ai');speakText("l'IOS "+parseInt(ios.id,10)+". "+ios.desc.substring(0,80)+". Dites démarrer le guidage pour appliquer la procédure.");uad(ios);procedureStartTime=null;procedureEndTime=null;procedureStepsLog=[]}
 function bil(){const s=document.getElementById('iosListScroll');s.innerHTML='';const ids=Object.keys(IOS).sort((a,b)=>parseInt(a)-parseInt(b));for(let id of ids){const io=IOS[id],d=document.createElement('div');d.className='ios-list-item';const pc=io.pri==='h'?'h':(io.pri==='m'?'m':'l'),pt=io.pri==='h'?'URG':(io.pri==='m'?'MOY':'INF');d.innerHTML='<span class="ios-list-num">IOS-'+io.id+'</span><span class="ios-list-desc">'+io.desc+'</span><span class="ios-list-prio '+pc+'">'+pt+'</span>';d.addEventListener('click',()=>{cil();sdi(io)});s.appendChild(d)}}
 function oil(){bil();document.getElementById('iosListOverlay').classList.add('active')}
 function cil(){document.getElementById('iosListOverlay').classList.remove('active')}
@@ -702,13 +724,13 @@ function hideInfo(){document.getElementById('infoOverlay').classList.remove('act
 // ==================== COMMANDES VOCALES ====================
 const CP={salutation:[/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|salamou?\s*al[ae]ykoum?|wesh|yo)\b/i],createur:[/\b(?:qui (?:t'a créé|ta crée|t'as créé|t'as crée|t'a développé|ta développé|t'as développé|t'as developpé|es tu|es-tu)|qui est ton (?:créateur|createur|maître|maitre|développeur|developpeur|concepteur|papa|boss|chef)|ton (?:créateur|createur|maître|maitre|développeur|developpeur)|qui (?:t'as fait|ta fait|t'a fabriqué|ta fabriqué))\b/i],heure:[/\b(?:quelle heure|il est quelle heure|donne l'heure|heure)\b/i],date:[/\b(?:quelle date|donne la date|date aujourd'hui|date|quel jour)\b/i],temps:[/\b(?:temps écoulé|temps ecoule|durée|duree|depuis combien de temps|combien de temps|minuteur|chrono|chronomètre|depuis le début)\b/i],liste_ios:[/\b(?:liste des ios|tous les ios|affiche la liste|liste ios)\b/i],demarrer:[/\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer la procédure)\b/i],suivant:[/\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i],precedent:[/\b(?:précédent|reviens|retour|en arrière|recule|back|remonte)\b/i],oui:[/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i],non:[/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i],annuler:[/\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i],accueil:[/\b(?:accueil|menu|retour accueil|home|reset)\b/i],repeter:[/\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i],aide:[/\b(?:aide|help|commandes|options|quoi dire|comment ça marche|mode d'emploi|infos|informations)\b/i]};
 function icm(t,ty){const p=CP[ty];return p?p.some(r=>r.test(t)):false}
-function pvc(txt){let l=txt.toLowerCase().trim();addMessage(''+txt+'','user');if(icm(l,'salutation')){if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)){addMessage('Wa aleykoum salam.','ai');speakText('Wa aleykoum salam.');return}speakText('Bonjour ! IAOS T4 à votre service. Dites le numéro d\'un li os pour commencer.');return}if(icm(l,'createur')){addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !','ai');speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.');return}if(icm(l,'heure')){speakText('Il est '+ft(new Date())+'.');return}if(icm(l,'date')){speakText('Nous sommes le '+fd(new Date())+'.');return}if(icm(l,'temps')){if(!procedureStartTime){speakText('Aucune procédure en cours.');addMessage('Aucune procédure en cours.','ai');return}let e=getElapsed();speakText('Temps écoulé depuis le début de la procédure : '+e+'.');addMessage('⏱️ Temps écoulé : '+e+'.','ai');return}if(icm(l,'aide')){showInfo();speakText('Voici le guide d\'utilisation.');return}if(icm(l,'liste_ios')){oil();return}if(icm(l,'annuler')){ccp();return}if(icm(l,'accueil')){hr();return}if(icm(l,'demarrer')){if(currentIOS&&!guideActive)sg();else speakText("Cherchez d'abord un li os.");return}if(icm(l,'oui')&&!icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)ay();return}if(icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)an();return}if(icm(l,'suivant')&&!icm(l,'non')&&!icm(l,'precedent')){if(guideActive)ns();return}if(icm(l,'precedent')){if(guideActive)ps();return}if(icm(l,'repeter')){if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);return}if(guideActive&&containsIosNumber(l)){speakText('Un guidage est en cours. Veuillez d\'abord annuler la procédure avant de chercher un nouveau li os.');addMessage('⚠️ Guidage en cours. Dites "annuler" d\'abord pour chercher un nouvel IOS.','ai');return}let f=fiq(l);if(f){if(guideActive){speakText('Veuillez annuler le guidage en cours avant de chercher un nouveau li os.');addMessage('⚠️ Guidage en cours. Annulez d\'abord.','ai')}else{sdi(f)}}else if(!guideActive){speakText('Aucun li os trouvé.')}}
+function pvc(txt){let l=txt.toLowerCase().trim();addMessage(''+txt+'','user');if(icm(l,'salutation')){if(/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)){addMessage('Wa aleykoum salam.','ai');speakText('Wa aleykoum salam.');return}speakText("Bonjour ! IAOS T4 à votre service. Dites le numéro d'un i o s pour commencer.");return}if(icm(l,'createur')){addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !','ai');speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.');return}if(icm(l,'heure')){speakText('Il est '+ft(new Date())+'.');return}if(icm(l,'date')){speakText('Nous sommes le '+fd(new Date())+'.');return}if(icm(l,'temps')){if(!procedureStartTime){speakText('Aucune procédure en cours.');addMessage('Aucune procédure en cours.','ai');return}let e=getElapsed();speakText('Temps écoulé depuis le début de la procédure : '+e+'.');addMessage('⏱️ Temps écoulé : '+e+'.','ai');return}if(icm(l,'aide')){showInfo();speakText('Voici le guide d\'utilisation.');return}if(icm(l,'liste_ios')){oil();return}if(icm(l,'annuler')){ccp();return}if(icm(l,'accueil')){hr();return}if(icm(l,'demarrer')){if(currentIOS&&!guideActive)sg();else speakText("Cherchez d'abord un i o s.");return}if(icm(l,'oui')&&!icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)ay();return}if(icm(l,'non')){if(guideActive&&guideSteps[stepIndex]&&guideSteps[stepIndex].d)an();return}if(icm(l,'suivant')&&!icm(l,'non')&&!icm(l,'precedent')){if(guideActive)ns();return}if(icm(l,'precedent')){if(guideActive)ps();return}if(icm(l,'repeter')){if(guideActive&&guideSteps[stepIndex])speakText(guideSteps[stepIndex].t);return}if(guideActive&&containsIosNumber(l)){speakText("Un guidage est en cours. Veuillez d'abord annuler la procédure avant de chercher un nouveau i o s.");addMessage("⚠️ Guidage en cours. Dites \"annuler\" d'abord pour chercher un nouvel IOS.",'ai');return}let f=fiq(l);if(f){if(guideActive){speakText("Veuillez annuler le guidage en cours avant de chercher un nouveau i o s.");addMessage('⚠️ Guidage en cours. Annulez d\'abord.','ai')}else{sdi(f)}}else if(!guideActive){speakText('Aucun i o s trouvé.')}}
 
 // ==================== RECONNAISSANCE VOCALE ====================
 function sl(){if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window)){toast('Reconnaissance vocale non supportée');return}if(speakingFlag||listening)return;try{let SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='fr-FR';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=3;recognition.onstart=()=>{listening=true;updateUIForState('listen')};recognition.onresult=(e)=>{let b='',bc=0;for(let i=0;i<e.results[0].length;i++){if(e.results[0][i].confidence>bc){bc=e.results[0][i].confidence;b=e.results[0][i].transcript}}if(bc<0.2)return;pvc(b)};recognition.onerror=()=>{listening=false;updateUIForState('idle');if(micActive&&!speakingFlag)setTimeout(sl,800)};recognition.onend=()=>{listening=false;if(micActive&&!speakingFlag)setTimeout(sl,500);else updateUIForState('idle')};recognition.start()}catch(e){if(micActive)setTimeout(sl,1000)}}
 function stl(){if(recognition){try{recognition.stop()}catch(e){}recognition=null}listening=false;updateUIForState('idle')}
 
-// ==================== ÉVÉNEMENTS - ATTACHÉS DIRECTEMENT ====================
+// ==================== ÉVÉNEMENTS ====================
 document.getElementById('micWaveContainer').addEventListener('click',function(){if(speakingFlag)return;micActive=!micActive;if(micActive){sl();document.getElementById('statusDot').style.background='';document.getElementById('statusText').innerText='Micro actif'}else{stl();document.getElementById('statusText').innerText='Micro en pause';document.getElementById('statusDot').style.background='#ef4444'}});
 document.getElementById('panelToggle').addEventListener('click',togglePanel);
 document.getElementById('panelOverlay').addEventListener('click',closePanel);
@@ -740,7 +762,7 @@ document.getElementById('endRecapNo').addEventListener('click',function(){heq();
 
 // ==================== INITIALISATION ====================
 micActive=true;updateUIForState('idle');sl();
-console.log('✅ IAOS T4 - Prêt - Créé par Zaber - Tous les boutons sont actifs');
+console.log('✅ IAOS T4 - Prêt - Créé par Zaber');
 </script>
 </body>
 </html>
