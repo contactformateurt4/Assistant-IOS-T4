@@ -622,6 +622,32 @@ const ALIAS={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061']
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
+
+// ══════════════════════════════════════════════════════════════════
+// ALIASES RECHERCHE
+// ══════════════════════════════════════════════════════════════════
+const ALIAS={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
+'secours':['002','048','222'],'urgence':['048','222'],
+'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
+'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
+'frein friction c2b1':['086'],'frein friction c2b2':['087'],'frein friction':['083'],
+'batterie faible':['017'],'batterie':['017','050','052'],'chargeur batterie':['015'],
+'pantographe':['054'],'panto':['054'],
+'porte dualis':['173'],'defaut porte':['173'],'porte':['173','167','172'],
+'frein desserre':['096'],'blocage':['096'],'frein bloque':['096'],
+'radio':['198'],'tetra':['198'],
+'cvs':['048'],'traction':['220','221','222'],'coffre traction':['220'],
+'interphonie':['115','120'],'sai':['115'],
+'retrovision':['099','101'],'retroviseur':['099','100'],
+'stm kvb':['077'],'kvb':['077'],'stm':['077'],
+'fs fu':['111'],'declenchement':['111'],
+'enregistreur':['107','108'],'etf':['181','220'],
+'relais freinage':['002','004','110','153'],'bogie':['004','083','084','085','086','087'],
+'climatisation':['014','062','063'],'compresseur':['076'],
+'saeiv':['196','125'],'itineraire':['196'],
+'drive':['205'],'antiderive':['205'],
+'msav':['232'],'moteur traction':['233'],
+'acces conducteur':['242'],'conducteur':['242']};
 // Génération des IOS par défaut pour les numéros manquants (seulement ceux qui n'ont pas été fournis)
 for(let i=0;i<=247;i++){let id=i.toString().padStart(3,'0');if(!IOS[id])IOS[id]={id:id,pri:'l',type:'AN',desc:'Information technique / retour maintenance',tree:[{t:"Avisez le PC, conformez-vous aux instructions.",d:0,fin:1}],kw:[]}}
 const ALIAS={'boite chaude':'061','surchauffe':'061','essieu chaud':'061','frein ce1':'083','frein c1':'084','frein ce2':'085','bogie ce1':'083','batterie faible':'017','batterie':'017','urgence':'002','porte defaut':'173','porte bloquee':'173','fs fu':'111','disjoncteur':'111','boucle securite':'000','climatisation':'062','pantographe':'053','retrovision':'099','kvb':'077','stm':'077','saeiv':'125','attelage':'154','patins':'071','sable':'057','traction':'206','coffre traction':'214','anti derive':'205','transformateur':'212','moteur traction':'233'};
