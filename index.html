@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -52,8 +49,8 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      padding: 1.2rem 1.2rem 130px;
-      gap: 1.2rem;
+      padding: 1rem 1rem 130px;
+      gap: 1rem;
     }
     .title-wrap {
       text-align: center;
@@ -67,20 +64,20 @@
     .hero {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(2.5rem, 8vw, 4.2rem);
+      font-size: clamp(2.2rem, 7vw, 3.8rem);
       color: #fff;
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
     .hero-sub {
       font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 4px;
+      font-size: 0.55rem;
+      letter-spacing: 3px;
       color: var(--cyan);
       margin-top: 0.2rem;
     }
 
-    /* Bandeau commandes vocales */
+    /* Bandeau commandes vocales - compact */
     .voice-commands-bar {
       width: 100%;
       max-width: 600px;
@@ -88,15 +85,15 @@
       backdrop-filter: blur(15px);
       border: 1px solid rgba(0, 255, 255, 0.2);
       border-radius: 60px;
-      padding: 0.6rem 1.4rem;
+      padding: 0.5rem 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.7rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      font-size: 0.7rem;
+      gap: 0.6rem;
+      font-size: 0.65rem;
       font-family: 'Space Mono', monospace;
       color: var(--text-dim);
+      overflow: hidden;
+      white-space: nowrap;
     }
     .voice-icon {
       display: flex;
@@ -104,27 +101,39 @@
       justify-content: center;
       background: rgba(0, 255, 255, 0.15);
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
+      min-width: 28px;
+      width: 28px;
+      height: 28px;
+      font-size: 0.85rem;
       color: var(--cyan);
       flex-shrink: 0;
     }
-    .voice-cmd-list {
+    .voice-cmd-scroll {
       display: flex;
-      gap: 0.6rem 1.2rem;
-      flex-wrap: wrap;
-      align-items: center;
+      gap: 0.8rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      flex: 1;
+      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
     }
-    .voice-cmd-list span {
+    .voice-cmd-scroll::-webkit-scrollbar { display: none; }
+    .voice-cmd-item {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
-      white-space: nowrap;
+      gap: 0.25rem;
+      flex-shrink: 0;
     }
     .cmd-key {
       color: var(--green);
       font-weight: 700;
+      font-size: 0.6rem;
+    }
+    .cmd-example {
+      color: var(--text-dim);
+      font-size: 0.55rem;
+      opacity: 0.8;
     }
 
     /* Zone centrale */
@@ -132,15 +141,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
       width: 100%;
       max-width: 600px;
     }
 
     .mic-wave-container {
       position: relative;
-      width: 180px;
-      height: 180px;
+      width: 170px;
+      height: 170px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -158,9 +167,9 @@
       border: 1.5px solid rgba(0, 255, 255, 0.3);
       animation: pulseRing 2.8s infinite ease-in-out;
     }
-    .mic-ring:nth-child(1) { width: 85px; height: 85px; animation-delay: 0s; }
-    .mic-ring:nth-child(2) { width: 120px; height: 120px; animation-delay: 0.5s; }
-    .mic-ring:nth-child(3) { width: 155px; height: 155px; animation-delay: 1s; }
+    .mic-ring:nth-child(1) { width: 80px; height: 80px; animation-delay: 0s; }
+    .mic-ring:nth-child(2) { width: 112px; height: 112px; animation-delay: 0.5s; }
+    .mic-ring:nth-child(3) { width: 145px; height: 145px; animation-delay: 1s; }
     @keyframes pulseRing {
       0% { transform: scale(0.93); opacity: 0.5; border-color: rgba(0, 255, 255, 0.4); }
       50% { transform: scale(1.04); opacity: 1; border-color: rgba(0, 255, 255, 0.9); box-shadow: 0 0 18px rgba(0, 255, 255, 0.4); }
@@ -172,26 +181,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      height: 55px;
-      width: 70px;
+      gap: 3px;
+      height: 50px;
+      width: 65px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 70%);
       transition: all 0.3s ease;
     }
     .wave-bar {
-      width: 5px;
+      width: 4px;
       border-radius: 3px;
       background: var(--cyan);
       box-shadow: 0 0 8px rgba(0,255,255,0.5);
       transition: all 0.15s ease;
       animation: waveBarAnim 0.8s infinite ease-in-out;
     }
-    .wave-bar:nth-child(1) { height: 16px; animation-delay: 0s; }
-    .wave-bar:nth-child(2) { height: 26px; animation-delay: 0.1s; }
-    .wave-bar:nth-child(3) { height: 38px; animation-delay: 0.2s; }
-    .wave-bar:nth-child(4) { height: 26px; animation-delay: 0.3s; }
-    .wave-bar:nth-child(5) { height: 16px; animation-delay: 0.4s; }
+    .wave-bar:nth-child(1) { height: 14px; animation-delay: 0s; }
+    .wave-bar:nth-child(2) { height: 24px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { height: 34px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { height: 24px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(5) { height: 14px; animation-delay: 0.4s; }
     @keyframes waveBarAnim {
       0%,100% { transform: scaleY(0.5); opacity: 0.5; }
       50% { transform: scaleY(1); opacity: 1; }
@@ -200,141 +209,152 @@
     .wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 12px rgba(34,197,94,0.7); animation-duration: 0.5s; }
     .wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 12px rgba(192,132,252,0.7); animation-duration: 0.6s; }
     .wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 10px rgba(239,68,68,0.6); animation: errorShake 0.4s; }
-    @keyframes errorShake { 0%,100%{transform:translateX(0) scaleY(1)} 20%{transform:translateX(-5px) scaleY(0.7)} 40%{transform:translateX(5px) scaleY(1.2)} 60%{transform:translateX(-3px) scaleY(0.8)} 80%{transform:translateX(3px) scaleY(1.1)} }
+    @keyframes errorShake { 0%,100%{transform:translateX(0) scaleY(1)} 20%{transform:translateX(-4px) scaleY(0.7)} 40%{transform:translateX(4px) scaleY(1.2)} 60%{transform:translateX(-3px) scaleY(0.8)} 80%{transform:translateX(3px) scaleY(1.1)} }
     .mic-wave-container.listening .mic-ring { border-color: rgba(34,197,94,0.5)!important; animation-duration:1.8s; }
     .mic-wave-container.speaking .mic-ring { border-color: rgba(192,132,252,0.5)!important; animation-duration:1.6s; }
 
-    /* Carte étape guidage */
+    /* Carte centrale (IOS info + étapes) */
     .guide-step-card {
-      background: rgba(5, 12, 25, 0.8);
+      background: rgba(5, 12, 25, 0.85);
       border: 1px solid rgba(0, 255, 255, 0.35);
-      border-radius: 28px;
-      padding: 1.2rem 1.4rem;
+      border-radius: 24px;
+      padding: 1rem 1.2rem;
       width: 100%;
       backdrop-filter: blur(12px);
       display: none;
       text-align: center;
+      animation: fadeUp 0.3s ease;
     }
     .guide-step-card.active {
       display: block;
-      animation: fadeUp 0.25s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .step-header {
       font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       letter-spacing: 2px;
       color: var(--green);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
     }
     .step-text {
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 1.5;
-      margin-bottom: 0.8rem;
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.7rem;
+      color: var(--text);
     }
     .step-actions {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.4rem;
       justify-content: center;
       flex-wrap: wrap;
     }
     .step-btn {
       background: rgba(0, 30, 50, 0.8);
       border: 1px solid rgba(0, 255, 255, 0.3);
-      padding: 0.5rem 1.2rem;
-      border-radius: 30px;
+      padding: 0.4rem 1rem;
+      border-radius: 25px;
       color: #fff;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
       transition: all 0.2s;
       font-family: 'Space Mono', monospace;
     }
+    .step-btn:active { transform: scale(0.96); }
     .step-btn.yes { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.5); color: #22c55e; font-weight: 600; }
     .step-btn.no { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); color: #ef4444; font-weight: 600; }
 
     .status-pill {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       background: rgba(0,10,25,0.7);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(0,255,255,0.3);
-      border-radius: 60px;
-      padding: 10px 26px;
-      font-size: 0.8rem;
+      border-radius: 50px;
+      padding: 8px 22px;
+      font-size: 0.75rem;
       font-family: 'Space Mono', monospace;
     }
     .status-dot {
-      width: 9px;
-      height: 9px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #475569;
       transition: all 0.3s ease;
       flex-shrink: 0;
     }
-    .status-dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); }
-    .status-dot.speaking { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
+    .status-dot.active { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .status-dot.speaking { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
 
     /* Panneau latéral */
     .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .panel-overlay.active{opacity:1;pointer-events:auto}
-    .info-panel{position:fixed;top:0;right:0;width:min(94%,450px);height:100%;background:var(--bg-panel);backdrop-filter:blur(20px);border-left:1px solid rgba(0,255,255,0.35);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.6)}
+    .info-panel{position:fixed;top:0;right:0;width:min(94%,420px);height:100%;background:var(--bg-panel);backdrop-filter:blur(20px);border-left:1px solid rgba(0,255,255,0.35);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.6)}
     .info-panel.open{transform:translateX(0)}
-    .panel-header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(0,255,255,0.2);background:rgba(0,0,0,0.4)}
-    .panel-header h3{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:3px;color:var(--cyan)}
-    .close-panel{background:rgba(0,0,0,0.3);border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-    .panel-content{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:18px}
-    .panel-toggle{position:fixed;bottom:28px;right:28px;width:56px;height:56px;border-radius:30px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.6rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 18px rgba(0,255,255,0.25)}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(0,255,255,0.2);background:rgba(0,0,0,0.4)}
+    .panel-header h3{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:3px;color:var(--cyan)}
+    .close-panel{background:rgba(0,0,0,0.3);border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center}
+    .panel-content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+    .panel-toggle{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:25px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 16px rgba(0,255,255,0.25)}
     .panel-toggle:hover{transform:scale(1.06)}
     .gear-icon{transition:transform 0.5s ease}
     .panel-toggle:hover .gear-icon{transform:rotate(90deg)}
     .panel-toggle.panel-open .gear-icon{transform:rotate(180deg)}
-    .search-box{background:rgba(0,15,30,0.7);border:1px solid rgba(0,255,255,0.25);border-radius:50px;display:flex;align-items:center;padding:5px 6px 5px 20px;gap:10px}
-    .search-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.9rem;padding:12px 0}
+    .search-box{background:rgba(0,15,30,0.7);border:1px solid rgba(0,255,255,0.25);border-radius:40px;display:flex;align-items:center;padding:4px 4px 4px 16px;gap:8px}
+    .search-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.85rem;padding:10px 0}
     .search-box input::placeholder{color:var(--text-dim)}
-    .search-box button{background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.3);padding:9px 20px;border-radius:40px;color:var(--cyan);cursor:pointer;font-family:'Space Mono',monospace;font-size:0.75rem}
-    .ios-detail-card{background:rgba(5,12,25,0.8);border:1px solid rgba(0,255,255,0.3);border-radius:22px;overflow:hidden;display:none;animation:fadeUp 0.3s ease}
+    .search-box button{background:rgba(0,255,255,0.15);border:1px solid rgba(0,255,255,0.3);padding:7px 16px;border-radius:30px;color:var(--cyan);cursor:pointer;font-family:'Space Mono',monospace;font-size:0.7rem}
+    .ios-detail-card{background:rgba(5,12,25,0.8);border:1px solid rgba(0,255,255,0.3);border-radius:18px;overflow:hidden;display:none;animation:fadeUp 0.3s ease}
     .ios-detail-card.show{display:block}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    .card-header{padding:18px;border-bottom:1px solid rgba(0,255,255,0.2)}
-    .ios-code{font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:#fff}
-    .prio-badge{font-size:0.6rem;padding:4px 10px;border-radius:20px;display:inline-block;margin-top:6px;font-family:'Space Mono',monospace;letter-spacing:1px}
+    .card-header{padding:14px;border-bottom:1px solid rgba(0,255,255,0.2)}
+    .ios-code{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:#fff}
+    .prio-badge{font-size:0.55rem;padding:3px 8px;border-radius:16px;display:inline-block;margin-top:5px;font-family:'Space Mono',monospace;letter-spacing:1px}
     .prio-h{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.4);animation:prioUrgentPulse 1.5s infinite}
-    @keyframes prioUrgentPulse{0%,100%{box-shadow:0 0 5px rgba(239,68,68,0.3)}50%{box-shadow:0 0 15px rgba(239,68,68,0.6)}}
+    @keyframes prioUrgentPulse{0%,100%{box-shadow:0 0 5px rgba(239,68,68,0.3)}50%{box-shadow:0 0 12px rgba(239,68,68,0.6)}}
     .prio-m{background:rgba(245,158,11,0.2);color:#fbbf24;border:1px solid rgba(245,158,11,0.4)}
     .prio-l{background:rgba(34,197,94,0.2);color:#4ade80;border:1px solid rgba(34,197,94,0.4)}
-    .card-actions{padding:14px 18px;display:flex;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(0,255,255,0.1)}
-    .action-btn{background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.25);padding:7px 16px;border-radius:30px;color:var(--cyan);font-size:0.75rem;cursor:pointer;transition:all 0.2s}
+    .card-actions{padding:12px 14px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid rgba(0,255,255,0.1)}
+    .action-btn{background:rgba(0,255,255,0.06);border:1px solid rgba(0,255,255,0.25);padding:6px 14px;border-radius:25px;color:var(--cyan);font-size:0.7rem;cursor:pointer;transition:all 0.2s}
     .action-btn:hover{background:rgba(0,255,255,0.18)}
     .action-btn.green{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.5);color:#22c55e}
     .action-btn.red{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.4);color:#ef4444}
-    .card-body{padding:18px;font-size:0.85rem;color:var(--text-dim);line-height:1.6}
-    .chat-area{background:rgba(0,10,22,0.6);border-radius:20px;border:1px solid rgba(0,255,255,0.2);overflow:hidden}
-    .chat-messages{height:240px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-    .message{display:flex;gap:8px;max-width:88%;animation:messageIn 0.25s ease}
-    @keyframes messageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .card-body{padding:14px;font-size:0.8rem;color:var(--text-dim);line-height:1.5}
+    .chat-area{background:rgba(0,10,22,0.6);border-radius:16px;border:1px solid rgba(0,255,255,0.2);overflow:hidden}
+    .chat-messages{height:200px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+    .message{display:flex;gap:6px;max-width:88%;animation:messageIn 0.25s ease}
+    @keyframes messageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
     .message.user{align-self:flex-end;flex-direction:row-reverse}
-    .message.ai .bubble{background:rgba(0,120,200,0.15);border-radius:6px 16px 16px 16px;border:1px solid rgba(0,255,255,0.2)}
-    .message.user .bubble{background:rgba(124,58,237,0.15);border-radius:16px 6px 16px 16px;border:1px solid rgba(168,85,247,0.4)}
-    .bubble{padding:10px 14px;font-size:0.82rem;line-height:1.5;word-break:break-word}
+    .message.ai .bubble{background:rgba(0,120,200,0.15);border-radius:6px 14px 14px 14px;border:1px solid rgba(0,255,255,0.2)}
+    .message.user .bubble{background:rgba(124,58,237,0.15);border-radius:14px 6px 14px 14px;border:1px solid rgba(168,85,247,0.4)}
+    .bubble{padding:8px 12px;font-size:0.78rem;line-height:1.4;word-break:break-word}
     
     /* Toast */
-    .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:#0a0f1e;border:1px solid cyan;border-radius:40px;padding:10px 24px;font-size:0.8rem;opacity:0;transition:opacity 0.3s ease;z-index:200;pointer-events:none;font-family:'Space Mono',monospace}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0a0f1e;border:1px solid cyan;border-radius:30px;padding:8px 20px;font-size:0.75rem;opacity:0;transition:opacity 0.3s ease;z-index:200;pointer-events:none;font-family:'Space Mono',monospace}
     .toast.show{opacity:1}
     
     /* Liste IOS */
     .ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .ios-list-overlay.active{opacity:1;pointer-events:auto}
-    .ios-list-panel{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:24px;width:min(90%,500px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
-    .ios-list-header{padding:16px 20px;border-bottom:1px solid rgba(0,255,255,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.4)}
-    .ios-list-header h3{font-family:'Space Mono',monospace;color:var(--cyan);font-size:0.8rem;letter-spacing:2px}
-    .ios-list-close{background:none;border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:30px;height:30px;border-radius:8px;cursor:pointer}
-    .ios-list-scroll{overflow-y:auto;flex:1;padding:10px}
-    .ios-list-item{padding:12px 16px;border-bottom:1px solid rgba(0,255,255,0.1);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:12px;border-radius:10px;margin:2px 0}
+    .ios-list-panel{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:20px;width:min(90%,480px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
+    .ios-list-header{padding:14px 18px;border-bottom:1px solid rgba(0,255,255,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.4)}
+    .ios-list-header h3{font-family:'Space Mono',monospace;color:var(--cyan);font-size:0.75rem;letter-spacing:2px}
+    .ios-list-close{background:none;border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:28px;height:28px;border-radius:6px;cursor:pointer}
+    .ios-list-scroll{overflow-y:auto;flex:1;padding:8px}
+    .ios-list-item{padding:10px 14px;border-bottom:1px solid rgba(0,255,255,0.1);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;border-radius:8px;margin:2px 0}
     .ios-list-item:hover{background:rgba(0,255,255,0.1)}
-    .ios-list-num{font-family:'Space Mono',monospace;font-weight:700;color:var(--cyan);min-width:50px;font-size:0.85rem}
-    .ios-list-desc{font-size:0.82rem;color:var(--text);flex:1}
-    .ios-list-prio{font-size:0.6rem;padding:2px 8px;border-radius:12px;font-family:'Space Mono',monospace}
+    .ios-list-num{font-family:'Space Mono',monospace;font-weight:700;color:var(--cyan);min-width:45px;font-size:0.8rem}
+    .ios-list-desc{font-size:0.78rem;color:var(--text);flex:1}
+    .ios-list-prio{font-size:0.55rem;padding:2px 7px;border-radius:10px;font-family:'Space Mono',monospace}
     .ios-list-prio.h{background:rgba(239,68,68,0.2);color:#f87171}
     .ios-list-prio.m{background:rgba(245,158,11,0.2);color:#fbbf24}
     .ios-list-prio.l{background:rgba(34,197,94,0.2);color:#4ade80}
@@ -342,41 +362,46 @@
     /* Récapitulatif */
     .recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .recap-overlay.active{opacity:1;pointer-events:auto}
-    .recap-panel{background:#fff;border-radius:16px;width:min(92%,550px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 10px 50px rgba(0,0,0,0.5);overflow:hidden}
-    .recap-header{padding:16px 20px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc}
-    .recap-header h3{font-family:'Space Mono',monospace;color:#1e293b;font-size:0.85rem}
-    .recap-close{background:none;border:1px solid #cbd5e1;color:#64748b;width:30px;height:30px;border-radius:8px;cursor:pointer}
-    .recap-content{padding:24px;overflow-y:auto;flex:1;color:#1e293b;font-size:0.85rem;line-height:1.7;white-space:pre-wrap}
-    .recap-actions{padding:14px 20px;border-top:1px solid #e2e8f0;display:flex;gap:10px;justify-content:flex-end;background:#f8fafc}
-    .recap-btn{padding:8px 18px;border-radius:30px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-size:0.8rem}
+    .recap-panel{background:#fff;border-radius:14px;width:min(92%,520px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,0.5);overflow:hidden}
+    .recap-header{padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc}
+    .recap-header h3{font-family:'Space Mono',monospace;color:#1e293b;font-size:0.8rem}
+    .recap-close{background:none;border:1px solid #cbd5e1;color:#64748b;width:28px;height:28px;border-radius:6px;cursor:pointer}
+    .recap-content{padding:20px;overflow-y:auto;flex:1;color:#1e293b;font-size:0.8rem;line-height:1.6;white-space:pre-wrap}
+    .recap-actions{padding:12px 18px;border-top:1px solid #e2e8f0;display:flex;gap:8px;justify-content:flex-end;background:#f8fafc}
+    .recap-btn{padding:7px 16px;border-radius:25px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-size:0.75rem}
     .recap-btn.primary{background:#1e293b;color:#fff;border-color:#1e293b}
     
     /* Questions de fin */
-    .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(1,3,12,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,255,255,0.4);padding:16px 22px;z-index:91;transform:translateY(100%);transition:transform 0.35s ease}
+    .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(1,3,12,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,255,255,0.4);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s ease}
     .end-questions.active{transform:translateY(0)}
-    .end-questions-text{font-size:0.9rem;margin-bottom:10px}
-    .end-questions-buttons{display:flex;gap:10px;flex-wrap:wrap}
+    .end-questions-text{font-size:0.85rem;margin-bottom:8px}
+    .end-questions-buttons{display:flex;gap:8px;flex-wrap:wrap}
     
     /* Bouton info */
-    .info-btn{position:fixed;bottom:28px;left:28px;width:56px;height:56px;border-radius:30px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 18px rgba(0,255,255,0.25)}
-    .info-btn:hover{transform:scale(1.06);box-shadow:0 0 28px rgba(0,255,255,0.4)}
+    .info-btn{position:fixed;bottom:24px;left:24px;width:50px;height:50px;border-radius:25px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.3rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 16px rgba(0,255,255,0.25)}
+    .info-btn:hover{transform:scale(1.06)}
     
     /* Modal info */
     .info-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:170;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .info-overlay.active{opacity:1;pointer-events:auto}
-    .info-modal{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:24px;width:min(90%,550px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
-    .info-modal-header{padding:16px 20px;border-bottom:1px solid rgba(0,255,255,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.4)}
-    .info-modal-header h3{font-family:'Space Mono',monospace;color:var(--cyan);font-size:0.8rem;letter-spacing:2px}
-    .info-modal-close{background:none;border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:30px;height:30px;border-radius:8px;cursor:pointer}
-    .info-modal-content{padding:24px;overflow-y:auto;flex:1;color:var(--text);font-size:0.85rem;line-height:1.7}
-    .info-modal-content h4{color:var(--cyan);margin:12px 0 6px;font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:1px}
-    .info-modal-content ul{margin-left:20px;margin-bottom:10px}
-    .info-modal-content li{margin:4px 0}
-    .info-modal-content .cmd{color:var(--green);font-family:'Space Mono',monospace;font-size:0.7rem}
+    .info-modal{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:20px;width:min(90%,520px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
+    .info-modal-header{padding:14px 18px;border-bottom:1px solid rgba(0,255,255,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.4)}
+    .info-modal-header h3{font-family:'Space Mono',monospace;color:var(--cyan);font-size:0.75rem;letter-spacing:2px}
+    .info-modal-close{background:none;border:1px solid rgba(0,255,255,0.3);color:var(--text-dim);width:28px;height:28px;border-radius:6px;cursor:pointer}
+    .info-modal-content{padding:20px;overflow-y:auto;flex:1;color:var(--text);font-size:0.8rem;line-height:1.6}
+    .info-modal-content h4{color:var(--cyan);margin:10px 0 5px;font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:1px}
+    .info-modal-content ul{margin-left:18px;margin-bottom:8px}
+    .info-modal-content li{margin:3px 0}
+    .info-modal-content .cmd{color:var(--green);font-family:'Space Mono',monospace;font-size:0.65rem}
     
     @media(max-width:480px){
-      .mic-wave-container{width:150px;height:150px}
-      .voice-commands-bar{font-size:0.65rem;padding:0.5rem 1rem}
+      .mic-wave-container{width:140px;height:140px}
+      .mic-ring:nth-child(1){width:65px;height:65px}
+      .mic-ring:nth-child(2){width:90px;height:90px}
+      .mic-ring:nth-child(3){width:115px;height:115px}
+      .voice-commands-bar{padding:0.4rem 1rem;font-size:0.6rem}
+      .step-title{font-size:0.9rem}
+      .step-text{font-size:0.8rem}
     }
   </style>
 </head>
@@ -391,18 +416,19 @@
   </div>
 
   <!-- Bandeau rappel commandes vocales -->
-  <div class="voice-commands-bar" id="voiceCommandsBar">
+  <div class="voice-commands-bar">
     <div class="voice-icon">🎤</div>
-    <div class="voice-cmd-list">
-      <span><span class="cmd-key">Suivant</span> « suivant / ok »</span>
-      <span><span class="cmd-key">Précédent</span> « précédent »</span>
-      <span><span class="cmd-key">Répéter</span> « répète »</span>
-      <span><span class="cmd-key">Annuler</span> « annuler »</span>
-      <span><span class="cmd-key">Guidage</span> « démarre guidage »</span>
+    <div class="voice-cmd-scroll">
+      <div class="voice-cmd-item"><span class="cmd-key">Suivant</span><span class="cmd-example">«suivant»</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Précédent</span><span class="cmd-example">«précédent»</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Répéter</span><span class="cmd-example">«répète»</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Annuler</span><span class="cmd-example">«annuler»</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Guidage</span><span class="cmd-example">«guidage»</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Oui/Non</span><span class="cmd-example">«oui»</span></div>
     </div>
   </div>
 
-  <!-- Zone centrale : micro + carte étape guidage -->
+  <!-- Zone centrale : micro + carte IOS/étapes -->
   <div class="center-stage">
     <div class="mic-wave-container" id="micWaveContainer" role="button" tabindex="0">
       <div class="mic-ring"></div>
@@ -417,9 +443,10 @@
       </div>
     </div>
 
-    <!-- Étape de guidage au centre -->
+    <!-- Carte IOS + étapes -->
     <div class="guide-step-card" id="guideStepCard">
-      <div class="step-header" id="guideStepLabel">ÉTAPE</div>
+      <div class="step-header" id="guideStepLabel"></div>
+      <div class="step-title" id="guideStepTitle"></div>
       <div class="step-text" id="guideStepText"></div>
       <div class="step-actions">
         <button class="step-btn yes" id="stepYesBtn" style="display:none">✓ OUI</button>
@@ -437,9 +464,8 @@
   </div>
 </div>
 
-<!-- Bouton panneau latéral -->
+<!-- Boutons flottants -->
 <button class="panel-toggle" id="panelToggle"><span class="gear-icon">⚙️</span></button>
-<!-- Bouton informations -->
 <button class="info-btn" id="infoBtn" title="Informations">ℹ️</button>
 
 <!-- Modal informations -->
@@ -469,7 +495,7 @@
       <div class="card-header">
         <div class="ios-code"><span id="iosId">---</span></div>
         <div class="prio-badge" id="iosPrio"></div>
-        <div id="iosDesc" style="margin-top:8px;font-size:0.88rem;color:#e2e8f0"></div>
+        <div id="iosDesc" style="margin-top:6px;font-size:0.82rem;color:#e2e8f0"></div>
       </div>
       <div class="card-actions">
         <button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button>
@@ -529,7 +555,7 @@
 
 <script>
   (function() {
-    // ==================== BASE DE DONNÉES IOS (À REMPLIR) ====================
+    // ==================== BASE DE DONNÉES IOS ====================
     const IOS = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
@@ -1026,11 +1052,12 @@
     let procedureStartTime = null;
     let procedureEndTime = null;
     let procedureStepsLog = [];
+    let iosInfoShown = false;
     const synth = window.speechSynthesis;
     const voiceSupport = !!synth;
 
     // ==================== FONCTIONS UTILITAIRES ====================
-    function toast(m, d = 3000) {
+    function toast(m, d = 2500) {
       const t = document.getElementById('toastMsg');
       t.textContent = m;
       t.classList.add('show');
@@ -1051,20 +1078,17 @@
         w.classList.add('listening');
         d.classList.add('active');
         d.classList.remove('speaking');
-        d.style.background = '';
         t.innerText = 'Écoute active...';
       } else if (s === 'speak') {
         m.classList.add('speaking');
         w.classList.add('speaking');
         d.classList.add('speaking');
         d.classList.remove('active');
-        d.style.background = '';
         t.innerText = 'Parle...';
       } else if (s === 'error') {
         m.classList.add('error');
         w.classList.add('error');
         d.classList.remove('active', 'speaking');
-        d.style.background = '';
         setTimeout(() => {
           m.classList.remove('error');
           w.classList.remove('error');
@@ -1080,71 +1104,39 @@
 
     function openPanel() {
       document.getElementById('infoPanel').classList.add('open');
-      document.getElementById('infoPanel').setAttribute('aria-hidden', 'false');
       document.getElementById('panelOverlay').classList.add('active');
       document.getElementById('panelToggle').classList.add('panel-open');
     }
 
     function closePanel() {
       document.getElementById('infoPanel').classList.remove('open');
-      document.getElementById('infoPanel').setAttribute('aria-hidden', 'true');
       document.getElementById('panelOverlay').classList.remove('active');
       document.getElementById('panelToggle').classList.remove('panel-open');
     }
 
     function togglePanel() {
-      if (document.getElementById('infoPanel').classList.contains('open')) {
-        closePanel();
-      } else {
-        openPanel();
-      }
+      if (document.getElementById('infoPanel').classList.contains('open')) closePanel();
+      else openPanel();
     }
 
-    function ft(d) {
-      return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    }
-
-    function fd(d) {
-      return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    }
+    function ft(d) { return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
+    function fd(d) { return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
 
     // ==================== SYNTHÈSE VOCALE ====================
     function speakText(t, cb) {
-      if (!voiceSupport) {
-        if (cb) cb();
-        return;
-      }
+      if (!voiceSupport) { if (cb) cb(); return; }
       if (speakingFlag) synth.cancel();
       let x = t.replace(/[<[\]{}_*#✅🚨]/g, '').replace(/&[a-z]+;/g, '');
-      x = x.replace(/\bl'IOS\b/gi, "li oès");
-      x = x.replace(/\bl'ios\b/gi, "li oès");
-      x = x.replace(/\bun IOS\b/gi, "un i o s");
-      x = x.replace(/\bd'IOS\b/gi, "d'i o s");
-      x = x.replace(/\bdes IOS\b/gi, "des i o s");
-      x = x.replace(/\bIOS\b/g, "i o s");
-      x = x.replace(/\bios\b/g, "i o s");
-      x = x.replace(/\bAEL\b/gi, "a e l");
-      x = x.replace(/\bFS\b/g, 'F S');
-      x = x.replace(/\bFU\b/g, 'F U');
-      x = x.replace(/\bDJ\b/g, 'D J');
-      x = x.replace(/\bCVS\b/g, 'C V S');
-      x = x.replace(/\bKVB\b/g, 'K V B');
-      x = x.replace(/\bSTM\b/g, 'S T M');
-      x = x.replace(/\bSAI\b/g, 'S A I');
-      x = x.replace(/\bSAEIV\b/g, 'S A E I V');
-      x = x.replace(/\bETF\b/g, 'E T F');
-      x = x.replace(/\bEFAS\b/g, 'E F A S');
-      x = x.replace(/\bTETRA\b/g, 'T E T R A');
-      x = x.replace(/\bIHM\b/g, 'I H M');
-      x = x.replace(/\bUM\b/g, 'U M');
-      x = x.replace(/\bSTBS\b/g, 'S T B S');
-      x = x.replace(/\bBM\b/g, 'B M');
-      x = x.replace(/\bBP\b/g, 'B P');
-      x = x.replace(/\bBPL\b/g, 'B P L');
-      x = x.replace(/\bLS\b/g, 'L S');
-      x = x.replace(/\bCC\b/g, 'C C');
-      x = x.replace(/\bPC\b/g, 'P C');
-      x = x.replace(/\bPJ\b/g, 'P J');
+      x = x.replace(/\bl'IOS\b/gi, "li oès").replace(/\bl'ios\b/gi, "li oès");
+      x = x.replace(/\bun IOS\b/gi, "un i o s").replace(/\bd'IOS\b/gi, "d'i o s").replace(/\bdes IOS\b/gi, "des i o s");
+      x = x.replace(/\bIOS\b/g, "i o s").replace(/\bios\b/g, "i o s");
+      x = x.replace(/\bAEL\b/gi, "a e l").replace(/\bFS\b/g, 'F S').replace(/\bFU\b/g, 'F U').replace(/\bDJ\b/g, 'D J');
+      x = x.replace(/\bCVS\b/g, 'C V S').replace(/\bKVB\b/g, 'K V B').replace(/\bSTM\b/g, 'S T M');
+      x = x.replace(/\bSAI\b/g, 'S A I').replace(/\bSAEIV\b/g, 'S A E I V').replace(/\bETF\b/g, 'E T F');
+      x = x.replace(/\bEFAS\b/g, 'E F A S').replace(/\bTETRA\b/g, 'T E T R A').replace(/\bIHM\b/g, 'I H M');
+      x = x.replace(/\bUM\b/g, 'U M').replace(/\bSTBS\b/g, 'S T B S').replace(/\bBM\b/g, 'B M');
+      x = x.replace(/\bBP\b/g, 'B P').replace(/\bBPL\b/g, 'B P L').replace(/\bLS\b/g, 'L S');
+      x = x.replace(/\bCC\b/g, 'C C').replace(/\bPC\b/g, 'P C').replace(/\bPJ\b/g, 'P J');
       x = x.replace(/\bZaber\b/gi, 'Zabèr');
       x = x.replace(/km\/h/gi, 'kilomètres par heure');
       x = x.replace(/\bart\.\s*/gi, 'article ');
@@ -1154,9 +1146,7 @@
       x = x.replace(/\s+/g, ' ');
       
       const u = new SpeechSynthesisUtterance(x);
-      u.lang = 'fr-FR';
-      u.rate = 0.9;
-      u.volume = 1;
+      u.lang = 'fr-FR'; u.rate = 0.9; u.volume = 1;
       const v = synth.getVoices();
       const fv = v.find(z => z.lang.startsWith('fr'));
       if (fv) u.voice = fv;
@@ -1186,25 +1176,65 @@
       d.innerHTML = '<div class="bubble">' + t + '</div>';
       c.appendChild(d);
       c.scrollTop = c.scrollHeight;
+      while (c.children.length > 60) c.removeChild(c.firstChild);
     }
 
-    // ==================== MISE À JOUR CARTE ÉTAPE ====================
+    // ==================== CARTE CENTRALE ====================
+    function showIosInfoCard() {
+      if (!currentIOS) return;
+      const card = document.getElementById('guideStepCard');
+      card.classList.add('active');
+      document.getElementById('guideStepLabel').innerHTML = '🔍 IOS DÉTECTÉ';
+      document.getElementById('guideStepTitle').innerHTML = 'IOS-' + currentIOS.id;
+      document.getElementById('guideStepText').innerHTML = currentIOS.desc;
+      document.getElementById('stepYesBtn').style.display = 'none';
+      document.getElementById('stepNoBtn').style.display = 'none';
+      document.getElementById('stepPrevBtn').style.display = 'none';
+      document.getElementById('stepNextBtn').style.display = 'inline-flex';
+      document.getElementById('stepNextBtn').textContent = '▶ GUIDAGE';
+      document.getElementById('stepCancelBtn').style.display = 'inline-flex';
+      iosInfoShown = true;
+    }
+
     function updateGuideStepCard() {
       const card = document.getElementById('guideStepCard');
       if (!guideActive || stepIndex >= guideSteps.length) {
         card.classList.remove('active');
+        iosInfoShown = false;
         return;
       }
       let s = guideSteps[stepIndex];
       if (s.fin) {
         card.classList.remove('active');
+        iosInfoShown = false;
         return;
       }
       card.classList.add('active');
       document.getElementById('guideStepLabel').innerHTML = 'ÉTAPE ' + (stepIndex + 1) + '/' + guideSteps.length + ' · IOS-' + currentIOS.id;
+      document.getElementById('guideStepTitle').innerHTML = '';
       document.getElementById('guideStepText').innerHTML = s.t;
       document.getElementById('stepYesBtn').style.display = s.d ? 'inline-flex' : 'none';
       document.getElementById('stepNoBtn').style.display = s.d ? 'inline-flex' : 'none';
+      document.getElementById('stepPrevBtn').style.display = 'inline-flex';
+      document.getElementById('stepNextBtn').style.display = 'inline-flex';
+      document.getElementById('stepNextBtn').textContent = 'SUIVANT →';
+      document.getElementById('stepCancelBtn').style.display = 'inline-flex';
+      iosInfoShown = false;
+    }
+
+    function showEndCard(msg) {
+      const card = document.getElementById('guideStepCard');
+      card.classList.add('active');
+      document.getElementById('guideStepLabel').innerHTML = '✅ TERMINÉ';
+      document.getElementById('guideStepTitle').innerHTML = '';
+      document.getElementById('guideStepText').innerHTML = msg;
+      document.getElementById('stepYesBtn').style.display = 'none';
+      document.getElementById('stepNoBtn').style.display = 'none';
+      document.getElementById('stepPrevBtn').style.display = 'none';
+      document.getElementById('stepNextBtn').style.display = 'none';
+      document.getElementById('stepCancelBtn').style.display = 'inline-flex';
+      document.getElementById('stepCancelBtn').textContent = 'FERMER';
+      iosInfoShown = false;
     }
 
     // ==================== RECHERCHE IOS ====================
@@ -1228,7 +1258,7 @@
     function sdi(ios) {
       currentIOS = ios;
       guideActive = false;
-      document.getElementById('guideStepCard').classList.remove('active');
+      iosInfoShown = false;
       document.getElementById('iosCard').classList.add('show');
       document.getElementById('iosId').innerHTML = 'IOS-' + ios.id;
       document.getElementById('iosDesc').innerText = ios.desc;
@@ -1239,6 +1269,7 @@
       document.getElementById('iosBody').innerHTML = '📋 ' + ios.tree.length + ' étapes. Dites "démarrer le guidage".';
       addMessage('🔍 <strong>IOS-' + ios.id + '</strong> — ' + ios.desc, 'ai');
       speakText("l'IOS " + parseInt(ios.id, 10) + ". " + ios.desc.substring(0, 80));
+      showIosInfoCard();
       procedureStartTime = null;
       procedureEndTime = null;
       procedureStepsLog = [];
@@ -1256,31 +1287,23 @@
         const pc = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l');
         const pt = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF');
         d.innerHTML = '<span class="ios-list-num">IOS-' + io.id + '</span><span class="ios-list-desc">' + io.desc + '</span><span class="ios-list-prio ' + pc + '">' + pt + '</span>';
-        d.addEventListener('click', () => {
-          cil();
-          sdi(io);
-        });
+        d.addEventListener('click', () => { cil(); sdi(io); });
         s.appendChild(d);
       }
     }
 
-    function oil() {
-      bil();
-      document.getElementById('iosListOverlay').classList.add('active');
-    }
-
-    function cil() {
-      document.getElementById('iosListOverlay').classList.remove('active');
-    }
+    function oil() { bil(); document.getElementById('iosListOverlay').classList.add('active'); }
+    function cil() { document.getElementById('iosListOverlay').classList.remove('active'); }
 
     // ==================== GUIDAGE ====================
     function sg() {
       if (!currentIOS) return;
+      if (iosInfoShown) {
+        document.getElementById('stepNextBtn').textContent = 'SUIVANT →';
+      }
       guideActive = true;
       guideSteps = [];
-      if (currentIOS.instructions) {
-        for (let i of currentIOS.instructions) guideSteps.push({ t: i.t, d: 0 });
-      }
+      if (currentIOS.instructions) for (let i of currentIOS.instructions) guideSteps.push({ t: i.t, d: 0 });
       if (currentIOS.symboles) guideSteps.push({ t: 'Symboles : ' + currentIOS.symboles, d: 0 });
       if (currentIOS.vitesse) guideSteps.push({ t: 'Vitesse limite : ' + currentIOS.vitesse, d: 0 });
       for (let s of currentIOS.tree) guideSteps.push(s);
@@ -1288,6 +1311,7 @@
       procedureStartTime = new Date();
       procedureEndTime = null;
       procedureStepsLog = [];
+      iosInfoShown = false;
       updateGuideStepCard();
       addMessage('🚀 Guidage lancé pour IOS-' + currentIOS.id, 'ai');
       rs();
@@ -1308,13 +1332,8 @@
       speakText(s.t);
     }
 
-    function ay() {
-      if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(true);
-    }
-
-    function an() {
-      if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(false);
-    }
+    function ay() { if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(true); }
+    function an() { if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(false); }
 
     function pa(y) {
       let s = guideSteps[stepIndex];
@@ -1331,7 +1350,12 @@
     }
 
     function ns() {
-      if (!guideActive) return;
+      if (!guideActive) {
+        if (iosInfoShown && currentIOS) {
+          sg();
+        }
+        return;
+      }
       let s = guideSteps[stepIndex];
       if (s && s.d) {
         speakText('Veuillez répondre par oui ou par non.');
@@ -1353,15 +1377,16 @@
     function fp(msg) {
       guideActive = false;
       procedureEndTime = new Date();
-      document.getElementById('guideStepCard').classList.remove('active');
       addMessage(msg, 'ai');
       procedureStepsLog.push(msg);
       speakText(msg.includes('DÉPANNAGE') ? 'Dépannage terminé.' : msg);
+      showEndCard(msg);
       document.getElementById('endQuestions').classList.add('active');
     }
 
     function ccp() {
       guideActive = false;
+      iosInfoShown = false;
       document.getElementById('guideStepCard').classList.remove('active');
       document.getElementById('endQuestions').classList.remove('active');
       addMessage('❌ Procédure annulée.', 'ai');
@@ -1384,15 +1409,8 @@
       return '═══════════════════════════════════\n  BULLETIN DE SERVICE - IAOS T4\n═══════════════════════════════════\n\n📅 Date : ' + fd(procedureStartTime) + '\n🔧 IOS : ' + currentIOS.id + '\n📝 Description : ' + currentIOS.desc + '\n⚠️ Priorité : ' + (currentIOS.pri === 'h' ? 'URGENCE' : (currentIOS.pri === 'm' ? 'MOYEN' : 'INFO')) + '\n⏱️ Début : ' + ft(procedureStartTime) + '\n⏱️ Fin   : ' + ft(e) + '\n⏱️ Durée : ' + Math.round((e - procedureStartTime) / 60000) + ' min\n📋 Étapes :\n' + procedureStepsLog.map((s, i) => '   ' + (i + 1) + '. ' + s).join('\n') + '\n✅ Statut : Terminé\n';
     }
 
-    function sr() {
-      document.getElementById('recapContent').textContent = gr();
-      document.getElementById('recapOverlay').classList.add('active');
-    }
-
-    function cr() {
-      document.getElementById('recapOverlay').classList.remove('active');
-    }
-
+    function sr() { document.getElementById('recapContent').textContent = gr(); document.getElementById('recapOverlay').classList.add('active'); }
+    function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
     function pr() {
       const c = document.getElementById('recapContent').textContent;
       const w = window.open('', '', 'width=700,height=600');
@@ -1401,13 +1419,13 @@
       w.print();
     }
 
-    // ==================== COMMANDES VOCALES ====================
+    // ==================== COMMANDES VOCALES AMÉLIORÉES ====================
     const CP = {
-      salutation: [/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|salamou?\s*al[ae]ykoum?|wesh|yo)\b/i],
-      createur: [/\b(?:qui (?:t'a créé|ta crée|t'as créé|t'as crée|t'a développé|ta développé|t'as développé|t'as developpé|es tu|es-tu)|qui est ton (?:créateur|createur|maître|maitre|développeur|developpeur|concepteur|papa|boss|chef)|ton (?:créateur|createur|maître|maitre|développeur|developpeur)|qui (?:t'as fait|ta fait|t'a fabriqué|ta fabriqué))\b/i],
+      salutation: [/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
+      createur: [/\b(?:qui (?:t'a créé|ta crée|t'as créé|t'a développé|ta développé|es tu|es-tu)|qui est ton (?:créateur|maître|maitre|développeur|papa|boss|chef)|ton (?:créateur|maître|développeur)|qui (?:t'as fait|ta fait|t'a fabriqué))\b/i],
       heure: [/\b(?:quelle heure|il est quelle heure|donne l'heure|heure)\b/i],
       date: [/\b(?:quelle date|donne la date|date aujourd'hui|date|quel jour)\b/i],
-      temps: [/\b(?:temps écoulé|temps ecoule|durée|duree|depuis combien de temps|combien de temps|minuteur|chrono|chronomètre|depuis le début)\b/i],
+      temps: [/\b(?:temps écoulé|durée|duree|depuis combien de temps|combien de temps|minuteur|chrono|depuis le début)\b/i],
       liste_ios: [/\b(?:liste des ios|tous les ios|affiche la liste|liste ios)\b/i],
       demarrer: [/\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer la procédure)\b/i],
       suivant: [/\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i],
@@ -1417,17 +1435,22 @@
       annuler: [/\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i],
       accueil: [/\b(?:accueil|menu|retour accueil|home|reset)\b/i],
       repeter: [/\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i],
-      aide: [/\b(?:aide|help|commandes|options|quoi dire|comment ça marche|mode d'emploi|infos|informations)\b/i]
+      aide: [/\b(?:aide|help|commandes|options|quoi dire|comment ça marche|mode d'emploi|infos)\b/i]
     };
 
     function icm(t, ty) {
       const p = CP[ty];
-      return p ? p.some(r => r.test(t)) : false;
+      if (!p) return false;
+      return p.some(r => r.test(t));
     }
 
     function pvc(txt) {
       let l = txt.toLowerCase().trim();
       addMessage('' + txt + '', 'user');
+      
+      // Détection prioritaire des commandes de guidage
+      if (icm(l, 'annuler')) { ccp(); return; }
+      if (icm(l, 'accueil')) { hr(); return; }
       
       if (icm(l, 'salutation')) {
         if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) {
@@ -1445,15 +1468,8 @@
         return;
       }
       
-      if (icm(l, 'heure')) {
-        speakText('Il est ' + ft(new Date()) + '.');
-        return;
-      }
-      
-      if (icm(l, 'date')) {
-        speakText('Nous sommes le ' + fd(new Date()) + '.');
-        return;
-      }
+      if (icm(l, 'heure')) { speakText('Il est ' + ft(new Date()) + '.'); return; }
+      if (icm(l, 'date')) { speakText('Nous sommes le ' + fd(new Date()) + '.'); return; }
       
       if (icm(l, 'temps')) {
         if (!procedureStartTime) {
@@ -1465,66 +1481,50 @@
         let m = Math.floor(d / 60000);
         let s = Math.floor((d % 60000) / 1000);
         let e = m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '');
-        speakText('Temps écoulé depuis le début de la procédure : ' + e + '.');
+        speakText('Temps écoulé : ' + e + '.');
         addMessage('⏱️ Temps écoulé : ' + e + '.', 'ai');
         return;
       }
       
-      if (icm(l, 'aide')) {
-        showInfo();
-        speakText('Voici le guide d\'utilisation.');
-        return;
-      }
+      if (icm(l, 'aide')) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
+      if (icm(l, 'liste_ios')) { oil(); return; }
       
-      if (icm(l, 'liste_ios')) {
-        oil();
-        return;
-      }
-      
-      if (icm(l, 'annuler')) {
-        ccp();
-        return;
-      }
-      
-      if (icm(l, 'accueil')) {
-        hr();
+      // Commandes de guidage
+      if (icm(l, 'repeter')) {
+        if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
+        else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
         return;
       }
       
       if (icm(l, 'demarrer')) {
         if (currentIOS && !guideActive) sg();
+        else if (iosInfoShown && currentIOS) sg();
         else speakText("Cherchez d'abord un i o s.");
         return;
       }
       
+      // Détection oui/non séparée
       if (icm(l, 'oui') && !icm(l, 'non')) {
-        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) ay();
-        return;
+        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; }
       }
       
       if (icm(l, 'non')) {
-        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) an();
-        return;
-      }
-      
-      if (icm(l, 'suivant') && !icm(l, 'non') && !icm(l, 'precedent')) {
-        if (guideActive) ns();
-        return;
+        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; }
       }
       
       if (icm(l, 'precedent')) {
-        if (guideActive) ps();
-        return;
+        if (guideActive) { ps(); return; }
       }
       
-      if (icm(l, 'repeter')) {
-        if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
-        return;
+      if (icm(l, 'suivant') && !icm(l, 'non') && !icm(l, 'precedent')) {
+        if (guideActive) { ns(); return; }
+        if (iosInfoShown && currentIOS) { sg(); return; }
       }
       
+      // Recherche IOS
       if (guideActive && (/(?:ios\s*)?(\d{3}|\d{1,3})/i.test(l))) {
-        speakText("Un guidage est en cours. Veuillez d'abord annuler la procédure avant de chercher un nouveau i o s.");
-        addMessage("⚠️ Guidage en cours. Dites \"annuler\" d'abord pour chercher un nouvel IOS.", 'ai');
+        speakText("Un guidage est en cours. Veuillez d'abord annuler la procédure.");
+        addMessage("⚠️ Guidage en cours. Dites \"annuler\" d'abord.", 'ai');
         return;
       }
       
@@ -1536,12 +1536,12 @@
         } else {
           sdi(f);
         }
-      } else if (!guideActive) {
+      } else if (!guideActive && !iosInfoShown) {
         speakText('Aucun i o s trouvé.');
       }
     }
 
-    // ==================== RECONNAISSANCE VOCALE ====================
+    // ==================== RECONNAISSANCE VOCALE AMÉLIORÉE ====================
     function sl() {
       if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
         toast('Reconnaissance vocale non supportée');
@@ -1553,41 +1553,60 @@
         recognition = new SR();
         recognition.lang = 'fr-FR';
         recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 3;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 5;
+        
+        let finalTranscript = '';
         
         recognition.onstart = () => {
           listening = true;
+          finalTranscript = '';
           updateUIForState('listen');
         };
         
         recognition.onresult = (e) => {
-          let b = '', bc = 0;
-          for (let i = 0; i < e.results[0].length; i++) {
-            if (e.results[0][i].confidence > bc) {
-              bc = e.results[0][i].confidence;
-              b = e.results[0][i].transcript;
+          let interimTranscript = '';
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            if (e.results[i].isFinal) {
+              let best = '', bestConf = 0;
+              for (let j = 0; j < e.results[i].length; j++) {
+                if (e.results[i][j].confidence > bestConf) {
+                  bestConf = e.results[i][j].confidence;
+                  best = e.results[i][j].transcript;
+                }
+              }
+              if (best && bestConf > 0.1) {
+                finalTranscript += ' ' + best;
+              }
+            } else {
+              interimTranscript += e.results[i][0].transcript;
             }
           }
-          if (bc < 0.2) return;
-          pvc(b);
+          
+          if (finalTranscript.trim() && !interimTranscript) {
+            pvc(finalTranscript.trim());
+            finalTranscript = '';
+          }
         };
         
-        recognition.onerror = () => {
+        recognition.onerror = (e) => {
           listening = false;
           updateUIForState('idle');
-          if (micActive && !speakingFlag) setTimeout(sl, 800);
+          if (micActive && !speakingFlag) setTimeout(sl, 600);
         };
         
         recognition.onend = () => {
           listening = false;
-          if (micActive && !speakingFlag) setTimeout(sl, 500);
+          if (finalTranscript.trim()) {
+            pvc(finalTranscript.trim());
+          }
+          if (micActive && !speakingFlag) setTimeout(sl, 400);
           else updateUIForState('idle');
         };
         
         recognition.start();
       } catch (e) {
-        if (micActive) setTimeout(sl, 1000);
+        if (micActive) setTimeout(sl, 800);
       }
     }
 
@@ -1613,12 +1632,12 @@
           <li><span class="cmd">"répète"</span> — Répéter l'étape</li>
           <li><span class="cmd">"annuler"</span> — Annuler la procédure</li>
           <li><span class="cmd">"accueil"</span> — Retour à l'accueil</li>
-          <li><span class="cmd">"temps écoulé", "durée"</span> — Temps depuis début procédure</li>
+          <li><span class="cmd">"temps écoulé", "durée"</span> — Temps depuis début</li>
           <li><span class="cmd">"quelle heure"</span> — Heure actuelle</li>
           <li><span class="cmd">"quelle date"</span> — Date du jour</li>
           <li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li>
           <li><span class="cmd">"bonjour", "salut"</span> — Salutation</li>
-          <li><span class="cmd">"qui t'a créé", "ton maître"</span> — Info créateur</li>
+          <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
         </ul>
         <h4>🖱️ BOUTONS</h4>
         <ul>
@@ -1628,10 +1647,9 @@
         </ul>
         <h4>📋 FONCTIONNEMENT</h4>
         <p>1. Dites un numéro IOS ou décrivez une panne<br>
-        2. L'IOS s'affiche, dites <b>"démarrer le guidage"</b><br>
+        2. L'IOS s'affiche au centre, dites <b>"guidage"</b><br>
         3. Suivez les étapes, répondez par oui/non<br>
-        4. À la fin, un récapitulatif vous est proposé<br>
-        5. Le micro reste actif en permanence</p>
+        4. À la fin, un récapitulatif vous est proposé</p>
         <h4>🎨 COULEURS DE LA VAGUE</h4>
         <ul>
           <li><span style="color:var(--cyan)">Cyan</span> — En attente</li>
@@ -1687,19 +1705,13 @@
     
     document.getElementById('searchBtn').addEventListener('click', function() {
       let v = document.getElementById('searchInput').value;
-      if (v) {
-        pvc(v);
-        document.getElementById('searchInput').value = '';
-      }
+      if (v) { pvc(v); document.getElementById('searchInput').value = ''; }
     });
     
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         let v = e.target.value;
-        if (v) {
-          pvc(v);
-          e.target.value = '';
-        }
+        if (v) { pvc(v); e.target.value = ''; }
       }
     });
     
@@ -1723,9 +1735,20 @@
     
     document.getElementById('stepYesBtn').addEventListener('click', ay);
     document.getElementById('stepNoBtn').addEventListener('click', an);
-    document.getElementById('stepNextBtn').addEventListener('click', ns);
+    document.getElementById('stepNextBtn').addEventListener('click', function() {
+      if (iosInfoShown && currentIOS) sg();
+      else ns();
+    });
     document.getElementById('stepPrevBtn').addEventListener('click', ps);
-    document.getElementById('stepCancelBtn').addEventListener('click', ccp);
+    document.getElementById('stepCancelBtn').addEventListener('click', function() {
+      if (!guideActive && document.getElementById('guideStepCard').classList.contains('active')) {
+        document.getElementById('guideStepCard').classList.remove('active');
+        document.getElementById('endQuestions').classList.remove('active');
+        iosInfoShown = false;
+      } else {
+        ccp();
+      }
+    });
     
     document.getElementById('endRecapYes').addEventListener('click', function() {
       document.getElementById('endQuestions').classList.remove('active');
@@ -1733,6 +1756,7 @@
     });
     document.getElementById('endRecapNo').addEventListener('click', function() {
       document.getElementById('endQuestions').classList.remove('active');
+      document.getElementById('guideStepCard').classList.remove('active');
     });
 
     // ==================== DÉMARRAGE ====================
@@ -1746,5 +1770,3 @@
 </script>
 </body>
 </html>
-
-
