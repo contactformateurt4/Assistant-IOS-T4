@@ -76,7 +76,6 @@
       margin-top: 0.2rem;
     }
 
-    /* Bandeau commandes vocales - RESPONSIVE */
     .voice-commands-bar {
       width: 100%;
       max-width: 600px;
@@ -133,7 +132,6 @@
       font-size: 0.55rem;
     }
 
-    /* Zone centrale */
     .center-stage {
       display: flex;
       flex-direction: column;
@@ -208,7 +206,6 @@
     .mic-wave-container.listening .mic-ring { border-color: rgba(34,197,94,0.5)!important; animation-duration:1.8s; }
     .mic-wave-container.speaking .mic-ring { border-color: rgba(192,132,252,0.5)!important; animation-duration:1.6s; }
 
-    /* Carte centrale */
     .guide-step-card {
       background: rgba(5, 12, 25, 0.85);
       border: 1px solid rgba(0, 255, 255, 0.35);
@@ -287,7 +284,6 @@
     .status-dot.speaking { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
     .status-dot.blocked { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
 
-    /* Panneau latéral */
     .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .panel-overlay.active{opacity:1;pointer-events:auto}
     .info-panel{position:fixed;top:0;right:0;width:min(94%,420px);height:100%;background:var(--bg-panel);backdrop-filter:blur(20px);border-left:1px solid rgba(0,255,255,0.35);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.6)}
@@ -379,7 +375,6 @@
     .info-modal-content li{margin:3px 0}
     .info-modal-content .cmd{color:var(--green);font-family:'Space Mono',monospace;font-size:0.65rem}
     
-    /* RESPONSIVE - petits écrans */
     @media(max-width:480px){
       .mic-wave-container{width:140px;height:140px}
       .mic-ring:nth-child(1){width:65px;height:65px}
@@ -412,7 +407,6 @@
     <p class="hero-sub">DUALIS U53700 · ASSISTANT</p>
   </div>
 
-  <!-- Bandeau commandes vocales responsive -->
   <div class="voice-commands-bar">
     <div class="voice-icon">🎤</div>
     <div class="voice-cmd-list">
@@ -953,6 +947,7 @@
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
+
     for (let i = 0; i <= 247; i++) {
       let id = i.toString().padStart(3, '0');
       if (!IOS[id]) IOS[id] = {
@@ -969,7 +964,7 @@
     let listening = false, speakingFlag = false, micActive = true, iosInfoShown = false;
     let recognition = null, procedureStartTime = null, procedureEndTime = null, procedureStepsLog = [];
     const synth = window.speechSynthesis, voiceSupport = !!synth;
-    let recognitionRestartTimer = null;
+    let recognitionRestartTimer = null, accumulatedTranscript = '';
 
     function toast(m, d = 2500) { const t = document.getElementById('toastMsg'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d); }
 
@@ -1193,7 +1188,7 @@
     function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
     function pr() { const c = document.getElementById('recapContent').textContent; const w = window.open('', '', 'width=700,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>'); w.document.close(); w.print(); }
 
-    // ==================== COMMANDES VOCALES ====================
+    // ==================== COMMANDES VOCALES ULTRA ÉTENDUES ====================
     function extractIosNumber(text) { let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i); return m ? m[1].padStart(3, '0') : null; }
 
     function isGreeting(text) { return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text); }
@@ -1203,8 +1198,26 @@
     function isNextStep(text) { return /\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i.test(text) && !/\b(?:non|précédent)\b/i.test(text); }
     function isPrevStep(text) { return /\b(?:précédent|reviens|retour en arrière|recule|back|remonte)\b/i.test(text) && !/\b(?:retour accueil|non)\b/i.test(text); }
     function isRepeatCommand(text) { return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text); }
-    function isYesAnswer(text) { return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas)\b/i.test(text); }
-    function isNoAnswer(text) { return /\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i.test(text); }
+    function isYesAnswer(text) { return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas|nan|no|nada|naan|negative|mort)\b/i.test(text); }
+
+    // DÉTECTION "NON" ULTRA ÉTENDUE
+    function isNoAnswer(text) {
+      const noPatterns = [
+        /\bnon\b/i, /\bnan\b/i, /\bnaan\b/i, /\bnada\b/i, /\bno\b/i, /\byet\b/i,
+        /\bn+o+n+/i, /\bn+a+n+/i, /\bn+o+\b/i, /\bn+a+\b/i,
+        /\bnegative\b/i, /c'est mort/i, /ha nan/i, /ah nan/i,
+        /\bnégatif\b/i, /\bpas du tout\b/i, /\bfaux\b/i, /\bincorrect\b/i,
+        /\bdisparu\b/i, /\babsent\b/i, /\béteint\b/i, /\beteint\b/i,
+        /\bpas affiché\b/i, /\baucun\b/i, /\brien\b/i,
+        /\bmarche pas\b/i, /\bdésactivé\b/i, /\bdesactive\b/i, /\binactif\b/i,
+        /\bniet\b/i, /\bniks\b/i, /\bnope\b/i, /\bnah\b/i,
+        /\bque dalle\b/i, /\bwalou\b/i, /\bque couic\b/i,
+        /\bmmm+\s*(?:non|nan)\b/i, /\b(?:non|nan)\s*merci\b/i,
+        /\bpas\s+(?:du tout|vraiment|exactement|forcement|du tou)\b/i,
+        /\bnon\s+(?:plus|merci|monsieur|madame)\b/i
+      ];
+      return noPatterns.some(p => p.test(text));
+    }
 
     function pvc(txt) {
       let l = txt.toLowerCase().trim();
@@ -1274,12 +1287,12 @@
       speakText('Aucun i o s trouvé.');
     }
 
-    // ==================== RECONNAISSANCE VOCALE OPTIMISÉE ====================
+    // ==================== RECONNAISSANCE VOCALE AVANCÉE ====================
     function scheduleRestart() {
       clearTimeout(recognitionRestartTimer);
       recognitionRestartTimer = setTimeout(() => {
         if (micActive && !speakingFlag && !listening) sl();
-      }, 300);
+      }, 250);
     }
 
     function sl() {
@@ -1289,46 +1302,70 @@
         let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SR();
         recognition.lang = 'fr-FR';
-        recognition.continuous = false;
+        recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.maxAlternatives = 8;
+        recognition.maxAlternatives = 10;
         
         let finalTranscript = '';
+        let silenceTimer = null;
         
-        recognition.onstart = () => { listening = true; finalTranscript = ''; updateUIForState('listen'); };
+        recognition.onstart = () => { listening = true; finalTranscript = ''; accumulatedTranscript = ''; updateUIForState('listen'); };
         
         recognition.onresult = (e) => {
+          clearTimeout(silenceTimer);
           let interimTranscript = '';
+          
           for (let i = e.resultIndex; i < e.results.length; i++) {
             if (e.results[i].isFinal) {
               let best = '', bestConf = 0;
               for (let j = 0; j < e.results[i].length; j++) {
                 if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; }
               }
-              if (best && bestConf > 0.05) finalTranscript += ' ' + best;
+              if (best && bestConf > 0.03) {
+                finalTranscript += ' ' + best;
+              }
             } else {
               interimTranscript += e.results[i][0].transcript;
             }
           }
-          if (finalTranscript.trim() && !interimTranscript) { pvc(finalTranscript.trim()); finalTranscript = ''; }
+          
+          // Traitement immédiat si pas d'interim
+          if (finalTranscript.trim() && !interimTranscript) {
+            accumulatedTranscript = finalTranscript.trim();
+            pvc(accumulatedTranscript);
+            finalTranscript = '';
+            accumulatedTranscript = '';
+          }
+          
+          // Silence timer : après 800ms sans intermédiaire, traiter
+          silenceTimer = setTimeout(() => {
+            if (finalTranscript.trim()) {
+              accumulatedTranscript = finalTranscript.trim();
+              pvc(accumulatedTranscript);
+              finalTranscript = '';
+              accumulatedTranscript = '';
+            }
+          }, 800);
         };
         
         recognition.onerror = (e) => {
-          listening = false;
+          listening = false; clearTimeout(silenceTimer);
           if (finalTranscript.trim()) pvc(finalTranscript.trim());
+          finalTranscript = ''; accumulatedTranscript = '';
           updateUIForState('idle');
           if (micActive && !speakingFlag) scheduleRestart();
         };
         
         recognition.onend = () => {
-          listening = false;
+          listening = false; clearTimeout(silenceTimer);
           if (finalTranscript.trim()) pvc(finalTranscript.trim());
+          finalTranscript = ''; accumulatedTranscript = '';
           if (micActive && !speakingFlag) scheduleRestart();
           else updateUIForState('idle');
         };
         
         recognition.start();
-      } catch (e) { if (micActive) setTimeout(sl, 800); }
+      } catch (e) { if (micActive) setTimeout(sl, 600); }
     }
 
     function stl() {
@@ -1346,7 +1383,7 @@
           <li><span class="cmd">"démarrer le guidage"</span> — Lancer la procédure</li>
           <li><span class="cmd">"suivant", "ok", "c'est bon"</span> — Étape suivante</li>
           <li><span class="cmd">"précédent", "retour"</span> — Étape précédente</li>
-          <li><span class="cmd">"oui", "non"</span> — Répondre à une question</li>
+          <li><span class="cmd">"oui", "non", "nan", "nada", "no"...</span> — Répondre</li>
           <li><span class="cmd">"répète"</span> — Répéter l'étape</li>
           <li><span class="cmd">"annuler"</span> — Annuler la procédure</li>
           <li><span class="cmd">"accueil"</span> — Retour à l'accueil</li>
@@ -1357,6 +1394,8 @@
           <li><span class="cmd">"bonjour", "salut"</span> — Salutation</li>
           <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
         </ul>
+        <h4>🗣️ DIRE "NON"</h4>
+        <p>Reconnu : non, nan, naan, nada, no, yet, nnnan, nnooon, negative, c'est mort, ha nan, niet, nope, nah, que dalle, walou...</p>
         <h4>⚠️ PROTECTION</h4>
         <p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p>
         <h4>🎨 COULEURS</h4>
