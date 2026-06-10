@@ -23,7 +23,6 @@
       --amber: #f59e0b;
       --text: #e2e8f0;
       --text-dim: #7f8ea3;
-      --glass: rgba(0, 20, 40, 0.35);
     }
     body {
       font-family: 'DM Sans', sans-serif;
@@ -77,7 +76,7 @@
       margin-top: 0.2rem;
     }
 
-    /* Bandeau commandes vocales - compact sans guillemets */
+    /* Bandeau commandes vocales */
     .voice-commands-bar {
       width: 100%;
       max-width: 600px;
@@ -157,9 +156,7 @@
       user-select: none;
       flex-shrink: 0;
     }
-    .mic-wave-container:active {
-      transform: scale(0.95);
-    }
+    .mic-wave-container:active { transform: scale(0.95); }
     .mic-ring {
       position: absolute;
       border-radius: 50%;
@@ -204,7 +201,7 @@
       0%,100% { transform: scaleY(0.5); opacity: 0.5; }
       50% { transform: scaleY(1); opacity: 1; }
     }
-    .wave-bars.idle .wave-bar { background: var(--cyan); box-shadow: 0 0 8px rgba(0,255,255,0.5); }
+    .wave-bars.idle .wave-bar { background: var(--cyan); }
     .wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 12px rgba(34,197,94,0.7); animation-duration: 0.5s; }
     .wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 12px rgba(192,132,252,0.7); animation-duration: 0.6s; }
     .wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 10px rgba(239,68,68,0.6); animation: errorShake 0.4s; }
@@ -212,7 +209,7 @@
     .mic-wave-container.listening .mic-ring { border-color: rgba(34,197,94,0.5)!important; animation-duration:1.8s; }
     .mic-wave-container.speaking .mic-ring { border-color: rgba(192,132,252,0.5)!important; animation-duration:1.6s; }
 
-    /* Carte centrale (IOS info + étapes) */
+    /* Carte centrale */
     .guide-step-card {
       background: rgba(5, 12, 25, 0.85);
       border: 1px solid rgba(0, 255, 255, 0.35);
@@ -224,13 +221,8 @@
       text-align: center;
       animation: fadeUp 0.3s ease;
     }
-    .guide-step-card.active {
-      display: block;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .guide-step-card.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .step-header {
       font-family: 'Space Mono', monospace;
       font-size: 0.65rem;
@@ -294,6 +286,7 @@
     }
     .status-dot.active { background: var(--green); box-shadow: 0 0 8px var(--green); }
     .status-dot.speaking { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+    .status-dot.blocked { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
 
     /* Panneau latéral */
     .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
@@ -337,11 +330,9 @@
     .message.user .bubble{background:rgba(124,58,237,0.15);border-radius:14px 6px 14px 14px;border:1px solid rgba(168,85,247,0.4)}
     .bubble{padding:8px 12px;font-size:0.78rem;line-height:1.4;word-break:break-word}
     
-    /* Toast */
     .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0a0f1e;border:1px solid cyan;border-radius:30px;padding:8px 20px;font-size:0.75rem;opacity:0;transition:opacity 0.3s ease;z-index:200;pointer-events:none;font-family:'Space Mono',monospace}
     .toast.show{opacity:1}
     
-    /* Liste IOS */
     .ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .ios-list-overlay.active{opacity:1;pointer-events:auto}
     .ios-list-panel{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:20px;width:min(90%,480px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
@@ -358,7 +349,6 @@
     .ios-list-prio.m{background:rgba(245,158,11,0.2);color:#fbbf24}
     .ios-list-prio.l{background:rgba(34,197,94,0.2);color:#4ade80}
     
-    /* Récapitulatif */
     .recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .recap-overlay.active{opacity:1;pointer-events:auto}
     .recap-panel{background:#fff;border-radius:14px;width:min(92%,520px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,0.5);overflow:hidden}
@@ -370,17 +360,14 @@
     .recap-btn{padding:7px 16px;border-radius:25px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-size:0.75rem}
     .recap-btn.primary{background:#1e293b;color:#fff;border-color:#1e293b}
     
-    /* Questions de fin */
     .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(1,3,12,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,255,255,0.4);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s ease}
     .end-questions.active{transform:translateY(0)}
     .end-questions-text{font-size:0.85rem;margin-bottom:8px}
     .end-questions-buttons{display:flex;gap:8px;flex-wrap:wrap}
     
-    /* Bouton info */
     .info-btn{position:fixed;bottom:24px;left:24px;width:50px;height:50px;border-radius:25px;background:rgba(0,20,40,0.9);backdrop-filter:blur(12px);border:1.5px solid rgba(0,255,255,0.5);color:var(--cyan);font-size:1.3rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 16px rgba(0,255,255,0.25)}
     .info-btn:hover{transform:scale(1.06)}
     
-    /* Modal info */
     .info-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:170;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
     .info-overlay.active{opacity:1;pointer-events:auto}
     .info-modal{background:rgba(2,5,18,0.98);border:1px solid rgba(0,255,255,0.4);border-radius:20px;width:min(90%,520px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.8);overflow:hidden}
@@ -399,8 +386,6 @@
       .mic-ring:nth-child(2){width:90px;height:90px}
       .mic-ring:nth-child(3){width:115px;height:115px}
       .voice-commands-bar{padding:0.4rem 1rem;font-size:0.6rem}
-      .step-title{font-size:0.9rem}
-      .step-text{font-size:0.8rem}
     }
   </style>
 </head>
@@ -414,7 +399,6 @@
     <p class="hero-sub">DUALIS U53700 · ASSISTANT</p>
   </div>
 
-  <!-- Bandeau rappel commandes vocales -->
   <div class="voice-commands-bar">
     <div class="voice-icon">🎤</div>
     <div class="voice-cmd-scroll">
@@ -427,22 +411,14 @@
     </div>
   </div>
 
-  <!-- Zone centrale : micro + carte IOS/étapes -->
   <div class="center-stage">
     <div class="mic-wave-container" id="micWaveContainer" role="button" tabindex="0">
-      <div class="mic-ring"></div>
-      <div class="mic-ring"></div>
-      <div class="mic-ring"></div>
+      <div class="mic-ring"></div><div class="mic-ring"></div><div class="mic-ring"></div>
       <div class="wave-bars idle" id="waveBars">
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
-        <div class="wave-bar"></div>
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
       </div>
     </div>
 
-    <!-- Carte IOS + étapes -->
     <div class="guide-step-card" id="guideStepCard">
       <div class="step-header" id="guideStepLabel"></div>
       <div class="step-title" id="guideStepTitle"></div>
@@ -463,93 +439,33 @@
   </div>
 </div>
 
-<!-- Boutons flottants -->
 <button class="panel-toggle" id="panelToggle"><span class="gear-icon">⚙️</span></button>
 <button class="info-btn" id="infoBtn" title="Informations">ℹ️</button>
 
-<!-- Modal informations -->
 <div class="info-overlay" id="infoOverlay">
   <div class="info-modal">
-    <div class="info-modal-header">
-      <h3>ℹ️ GUIDE D'UTILISATION</h3>
-      <button class="info-modal-close" id="infoModalClose">✕</button>
-    </div>
+    <div class="info-modal-header"><h3>ℹ️ GUIDE D'UTILISATION</h3><button class="info-modal-close" id="infoModalClose">✕</button></div>
     <div class="info-modal-content" id="infoModalContent"></div>
   </div>
 </div>
 
-<!-- Panneau latéral diagnostic -->
 <div class="info-panel" id="infoPanel" aria-hidden="true">
-  <div class="panel-header">
-    <h3>⚡ IAOS T4 · DIAGNOSTIC</h3>
-    <button class="close-panel" id="closePanel">✕</button>
-  </div>
+  <div class="panel-header"><h3>⚡ IAOS T4 · DIAGNOSTIC</h3><button class="close-panel" id="closePanel">✕</button></div>
   <div class="panel-content">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="IOS 061, boîte chaude...">
-      <button id="searchBtn">🔍</button>
-    </div>
+    <div class="search-box"><input type="text" id="searchInput" placeholder="IOS 061, boîte chaude..."><button id="searchBtn">🔍</button></div>
     <button class="action-btn" id="showAllIosBtn" style="width:100%;text-align:center">📋 Liste de tous les IOS</button>
     <div class="ios-detail-card" id="iosCard">
-      <div class="card-header">
-        <div class="ios-code"><span id="iosId">---</span></div>
-        <div class="prio-badge" id="iosPrio"></div>
-        <div id="iosDesc" style="margin-top:6px;font-size:0.82rem;color:#e2e8f0"></div>
-      </div>
-      <div class="card-actions">
-        <button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button>
-        <button class="action-btn red" id="cancelGuideBtn">✕ ANNULER</button>
-        <button class="action-btn" id="homeBtn">⌂ ACCUEIL</button>
-        <button class="action-btn" id="newSearchBtn">🔍 NOUVEAU</button>
-      </div>
+      <div class="card-header"><div class="ios-code"><span id="iosId">---</span></div><div class="prio-badge" id="iosPrio"></div><div id="iosDesc" style="margin-top:6px;font-size:0.82rem;color:#e2e8f0"></div></div>
+      <div class="card-actions"><button class="action-btn green" id="guideStartBtn">▶ GUIDAGE</button><button class="action-btn red" id="cancelGuideBtn">✕ ANNULER</button><button class="action-btn" id="homeBtn">⌂ ACCUEIL</button><button class="action-btn" id="newSearchBtn">🔍 NOUVEAU</button></div>
       <div class="card-body" id="iosBody"></div>
     </div>
-    <div class="chat-area">
-      <div class="chat-messages" id="chatMsgs">
-        <div class="message ai">
-          <div class="bubble">✨ IAOS T4 prêt. Dites le numéro d'un IOS ou décrivez une panne.</div>
-        </div>
-      </div>
-    </div>
+    <div class="chat-area"><div class="chat-messages" id="chatMsgs"><div class="message ai"><div class="bubble">✨ IAOS T4 prêt. Dites le numéro d'un IOS ou décrivez une panne.</div></div></div></div>
   </div>
 </div>
 
-<!-- Liste des IOS -->
-<div class="ios-list-overlay" id="iosListOverlay">
-  <div class="ios-list-panel">
-    <div class="ios-list-header">
-      <h3>📋 LISTE DES IOS</h3>
-      <button class="ios-list-close" id="iosListClose">✕</button>
-    </div>
-    <div class="ios-list-scroll" id="iosListScroll"></div>
-  </div>
-</div>
-
-<!-- Récapitulatif -->
-<div class="recap-overlay" id="recapOverlay">
-  <div class="recap-panel">
-    <div class="recap-header">
-      <h3>📄 BULLETIN DE SERVICE</h3>
-      <button class="recap-close" id="recapClose">✕</button>
-    </div>
-    <div class="recap-content" id="recapContent"></div>
-    <div class="recap-actions">
-      <button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button>
-      <button class="recap-btn primary" id="recapCloseBtn">Fermer</button>
-    </div>
-  </div>
-</div>
-
-<!-- Questions de fin -->
-<div class="end-questions" id="endQuestions">
-  <div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div>
-  <div class="end-questions-buttons">
-    <button class="step-btn yes" id="endRecapYes">📄 Récapitulatif</button>
-    <button class="step-btn no" id="endRecapNo">✕ Fermer</button>
-  </div>
-</div>
-
-<!-- Toast -->
+<div class="ios-list-overlay" id="iosListOverlay"><div class="ios-list-panel"><div class="ios-list-header"><h3>📋 LISTE DES IOS</h3><button class="ios-list-close" id="iosListClose">✕</button></div><div class="ios-list-scroll" id="iosListScroll"></div></div></div>
+<div class="recap-overlay" id="recapOverlay"><div class="recap-panel"><div class="recap-header"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapClose">✕</button></div><div class="recap-content" id="recapContent"></div><div class="recap-actions"><button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button><button class="recap-btn primary" id="recapCloseBtn">Fermer</button></div></div></div>
+<div class="end-questions" id="endQuestions"><div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div><div class="end-questions-buttons"><button class="step-btn yes" id="endRecapYes">📄 Récapitulatif</button><button class="step-btn no" id="endRecapNo">✕ Fermer</button></div></div>
 <div class="toast" id="toastMsg"></div>
 
 <script>
@@ -1023,103 +939,51 @@
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
-
     for (let i = 0; i <= 247; i++) {
       let id = i.toString().padStart(3, '0');
       if (!IOS[id]) IOS[id] = {
-        id: id,
-        pri: 'l',
-        type: 'AN',
-        desc: 'Information technique / retour maintenance',
+        id: id, pri: 'l', type: 'AN', desc: 'Information technique / retour maintenance',
         instructions: [{ t: "Avisez le PC, conformez-vous aux instructions." }],
-        symboles: '',
-        vitesse: '',
+        symboles: '', vitesse: '',
         tree: [{ t: "Avisez le PC, conformez-vous aux instructions.", d: 0, fin: 1 }],
         kw: []
       };
     }
 
     // ==================== ÉTAT GLOBAL ====================
-    let currentIOS = null;
-    let guideActive = false;
-    let guideSteps = [];
-    let stepIndex = 0;
-    let listening = false;
-    let speakingFlag = false;
-    let micActive = true;
-    let recognition = null;
-    let procedureStartTime = null;
-    let procedureEndTime = null;
-    let procedureStepsLog = [];
-    let iosInfoShown = false;
-    const synth = window.speechSynthesis;
-    const voiceSupport = !!synth;
+    let currentIOS = null, guideActive = false, guideSteps = [], stepIndex = 0;
+    let listening = false, speakingFlag = false, micActive = true, iosInfoShown = false;
+    let recognition = null, procedureStartTime = null, procedureEndTime = null, procedureStepsLog = [];
+    let pendingCommand = null, commandTimer = null;
+    const synth = window.speechSynthesis, voiceSupport = !!synth;
 
-    // ==================== FONCTIONS UTILITAIRES ====================
-    function toast(m, d = 2500) {
-      const t = document.getElementById('toastMsg');
-      t.textContent = m;
-      t.classList.add('show');
-      clearTimeout(t._t);
-      t._t = setTimeout(() => t.classList.remove('show'), d);
-    }
+    function toast(m, d = 2500) { const t = document.getElementById('toastMsg'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d); }
 
     function updateUIForState(s) {
-      const w = document.getElementById('waveBars');
-      const m = document.getElementById('micWaveContainer');
-      const d = document.getElementById('statusDot');
-      const t = document.getElementById('statusText');
-      m.classList.remove('listening', 'speaking', 'error');
-      w.classList.remove('idle', 'listening', 'speaking', 'error');
-      
-      if (s === 'listen') {
-        m.classList.add('listening');
-        w.classList.add('listening');
-        d.classList.add('active');
-        d.classList.remove('speaking');
-        t.innerText = 'Écoute active...';
-      } else if (s === 'speak') {
-        m.classList.add('speaking');
-        w.classList.add('speaking');
-        d.classList.add('speaking');
-        d.classList.remove('active');
-        t.innerText = 'Parle...';
-      } else if (s === 'error') {
-        m.classList.add('error');
-        w.classList.add('error');
-        d.classList.remove('active', 'speaking');
-        setTimeout(() => {
-          m.classList.remove('error');
-          w.classList.remove('error');
-          w.classList.add('idle');
-        }, 500);
-      } else {
-        w.classList.add('idle');
-        d.classList.remove('active', 'speaking');
-        d.style.background = '#475569';
-        t.innerText = 'Micro actif · Dites bonjour';
-      }
+      const w = document.getElementById('waveBars'), m = document.getElementById('micWaveContainer'), d = document.getElementById('statusDot'), t = document.getElementById('statusText');
+      m.classList.remove('listening', 'speaking', 'error'); w.classList.remove('idle', 'listening', 'speaking', 'error'); d.classList.remove('active', 'speaking', 'blocked');
+      if (s === 'listen') { m.classList.add('listening'); w.classList.add('listening'); d.classList.add('active'); t.innerText = 'Écoute active...'; }
+      else if (s === 'speak') { m.classList.add('speaking'); w.classList.add('speaking'); d.classList.add('speaking'); t.innerText = 'Parle...'; }
+      else if (s === 'error') { m.classList.add('error'); w.classList.add('error'); setTimeout(() => { m.classList.remove('error'); w.classList.remove('error'); w.classList.add('idle'); }, 500); }
+      else if (s === 'blocked') { w.classList.add('idle'); d.classList.add('blocked'); t.innerText = 'Occupez-vous de l\'IOS en cours'; }
+      else { w.classList.add('idle'); d.style.background = '#475569'; t.innerText = 'Micro actif · Dites bonjour'; }
     }
 
-    function openPanel() {
-      document.getElementById('infoPanel').classList.add('open');
-      document.getElementById('panelOverlay').classList.add('active');
-      document.getElementById('panelToggle').classList.add('panel-open');
-    }
-
-    function closePanel() {
-      document.getElementById('infoPanel').classList.remove('open');
-      document.getElementById('panelOverlay').classList.remove('active');
-      document.getElementById('panelToggle').classList.remove('panel-open');
-    }
-
-    function togglePanel() {
-      if (document.getElementById('infoPanel').classList.contains('open')) closePanel();
-      else openPanel();
-    }
-
+    function openPanel() { document.getElementById('infoPanel').classList.add('open'); document.getElementById('panelOverlay').classList.add('active'); document.getElementById('panelToggle').classList.add('panel-open'); }
+    function closePanel() { document.getElementById('infoPanel').classList.remove('open'); document.getElementById('panelOverlay').classList.remove('active'); document.getElementById('panelToggle').classList.remove('panel-open'); }
+    function togglePanel() { document.getElementById('infoPanel').classList.contains('open') ? closePanel() : openPanel(); }
     function ft(d) { return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
     function fd(d) { return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+
+    // ==================== PROTECTION RECHERCHE PENDANT PROCÉDURE ====================
+    function isProcedureActive() {
+      return guideActive || speakingFlag || iosInfoShown;
+    }
+
+    function blockNewIosSearch() {
+      updateUIForState('blocked');
+      setTimeout(() => { if (!speakingFlag && !listening) updateUIForState('idle'); }, 2000);
+    }
 
     // ==================== SYNTHÈSE VOCALE ====================
     function speakText(t, cb) {
@@ -1129,52 +993,33 @@
       x = x.replace(/\bl'IOS\b/gi, "li oès").replace(/\bl'ios\b/gi, "li oès");
       x = x.replace(/\bun IOS\b/gi, "un i o s").replace(/\bd'IOS\b/gi, "d'i o s").replace(/\bdes IOS\b/gi, "des i o s");
       x = x.replace(/\bIOS\b/g, "i o s").replace(/\bios\b/g, "i o s");
-      x = x.replace(/\bAEL\b/gi, "a e l").replace(/\bFS\b/g, 'F S').replace(/\bFU\b/g, 'F U').replace(/\bDJ\b/g, 'D J');
-      x = x.replace(/\bCVS\b/g, 'C V S').replace(/\bKVB\b/g, 'K V B').replace(/\bSTM\b/g, 'S T M');
-      x = x.replace(/\bSAI\b/g, 'S A I').replace(/\bSAEIV\b/g, 'S A E I V').replace(/\bETF\b/g, 'E T F');
-      x = x.replace(/\bEFAS\b/g, 'E F A S').replace(/\bTETRA\b/g, 'T E T R A').replace(/\bIHM\b/g, 'I H M');
-      x = x.replace(/\bUM\b/g, 'U M').replace(/\bSTBS\b/g, 'S T B S').replace(/\bBM\b/g, 'B M');
-      x = x.replace(/\bBP\b/g, 'B P').replace(/\bBPL\b/g, 'B P L').replace(/\bLS\b/g, 'L S');
-      x = x.replace(/\bCC\b/g, 'C C').replace(/\bPC\b/g, 'P C').replace(/\bPJ\b/g, 'P J');
-      x = x.replace(/\bZaber\b/gi, 'Zabèr');
-      x = x.replace(/km\/h/gi, 'kilomètres par heure');
+      x = x.replace(/\bAEL\b/gi, "a e l"); x = x.replace(/\bFS\b/g, 'F S'); x = x.replace(/\bFU\b/g, 'F U'); x = x.replace(/\bDJ\b/g, 'D J');
+      x = x.replace(/\bCVS\b/g, 'C V S'); x = x.replace(/\bKVB\b/g, 'K V B'); x = x.replace(/\bSTM\b/g, 'S T M');
+      x = x.replace(/\bSAI\b/g, 'S A I'); x = x.replace(/\bSAEIV\b/g, 'S A E I V'); x = x.replace(/\bETF\b/g, 'E T F');
+      x = x.replace(/\bEFAS\b/g, 'E F A S'); x = x.replace(/\bTETRA\b/g, 'T E T R A'); x = x.replace(/\bIHM\b/g, 'I H M');
+      x = x.replace(/\bUM\b/g, 'U M'); x = x.replace(/\bSTBS\b/g, 'S T B S'); x = x.replace(/\bBM\b/g, 'B M');
+      x = x.replace(/\bBP\b/g, 'B P'); x = x.replace(/\bBPL\b/g, 'B P L'); x = x.replace(/\bLS\b/g, 'L S');
+      x = x.replace(/\bCC\b/g, 'C C'); x = x.replace(/\bPC\b/g, 'P C'); x = x.replace(/\bPJ\b/g, 'P J');
+      x = x.replace(/\bZaber\b/gi, 'Zabèr'); x = x.replace(/km\/h/gi, 'kilomètres par heure');
       x = x.replace(/\bart\.\s*/gi, 'article ');
       x = x.replace(/i o s\s*(\d)(\d)(\d)/gi, (_, a, b, c) => 'i o s ' + parseInt(a + b + c, 10));
       x = x.replace(/li oès\s*(\d)(\d)(\d)/gi, (_, a, b, c) => 'li oès ' + parseInt(a + b + c, 10));
-      x = x.replace(/\b0+(\d+)/g, '$1');
-      x = x.replace(/\s+/g, ' ');
+      x = x.replace(/\b0+(\d+)/g, '$1'); x = x.replace(/\s+/g, ' ');
       
       const u = new SpeechSynthesisUtterance(x);
       u.lang = 'fr-FR'; u.rate = 0.9; u.volume = 1;
-      const v = synth.getVoices();
-      const fv = v.find(z => z.lang.startsWith('fr'));
+      const v = synth.getVoices(), fv = v.find(z => z.lang.startsWith('fr'));
       if (fv) u.voice = fv;
-      
-      speakingFlag = true;
-      updateUIForState('speak');
-      
-      u.onend = () => {
-        speakingFlag = false;
-        updateUIForState('idle');
-        if (micActive && !listening) sl();
-        if (cb) cb();
-      };
-      u.onerror = () => {
-        speakingFlag = false;
-        updateUIForState('error');
-        if (micActive && !listening) sl();
-        if (cb) cb();
-      };
+      speakingFlag = true; updateUIForState('speak');
+      u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) sl(); if (cb) cb(); };
+      u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) sl(); if (cb) cb(); };
       synth.speak(u);
     }
 
     function addMessage(t, r) {
-      const c = document.getElementById('chatMsgs');
-      const d = document.createElement('div');
-      d.className = 'message ' + r;
-      d.innerHTML = '<div class="bubble">' + t + '</div>';
-      c.appendChild(d);
-      c.scrollTop = c.scrollHeight;
+      const c = document.getElementById('chatMsgs'), d = document.createElement('div');
+      d.className = 'message ' + r; d.innerHTML = '<div class="bubble">' + t + '</div>';
+      c.appendChild(d); c.scrollTop = c.scrollHeight;
       while (c.children.length > 60) c.removeChild(c.firstChild);
     }
 
@@ -1197,17 +1042,9 @@
 
     function updateGuideStepCard() {
       const card = document.getElementById('guideStepCard');
-      if (!guideActive || stepIndex >= guideSteps.length) {
-        card.classList.remove('active');
-        iosInfoShown = false;
-        return;
-      }
+      if (!guideActive || stepIndex >= guideSteps.length) { card.classList.remove('active'); iosInfoShown = false; return; }
       let s = guideSteps[stepIndex];
-      if (s.fin) {
-        card.classList.remove('active');
-        iosInfoShown = false;
-        return;
-      }
+      if (s.fin) { card.classList.remove('active'); iosInfoShown = false; return; }
       card.classList.add('active');
       document.getElementById('guideStepLabel').innerHTML = 'ÉTAPE ' + (stepIndex + 1) + '/' + guideSteps.length + ' · IOS-' + currentIOS.id;
       document.getElementById('guideStepTitle').innerHTML = '';
@@ -1240,166 +1077,100 @@
     function fiq(l) {
       let q = l.toLowerCase().trim();
       let m = q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);
-      if (m) {
-        let id = m[1].padStart(3, '0');
-        if (IOS[id]) return IOS[id];
-      }
-      for (let [a, id] of Object.entries(ALIAS)) {
-        if (q.includes(a)) return IOS[id];
-      }
-      for (let i of Object.values(IOS)) {
-        if (i.desc.toLowerCase().includes(q)) return i;
-        if (i.kw && i.kw.some(k => q.includes(k))) return i;
-      }
+      if (m) { let id = m[1].padStart(3, '0'); if (IOS[id]) return IOS[id]; }
+      for (let [a, id] of Object.entries(ALIAS)) { if (q.includes(a)) return IOS[id]; }
+      for (let i of Object.values(IOS)) { if (i.desc.toLowerCase().includes(q)) return i; if (i.kw && i.kw.some(k => q.includes(k))) return i; }
       return null;
     }
 
     function sdi(ios) {
-      currentIOS = ios;
-      guideActive = false;
-      iosInfoShown = false;
+      currentIOS = ios; guideActive = false; iosInfoShown = false;
       document.getElementById('iosCard').classList.add('show');
       document.getElementById('iosId').innerHTML = 'IOS-' + ios.id;
       document.getElementById('iosDesc').innerText = ios.desc;
-      let pc = ios.pri === 'h' ? 'prio-h' : (ios.pri === 'm' ? 'prio-m' : 'prio-l');
-      let pt = ios.pri === 'h' ? 'URGENCE' : (ios.pri === 'm' ? 'MOYEN' : 'INFO');
-      document.getElementById('iosPrio').innerHTML = pt;
-      document.getElementById('iosPrio').className = 'prio-badge ' + pc;
-      document.getElementById('iosBody').innerHTML = '📋 ' + ios.tree.length + ' étapes. Dites "démarrer le guidage".';
+      let pc = ios.pri === 'h' ? 'prio-h' : (ios.pri === 'm' ? 'prio-m' : 'prio-l'), pt = ios.pri === 'h' ? 'URGENCE' : (ios.pri === 'm' ? 'MOYEN' : 'INFO');
+      document.getElementById('iosPrio').innerHTML = pt; document.getElementById('iosPrio').className = 'prio-badge ' + pc;
+      document.getElementById('iosBody').innerHTML = '📋 ' + ios.tree.length + ' étapes. Dites "guidage".';
       addMessage('🔍 <strong>IOS-' + ios.id + '</strong> — ' + ios.desc, 'ai');
       speakText("l'IOS " + parseInt(ios.id, 10) + ". " + ios.desc.substring(0, 80));
       showIosInfoCard();
-      procedureStartTime = null;
-      procedureEndTime = null;
-      procedureStepsLog = [];
+      procedureStartTime = null; procedureEndTime = null; procedureStepsLog = [];
     }
 
     // ==================== LISTE IOS ====================
     function bil() {
-      const s = document.getElementById('iosListScroll');
-      s.innerHTML = '';
+      const s = document.getElementById('iosListScroll'); s.innerHTML = '';
       const ids = Object.keys(IOS).sort((a, b) => parseInt(a) - parseInt(b));
       for (let id of ids) {
-        const io = IOS[id];
-        const d = document.createElement('div');
-        d.className = 'ios-list-item';
-        const pc = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l');
-        const pt = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF');
+        const io = IOS[id], d = document.createElement('div'); d.className = 'ios-list-item';
+        const pc = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l'), pt = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF');
         d.innerHTML = '<span class="ios-list-num">IOS-' + io.id + '</span><span class="ios-list-desc">' + io.desc + '</span><span class="ios-list-prio ' + pc + '">' + pt + '</span>';
-        d.addEventListener('click', () => { cil(); sdi(io); });
-        s.appendChild(d);
+        d.addEventListener('click', () => { cil(); sdi(io); }); s.appendChild(d);
       }
     }
-
     function oil() { bil(); document.getElementById('iosListOverlay').classList.add('active'); }
     function cil() { document.getElementById('iosListOverlay').classList.remove('active'); }
 
     // ==================== GUIDAGE ====================
     function sg() {
       if (!currentIOS) return;
-      if (iosInfoShown) {
-        document.getElementById('stepNextBtn').textContent = 'SUIVANT →';
-      }
-      guideActive = true;
-      guideSteps = [];
+      guideActive = true; guideSteps = [];
       if (currentIOS.instructions) for (let i of currentIOS.instructions) guideSteps.push({ t: i.t, d: 0 });
       if (currentIOS.symboles) guideSteps.push({ t: 'Symboles : ' + currentIOS.symboles, d: 0 });
       if (currentIOS.vitesse) guideSteps.push({ t: 'Vitesse limite : ' + currentIOS.vitesse, d: 0 });
       for (let s of currentIOS.tree) guideSteps.push(s);
-      stepIndex = 0;
-      procedureStartTime = new Date();
-      procedureEndTime = null;
-      procedureStepsLog = [];
-      iosInfoShown = false;
+      stepIndex = 0; procedureStartTime = new Date(); procedureEndTime = null; procedureStepsLog = []; iosInfoShown = false;
       updateGuideStepCard();
       addMessage('🚀 Guidage lancé pour IOS-' + currentIOS.id, 'ai');
       rs();
     }
 
     function rs() {
-      if (!guideActive || stepIndex >= guideSteps.length) {
-        fp('✅ Fin de la procédure.');
-        return;
-      }
+      if (!guideActive || stepIndex >= guideSteps.length) { fp('✅ Fin de la procédure.'); return; }
       let s = guideSteps[stepIndex];
-      if (s.fin) {
-        fp(s.t || 'Procédure achevée.');
-        return;
-      }
-      updateGuideStepCard();
-      procedureStepsLog.push(s.t);
-      speakText(s.t);
+      if (s.fin) { fp(s.t || 'Procédure achevée.'); return; }
+      updateGuideStepCard(); procedureStepsLog.push(s.t); speakText(s.t);
     }
 
     function ay() { if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(true); }
     function an() { if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(false); }
 
     function pa(y) {
-      let s = guideSteps[stepIndex];
-      let n = y ? (s.oui || []) : (s.non || []);
-      addMessage(y ? '✓ OUI' : '✗ NON', 'user');
-      procedureStepsLog.push(y ? 'OUI' : 'NON');
-      if (n.length === 0) {
-        fp('✅ Fin de la procédure.');
-        return;
-      }
-      guideSteps = n;
-      stepIndex = 0;
-      rs();
+      let s = guideSteps[stepIndex], n = y ? (s.oui || []) : (s.non || []);
+      addMessage(y ? '✓ OUI' : '✗ NON', 'user'); procedureStepsLog.push(y ? 'OUI' : 'NON');
+      if (n.length === 0) { fp('✅ Fin de la procédure.'); return; }
+      guideSteps = n; stepIndex = 0; rs();
     }
 
     function ns() {
-      if (!guideActive) {
-        if (iosInfoShown && currentIOS) {
-          sg();
-        }
-        return;
-      }
+      if (!guideActive) { if (iosInfoShown && currentIOS) sg(); return; }
       let s = guideSteps[stepIndex];
-      if (s && s.d) {
-        speakText('Veuillez répondre par oui ou par non.');
-        return;
-      }
-      stepIndex++;
-      rs();
+      if (s && s.d) { speakText('Veuillez répondre par oui ou par non.'); return; }
+      stepIndex++; rs();
     }
 
-    function ps() {
-      if (guideActive && stepIndex > 0) {
-        stepIndex--;
-        rs();
-      } else {
-        speakText('Première étape.');
-      }
-    }
+    function ps() { if (guideActive && stepIndex > 0) { stepIndex--; rs(); } else speakText('Première étape.'); }
 
     function fp(msg) {
-      guideActive = false;
-      procedureEndTime = new Date();
-      addMessage(msg, 'ai');
-      procedureStepsLog.push(msg);
+      guideActive = false; procedureEndTime = new Date();
+      addMessage(msg, 'ai'); procedureStepsLog.push(msg);
       speakText(msg.includes('DÉPANNAGE') ? 'Dépannage terminé.' : msg);
-      showEndCard(msg);
-      document.getElementById('endQuestions').classList.add('active');
+      showEndCard(msg); document.getElementById('endQuestions').classList.add('active');
     }
 
     function ccp() {
-      guideActive = false;
-      iosInfoShown = false;
+      guideActive = false; iosInfoShown = false;
       document.getElementById('guideStepCard').classList.remove('active');
       document.getElementById('endQuestions').classList.remove('active');
-      addMessage('❌ Procédure annulée.', 'ai');
-      speakText('Procédure annulée.');
+      addMessage('❌ Procédure annulée.', 'ai'); speakText('Procédure annulée.');
     }
 
     function hr() {
-      ccp();
-      currentIOS = null;
+      ccp(); currentIOS = null;
       document.getElementById('iosCard').classList.remove('show');
       document.getElementById('guideStepCard').classList.remove('active');
       document.getElementById('searchInput').value = '';
-      addMessage('🏠 Retour accueil.', 'ai');
-      speakText("Retour à l'accueil.");
+      addMessage('🏠 Retour accueil.', 'ai'); speakText("Retour à l'accueil.");
     }
 
     function gr() {
@@ -1407,141 +1178,138 @@
       let e = procedureEndTime || new Date();
       return '═══════════════════════════════════\n  BULLETIN DE SERVICE - IAOS T4\n═══════════════════════════════════\n\n📅 Date : ' + fd(procedureStartTime) + '\n🔧 IOS : ' + currentIOS.id + '\n📝 Description : ' + currentIOS.desc + '\n⚠️ Priorité : ' + (currentIOS.pri === 'h' ? 'URGENCE' : (currentIOS.pri === 'm' ? 'MOYEN' : 'INFO')) + '\n⏱️ Début : ' + ft(procedureStartTime) + '\n⏱️ Fin   : ' + ft(e) + '\n⏱️ Durée : ' + Math.round((e - procedureStartTime) / 60000) + ' min\n📋 Étapes :\n' + procedureStepsLog.map((s, i) => '   ' + (i + 1) + '. ' + s).join('\n') + '\n✅ Statut : Terminé\n';
     }
-
     function sr() { document.getElementById('recapContent').textContent = gr(); document.getElementById('recapOverlay').classList.add('active'); }
     function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
-    function pr() {
-      const c = document.getElementById('recapContent').textContent;
-      const w = window.open('', '', 'width=700,height=600');
-      w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>');
-      w.document.close();
-      w.print();
-    }
+    function pr() { const c = document.getElementById('recapContent').textContent; const w = window.open('', '', 'width=700,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>'); w.document.close(); w.print(); }
 
     // ==================== COMMANDES VOCALES AMÉLIORÉES ====================
-    const CP = {
-      salutation: [/\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
-      createur: [/\b(?:qui (?:t'a créé|ta crée|t'as créé|t'a développé|ta développé|es tu|es-tu)|qui est ton (?:créateur|maître|maitre|développeur|papa|boss|chef)|ton (?:créateur|maître|développeur)|qui (?:t'as fait|ta fait|t'a fabriqué))\b/i],
-      heure: [/\b(?:quelle heure|il est quelle heure|donne l'heure|heure)\b/i],
-      date: [/\b(?:quelle date|donne la date|date aujourd'hui|date|quel jour)\b/i],
-      temps: [/\b(?:temps écoulé|durée|duree|depuis combien de temps|combien de temps|minuteur|chrono|depuis le début)\b/i],
-      liste_ios: [/\b(?:liste des ios|tous les ios|affiche la liste|liste ios)\b/i],
-      demarrer: [/\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer la procédure)\b/i],
-      suivant: [/\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i],
-      precedent: [/\b(?:précédent|reviens|retour|en arrière|recule|back|remonte)\b/i],
-      oui: [/\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i],
-      non: [/\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i],
-      annuler: [/\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i],
-      accueil: [/\b(?:accueil|menu|retour accueil|home|reset)\b/i],
-      repeter: [/\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i],
-      aide: [/\b(?:aide|help|commandes|options|quoi dire|comment ça marche|mode d'emploi|infos)\b/i]
-    };
+    function fuzzyMatch(text, patterns) {
+      return patterns.some(pattern => pattern.test(text));
+    }
 
-    function icm(t, ty) {
-      const p = CP[ty];
-      if (!p) return false;
-      return p.some(r => r.test(t));
+    function extractIosNumber(text) {
+      let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i);
+      if (m) return m[1].padStart(3, '0');
+      return null;
+    }
+
+    function isGreeting(text) {
+      return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text);
+    }
+
+    function isCancelCommand(text) {
+      return /\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i.test(text);
+    }
+
+    function isHomeCommand(text) {
+      return /\b(?:accueil|menu|retour accueil|home|reset)\b/i.test(text);
+    }
+
+    function isGuidanceStart(text) {
+      return /\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer)\b/i.test(text);
+    }
+
+    function isNextStep(text) {
+      return /\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i.test(text) && !/\b(?:non|précédent)\b/i.test(text);
+    }
+
+    function isPrevStep(text) {
+      return /\b(?:précédent|reviens|retour en arrière|recule|back|remonte)\b/i.test(text) && !/\b(?:retour accueil|non)\b/i.test(text);
+    }
+
+    function isRepeatCommand(text) {
+      return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text);
+    }
+
+    function isYesAnswer(text) {
+      return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas)\b/i.test(text);
+    }
+
+    function isNoAnswer(text) {
+      return /\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i.test(text);
     }
 
     function pvc(txt) {
       let l = txt.toLowerCase().trim();
+      if (!l) return;
       addMessage('' + txt + '', 'user');
-      
-      if (icm(l, 'annuler')) { ccp(); return; }
-      if (icm(l, 'accueil')) { hr(); return; }
-      
-      if (icm(l, 'salutation')) {
+
+      // Commandes prioritaires toujours actives
+      if (isCancelCommand(l)) { ccp(); return; }
+      if (isHomeCommand(l)) { hr(); return; }
+
+      // Salutations toujours actives
+      if (isGreeting(l)) {
         if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) {
-          addMessage('Wa aleykoum salam.', 'ai');
-          speakText('Wa aleykoum salam.');
+          addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return;
+        }
+        speakText("Bonjour ! IAOS T4 à votre service."); return;
+      }
+
+      // Protection : si procédure active, bloquer la recherche de nouveaux IOS
+      if (isProcedureActive()) {
+        // Commandes de guidage autorisées pendant procédure
+        if (isRepeatCommand(l)) {
+          if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
+          else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
           return;
         }
-        speakText("Bonjour ! IAOS T4 à votre service. Dites le numéro d'un i o s pour commencer.");
-        return;
-      }
-      
-      if (icm(l, 'createur')) {
-        addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !', 'ai');
-        speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.');
-        return;
-      }
-      
-      if (icm(l, 'heure')) { speakText('Il est ' + ft(new Date()) + '.'); return; }
-      if (icm(l, 'date')) { speakText('Nous sommes le ' + fd(new Date()) + '.'); return; }
-      
-      if (icm(l, 'temps')) {
-        if (!procedureStartTime) {
-          speakText('Aucune procédure en cours.');
-          addMessage('Aucune procédure en cours.', 'ai');
+        if (isPrevStep(l)) { if (guideActive) { ps(); return; } }
+        if (isNextStep(l)) { if (guideActive) { ns(); return; } if (iosInfoShown && currentIOS) { sg(); return; } }
+        if (isYesAnswer(l) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; }
+        if (isNoAnswer(l) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; }
+        if (isGuidanceStart(l)) {
+          if (currentIOS && !guideActive) { sg(); return; }
+          if (iosInfoShown && currentIOS) { sg(); return; }
+        }
+        
+        // Vérifier si c'est une tentative de recherche IOS
+        if (extractIosNumber(l) || /\bios\b/i.test(l)) {
+          addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai');
+          speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord.");
+          blockNewIosSearch();
           return;
         }
-        let d = new Date() - procedureStartTime;
-        let m = Math.floor(d / 60000);
-        let s = Math.floor((d % 60000) / 1000);
-        let e = m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '');
-        speakText('Temps écoulé : ' + e + '.');
-        addMessage('⏱️ Temps écoulé : ' + e + '.', 'ai');
+        
+        // Pour les autres commandes non reconnues, ignorer
         return;
       }
-      
-      if (icm(l, 'aide')) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
-      if (icm(l, 'liste_ios')) { oil(); return; }
-      
-      if (icm(l, 'repeter')) {
-        if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
-        else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
+
+      // Mode libre : recherche IOS et commandes générales
+      if (isRepeatCommand(l)) {
+        if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
         return;
       }
-      
-      if (icm(l, 'demarrer')) {
-        if (currentIOS && !guideActive) sg();
-        else if (iosInfoShown && currentIOS) sg();
-        else speakText("Cherchez d'abord un i o s.");
-        return;
+      if (isGuidanceStart(l)) {
+        if (currentIOS) { sg(); return; }
+        speakText("Cherchez d'abord un i o s."); return;
       }
-      
-      if (icm(l, 'oui') && !icm(l, 'non')) {
-        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; }
-      }
-      
-      if (icm(l, 'non')) {
-        if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; }
-      }
-      
-      if (icm(l, 'precedent')) {
-        if (guideActive) { ps(); return; }
-      }
-      
-      if (icm(l, 'suivant') && !icm(l, 'non') && !icm(l, 'precedent')) {
-        if (guideActive) { ns(); return; }
-        if (iosInfoShown && currentIOS) { sg(); return; }
-      }
-      
-      if (guideActive && (/(?:ios\s*)?(\d{3}|\d{1,3})/i.test(l))) {
-        speakText("Un guidage est en cours. Veuillez d'abord annuler la procédure.");
-        addMessage("⚠️ Guidage en cours. Dites \"annuler\" d'abord.", 'ai');
-        return;
-      }
-      
+
+      // Recherche IOS
       let f = fiq(l);
-      if (f) {
-        if (guideActive) {
-          speakText("Veuillez annuler le guidage en cours avant de chercher un nouveau i o s.");
-          addMessage('⚠️ Guidage en cours. Annulez d\'abord.', 'ai');
-        } else {
-          sdi(f);
-        }
-      } else if (!guideActive && !iosInfoShown) {
-        speakText('Aucun i o s trouvé.');
+      if (f) { sdi(f); return; }
+      
+      // Commandes diverses
+      if (/\b(?:qui t'a créé|ton créateur|ton maître)\b/i.test(l)) {
+        addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur.', 'ai');
+        speakText('Mon créateur est Zabèr, conducteur moniteur formateur.'); return;
       }
+      if (/\b(?:quelle heure|il est quelle heure)\b/i.test(l)) { speakText('Il est ' + ft(new Date()) + '.'); return; }
+      if (/\b(?:quelle date|donne la date|date aujourd'hui)\b/i.test(l)) { speakText('Nous sommes le ' + fd(new Date()) + '.'); return; }
+      if (/\b(?:temps écoulé|durée|duree|depuis combien de temps)\b/i.test(l)) {
+        if (!procedureStartTime) { speakText('Aucune procédure en cours.'); return; }
+        let d = new Date() - procedureStartTime, m = Math.floor(d / 60000), s = Math.floor((d % 60000) / 1000);
+        speakText('Temps écoulé : ' + m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '') + '.'); return;
+      }
+      if (/\b(?:liste des ios|tous les ios|affiche la liste)\b/i.test(l)) { oil(); return; }
+      if (/\b(?:aide|help|commandes|mode d'emploi)\b/i.test(l)) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
+      
+      speakText('Aucun i o s trouvé.');
     }
 
-    // ==================== RECONNAISSANCE VOCALE AMÉLIORÉE ====================
+    // ==================== RECONNAISSANCE VOCALE ====================
     function sl() {
-      if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
-        toast('Reconnaissance vocale non supportée');
-        return;
-      }
+      if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) { toast('Reconnaissance vocale non supportée'); return; }
       if (speakingFlag || listening) return;
       try {
         let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1553,11 +1321,7 @@
         
         let finalTranscript = '';
         
-        recognition.onstart = () => {
-          listening = true;
-          finalTranscript = '';
-          updateUIForState('listen');
-        };
+        recognition.onstart = () => { listening = true; finalTranscript = ''; updateUIForState('listen'); };
         
         recognition.onresult = (e) => {
           let interimTranscript = '';
@@ -1565,53 +1329,33 @@
             if (e.results[i].isFinal) {
               let best = '', bestConf = 0;
               for (let j = 0; j < e.results[i].length; j++) {
-                if (e.results[i][j].confidence > bestConf) {
-                  bestConf = e.results[i][j].confidence;
-                  best = e.results[i][j].transcript;
-                }
+                if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; }
               }
-              if (best && bestConf > 0.1) {
-                finalTranscript += ' ' + best;
-              }
-            } else {
-              interimTranscript += e.results[i][0].transcript;
-            }
+              if (best && bestConf > 0.1) finalTranscript += ' ' + best;
+            } else { interimTranscript += e.results[i][0].transcript; }
           }
-          
-          if (finalTranscript.trim() && !interimTranscript) {
-            pvc(finalTranscript.trim());
-            finalTranscript = '';
-          }
+          if (finalTranscript.trim() && !interimTranscript) { pvc(finalTranscript.trim()); finalTranscript = ''; }
         };
         
         recognition.onerror = (e) => {
-          listening = false;
-          updateUIForState('idle');
+          listening = false; updateUIForState('idle');
           if (micActive && !speakingFlag) setTimeout(sl, 600);
         };
         
         recognition.onend = () => {
           listening = false;
-          if (finalTranscript.trim()) {
-            pvc(finalTranscript.trim());
-          }
+          if (finalTranscript.trim()) pvc(finalTranscript.trim());
           if (micActive && !speakingFlag) setTimeout(sl, 400);
           else updateUIForState('idle');
         };
         
         recognition.start();
-      } catch (e) {
-        if (micActive) setTimeout(sl, 800);
-      }
+      } catch (e) { if (micActive) setTimeout(sl, 800); }
     }
 
     function stl() {
-      if (recognition) {
-        try { recognition.stop(); } catch (e) {}
-        recognition = null;
-      }
-      listening = false;
-      updateUIForState('idle');
+      if (recognition) { try { recognition.stop(); } catch (e) {} recognition = null; }
+      listening = false; updateUIForState('idle');
     }
 
     // ==================== INITIALISATION GUIDE ====================
@@ -1627,67 +1371,43 @@
           <li><span class="cmd">"répète"</span> — Répéter l'étape</li>
           <li><span class="cmd">"annuler"</span> — Annuler la procédure</li>
           <li><span class="cmd">"accueil"</span> — Retour à l'accueil</li>
-          <li><span class="cmd">"temps écoulé", "durée"</span> — Temps depuis début</li>
+          <li><span class="cmd">"temps écoulé"</span> — Temps depuis début</li>
           <li><span class="cmd">"quelle heure"</span> — Heure actuelle</li>
           <li><span class="cmd">"quelle date"</span> — Date du jour</li>
           <li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li>
           <li><span class="cmd">"bonjour", "salut"</span> — Salutation</li>
           <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
         </ul>
-        <h4>🖱️ BOUTONS</h4>
-        <ul>
-          <li><b>⚙️</b> (droite) — Panneau de diagnostic</li>
-          <li><b>ℹ️</b> (gauche) — Cette fenêtre d'aide</li>
-          <li><b>Vague</b> (centre) — Activer/désactiver le micro</li>
-        </ul>
-        <h4>📋 FONCTIONNEMENT</h4>
-        <p>1. Dites un numéro IOS ou décrivez une panne<br>
-        2. L'IOS s'affiche au centre, dites <b>"guidage"</b><br>
-        3. Suivez les étapes, répondez par oui/non<br>
-        4. À la fin, un récapitulatif vous est proposé</p>
-        <h4>🎨 COULEURS DE LA VAGUE</h4>
+        <h4>⚠️ PROTECTION</h4>
+        <p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>. Terminez ou annulez d'abord.</p>
+        <h4>🎨 COULEURS</h4>
         <ul>
           <li><span style="color:var(--cyan)">Cyan</span> — En attente</li>
           <li><span style="color:var(--green)">Vert</span> — Écoute</li>
           <li><span style="color:var(--purple)">Violet</span> — Parole</li>
+          <li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li>
           <li><span style="color:var(--red)">Rouge</span> — Erreur</li>
         </ul>
       `;
     }
 
-    function showInfo() {
-      initInfoContent();
-      document.getElementById('infoOverlay').classList.add('active');
-    }
-
-    function hideInfo() {
-      document.getElementById('infoOverlay').classList.remove('active');
-    }
+    function showInfo() { initInfoContent(); document.getElementById('infoOverlay').classList.add('active'); }
+    function hideInfo() { document.getElementById('infoOverlay').classList.remove('active'); }
 
     // ==================== ÉVÉNEMENTS ====================
     document.getElementById('micWaveContainer').addEventListener('click', function() {
       if (speakingFlag) return;
       micActive = !micActive;
-      if (micActive) {
-        sl();
-        document.getElementById('statusDot').style.background = '';
-        document.getElementById('statusText').innerText = 'Micro actif';
-      } else {
-        stl();
-        document.getElementById('statusText').innerText = 'Micro en pause';
-        document.getElementById('statusDot').style.background = '#ef4444';
-      }
+      if (micActive) { sl(); document.getElementById('statusDot').style.background = ''; document.getElementById('statusText').innerText = 'Micro actif'; }
+      else { stl(); document.getElementById('statusText').innerText = 'Micro en pause'; document.getElementById('statusDot').style.background = '#ef4444'; }
     });
 
     document.getElementById('panelToggle').addEventListener('click', togglePanel);
     document.getElementById('panelOverlay').addEventListener('click', closePanel);
     document.getElementById('closePanel').addEventListener('click', closePanel);
-    
     document.getElementById('infoBtn').addEventListener('click', showInfo);
     document.getElementById('infoModalClose').addEventListener('click', hideInfo);
-    document.getElementById('infoOverlay').addEventListener('click', function(e) {
-      if (e.target === document.getElementById('infoOverlay')) hideInfo();
-    });
+    document.getElementById('infoOverlay').addEventListener('click', function(e) { if (e.target === document.getElementById('infoOverlay')) hideInfo(); });
     
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
@@ -1700,66 +1420,51 @@
     
     document.getElementById('searchBtn').addEventListener('click', function() {
       let v = document.getElementById('searchInput').value;
-      if (v) { pvc(v); document.getElementById('searchInput').value = ''; }
+      if (v && !isProcedureActive()) { pvc(v); document.getElementById('searchInput').value = ''; }
+      else if (isProcedureActive()) { toast('Occupé avec IOS-' + currentIOS.id); blockNewIosSearch(); }
     });
     
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         let v = e.target.value;
-        if (v) { pvc(v); e.target.value = ''; }
+        if (v && !isProcedureActive()) { pvc(v); e.target.value = ''; }
+        else if (isProcedureActive()) { toast('Occupé avec IOS-' + currentIOS.id); blockNewIosSearch(); }
       }
     });
     
     document.getElementById('showAllIosBtn').addEventListener('click', oil);
     document.getElementById('iosListClose').addEventListener('click', cil);
-    document.getElementById('iosListOverlay').addEventListener('click', function(e) {
-      if (e.target === document.getElementById('iosListOverlay')) cil();
-    });
-    
+    document.getElementById('iosListOverlay').addEventListener('click', function(e) { if (e.target === document.getElementById('iosListOverlay')) cil(); });
     document.getElementById('recapClose').addEventListener('click', cr);
     document.getElementById('recapCloseBtn').addEventListener('click', cr);
     document.getElementById('recapPrintBtn').addEventListener('click', pr);
-    document.getElementById('recapOverlay').addEventListener('click', function(e) {
-      if (e.target === document.getElementById('recapOverlay')) cr();
-    });
+    document.getElementById('recapOverlay').addEventListener('click', function(e) { if (e.target === document.getElementById('recapOverlay')) cr(); });
     
-    document.getElementById('guideStartBtn').addEventListener('click', sg);
+    document.getElementById('guideStartBtn').addEventListener('click', function() { if (!isProcedureActive() || (currentIOS && !guideActive)) sg(); });
     document.getElementById('cancelGuideBtn').addEventListener('click', ccp);
     document.getElementById('homeBtn').addEventListener('click', hr);
     document.getElementById('newSearchBtn').addEventListener('click', hr);
     
     document.getElementById('stepYesBtn').addEventListener('click', ay);
     document.getElementById('stepNoBtn').addEventListener('click', an);
-    document.getElementById('stepNextBtn').addEventListener('click', function() {
-      if (iosInfoShown && currentIOS) sg();
-      else ns();
-    });
+    document.getElementById('stepNextBtn').addEventListener('click', function() { if (iosInfoShown && currentIOS) sg(); else ns(); });
     document.getElementById('stepPrevBtn').addEventListener('click', ps);
     document.getElementById('stepCancelBtn').addEventListener('click', function() {
       if (!guideActive && document.getElementById('guideStepCard').classList.contains('active')) {
         document.getElementById('guideStepCard').classList.remove('active');
         document.getElementById('endQuestions').classList.remove('active');
         iosInfoShown = false;
-      } else {
-        ccp();
-      }
+      } else { ccp(); }
     });
     
-    document.getElementById('endRecapYes').addEventListener('click', function() {
-      document.getElementById('endQuestions').classList.remove('active');
-      sr();
-    });
-    document.getElementById('endRecapNo').addEventListener('click', function() {
-      document.getElementById('endQuestions').classList.remove('active');
-      document.getElementById('guideStepCard').classList.remove('active');
-    });
+    document.getElementById('endRecapYes').addEventListener('click', function() { document.getElementById('endQuestions').classList.remove('active'); sr(); });
+    document.getElementById('endRecapNo').addEventListener('click', function() { document.getElementById('endQuestions').classList.remove('active'); document.getElementById('guideStepCard').classList.remove('active'); });
 
     // ==================== DÉMARRAGE ====================
     initInfoContent();
     micActive = true;
     updateUIForState('idle');
     sl();
-    
     console.log('✅ IAOS T4 - Prêt - Créé par Zaber');
   })();
 </script>
