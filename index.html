@@ -965,6 +965,7 @@
     let recognition = null, procedureStartTime = null, procedureEndTime = null, procedureStepsLog = [];
     const synth = window.speechSynthesis, voiceSupport = !!synth;
     let recognitionRestartTimer = null, accumulatedTranscript = '';
+    let femaleVoiceCache = null;
 
     function toast(m, d = 2500) { const t = document.getElementById('toastMsg'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d); }
 
@@ -983,7 +984,6 @@
     function togglePanel() { document.getElementById('infoPanel').classList.contains('open') ? closePanel() : openPanel(); }
     function ft(d) { return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
     function fd(d) { return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
-
     function isProcedureActive() { return guideActive || speakingFlag || iosInfoShown; }
 
     function blockNewIosSearch() {
@@ -991,7 +991,75 @@
       setTimeout(() => { if (!speakingFlag && !listening && !guideActive && !iosInfoShown) updateUIForState('idle'); }, 2000);
     }
 
-    // ==================== SYNTHÈSE VOCALE ====================
+    // ==================== SYNTHÈSE VOCALE FÉMININE EXCLUSIVE ====================
+    function getFemaleVoice() {
+      if (femaleVoiceCache) return femaleVoiceCache;
+      const voices = synth.getVoices();
+      if (!voices.length) return null;
+      
+      // Priorité 1 : Voix féminine française explicite
+      let v = voices.find(voice => 
+        voice.lang.startsWith('fr') && 
+        (voice.name.toLowerCase().includes('female') || 
+         voice.name.toLowerCase().includes('femme') ||
+         voice.name.toLowerCase().includes('féminin') ||
+         voice.name.toLowerCase().includes('feminin') ||
+         voice.name.toLowerCase().includes('siri') ||
+         voice.name.toLowerCase().includes('amelie') ||
+         voice.name.toLowerCase().includes('amélie') ||
+         voice.name.toLowerCase().includes('céline') ||
+         voice.name.toLowerCase().includes('celine') ||
+         voice.name.toLowerCase().includes('florence') ||
+         voice.name.toLowerCase().includes('chantal') ||
+         voice.name.toLowerCase().includes('audrey') ||
+         voice.name.toLowerCase().includes('capucine') ||
+         voice.name.toLowerCase().includes('french-fr'))
+      );
+      
+      // Priorité 2 : Voix française sans indicateur masculin
+      if (!v) {
+        v = voices.find(voice => 
+          voice.lang.startsWith('fr') && 
+          !voice.name.toLowerCase().includes('male') &&
+          !voice.name.toLowerCase().includes('homme') &&
+          !voice.name.toLowerCase().includes('masculin') &&
+          !voice.name.toLowerCase().includes('thomas') &&
+          !voice.name.toLowerCase().includes('pierre') &&
+          !voice.name.toLowerCase().includes('jean') &&
+          !voice.name.toLowerCase().includes('paul') &&
+          !voice.name.toLowerCase().includes('jacques') &&
+          !voice.name.toLowerCase().includes('robert') &&
+          !voice.name.toLowerCase().includes('louis') &&
+          !voice.name.toLowerCase().includes('nicolas') &&
+          !voice.name.toLowerCase().includes('daniel') &&
+          !voice.name.toLowerCase().includes('michel') &&
+          !voice.name.toLowerCase().includes('alain') &&
+          !voice.name.toLowerCase().includes('philippe') &&
+          !voice.name.toLowerCase().includes('pascal') &&
+          !voice.name.toLowerCase().includes('patrick') &&
+          !voice.name.toLowerCase().includes('renaud') &&
+          !voice.name.toLowerCase().includes('laurent') &&
+          !voice.name.toLowerCase().includes('olivier') &&
+          !voice.name.toLowerCase().includes('denis') &&
+          !voice.name.toLowerCase().includes('serge') &&
+          !voice.name.toLowerCase().includes('bruno') &&
+          !voice.name.toLowerCase().includes('marc') &&
+          !voice.name.toLowerCase().includes('guy') &&
+          !voice.name.toLowerCase().includes('yves'))
+      }
+      
+      // Priorité 3 : Première voix française disponible
+      if (!v) {
+        v = voices.find(voice => voice.lang.startsWith('fr'));
+      }
+      
+      if (v) {
+        femaleVoiceCache = v;
+        console.log('🗣️ Voix féminine sélectionnée :', v.name, '(' + v.lang + ')');
+      }
+      return v;
+    }
+
     function speakText(t, cb) {
       if (!voiceSupport) { if (cb) cb(); return; }
       if (speakingFlag) synth.cancel();
@@ -1013,13 +1081,40 @@
       x = x.replace(/\b0+(\d+)/g, '$1'); x = x.replace(/\s+/g, ' ');
       
       const u = new SpeechSynthesisUtterance(x);
-      u.lang = 'fr-FR'; u.rate = 0.9; u.volume = 1;
-      const v = synth.getVoices(), fv = v.find(z => z.lang.startsWith('fr'));
-      if (fv) u.voice = fv;
-      speakingFlag = true; updateUIForState('speak');
-      u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
-      u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
+      u.lang = 'fr-FR';
+      u.rate = 0.9;
+      u.volume = 1;
+      
+      const femaleVoice = getFemaleVoice();
+      if (femaleVoice) u.voice = femaleVoice;
+      
+      speakingFlag = true;
+      updateUIForState('speak');
+      
+      u.onend = () => {
+        speakingFlag = false;
+        updateUIForState('idle');
+        if (micActive && !listening) scheduleRestart();
+        if (cb) cb();
+      };
+      
+      u.onerror = () => {
+        speakingFlag = false;
+        updateUIForState('error');
+        if (micActive && !listening) scheduleRestart();
+        if (cb) cb();
+      };
+      
       synth.speak(u);
+    }
+
+    // Forcer le chargement des voix
+    if (voiceSupport) {
+      synth.getVoices();
+      synth.onvoiceschanged = () => {
+        femaleVoiceCache = null;
+        getFemaleVoice();
+      };
     }
 
     function addMessage(t, r) {
@@ -1188,7 +1283,7 @@
     function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
     function pr() { const c = document.getElementById('recapContent').textContent; const w = window.open('', '', 'width=700,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>'); w.document.close(); w.print(); }
 
-    // ==================== COMMANDES VOCALES ULTRA ÉTENDUES ====================
+    // ==================== COMMANDES VOCALES ====================
     function extractIosNumber(text) { let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i); return m ? m[1].padStart(3, '0') : null; }
 
     function isGreeting(text) { return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text); }
@@ -1200,7 +1295,6 @@
     function isRepeatCommand(text) { return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text); }
     function isYesAnswer(text) { return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas|nan|no|nada|naan|negative|mort)\b/i.test(text); }
 
-    // DÉTECTION "NON" ULTRA ÉTENDUE
     function isNoAnswer(text) {
       const noPatterns = [
         /\bnon\b/i, /\bnan\b/i, /\bnaan\b/i, /\bnada\b/i, /\bno\b/i, /\byet\b/i,
@@ -1329,7 +1423,6 @@
             }
           }
           
-          // Traitement immédiat si pas d'interim
           if (finalTranscript.trim() && !interimTranscript) {
             accumulatedTranscript = finalTranscript.trim();
             pvc(accumulatedTranscript);
@@ -1337,7 +1430,6 @@
             accumulatedTranscript = '';
           }
           
-          // Silence timer : après 800ms sans intermédiaire, traiter
           silenceTimer = setTimeout(() => {
             if (finalTranscript.trim()) {
               accumulatedTranscript = finalTranscript.trim();
@@ -1394,6 +1486,8 @@
           <li><span class="cmd">"bonjour", "salut"</span> — Salutation</li>
           <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
         </ul>
+        <h4>🗣️ VOIX FÉMININE</h4>
+        <p>L'assistant utilise exclusivement une voix féminine française.</p>
         <h4>🗣️ DIRE "NON"</h4>
         <p>Reconnu : non, nan, naan, nada, no, yet, nnnan, nnooon, negative, c'est mort, ha nan, niet, nope, nah, que dalle, walou...</p>
         <h4>⚠️ PROTECTION</h4>
@@ -1483,7 +1577,7 @@
     micActive = true;
     updateUIForState('idle');
     sl();
-    console.log('✅ IAOS T4 - Prêt - Créé par Zaber');
+    console.log('✅ IAOS T4 - Prêt - Voix féminine activée - Créé par Zaber');
   })();
 </script>
 </body>
