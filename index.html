@@ -76,7 +76,7 @@
       margin-top: 0.2rem;
     }
 
-    /* Bandeau commandes vocales */
+    /* Bandeau commandes vocales - RESPONSIVE */
     .voice-commands-bar {
       width: 100%;
       max-width: 600px;
@@ -84,15 +84,15 @@
       backdrop-filter: blur(15px);
       border: 1px solid rgba(0, 255, 255, 0.2);
       border-radius: 60px;
-      padding: 0.5rem 1.2rem;
+      padding: 0.5rem 1rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.65rem;
+      justify-content: center;
+      gap: 0.4rem;
       font-family: 'Space Mono', monospace;
       color: var(--text-dim);
       overflow: hidden;
-      white-space: nowrap;
+      flex-wrap: wrap;
     }
     .voice-icon {
       display: flex;
@@ -100,38 +100,37 @@
       justify-content: center;
       background: rgba(0, 255, 255, 0.15);
       border-radius: 50%;
-      min-width: 28px;
-      width: 28px;
-      height: 28px;
-      font-size: 0.85rem;
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      font-size: 0.7rem;
       color: var(--cyan);
       flex-shrink: 0;
     }
-    .voice-cmd-scroll {
+    .voice-cmd-list {
       display: flex;
-      gap: 0.8rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
       flex: 1;
-      mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+      min-width: 0;
     }
-    .voice-cmd-scroll::-webkit-scrollbar { display: none; }
     .voice-cmd-item {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
       flex-shrink: 0;
-      padding: 0.15rem 0.5rem;
+      padding: 0.12rem 0.4rem;
       background: rgba(0, 255, 255, 0.06);
-      border-radius: 15px;
+      border-radius: 12px;
       border: 1px solid rgba(0, 255, 255, 0.1);
+      font-size: 0.6rem;
+      white-space: nowrap;
     }
     .cmd-key {
       color: var(--green);
       font-weight: 700;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
     }
 
     /* Zone centrale */
@@ -380,12 +379,26 @@
     .info-modal-content li{margin:3px 0}
     .info-modal-content .cmd{color:var(--green);font-family:'Space Mono',monospace;font-size:0.65rem}
     
+    /* RESPONSIVE - petits écrans */
     @media(max-width:480px){
       .mic-wave-container{width:140px;height:140px}
       .mic-ring:nth-child(1){width:65px;height:65px}
       .mic-ring:nth-child(2){width:90px;height:90px}
       .mic-ring:nth-child(3){width:115px;height:115px}
-      .voice-commands-bar{padding:0.4rem 1rem;font-size:0.6rem}
+      .voice-commands-bar{padding:0.35rem 0.6rem;gap:0.25rem;border-radius:40px}
+      .voice-icon{min-width:20px;width:20px;height:20px;font-size:0.6rem}
+      .voice-cmd-list{gap:0.2rem}
+      .voice-cmd-item{padding:0.1rem 0.3rem;font-size:0.5rem;border-radius:10px}
+      .cmd-key{font-size:0.48rem}
+      .step-title{font-size:0.9rem}
+      .step-text{font-size:0.8rem}
+      .status-pill{padding:6px 16px;font-size:0.7rem}
+    }
+    @media(max-width:360px){
+      .voice-commands-bar{padding:0.3rem 0.5rem;gap:0.2rem;border-radius:35px}
+      .voice-cmd-item{padding:0.08rem 0.25rem;font-size:0.45rem}
+      .cmd-key{font-size:0.42rem}
+      .voice-icon{min-width:18px;width:18px;height:18px;font-size:0.55rem}
     }
   </style>
 </head>
@@ -399,15 +412,16 @@
     <p class="hero-sub">DUALIS U53700 · ASSISTANT</p>
   </div>
 
+  <!-- Bandeau commandes vocales responsive -->
   <div class="voice-commands-bar">
     <div class="voice-icon">🎤</div>
-    <div class="voice-cmd-scroll">
+    <div class="voice-cmd-list">
       <div class="voice-cmd-item"><span class="cmd-key">Suivant</span></div>
       <div class="voice-cmd-item"><span class="cmd-key">Précédent</span></div>
       <div class="voice-cmd-item"><span class="cmd-key">Répéter</span></div>
       <div class="voice-cmd-item"><span class="cmd-key">Annuler</span></div>
       <div class="voice-cmd-item"><span class="cmd-key">Guidage</span></div>
-      <div class="voice-cmd-item"><span class="cmd-key">Oui / Non</span></div>
+      <div class="voice-cmd-item"><span class="cmd-key">Oui/Non</span></div>
     </div>
   </div>
 
@@ -954,8 +968,8 @@
     let currentIOS = null, guideActive = false, guideSteps = [], stepIndex = 0;
     let listening = false, speakingFlag = false, micActive = true, iosInfoShown = false;
     let recognition = null, procedureStartTime = null, procedureEndTime = null, procedureStepsLog = [];
-    let pendingCommand = null, commandTimer = null;
     const synth = window.speechSynthesis, voiceSupport = !!synth;
+    let recognitionRestartTimer = null;
 
     function toast(m, d = 2500) { const t = document.getElementById('toastMsg'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d); }
 
@@ -975,14 +989,11 @@
     function ft(d) { return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
     function fd(d) { return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
 
-    // ==================== PROTECTION RECHERCHE PENDANT PROCÉDURE ====================
-    function isProcedureActive() {
-      return guideActive || speakingFlag || iosInfoShown;
-    }
+    function isProcedureActive() { return guideActive || speakingFlag || iosInfoShown; }
 
     function blockNewIosSearch() {
       updateUIForState('blocked');
-      setTimeout(() => { if (!speakingFlag && !listening) updateUIForState('idle'); }, 2000);
+      setTimeout(() => { if (!speakingFlag && !listening && !guideActive && !iosInfoShown) updateUIForState('idle'); }, 2000);
     }
 
     // ==================== SYNTHÈSE VOCALE ====================
@@ -1011,8 +1022,8 @@
       const v = synth.getVoices(), fv = v.find(z => z.lang.startsWith('fr'));
       if (fv) u.voice = fv;
       speakingFlag = true; updateUIForState('speak');
-      u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) sl(); if (cb) cb(); };
-      u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) sl(); if (cb) cb(); };
+      u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
+      u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
       synth.speak(u);
     }
 
@@ -1182,63 +1193,27 @@
     function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
     function pr() { const c = document.getElementById('recapContent').textContent; const w = window.open('', '', 'width=700,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>'); w.document.close(); w.print(); }
 
-    // ==================== COMMANDES VOCALES AMÉLIORÉES ====================
-    function fuzzyMatch(text, patterns) {
-      return patterns.some(pattern => pattern.test(text));
-    }
+    // ==================== COMMANDES VOCALES ====================
+    function extractIosNumber(text) { let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i); return m ? m[1].padStart(3, '0') : null; }
 
-    function extractIosNumber(text) {
-      let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i);
-      if (m) return m[1].padStart(3, '0');
-      return null;
-    }
-
-    function isGreeting(text) {
-      return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text);
-    }
-
-    function isCancelCommand(text) {
-      return /\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i.test(text);
-    }
-
-    function isHomeCommand(text) {
-      return /\b(?:accueil|menu|retour accueil|home|reset)\b/i.test(text);
-    }
-
-    function isGuidanceStart(text) {
-      return /\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer)\b/i.test(text);
-    }
-
-    function isNextStep(text) {
-      return /\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i.test(text) && !/\b(?:non|précédent)\b/i.test(text);
-    }
-
-    function isPrevStep(text) {
-      return /\b(?:précédent|reviens|retour en arrière|recule|back|remonte)\b/i.test(text) && !/\b(?:retour accueil|non)\b/i.test(text);
-    }
-
-    function isRepeatCommand(text) {
-      return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text);
-    }
-
-    function isYesAnswer(text) {
-      return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas)\b/i.test(text);
-    }
-
-    function isNoAnswer(text) {
-      return /\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i.test(text);
-    }
+    function isGreeting(text) { return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text); }
+    function isCancelCommand(text) { return /\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i.test(text); }
+    function isHomeCommand(text) { return /\b(?:accueil|menu|retour accueil|home|reset)\b/i.test(text); }
+    function isGuidanceStart(text) { return /\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer)\b/i.test(text); }
+    function isNextStep(text) { return /\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i.test(text) && !/\b(?:non|précédent)\b/i.test(text); }
+    function isPrevStep(text) { return /\b(?:précédent|reviens|retour en arrière|recule|back|remonte)\b/i.test(text) && !/\b(?:retour accueil|non)\b/i.test(text); }
+    function isRepeatCommand(text) { return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text); }
+    function isYesAnswer(text) { return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas)\b/i.test(text); }
+    function isNoAnswer(text) { return /\b(?:non|no|nope|nan|négatif|pas du tout|faux|incorrect|disparu|absent|éteint|pas affiché|aucun|rien|marche pas|désactivé|inactif)\b/i.test(text); }
 
     function pvc(txt) {
       let l = txt.toLowerCase().trim();
       if (!l) return;
       addMessage('' + txt + '', 'user');
 
-      // Commandes prioritaires toujours actives
       if (isCancelCommand(l)) { ccp(); return; }
       if (isHomeCommand(l)) { hr(); return; }
 
-      // Salutations toujours actives
       if (isGreeting(l)) {
         if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) {
           addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return;
@@ -1246,9 +1221,7 @@
         speakText("Bonjour ! IAOS T4 à votre service."); return;
       }
 
-      // Protection : si procédure active, bloquer la recherche de nouveaux IOS
       if (isProcedureActive()) {
-        // Commandes de guidage autorisées pendant procédure
         if (isRepeatCommand(l)) {
           if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
           else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
@@ -1263,19 +1236,15 @@
           if (iosInfoShown && currentIOS) { sg(); return; }
         }
         
-        // Vérifier si c'est une tentative de recherche IOS
         if (extractIosNumber(l) || /\bios\b/i.test(l)) {
           addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai');
           speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord.");
           blockNewIosSearch();
           return;
         }
-        
-        // Pour les autres commandes non reconnues, ignorer
         return;
       }
 
-      // Mode libre : recherche IOS et commandes générales
       if (isRepeatCommand(l)) {
         if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
         return;
@@ -1285,11 +1254,9 @@
         speakText("Cherchez d'abord un i o s."); return;
       }
 
-      // Recherche IOS
       let f = fiq(l);
       if (f) { sdi(f); return; }
       
-      // Commandes diverses
       if (/\b(?:qui t'a créé|ton créateur|ton maître)\b/i.test(l)) {
         addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur.', 'ai');
         speakText('Mon créateur est Zabèr, conducteur moniteur formateur.'); return;
@@ -1307,7 +1274,14 @@
       speakText('Aucun i o s trouvé.');
     }
 
-    // ==================== RECONNAISSANCE VOCALE ====================
+    // ==================== RECONNAISSANCE VOCALE OPTIMISÉE ====================
+    function scheduleRestart() {
+      clearTimeout(recognitionRestartTimer);
+      recognitionRestartTimer = setTimeout(() => {
+        if (micActive && !speakingFlag && !listening) sl();
+      }, 300);
+    }
+
     function sl() {
       if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) { toast('Reconnaissance vocale non supportée'); return; }
       if (speakingFlag || listening) return;
@@ -1317,7 +1291,7 @@
         recognition.lang = 'fr-FR';
         recognition.continuous = false;
         recognition.interimResults = true;
-        recognition.maxAlternatives = 5;
+        recognition.maxAlternatives = 8;
         
         let finalTranscript = '';
         
@@ -1331,21 +1305,25 @@
               for (let j = 0; j < e.results[i].length; j++) {
                 if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; }
               }
-              if (best && bestConf > 0.1) finalTranscript += ' ' + best;
-            } else { interimTranscript += e.results[i][0].transcript; }
+              if (best && bestConf > 0.05) finalTranscript += ' ' + best;
+            } else {
+              interimTranscript += e.results[i][0].transcript;
+            }
           }
           if (finalTranscript.trim() && !interimTranscript) { pvc(finalTranscript.trim()); finalTranscript = ''; }
         };
         
         recognition.onerror = (e) => {
-          listening = false; updateUIForState('idle');
-          if (micActive && !speakingFlag) setTimeout(sl, 600);
+          listening = false;
+          if (finalTranscript.trim()) pvc(finalTranscript.trim());
+          updateUIForState('idle');
+          if (micActive && !speakingFlag) scheduleRestart();
         };
         
         recognition.onend = () => {
           listening = false;
           if (finalTranscript.trim()) pvc(finalTranscript.trim());
-          if (micActive && !speakingFlag) setTimeout(sl, 400);
+          if (micActive && !speakingFlag) scheduleRestart();
           else updateUIForState('idle');
         };
         
@@ -1354,6 +1332,7 @@
     }
 
     function stl() {
+      clearTimeout(recognitionRestartTimer);
       if (recognition) { try { recognition.stop(); } catch (e) {} recognition = null; }
       listening = false; updateUIForState('idle');
     }
@@ -1379,7 +1358,7 @@
           <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
         </ul>
         <h4>⚠️ PROTECTION</h4>
-        <p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>. Terminez ou annulez d'abord.</p>
+        <p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p>
         <h4>🎨 COULEURS</h4>
         <ul>
           <li><span style="color:var(--cyan)">Cyan</span> — En attente</li>
