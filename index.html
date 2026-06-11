@@ -1,4 +1,631 @@
-{
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>IAOS T4 · DUALIS U53700 · Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#080c0f;
+  --surface:#0d1117;
+  --surface2:#111820;
+  --border:#1e2d3d;
+  --border-hot:#f5c518;
+  --gold:#f5c518;
+  --gold-dim:#c8a415;
+  --gold-glow:rgba(245,197,24,0.18);
+  --gold-glow2:rgba(245,197,24,0.07);
+  --cyan:#00e5ff;
+  --green:#39ff87;
+  --red:#ff3b3b;
+  --purple:#bf80ff;
+  --amber:#ffb300;
+  --text:#cfd8dc;
+  --text-dim:#546e7a;
+  --text-bright:#eceff1;
+  --rail:#1a2535;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+body::after{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);
+  pointer-events:none;z-index:1000;
+}
+
+.corner-tl,.corner-tr,.corner-bl,.corner-br{
+  position:fixed;width:22px;height:22px;z-index:999;
+  border-color:var(--gold-dim);border-style:solid;
+}
+.corner-tl{top:10px;left:10px;border-width:2px 0 0 2px}
+.corner-tr{top:10px;right:10px;border-width:2px 2px 0 0}
+.corner-bl{bottom:10px;left:10px;border-width:0 0 2px 2px}
+.corner-br{bottom:10px;right:10px;border-width:0 2px 2px 0}
+
+.header{
+  flex:0 0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px 10px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(13,17,23,1),rgba(13,17,23,0.95));
+  position:relative;z-index:10;
+}
+.header::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold-dim) 30%,var(--gold) 50%,var(--gold-dim) 70%,transparent 100%);
+}
+.logo-block{display:flex;flex-direction:column;gap:1px}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.6rem;color:var(--gold);letter-spacing:0.04em;line-height:1;text-shadow:0 0 20px rgba(245,197,24,0.5),0 0 40px rgba(245,197,24,0.2)}
+.logo-sub{font-family:'Space Mono',monospace;font-size:0.42rem;letter-spacing:5px;color:var(--gold-dim);text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:10px}
+.hdr-btn{
+  width:36px;height:36px;border-radius:3px;
+  background:rgba(245,197,24,0.04);
+  border:1px solid var(--border);
+  color:var(--text-dim);font-size:1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s ease;
+}
+.hdr-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
+.hdr-clock{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:2px;min-width:60px;text-align:right}
+
+.app-body{
+  flex:1 1 auto;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-y:auto;overflow-x:hidden;
+  padding:16px 14px 16px;
+  gap:12px;
+  position:relative;z-index:2;
+}
+
+.status-bar{
+  width:100%;max-width:520px;
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:8px 14px;
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.status-indicator{
+  width:8px;height:8px;border-radius:1px;
+  background:var(--text-dim);flex-shrink:0;
+  transition:all 0.25s ease;
+}
+.status-indicator.listen{background:var(--green);box-shadow:0 0 10px var(--green),0 0 20px rgba(57,255,135,0.4)}
+.status-indicator.speak{background:var(--purple);box-shadow:0 0 10px var(--purple)}
+.status-indicator.blocked{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.status-indicator.error{background:var(--red);box-shadow:0 0 10px var(--red)}
+.status-indicator.earlyListen{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.status-text{color:var(--text-dim);flex:1;font-size:0.58rem}
+.status-text.listen{color:var(--green)}
+.status-text.speak{color:var(--purple)}
+.status-text.blocked{color:var(--amber)}
+
+.mic-zone{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  width:100%;max-width:520px;
+}
+.mic-outer{
+  width:150px;height:150px;
+  position:relative;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;
+}
+.ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(245,197,24,0.2);
+  transition:border-color 0.3s ease;
+}
+.ring-1{width:68px;height:68px;animation:pulse1 2.6s ease-in-out infinite}
+.ring-2{width:98px;height:98px;animation:pulse1 2.6s ease-in-out infinite 0.45s}
+.ring-3{width:132px;height:132px;animation:pulse1 2.6s ease-in-out infinite 0.9s}
+@keyframes pulse1{
+  0%,100%{opacity:0.3;transform:scale(0.97)}
+  50%{opacity:0.9;transform:scale(1.02);border-color:rgba(245,197,24,0.55)}
+}
+.mic-outer.listen .ring{border-color:rgba(57,255,135,0.35);animation-duration:1.4s}
+.mic-outer.speak .ring{border-color:rgba(191,128,255,0.35);animation-duration:1.2s}
+.mic-outer.earlyListen .ring{border-color:rgba(0,229,255,0.4);animation-duration:1.3s}
+.mic-outer.error .ring{border-color:rgba(255,59,59,0.4)}
+
+.bars{
+  position:relative;z-index:5;
+  display:flex;align-items:center;gap:3.5px;
+  height:46px;width:60px;
+  justify-content:center;
+}
+.bar{
+  width:4px;border-radius:3px;
+  background:var(--gold);
+  box-shadow:0 0 6px rgba(245,197,24,0.5);
+  transform-origin:bottom center;
+  animation:barIdle 1.1s ease-in-out infinite;
+}
+.bar:nth-child(1){height:12px;animation-delay:0s}
+.bar:nth-child(2){height:22px;animation-delay:0.12s}
+.bar:nth-child(3){height:32px;animation-delay:0.24s}
+.bar:nth-child(4){height:22px;animation-delay:0.36s}
+.bar:nth-child(5){height:12px;animation-delay:0.48s}
+@keyframes barIdle{0%,100%{transform:scaleY(0.45);opacity:0.45}50%{transform:scaleY(1);opacity:1}}
+.bars.listen .bar{background:var(--green);box-shadow:0 0 10px rgba(57,255,135,0.6);animation-duration:0.55s}
+.bars.speak .bar{background:var(--purple);box-shadow:0 0 10px rgba(191,128,255,0.6);animation-duration:0.65s}
+.bars.earlyListen .bar{background:var(--cyan);box-shadow:0 0 10px rgba(0,229,255,0.6);animation-duration:0.6s}
+.bars.error .bar{background:var(--red);animation:barErr 0.35s ease}
+@keyframes barErr{0%,100%{transform:scaleY(1) translateX(0)}25%{transform:scaleY(0.6) translateX(-3px)}75%{transform:scaleY(1.3) translateX(3px)}}
+.bars.muted .bar{background:var(--text-dim);box-shadow:none;animation:barIdle 3s ease-in-out infinite}
+
+.mic-tap-hint{
+  font-family:'Space Mono',monospace;font-size:0.5rem;
+  letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
+  opacity:0.6;
+}
+
+.cmd-strip{
+  width:100%;max-width:520px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:8px 12px;
+  display:flex;flex-wrap:wrap;gap:5px;align-items:center;justify-content:center;
+}
+.cmd-tag{
+  font-family:'Space Mono',monospace;
+  font-size:0.5rem;letter-spacing:1px;
+  color:var(--gold-dim);
+  background:rgba(245,197,24,0.05);
+  border:1px solid rgba(245,197,24,0.18);
+  border-radius:2px;
+  padding:3px 8px;
+  white-space:nowrap;
+  text-transform:uppercase;
+}
+.cmd-tag.active-hint{color:var(--gold);border-color:rgba(245,197,24,0.5);background:rgba(245,197,24,0.08);animation:tagPulse 2s ease-in-out infinite}
+@keyframes tagPulse{0%,100%{opacity:0.7}50%{opacity:1}}
+
+.guide-card{
+  width:100%;max-width:520px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  display:none;
+  animation:slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.guide-card.show{display:block}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px) scale(0.98)}to{opacity:1;transform:none}}
+.gcard-label{
+  font-family:'Orbitron',sans-serif;
+  font-size:0.48rem;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;
+  padding:10px 16px 0;
+  display:flex;align-items:center;gap:8px;
+}
+.gcard-label::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.gcard-label::after{content:'';flex:1;height:1px;background:linear-gradient(270deg,var(--border),transparent)}
+.gcard-ios-id{
+  font-family:'Orbitron',sans-serif;font-weight:800;
+  font-size:1.15rem;color:var(--gold);
+  padding:8px 16px 4px;letter-spacing:2px;
+}
+.prio-tag{
+  display:inline-block;
+  font-family:'Orbitron',monospace;font-size:0.44rem;letter-spacing:2px;
+  padding:3px 9px;border-radius:2px;margin-left:12px;vertical-align:middle;
+  text-transform:uppercase;
+}
+.prio-h{background:rgba(255,59,59,0.12);color:var(--red);border:1px solid rgba(255,59,59,0.45);animation:prioPulse 1.4s ease-in-out infinite}
+@keyframes prioPulse{0%,100%{box-shadow:0 0 4px rgba(255,59,59,0.3)}50%{box-shadow:0 0 14px rgba(255,59,59,0.7)}}
+.prio-m{background:rgba(255,179,0,0.1);color:var(--amber);border:1px solid rgba(255,179,0,0.4)}
+.prio-l{background:rgba(57,255,135,0.07);color:var(--green);border:1px solid rgba(57,255,135,0.3)}
+.gcard-step-label{
+  font-family:'Space Mono',monospace;font-size:0.52rem;letter-spacing:2px;
+  color:var(--text-dim);padding:0 16px 5px;
+}
+.gcard-body{
+  font-size:1rem;font-weight:500;line-height:1.5;
+  color:var(--text-bright);
+  padding:8px 16px 14px;
+  min-height:54px;
+}
+.gcard-divider{height:1px;background:var(--border);margin:0 16px}
+.gcard-actions{
+  display:flex;flex-wrap:wrap;gap:7px;
+  padding:12px 16px;
+}
+.gcard-btn{
+  font-family:'Orbitron',sans-serif;font-size:0.52rem;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 14px;border-radius:2px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,0.03);
+  color:var(--text-dim);cursor:pointer;
+  transition:all 0.18s ease;
+  white-space:nowrap;
+}
+.gcard-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.06)}
+.gcard-btn:active{transform:scale(0.96)}
+.gcard-btn.yes{border-color:rgba(57,255,135,0.4);color:var(--green);background:rgba(57,255,135,0.05)}
+.gcard-btn.yes:hover{background:rgba(57,255,135,0.12);border-color:var(--green)}
+.gcard-btn.no{border-color:rgba(255,59,59,0.4);color:var(--red);background:rgba(255,59,59,0.05)}
+.gcard-btn.no:hover{background:rgba(255,59,59,0.12);border-color:var(--red)}
+.gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
+.gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
+
+.transcript-area{
+  width:100%;max-width:520px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+}
+.transcript-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px;border-bottom:1px solid var(--border);
+}
+.transcript-header span{
+  font-family:'Space Mono',monospace;font-size:0.5rem;
+  letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
+}
+.transcript-clear{
+  background:none;border:1px solid var(--border);
+  color:var(--text-dim);font-size:0.6rem;
+  padding:2px 8px;border-radius:2px;cursor:pointer;
+}
+.transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
+.transcript-msgs{
+  max-height:170px;overflow-y:auto;
+  padding:10px 12px;display:flex;flex-direction:column;gap:7px;
+  scroll-behavior:smooth;
+}
+.transcript-msgs::-webkit-scrollbar{width:3px}
+.transcript-msgs::-webkit-scrollbar-track{background:transparent}
+.transcript-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.t-msg{display:flex;flex-direction:column;gap:2px;animation:msgIn 0.2s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.t-msg.user{align-items:flex-end}
+.t-msg.ai{align-items:flex-start}
+.t-bubble{
+  font-size:0.78rem;line-height:1.4;
+  padding:6px 11px;border-radius:2px;
+  max-width:90%;word-break:break-word;
+}
+.t-msg.user .t-bubble{
+  background:rgba(191,128,255,0.08);
+  border:1px solid rgba(191,128,255,0.25);
+  color:var(--text);
+}
+.t-msg.ai .t-bubble{
+  background:rgba(245,197,24,0.06);
+  border:1px solid rgba(245,197,24,0.18);
+  color:var(--text);
+}
+
+.search-row{
+  width:100%;max-width:520px;
+  display:flex;gap:7px;
+}
+.search-input{
+  flex:1;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:3px;
+  color:var(--text-bright);
+  font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:500;
+  padding:10px 14px;outline:none;
+  transition:border-color 0.2s ease;
+}
+.search-input::placeholder{color:var(--text-dim);font-size:0.8rem}
+.search-input:focus{border-color:var(--gold-dim)}
+.search-go{
+  background:rgba(245,197,24,0.08);
+  border:1px solid var(--gold-dim);
+  color:var(--gold);
+  border-radius:3px;padding:10px 16px;
+  cursor:pointer;font-family:'Orbitron',sans-serif;
+  font-size:0.52rem;letter-spacing:1px;text-transform:uppercase;
+  transition:all 0.18s ease;
+}
+.search-go:hover{background:rgba(245,197,24,0.18)}
+
+.toast{
+  position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:var(--surface2);border:1px solid var(--gold-dim);
+  border-radius:3px;padding:9px 22px;
+  font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:1px;
+  color:var(--gold);opacity:0;pointer-events:none;
+  transition:opacity 0.25s ease,transform 0.25s ease;z-index:500;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.overlay.on{opacity:1;pointer-events:auto}
+.side-panel{
+  position:fixed;top:0;right:0;bottom:0;width:min(94%,400px);
+  background:linear-gradient(180deg,#0d1117,#080c12);
+  border-left:1px solid var(--border);
+  z-index:210;
+  transform:translateX(106%);
+  transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);
+  display:flex;flex-direction:column;
+}
+.side-panel.open{transform:none}
+.sp-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  background:rgba(0,0,0,0.4);
+}
+.sp-header h3{font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.sp-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
+.sp-close:hover{color:var(--gold);border-color:var(--gold-dim)}
+.sp-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.sp-body::-webkit-scrollbar{width:3px}
+.sp-body::-webkit-scrollbar-thumb{background:var(--border)}
+.ios-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:3px;overflow:hidden;display:none;
+}
+.ios-card.show{display:block}
+.ios-card-head{padding:12px 14px;border-bottom:1px solid var(--border)}
+.ios-card-code{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;color:var(--gold);letter-spacing:2px}
+.ios-card-desc{font-size:0.82rem;color:var(--text);margin-top:5px;line-height:1.4}
+.ios-card-actions{padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.ac-btn{
+  font-family:'Orbitron',sans-serif;font-size:0.5rem;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:6px 13px;border-radius:2px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,0.03);
+  color:var(--text-dim);cursor:pointer;transition:all 0.18s ease;
+}
+.ac-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
+.ac-btn.green{border-color:rgba(57,255,135,0.4);color:var(--green);background:rgba(57,255,135,0.05)}
+.ac-btn.green:hover{background:rgba(57,255,135,0.12);border-color:var(--green)}
+.ac-btn.red{border-color:rgba(255,59,59,0.35);color:var(--red);background:rgba(255,59,59,0.04)}
+.ac-btn.red:hover{background:rgba(255,59,59,0.1);border-color:var(--red)}
+.ios-card-info{padding:10px 14px;font-size:0.78rem;color:var(--text-dim);line-height:1.5}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.modal-bg.on{opacity:1;pointer-events:auto}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:4px;width:min(92%,460px);max-height:82vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,0.9);
+  overflow:hidden;animation:modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
+.modal-head h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.modal-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{color:var(--gold);border-color:var(--gold-dim)}
+.modal-list{overflow-y:auto;flex:1;padding:6px}
+.modal-list::-webkit-scrollbar{width:3px}
+.modal-list::-webkit-scrollbar-thumb{background:var(--border)}
+.ios-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:2px;cursor:pointer;
+  transition:background 0.15s ease;
+  border-bottom:1px solid rgba(30,45,61,0.5);
+}
+.ios-row:hover{background:rgba(245,197,24,0.06)}
+.ios-row-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.72rem;min-width:52px;letter-spacing:1px}
+.ios-row-desc{font-size:0.78rem;color:var(--text);flex:1;line-height:1.3}
+.ios-row-p{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:2px}
+.ios-row-p.h{background:rgba(255,59,59,0.12);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
+.ios-row-p.m{background:rgba(255,179,0,0.1);color:var(--amber);border:1px solid rgba(255,179,0,0.3)}
+.ios-row-p.l{background:rgba(57,255,135,0.06);color:var(--green);border:1px solid rgba(57,255,135,0.2)}
+
+.recap-bg{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.recap-bg.on{opacity:1;pointer-events:auto}
+.recap-modal{background:#0d1117;border:1px solid var(--border);border-radius:4px;width:min(94%,520px);max-height:86vh;display:flex;flex-direction:column;box-shadow:0 20px 70px rgba(0,0,0,0.95)}
+.recap-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.5)}
+.recap-head h3{font-family:'Orbitron',sans-serif;font-size:0.62rem;letter-spacing:3px;color:var(--gold)}
+.recap-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer}
+.recap-close:hover{color:var(--gold);border-color:var(--gold-dim)}
+.recap-body{flex:1;overflow-y:auto;padding:18px;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text);line-height:1.7;white-space:pre-wrap}
+.recap-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--border);background:rgba(0,0,0,0.4)}
+.recap-btn{font-family:'Orbitron',sans-serif;font-size:0.52rem;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:2px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text-dim);cursor:pointer;transition:all 0.18s}
+.recap-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
+.recap-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.07)}
+.recap-btn.primary:hover{background:rgba(245,197,24,0.16)}
+
+.end-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(0deg,rgba(8,12,15,0.99),rgba(13,17,23,0.96));
+  border-top:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  padding:14px 18px;z-index:90;
+  transform:translateY(100%);transition:transform 0.3s ease;
+}
+.end-bar.show{transform:none}
+.end-bar-text{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+.end-bar-btns{display:flex;gap:8px;flex-wrap:wrap}
+
+.info-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.info-bg.on{opacity:1;pointer-events:auto}
+.info-modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;width:min(92%,500px);max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
+.info-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
+.info-head h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.info-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
+.info-x:hover{color:var(--gold);border-color:var(--gold-dim)}
+.info-content{flex:1;overflow-y:auto;padding:18px;font-size:0.82rem;line-height:1.6;color:var(--text)}
+.info-content h4{font-family:'Orbitron',sans-serif;font-size:0.56rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.info-content h4:first-child{margin-top:0}
+.info-content ul{margin-left:18px;margin-bottom:8px}
+.info-content li{margin:4px 0;line-height:1.5}
+.cmd-pill{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--gold);background:rgba(245,197,24,0.07);border:1px solid rgba(245,197,24,0.2);border-radius:2px;padding:1px 6px}
+
+@media(max-width:420px){
+  .logo{font-size:1.3rem}
+  .mic-outer{width:130px;height:130px}
+  .ring-1{width:58px;height:58px}
+  .ring-2{width:83px;height:83px}
+  .ring-3{width:112px;height:112px}
+  .gcard-body{font-size:0.92rem}
+}
+</style>
+</head>
+<body>
+
+<div class="corner-tl"></div><div class="corner-tr"></div>
+<div class="corner-bl"></div><div class="corner-br"></div>
+
+<div class="overlay" id="overlay"></div>
+<div class="side-panel" id="sidePanel">
+  <div class="sp-header">
+    <h3>⚡ DIAGNOSTIC</h3>
+    <button class="sp-close" id="spClose">✕</button>
+  </div>
+  <div class="sp-body">
+    <div class="search-row">
+      <input class="search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
+      <button class="search-go" id="spSearchGo">GO</button>
+    </div>
+    <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
+    <div class="ios-card" id="iosCard">
+      <div class="ios-card-head">
+        <div class="ios-card-code" id="icCode">IOS-???</div>
+        <div style="margin-top:5px;display:flex;align-items:center;gap:8px">
+          <span class="prio-tag" id="icPrio"></span>
+        </div>
+        <div class="ios-card-desc" id="icDesc"></div>
+      </div>
+      <div class="ios-card-actions">
+        <button class="ac-btn green" id="icGuide">▶ GUIDAGE</button>
+        <button class="ac-btn red" id="icCancel">✕ ANNULER</button>
+        <button class="ac-btn" id="icHome">⌂ ACCUEIL</button>
+        <button class="ac-btn" id="icNew">🔍 NOUVEAU</button>
+      </div>
+      <div class="ios-card-info" id="icInfo"></div>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="logo-block">
+    <div class="logo">IAOS T4</div>
+    <div class="logo-sub">DUALIS U53700 · ASSISTANT</div>
+  </div>
+  <div class="header-right">
+    <div class="hdr-clock" id="clock">--:--:--</div>
+    <button class="hdr-btn" id="infoBtn" title="Guide d'utilisation">ℹ</button>
+    <button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button>
+  </div>
+</div>
+
+<div class="app-body">
+
+  <div class="status-bar">
+    <div class="status-indicator" id="statusDot"></div>
+    <span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span>
+  </div>
+
+  <div class="mic-zone">
+    <div class="mic-outer" id="micBtn" role="button" tabindex="0" aria-label="Activer/couper le micro">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="bars" id="bars">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+      </div>
+    </div>
+    <div class="mic-tap-hint" id="micHint">Appuyer pour couper / réactiver</div>
+  </div>
+
+  <div class="cmd-strip">
+    <div class="cmd-tag">IOS [N°]</div>
+    <div class="cmd-tag active-hint">OUI</div>
+    <div class="cmd-tag active-hint">NON</div>
+    <div class="cmd-tag">Suivant</div>
+    <div class="cmd-tag">Précédent</div>
+    <div class="cmd-tag">Répéter</div>
+    <div class="cmd-tag">Guidage</div>
+    <div class="cmd-tag">Annuler</div>
+    <div class="cmd-tag">Accueil</div>
+  </div>
+
+  <div class="guide-card" id="guideCard">
+    <div class="gcard-label" id="gLabel">ÉTAPE</div>
+    <div class="gcard-ios-id" id="gIosId"></div>
+    <div class="gcard-step-label" id="gStepLbl"></div>
+    <div class="gcard-body" id="gBody"></div>
+    <div class="gcard-divider"></div>
+    <div class="gcard-actions" id="gActions">
+      <button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button>
+      <button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button>
+      <button class="gcard-btn" id="gPrev">← PRÉC.</button>
+      <button class="gcard-btn primary" id="gNext">SUIVANT →</button>
+      <button class="gcard-btn" id="gCancel">ANNULER</button>
+    </div>
+  </div>
+
+  <div class="search-row" style="max-width:520px">
+    <input class="search-input" id="mainSearch" placeholder="Rechercher un IOS…" autocomplete="off" spellcheck="false">
+    <button class="search-go" id="mainSearchGo">GO</button>
+  </div>
+
+  <div class="transcript-area">
+    <div class="transcript-header">
+      <span>HISTORIQUE DIALOGUE</span>
+      <button class="transcript-clear" id="clearChat">Effacer</button>
+    </div>
+    <div class="transcript-msgs" id="chatLog">
+      <div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="end-bar" id="endBar">
+  <div class="end-bar-text">Procédure terminée</div>
+  <div class="end-bar-btns">
+    <button class="gcard-btn yes" id="ebRecap">📄 Bulletin de service</button>
+    <button class="gcard-btn no" id="ebClose">Fermer</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="listBg">
+  <div class="modal">
+    <div class="modal-head"><h3>📋 LISTE DES IOS</h3><button class="modal-x" id="listX">✕</button></div>
+    <div class="modal-list" id="modalList"></div>
+  </div>
+</div>
+
+<div class="recap-bg" id="recapBg">
+  <div class="recap-modal">
+    <div class="recap-head"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapX">✕</button></div>
+    <div class="recap-body" id="recapBody"></div>
+    <div class="recap-foot">
+      <button class="recap-btn" id="recapPrint">🖨 Imprimer</button>
+      <button class="recap-btn primary" id="recapClose2">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="info-bg" id="infoBg">
+  <div class="info-modal">
+    <div class="info-head"><h3>ℹ GUIDE D'UTILISATION</h3><button class="info-x" id="infoX">✕</button></div>
+    <div class="info-content" id="infoContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ═══════════════════════════════════
+   BASE DE DONNÉES IOS (À REMPLIR)
+═══════════════════════════════════ */
+const IOS_DB = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
   tree:[{t:'Arrêtez le train au 1er quai disponible.',d:0},{t:'Avisez le PC immédiatement.',d:0},{t:'Appliquez le GD.',d:0},{t:'✅ Dépannage terminé.',d:0,fin:1}]},
@@ -444,3 +1071,705 @@
 '246':{id:'246',pri:'m',desc:"Isolation de la surveillance d'UM homogène par le commutateur",kw:['246','um','surveillance'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Avisez le PC et conformez-vous aux instructions.',d:0,fin:1}]},
 '247':{id:'247',pri:'m',desc:"Présence d'une composition d'UM hétérogène",kw:['247','um','heterogene'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Séparez les éléments si en UM. Placez Z(IS-UM-HO) sur ISOLÉ si train en US. Avisez le PC.',d:0,fin:1}]}
 };
+const ALIAS_DB = {'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
+'secours':['002','048','222'],'urgence':['048','222'],
+'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
+'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
+'frein friction c2b1':['086'],'frein friction c2b2':['087'],'frein friction':['083'],
+'batterie faible':['017'],'batterie':['017','050','052'],'chargeur batterie':['015'],
+'pantographe':['054'],'panto':['054'],
+'porte dualis':['173'],'defaut porte':['173'],'porte':['173','167','172'],
+'frein desserre':['096'],'blocage':['096'],'frein bloque':['096'],
+'radio':['198'],'tetra':['198'],
+'cvs':['048'],'traction':['220','221','222'],'coffre traction':['220'],
+'interphonie':['115','120'],'sai':['115'],
+'retrovision':['099','101'],'retroviseur':['099','100'],
+'stm kvb':['077'],'kvb':['077'],'stm':['077'],
+'fs fu':['111'],'declenchement':['111'],
+'enregistreur':['107','108'],'etf':['181','220'],
+'relais freinage':['002','004','110','153'],'bogie':['004','083','084','085','086','087'],
+'climatisation':['014','062','063'],'compresseur':['076'],
+'saeiv':['196','125'],'itineraire':['196'],
+'drive':['205'],'antiderive':['205'],
+'msav':['232'],'moteur traction':['233'],
+'acces conducteur':['242'],'conducteur':['242']};
+
+
+for(let i=0;i<=247;i++){
+  const id = String(i).padStart(3,'0');
+  if(!IOS_DB[id]) IOS_DB[id] = {
+    id, pri:'l', desc:'Information technique / retour maintenance',
+    instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],
+    symboles:'', vitesse:'',
+    tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],
+    kw:[]
+  };
+}
+
+/* ═══ ÉTAT ═══ */
+let curIOS = null;
+let guideOn = false, guideSteps = [], stepIdx = 0;
+let iosInfoShown = false;
+let micOn = true, isListening = false, isSpeaking = false;
+let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
+let procStart = null, procEnd = null, procLog = [];
+let cachedVoice = null;
+
+/* ═══ SYNTH ═══ */
+const synth = window.speechSynthesis;
+const hasVoice = !!synth;
+
+if(hasVoice){ synth.getVoices(); synth.onvoiceschanged = ()=>{ cachedVoice=null; getVoice(); }; }
+
+function getVoice(){
+  if(cachedVoice) return cachedVoice;
+  const vx = synth.getVoices();
+  if(!vx.length) return null;
+  const fem = ['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine'];
+  const mal = ['male','homme','masculin','thomas','pierre','jean','paul','jacques','robert','louis','nicolas','daniel','michel','alain','philippe','pascal','patrick','renaud','laurent','olivier','denis','serge','bruno','marc','guy','yves'];
+  let v = vx.find(x=>x.lang.startsWith('fr') && fem.some(f=>x.name.toLowerCase().includes(f)));
+  if(!v) v = vx.find(x=>x.lang.startsWith('fr') && !mal.some(m=>x.name.toLowerCase().includes(m)));
+  if(!v) v = vx.find(x=>x.lang.startsWith('fr'));
+  cachedVoice = v;
+  return v;
+}
+
+/* ─── TTS avec Early Listen ─── */
+function speak(txt, cb){
+  if(!hasVoice){ cb && cb(); return; }
+  if(isSpeaking) synth.cancel();
+  clearTimeout(earlyListenTimer);
+
+  let x = txt
+    .replace(/[<[\]{}_*#✅🚨]/g,'')
+    .replace(/&[a-z]+;/g,'')
+    .replace(/\bAEL\b/gi,'A E L')
+    .replace(/\bael\b/gi,'A E L')
+    .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
+    .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s')
+    .replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
+    .replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J')
+    .replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M')
+    .replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F')
+    .replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M')
+    .replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M')
+    .replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S')
+    .replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J')
+    .replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure')
+    .replace(/\bart\.\s*/gi,'article ')
+    .replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10))
+    .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
+    .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
+
+  currentUtterance = new SpeechSynthesisUtterance(x);
+  currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
+  const v = getVoice(); if(v) currentUtterance.voice=v;
+
+  const estimatedDuration = (x.length / 12) * 1000;
+  const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
+
+  isSpeaking=true; setUI('speak');
+
+  earlyListenTimer = setTimeout(() => {
+    if(isSpeaking && micOn && !isListening){
+      setUI('earlyListen');
+      startListening();
+    }
+  }, earlyListenDelay);
+
+  currentUtterance.onend = ()=>{
+    isSpeaking=false; clearTimeout(earlyListenTimer);
+    setUI('idle'); if(micOn && !isListening) schedRestart();
+    cb && cb(); currentUtterance=null;
+  };
+  currentUtterance.onerror = ()=>{
+    isSpeaking=false; clearTimeout(earlyListenTimer);
+    setUI('error'); if(micOn && !isListening) schedRestart();
+    cb && cb(); currentUtterance=null;
+  };
+  synth.speak(currentUtterance);
+}
+
+/* ═══ UI STATE ═══ */
+function $(id){ return document.getElementById(id); }
+
+function setUI(state){
+  const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
+  const hints = {
+    idle:'Micro actif · Dites un numéro IOS',
+    listen:'Écoute en cours…',
+    speak:'Synthèse vocale…',
+    earlyListen:'Prêt à répondre…',
+    blocked:'Procédure active — terminez ou annulez',
+    error:'Erreur — relance automatique',
+    muted:'Micro coupé'
+  };
+  dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':'');
+  txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':'');
+  txt.textContent = hints[state] || hints.idle;
+  bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':'');
+  mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':'');
+}
+
+/* ═══ TOAST ═══ */
+function toast(msg, ms=2800){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms);
+}
+
+/* ═══ CHAT ═══ */
+function addMsg(html, role='ai'){
+  const log=$('chatLog');
+  const d=document.createElement('div'); d.className='t-msg '+role;
+  d.innerHTML='<div class="t-bubble">'+html+'</div>';
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+  while(log.children.length>80) log.removeChild(log.firstChild);
+}
+
+/* ═══ GUIDE CARD RENDERING ═══ */
+function renderGuideCard(){
+  const card=$('guideCard');
+  if(!guideOn || stepIdx>=guideSteps.length){ card.classList.remove('show'); iosInfoShown=false; return; }
+  const s = guideSteps[stepIdx];
+  if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; }
+  card.classList.add('show');
+  $('gLabel').textContent = 'PROCÉDURE GUIDÉE';
+  $('gIosId').innerHTML = 'IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
+  $('gStepLbl').textContent = 'Étape '+(stepIdx+1)+' / '+guideSteps.length;
+  $('gBody').textContent = s.t;
+  $('gYes').style.display = s.d ? 'inline-flex':'none';
+  $('gNo').style.display  = s.d ? 'inline-flex':'none';
+  $('gPrev').style.display = 'inline-flex';
+  $('gNext').textContent = 'SUIVANT →';
+  $('gNext').style.display = 'inline-flex';
+  $('gCancel').textContent = 'ANNULER';
+  iosInfoShown = false;
+}
+
+function showIosInfoCard(){
+  if(!curIOS) return;
+  const card=$('guideCard'); card.classList.add('show');
+  $('gLabel').textContent='IOS DÉTECTÉ';
+  $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
+  $('gStepLbl').textContent=curIOS.desc;
+  $('gBody').textContent='Prêt à démarrer la procédure de guidage. Dites « guidage » ou appuyez sur DÉMARRER.';
+  $('gYes').style.display='none'; $('gNo').style.display='none';
+  $('gPrev').style.display='none';
+  $('gNext').textContent='▶ DÉMARRER LE GUIDAGE';
+  $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER';
+  $('gCancel').style.display='inline-flex';
+  iosInfoShown=true;
+}
+
+function showEndCard(msg){
+  const card=$('guideCard'); card.classList.add('show');
+  $('gLabel').textContent='TERMINÉ';
+  $('gIosId').textContent='';$('gStepLbl').textContent='';
+  $('gBody').textContent=msg;
+  $('gYes').style.display='none';$('gNo').style.display='none';
+  $('gPrev').style.display='none';$('gNext').style.display='none';
+  $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex';
+  iosInfoShown=false;
+}
+
+/* ═══ PANEL IOS CARD ═══ */
+function renderIosCard(ios){
+  $('iosCard').classList.add('show');
+  $('icCode').textContent='IOS-'+ios.id;
+  const pt=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';
+  $('icPrio').textContent=pt; $('icPrio').className='prio-tag prio-'+ios.pri;
+  $('icDesc').textContent=ios.desc;
+  $('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.';
+}
+
+/* ═══ IOS LOGIC ═══ */
+function findIOS(q){
+  q=q.toLowerCase().trim();
+  const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i);
+  if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; }
+  for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; }
+  for(const io of Object.values(IOS_DB)){
+    if(io.desc.toLowerCase().includes(q)) return io;
+    if(io.kw && io.kw.some(k=>q.includes(k))) return io;
+  }
+  return null;
+}
+
+function loadIOS(ios){
+  curIOS=ios; guideOn=false; iosInfoShown=false;
+  renderIosCard(ios);
+  addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc);
+  speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80));
+  showIosInfoCard();
+  procStart=null; procEnd=null; procLog=[];
+}
+
+function startGuide(){
+  if(!curIOS) return;
+  guideOn=true; guideSteps=[]; stepIdx=0;
+  if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0});
+  if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0});
+  if(curIOS.vitesse)  guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});
+  for(const s of curIOS.tree) guideSteps.push(s);
+  procStart=new Date(); procEnd=null; procLog=[];
+  iosInfoShown=false;
+  renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id);
+  runStep();
+}
+
+function runStep(){
+  if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; }
+  const s=guideSteps[stepIdx];
+  if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; }
+  renderGuideCard();
+  procLog.push(s.t);
+  speak(s.t);
+}
+
+function answerYes(){
+  if(!guideOn || !guideSteps[stepIdx] || !guideSteps[stepIdx].d) return;
+  branch(true);
+}
+function answerNo(){
+  if(!guideOn || !guideSteps[stepIdx] || !guideSteps[stepIdx].d) return;
+  branch(false);
+}
+function branch(yes){
+  const s=guideSteps[stepIdx];
+  const next = yes ? (s.oui||[]) : (s.non||[]);
+  addMsg(yes?'✓ OUI':'✗ NON','user');
+  procLog.push(yes?'OUI':'NON');
+  if(!next.length){ finishProc('✅ Fin de procédure.'); return; }
+  guideSteps=next; stepIdx=0; runStep();
+}
+
+function nextStep(){
+  if(!guideOn){
+    if(iosInfoShown && curIOS){ startGuide(); return; }
+    return;
+  }
+  const s=guideSteps[stepIdx];
+  if(s && s.d){ speak('Veuillez répondre par oui ou par non.'); return; }
+  stepIdx++; runStep();
+}
+function prevStep(){
+  if(!guideOn) return;
+  if(stepIdx>0){ stepIdx--; runStep(); }
+  else speak('Vous êtes à la première étape.');
+}
+
+function cancelProc(){
+  guideOn=false; iosInfoShown=false;
+  $('guideCard').classList.remove('show');
+  $('endBar').classList.remove('show');
+  $('gCancel').textContent='ANNULER';
+  $('gNext').style.display='inline-flex';
+  addMsg('❌ Procédure annulée.');
+  speak('Procédure annulée.');
+}
+
+function finishProc(msg){
+  guideOn=false; procEnd=new Date();
+  addMsg(msg);
+  speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg);
+  showEndCard(msg);
+  $('endBar').classList.add('show');
+}
+
+function goHome(){
+  cancelProc();
+  curIOS=null; $('iosCard').classList.remove('show');
+  $('guideCard').classList.remove('show');
+  $('endBar').classList.remove('show');
+  $('mainSearch').value=''; $('spSearch').value='';
+  addMsg('🏠 Retour à l\'accueil.');
+  speak("Retour à l'accueil.");
+}
+
+/* ═══ RAPPORT ═══ */
+function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+
+function genRecap(){
+  if(!curIOS||!procStart) return '';
+  const e=procEnd||new Date();
+  return [
+    '═══════════════════════════════════',
+    '    BULLETIN DE SERVICE — IAOS T4',
+    '═══════════════════════════════════',
+    '',
+    '📅 Date      : '+fd(procStart),
+    '🔧 IOS       : '+curIOS.id,
+    '📝 Desc.     : '+curIOS.desc,
+    '⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),
+    '⏱  Début     : '+ft(procStart),
+    '⏱  Fin       : '+ft(e),
+    '⏱  Durée     : '+Math.round((e-procStart)/60000)+' min',
+    '',
+    '📋 ÉTAPES EFFECTUÉES :',
+    ...procLog.map((s,i)=>'   '+(i+1)+'. '+s),
+    '',
+    '✅ Statut : Terminé',
+    '═══════════════════════════════════',
+  ].join('\n');
+}
+
+function openRecap(){
+  $('recapBody').textContent=genRecap();
+  $('recapBg').classList.add('on');
+}
+function closeRecap(){ $('recapBg').classList.remove('on'); }
+function printRecap(){
+  const w=window.open('','','width=680,height=600');
+  w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:#000;background:#fff">'+$('recapBody').textContent+'</pre>');
+  w.document.close(); w.print();
+}
+
+/* ═══ IOS LIST ═══ */
+function buildList(){
+  const ul=$('modalList'); ul.innerHTML='';
+  const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));
+  for(const id of ids){
+    const io=IOS_DB[id];
+    const r=document.createElement('div'); r.className='ios-row';
+    const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l';
+    const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF';
+    r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>';
+    r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); });
+    ul.appendChild(r);
+  }
+}
+function openList(){ buildList(); $('listBg').classList.add('on'); }
+function closeList(){ $('listBg').classList.remove('on'); }
+
+/* ═══ INFO MODAL ═══ */
+function openInfo(){
+  $('infoContent').innerHTML=`
+<h4>🎤 Commandes vocales</h4>
+<ul>
+  <li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li>
+  <li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer la procédure</li>
+  <li><span class="cmd-pill">suivant / ok / c'est bon / j'ai fait</span> — Étape suivante</li>
+  <li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li>
+  <li><span class="cmd-pill">oui / affirmatif / correct</span> — Réponse OUI</li>
+  <li><span class="cmd-pill">non / négatif / rien / pas</span> — Réponse NON</li>
+  <li><span class="cmd-pill">répète / redis / pardon</span> — Répéter l'étape</li>
+  <li><span class="cmd-pill">annuler / stop</span> — Stopper la procédure</li>
+  <li><span class="cmd-pill">accueil / menu / reset</span> — Retour à l'accueil</li>
+  <li><span class="cmd-pill">temps écoulé</span> — Durée de la procédure</li>
+  <li><span class="cmd-pill">quelle heure</span> — Heure actuelle</li>
+  <li><span class="cmd-pill">quelle date</span> — Date du jour</li>
+  <li><span class="cmd-pill">liste des ios</span> — Afficher tous les IOS</li>
+  <li><span class="cmd-pill">fermer / bulletin / BS</span> — Fin de procédure</li>
+</ul>
+<h4>🛡 Protection procédure</h4>
+<p>Pendant une procédure active, toute demande de nouvel IOS est bloquée. Terminez ou annulez d'abord.</p>
+<h4>🎨 Code couleur</h4>
+<ul>
+  <li><span style="color:#f5c518">■</span> Jaune — En veille</li>
+  <li><span style="color:#39ff87">■</span> Vert — Écoute active</li>
+  <li><span style="color:#bf80ff">■</span> Violet — Synthèse vocale</li>
+  <li><span style="color:#00e5ff">■</span> Cyan — Micro réactivé (early listen)</li>
+  <li><span style="color:#ffb300">■</span> Orange — Bloqué</li>
+  <li><span style="color:#ff3b3b">■</span> Rouge — Erreur / Urgence IOS</li>
+</ul>
+<h4>✏️ Créateur</h4>
+<p>Développé par <strong>Zaber</strong>, Conducteur Moniteur Formateur — DUALIS U53700 T4.</p>
+`;
+  $('infoBg').classList.add('on');
+}
+function closeInfo(){ $('infoBg').classList.remove('on'); }
+
+/* ═══ HELPERS ═══ */
+function isProcActive(){ return guideOn || isSpeaking || iosInfoShown; }
+
+/* ═══ VOICE COMMAND PARSER ═══ */
+const CMDS = {
+  cancel:  [/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
+  home:    [/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
+  guide:   [/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],
+  next:    [/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
+  prev:    [/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i, /\b(?!retour\s+accueil)retour\b/i],
+  repeat:  [/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
+  greet:   [/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
+  oui:     [/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
+  non:[
+    /\bnon\b/i, /\bnan\b/i, /\bnaan\b/i, /\bnada\b/i, /\bnope\b/i, /\bnah\b/i, /\bniet\b/i, /\bniks\b/i, /\bno\b/i,
+    /n+[aeiou]*n+/i, /\bnégatif\b/i, /\bnegative\b/i, /c'est\s+mort/i, /ha\s*nan/i, /ah\s*nan/i,
+    /\bpas\s+du\s+tout\b/i, /\bpas\s+vraiment\b/i, /\bpas\s+exactement\b/i, /\bpas\s+affiché\b/i,
+    /\bfaux\b/i, /\bincorrect\b/i, /\bdisparu\b/i, /\babsent\b/i, /\béteint\b/i, /\beteint\b/i,
+    /\bdésactivé\b/i, /\bdesactive\b/i, /\binactif\b/i, /\baucun\b/i, /\brien\b/i,
+    /\bque\s+dalle\b/i, /\bwalou\b/i, /\bque\s+couic\b/i, /\bmarche\s+pas\b/i, /\bne\s+marche\s+pas\b/i,
+    /non\s+merci/i, /non\s+plus/i, /\bpas\b/i
+  ],
+  time:    [/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
+  date:    [/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
+  elapsed: [/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
+  list:    [/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
+  help:    [/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
+  creator: [/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
+  inutile: [/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
+  fermer:  [/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
+  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i, /\bb\s*s\b/i, /\bb[ée]\s*s\b/i]
+};
+
+function match(txt, key){ return CMDS[key].some(r=>r.test(txt)); }
+
+function isNon(txt){
+  if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true;
+  return CMDS.non.some(r=>r.test(txt));
+}
+function isOui(txt){
+  if(isNon(txt)) return false;
+  return CMDS.oui.some(r=>r.test(txt));
+}
+
+function extractIosNum(txt){
+  const m = txt.match(/(?:ios[.\s]*)?(\d{1,3})/i);
+  return m ? m[1].padStart(3,'0') : null;
+}
+
+/* ═══ PROCESSEUR VOCAL PRINCIPAL ═══ */
+function processVoice(raw){
+  const txt = raw.trim();
+  if(!txt) return;
+  addMsg(txt, 'user');
+
+  /* ── Gestion fin de procédure ── */
+  const endActive = $('endBar').classList.contains('show');
+  if(endActive){
+    if(match(txt,'fermer') || /\b(non|nan|no|nope|nah)\b/i.test(txt) || (/\b(pas|veux|souhaite)\b/i.test(txt) && /\b(non|pas)\b/i.test(txt))){
+      $('endBar').classList.remove('show');
+      $('guideCard').classList.remove('show');
+      addMsg('Fenêtre fermée.');
+      speak('Fenêtre fermée.');
+      return;
+    }
+    if(match(txt,'bulletin') || /\bb\s*s\b/i.test(txt) || /\bb[ée]\s*s\b/i.test(txt) || match(txt,'oui')){
+      $('endBar').classList.remove('show');
+      openRecap();
+      return;
+    }
+  }
+
+  /* ── Réponse inutile ── */
+  if(match(txt,'inutile')){
+    const reponses = ['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend.'];
+    const r = reponses[Math.floor(Math.random()*reponses.length)];
+    addMsg(r); speak(r); return;
+  }
+
+  if(match(txt,'cancel')){ cancelProc(); return; }
+  if(match(txt,'home')){ goHome(); return; }
+
+  if(match(txt,'greet')){
+    if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){
+      addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return;
+    }
+    addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour ! i o s T4 à votre service.'); return;
+  }
+
+  if(isProcActive()){
+    if(match(txt,'repeat')){
+      if(guideOn && guideSteps[stepIdx]) speak(guideSteps[stepIdx].t);
+      else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80));
+      return;
+    }
+    if(match(txt,'prev') && !match(txt,'home')){ if(guideOn){ prevStep(); return; } }
+    if(match(txt,'next')){ nextStep(); return; }
+    if(match(txt,'guide') && curIOS && !guideOn){ startGuide(); return; }
+
+    if(guideOn && guideSteps[stepIdx] && guideSteps[stepIdx].d){
+      if(isNon(txt)){ answerNo(); return; }
+      if(isOui(txt)){ answerYes(); return; }
+    }
+
+    if(extractIosNum(txt) || /\bios\b/i.test(txt)){
+      addMsg('⚠ Procédure IOS-'+curIOS.id+' en cours. Terminez ou annulez d\'abord.');
+      speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)+'. Terminez ou annulez d\'abord.');
+      setUI('blocked'); setTimeout(()=>setUI('idle'),2200);
+      return;
+    }
+    return;
+  }
+
+  if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80)); return; }
+  if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
+  if(match(txt,'list')){ openList(); return; }
+  if(match(txt,'help')){ openInfo(); speak('Guide d\'utilisation affiché.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>, Conducteur Moniteur Formateur.'); speak('Mon créateur est Zabèr, conducteur moniteur formateur.'); return; }
+  if(match(txt,'time')){ const t=ft(new Date()); addMsg('⏰ '+t); speak('Il est '+t.replace(/:/g,' heure ')); return; }
+  if(match(txt,'date')){ const d=fd(new Date()); addMsg('📅 '+d); speak('Nous sommes le '+d); return; }
+  if(match(txt,'elapsed')){
+    if(!procStart){ speak('Aucune procédure en cours.'); return; }
+    const d=new Date()-procStart, m=Math.floor(d/60000), s=Math.floor((d%60000)/1000);
+    speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+' et '+s+' seconde'+(s>1?'s':'')+'.');
+    return;
+  }
+
+  const io = findIOS(txt);
+  if(io){ loadIOS(io); return; }
+
+  addMsg('❓ Aucun IOS trouvé pour "'+txt.substring(0,50)+'".');
+  speak('Aucun i o s trouvé. Énoncer le numéro IOS.');
+}
+
+/* ═══ RECONNAISSANCE VOCALE ═══ */
+function schedRestart(){
+  clearTimeout(restartTimer);
+  restartTimer=setTimeout(()=>{ if(micOn && !isSpeaking && !isListening) startListening(); },300);
+}
+
+function startListening(){
+  if(!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)){
+    toast('Reconnaissance vocale non supportée sur ce navigateur'); return;
+  }
+  if(isSpeaking || isListening) return;
+  try{
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang='fr-FR';
+    recognition.continuous=true;
+    recognition.interimResults=true;
+    recognition.maxAlternatives=8;
+
+    let final='';
+    let silTimer=null;
+
+    recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
+
+    recognition.onresult=(ev)=>{
+      clearTimeout(silTimer);
+      let interim='';
+      for(let i=ev.resultIndex;i<ev.results.length;i++){
+        if(ev.results[i].isFinal){
+          let best='', bestConf=0;
+          for(let j=0;j<ev.results[i].length;j++){
+            if(ev.results[i][j].confidence > bestConf){
+              bestConf=ev.results[i][j].confidence;
+              best=ev.results[i][j].transcript;
+            }
+          }
+          if(best && bestConf>0.02) final+=' '+best;
+        } else {
+          interim+=ev.results[i][0].transcript;
+        }
+      }
+      if(final.trim() && !interim){
+        const t=final.trim(); final='';
+        processVoice(t);
+      } else {
+        silTimer=setTimeout(()=>{
+          if(final.trim()){ const t=final.trim(); final=''; processVoice(t); }
+        },900);
+      }
+    };
+
+    recognition.onerror=(e)=>{
+      isListening=false; final='';
+      if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; }
+      setUI('idle');
+      if(micOn && !isSpeaking) schedRestart();
+    };
+
+    recognition.onend=()=>{
+      isListening=false;
+      if(final.trim()){ processVoice(final.trim()); final=''; }
+      if(micOn && !isSpeaking) schedRestart();
+      else setUI('idle');
+    };
+
+    recognition.start();
+  } catch(e){ if(micOn) setTimeout(startListening,700); }
+}
+
+function stopListening(){
+  clearTimeout(restartTimer);
+  if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; }
+  isListening=false; setUI('idle');
+}
+
+function toggleMic(){
+  if(isSpeaking) return;
+  micOn=!micOn;
+  if(micOn){ startListening(); toast('Microphone activé'); }
+  else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé — appuyer pour réactiver'; toast('Microphone coupé'); }
+}
+
+/* ═══ HORLOGE ═══ */
+function updateClock(){
+  $('clock').textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+setInterval(updateClock,1000); updateClock();
+
+/* ═══ EVENTS ═══ */
+$('micBtn').addEventListener('click', toggleMic);
+$('micBtn').addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter') toggleMic(); });
+
+$('panelBtn').addEventListener('click', ()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
+$('overlay').addEventListener('click', ()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('spClose').addEventListener('click', ()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+
+$('infoBtn').addEventListener('click', openInfo);
+$('infoX').addEventListener('click', closeInfo);
+$('infoBg').addEventListener('click', e=>{ if(e.target===$('infoBg')) closeInfo(); });
+
+function doSearch(val){
+  if(!val.trim()) return;
+  if(isProcActive()){ toast('Procédure active — terminez d\'abord.'); return; }
+  processVoice(val);
+}
+$('mainSearch').addEventListener('keypress', e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
+$('mainSearchGo').addEventListener('click', ()=>{ doSearch($('mainSearch').value); $('mainSearch').value=''; });
+$('spSearch').addEventListener('keypress', e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
+$('spSearchGo').addEventListener('click', ()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
+
+$('showListBtn').addEventListener('click', openList);
+$('listX').addEventListener('click', closeList);
+$('listBg').addEventListener('click', e=>{ if(e.target===$('listBg')) closeList(); });
+
+$('icGuide').addEventListener('click', ()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
+$('icCancel').addEventListener('click', cancelProc);
+$('icHome').addEventListener('click', goHome);
+$('icNew').addEventListener('click', goHome);
+
+$('gYes').addEventListener('click', answerYes);
+$('gNo').addEventListener('click', answerNo);
+$('gNext').addEventListener('click', ()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
+$('gPrev').addEventListener('click', prevStep);
+$('gCancel').addEventListener('click', ()=>{
+  if(!guideOn && $('guideCard').classList.contains('show')){
+    $('guideCard').classList.remove('show'); $('endBar').classList.remove('show');
+    iosInfoShown=false; $('gCancel').textContent='ANNULER';
+  } else cancelProc();
+});
+
+$('ebRecap').addEventListener('click', ()=>{ $('endBar').classList.remove('show'); openRecap(); });
+$('ebClose').addEventListener('click', ()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
+
+$('recapX').addEventListener('click', closeRecap);
+$('recapClose2').addEventListener('click', closeRecap);
+$('recapBg').addEventListener('click', e=>{ if(e.target===$('recapBg')) closeRecap(); });
+$('recapPrint').addEventListener('click', printRecap);
+
+$('clearChat').addEventListener('click', ()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    if($('infoBg').classList.contains('on')) closeInfo();
+    else if($('recapBg').classList.contains('on')) closeRecap();
+    else if($('listBg').classList.contains('on')) closeList();
+    else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); }
+  }
+});
+
+/* ═══ INIT ═══ */
+setUI('idle');
+micOn=true;
+startListening();
+console.log('✅ IAOS T4 v2 — Créé par Zaber');
+})();
+</script>
+</body>
+</html>
