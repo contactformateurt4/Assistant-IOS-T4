@@ -31,83 +31,6 @@
 html,body{height:100%;overflow:hidden}
 body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;position:relative;overflow:hidden}
 
-/* ═══ SPLASH SCREEN ═══ */
-#splashScreen {
-  position:fixed;inset:0;z-index:9999;
-  background:#080c0f;
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;
-  transition:opacity 0.6s ease,visibility 0.6s ease;
-  opacity:1;visibility:visible;
-}
-#splashScreen.hidden {
-  opacity:0;visibility:hidden;pointer-events:none;
-}
-.splash-canvas {
-  position:absolute;inset:0;z-index:1;
-}
-.splash-content {
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:30px;
-}
-.laser-title-wrap {
-  position:relative;
-  display:flex;gap:8px;
-  padding:20px 30px;
-}
-.laser-letter {
-  position:relative;
-  display:inline-block;
-  width:60px;height:80px;
-}
-.laser-letter-canvas {
-  position:absolute;top:-10px;left:-10px;
-  width:80px;height:100px;
-  pointer-events:none;z-index:0;
-}
-.laser-letter-char {
-  position:relative;z-index:1;
-  font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:3rem;color:var(--gold);
-  text-shadow:0 0 25px rgba(245,197,24,0.7),0 0 50px rgba(245,197,24,0.4),0 0 80px rgba(0,229,255,0.5);
-  animation:charGlow 1.8s ease-in-out infinite;
-  display:flex;align-items:center;justify-content:center;
-  width:60px;height:80px;
-}
-@keyframes charGlow {
-  0%,100%{text-shadow:0 0 25px rgba(245,197,24,0.7),0 0 50px rgba(245,197,24,0.4),0 0 80px rgba(0,229,255,0.5)}
-  50%{text-shadow:0 0 40px rgba(245,197,24,0.9),0 0 70px rgba(245,197,24,0.6),0 0 120px rgba(0,229,255,0.8)}
-}
-.splash-subtitle {
-  position:relative;z-index:1;
-  font-family:'Space Mono',monospace;
-  font-size:0.65rem;letter-spacing:8px;
-  color:var(--gold-dim);text-transform:uppercase;
-  animation:fadeInUp 1s ease 0.5s both;
-}
-@keyframes fadeInUp {
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.splash-loading {
-  width:200px;height:3px;
-  background:rgba(245,197,24,0.1);
-  border-radius:3px;overflow:hidden;
-}
-.splash-loading-bar {
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--amber),var(--green));
-  background-size:300% 100%;
-  animation:loadingBar 2.5s ease-in-out forwards,loadingShimmer 1.5s linear infinite;
-  border-radius:3px;
-}
-@keyframes loadingBar {
-  0%{width:0%}100%{width:100%}
-}
-@keyframes loadingShimmer {
-  0%{background-position:0% 50%}100%{background-position:300% 50%}
-}
-
 body::after{
   content:'';position:fixed;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);
@@ -518,67 +441,148 @@ body::after{
   .ring-2{width:83px;height:83px}
   .ring-3{width:112px;height:112px}
   .gcard-body{font-size:0.92rem}
-  .laser-letter{width:44px;height:60px}
-  .laser-letter-canvas{width:64px;height:80px}
-  .laser-letter-char{font-size:2.2rem;width:44px;height:60px}
 }
 </style>
 </head>
 <body>
-
-<!-- ═══ SPLASH SCREEN ═══ -->
-<div id="splashScreen">
-  <canvas class="splash-canvas" id="splashCanvas"></canvas>
-  <div class="splash-content">
-    <div class="laser-title-wrap" id="laserWrap"></div>
-    <div class="splash-subtitle">DUALIS U53700 · ASSISTANT</div>
-    <div class="splash-loading">
-      <div class="splash-loading-bar"></div>
-    </div>
-  </div>
-</div>
 
 <div class="corner-tl"></div><div class="corner-tr"></div>
 <div class="corner-bl"></div><div class="corner-br"></div>
 
 <div class="overlay" id="overlay"></div>
 <div class="side-panel" id="sidePanel">
-  <div class="sp-header"><h3>⚡ DIAGNOSTIC</h3><button class="sp-close" id="spClose">✕</button></div>
+  <div class="sp-header">
+    <h3>⚡ DIAGNOSTIC</h3>
+    <button class="sp-close" id="spClose">✕</button>
+  </div>
   <div class="sp-body">
-    <div class="sp-search-row"><input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false"><button class="sp-search-go" id="spSearchGo">GO</button></div>
+    <div class="sp-search-row">
+      <input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
+      <button class="sp-search-go" id="spSearchGo">GO</button>
+    </div>
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
     <div class="ios-card" id="iosCard">
-      <div class="ios-card-head"><div class="ios-card-code" id="icCode">IOS-???</div><div style="margin-top:5px;display:flex;align-items:center;gap:8px"><span class="prio-tag" id="icPrio"></span></div><div class="ios-card-desc" id="icDesc"></div></div>
-      <div class="ios-card-actions"><button class="ac-btn green" id="icGuide">▶ GUIDAGE</button><button class="ac-btn red" id="icCancel">✕ ANNULER</button><button class="ac-btn" id="icHome">⌂ ACCUEIL</button><button class="ac-btn" id="icNew">🔍 NOUVEAU</button></div>
+      <div class="ios-card-head">
+        <div class="ios-card-code" id="icCode">IOS-???</div>
+        <div style="margin-top:5px;display:flex;align-items:center;gap:8px">
+          <span class="prio-tag" id="icPrio"></span>
+        </div>
+        <div class="ios-card-desc" id="icDesc"></div>
+      </div>
+      <div class="ios-card-actions">
+        <button class="ac-btn green" id="icGuide">▶ GUIDAGE</button>
+        <button class="ac-btn red" id="icCancel">✕ ANNULER</button>
+        <button class="ac-btn" id="icHome">⌂ ACCUEIL</button>
+        <button class="ac-btn" id="icNew">🔍 NOUVEAU</button>
+      </div>
       <div class="ios-card-info" id="icInfo"></div>
     </div>
-    <div class="sp-transcript"><div class="sp-transcript-header"><span>HISTORIQUE</span><button class="sp-transcript-clear" id="clearChat">Effacer</button></div><div class="sp-transcript-msgs" id="chatLog"><div class="t-msg ai"><div class="t-bubble">✨ Système prêt.</div></div></div></div>
+    <div class="sp-transcript">
+      <div class="sp-transcript-header">
+        <span>HISTORIQUE</span>
+        <button class="sp-transcript-clear" id="clearChat">Effacer</button>
+      </div>
+      <div class="sp-transcript-msgs" id="chatLog">
+        <div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="header">
-  <div class="logo-block"><div class="logo">IAOS T4</div><div class="logo-sub">DUALIS U53700 · ASSISTANT</div></div>
-  <div class="header-right"><div class="hdr-clock" id="clock">--:--:--</div><button class="hdr-btn" id="infoBtn" title="Guide">ℹ</button><button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button></div>
+  <div class="logo-block">
+    <div class="logo">IAOS T4</div>
+    <div class="logo-sub">DUALIS U53700 · ASSISTANT</div>
+  </div>
+  <div class="header-right">
+    <div class="hdr-clock" id="clock">--:--:--</div>
+    <button class="hdr-btn" id="infoBtn" title="Guide d'utilisation">ℹ</button>
+    <button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button>
+  </div>
 </div>
 
 <div class="app-body">
-  <div class="status-bar"><div class="status-indicator" id="statusDot"></div><span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span></div>
+
+  <div class="status-bar">
+    <div class="status-indicator" id="statusDot"></div>
+    <span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span>
+  </div>
+
   <div class="mic-zone">
-    <div class="mic-outer" id="micBtn" role="button" tabindex="0"><div class="ring ring-1"></div><div class="ring ring-2"></div><div class="ring ring-3"></div><div class="bars" id="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div></div>
+    <div class="mic-outer" id="micBtn" role="button" tabindex="0" aria-label="Activer/couper le micro">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="bars" id="bars">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div>
+      </div>
+    </div>
     <div class="mic-tap-hint" id="micHint">Appuyer pour couper / réactiver</div>
   </div>
-  <div class="cmd-strip"><div class="cmd-tag">IOS [N°]</div><div class="cmd-tag active-hint">OUI</div><div class="cmd-tag active-hint">NON</div><div class="cmd-tag">Suivant</div><div class="cmd-tag">Précédent</div><div class="cmd-tag">Répéter</div><div class="cmd-tag">Guidage</div><div class="cmd-tag">Annuler</div><div class="cmd-tag">Accueil</div></div>
+
+  <div class="cmd-strip">
+    <div class="cmd-tag">IOS [N°]</div>
+    <div class="cmd-tag active-hint">OUI</div>
+    <div class="cmd-tag active-hint">NON</div>
+    <div class="cmd-tag">Suivant</div>
+    <div class="cmd-tag">Précédent</div>
+    <div class="cmd-tag">Répéter</div>
+    <div class="cmd-tag">Guidage</div>
+    <div class="cmd-tag">Annuler</div>
+    <div class="cmd-tag">Accueil</div>
+  </div>
+
   <div class="guide-card" id="guideCard">
-    <div class="gcard-label" id="gLabel">ÉTAPE</div><div class="gcard-ios-id" id="gIosId"></div><div class="gcard-step-label" id="gStepLbl"></div><div class="gcard-body" id="gBody"></div><div class="gcard-divider"></div>
-    <div class="gcard-actions" id="gActions"><button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button><button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button><button class="gcard-btn" id="gPrev">← PRÉC.</button><button class="gcard-btn primary" id="gNext">SUIVANT →</button><button class="gcard-btn" id="gCancel">ANNULER</button></div>
+    <div class="gcard-label" id="gLabel">ÉTAPE</div>
+    <div class="gcard-ios-id" id="gIosId"></div>
+    <div class="gcard-step-label" id="gStepLbl"></div>
+    <div class="gcard-body" id="gBody"></div>
+    <div class="gcard-divider"></div>
+    <div class="gcard-actions" id="gActions">
+      <button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button>
+      <button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button>
+      <button class="gcard-btn" id="gPrev">← PRÉC.</button>
+      <button class="gcard-btn primary" id="gNext">SUIVANT →</button>
+      <button class="gcard-btn" id="gCancel">ANNULER</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="end-bar" id="endBar">
+  <div class="end-bar-text">Procédure terminée</div>
+  <div class="end-bar-btns">
+    <button class="gcard-btn yes" id="ebRecap">📄 Bulletin de service</button>
+    <button class="gcard-btn no" id="ebClose">Fermer</button>
   </div>
 </div>
 
-<div class="end-bar" id="endBar"><div class="end-bar-text">Procédure terminée</div><div class="end-bar-btns"><button class="gcard-btn yes" id="ebRecap">📄 Bulletin</button><button class="gcard-btn no" id="ebClose">Fermer</button></div></div>
+<div class="modal-bg" id="listBg">
+  <div class="modal">
+    <div class="modal-head"><h3>📋 LISTE DES IOS</h3><button class="modal-x" id="listX">✕</button></div>
+    <div class="modal-list" id="modalList"></div>
+  </div>
+</div>
 
-<div class="modal-bg" id="listBg"><div class="modal"><div class="modal-head"><h3>📋 LISTE DES IOS</h3><button class="modal-x" id="listX">✕</button></div><div class="modal-list" id="modalList"></div></div></div>
-<div class="recap-bg" id="recapBg"><div class="recap-modal"><div class="recap-head"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapX">✕</button></div><div class="recap-body" id="recapBody"></div><div class="recap-foot"><button class="recap-btn" id="recapPrint">🖨 Imprimer</button><button class="recap-btn primary" id="recapClose2">Fermer</button></div></div></div>
-<div class="info-bg" id="infoBg"><div class="info-modal"><div class="info-head"><h3>ℹ GUIDE</h3><button class="info-x" id="infoX">✕</button></div><div class="info-content" id="infoContent"></div></div></div>
+<div class="recap-bg" id="recapBg">
+  <div class="recap-modal">
+    <div class="recap-head"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapX">✕</button></div>
+    <div class="recap-body" id="recapBody"></div>
+    <div class="recap-foot">
+      <button class="recap-btn" id="recapPrint">🖨 Imprimer</button>
+      <button class="recap-btn primary" id="recapClose2">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="info-bg" id="infoBg">
+  <div class="info-modal">
+    <div class="info-head"><h3>ℹ GUIDE D'UTILISATION</h3><button class="info-x" id="infoX">✕</button></div>
+    <div class="info-content" id="infoContent"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -586,31 +590,9 @@ body::after{
 'use strict';
 
 /* ═══════════════════════════════════
-   SPLASH - FLAMMES + LASER PAR LETTRE
+   BASE DE DONNÉES IOS (À REMPLIR)
 ═══════════════════════════════════ */
-const splashCanvas=document.getElementById('splashCanvas'),splashCtx=splashCanvas.getContext('2d');
-let splashW,splashH,flameParts=[],splashRaf;
-const FL=['rgba(0,229,255,','rgba(57,255,135,','rgba(191,128,255,','rgba(255,179,0,','rgba(245,197,24,','rgba(255,59,59,','rgba(0,200,255,','rgba(255,140,0,'];
-function rs(){splashW=splashCanvas.width=innerWidth;splashH=splashCanvas.height=innerHeight;}
-rs();addEventListener('resize',rs);
-function mk(){return{x:splashW/2+(Math.random()-.5)*200,y:splashH/2-60+Math.random()*180,vx:(Math.random()-.5)*2.5,vy:-(Math.random()*3+1.5),l:1,d:.006+Math.random()*.025,s:3+Math.random()*8,c:FL[Math.floor(Math.random()*FL.length)],ph:Math.random()*Math.PI*2};}
-function initF(){flameParts=[];for(let i=0;i<130;i++){const p=mk();p.y=splashH/2+60;p.l=Math.random();flameParts.push(p);}}
-function animSplash(){splashCtx.clearRect(0,0,splashW,splashH);const g=splashCtx.createRadialGradient(splashW/2,splashH/2-40,10,splashW/2,splashH/2,splashW*.7);g.addColorStop(0,'rgba(8,12,15,0.2)');g.addColorStop(.5,'rgba(8,12,15,0.6)');g.addColorStop(1,'rgba(8,12,15,0.95)');splashCtx.fillStyle=g;splashCtx.fillRect(0,0,splashW,splashH);for(let p of flameParts){p.x+=p.vx+Math.sin(p.ph+performance.now()*.002)*.8;p.y+=p.vy;p.l-=p.d;p.s*=.997;if(p.l<=0||p.y<-50||p.s<.5){Object.assign(p,mk());p.y=splashH/2+60;p.l=1;continue}const a=p.l*.75;splashCtx.beginPath();splashCtx.arc(p.x,p.y,p.s,0,Math.PI*2);splashCtx.fillStyle=p.c+a+')';splashCtx.shadowColor=p.c+a+')';splashCtx.shadowBlur=p.s*4;splashCtx.fill();splashCtx.shadowBlur=0;}const cg=splashCtx.createRadialGradient(splashW/2,splashH/2-50,5,splashW/2,splashH/2-50,90);cg.addColorStop(0,'rgba(0,229,255,0.7)');cg.addColorStop(.3,'rgba(255,140,0,0.5)');cg.addColorStop(.7,'rgba(191,128,255,0.2)');cg.addColorStop(1,'rgba(0,229,255,0)');splashCtx.beginPath();splashCtx.arc(splashW/2,splashH/2-50,90,0,Math.PI*2);splashCtx.fillStyle=cg;splashCtx.fill();splashRaf=requestAnimationFrame(animSplash);}
-initF();animSplash();
-
-/* ─── CONSTRUCTION DYNAMIQUE DES LETTRES ─── */
-const titleText='IAOS T4',laserWrap=document.getElementById('laserWrap'),letterCanvases=[];
-let laserTime=0;
-for(let i=0;i<titleText.length;i++){const ch=titleText[i],ld=document.createElement('div');ld.className='laser-letter';const cv=document.createElement('canvas');cv.className='laser-letter-canvas';cv.width=80;cv.height=100;const sp=document.createElement('span');sp.className='laser-letter-char';sp.textContent=ch;sp.style.animationDelay=(i*.12)+'s';ld.appendChild(cv);ld.appendChild(sp);laserWrap.appendChild(ld);letterCanvases.push({canvas:cv,ctx:cv.getContext('2d')});}
-
-/* ─── ANIMATION LASER AUTOUR DE CHAQUE LETTRE ─── */
-function animateAllLasers(){laserTime+=0.01;for(let i=0;i<letterCanvases.length;i++){const{cv,ctx}=letterCanvases[i];if(!cv||!ctx)continue;const w=cv.width,h=cv.height,cx=w/2,cy=h/2,rx=28,ry=38,po=i*.6;ctx.clearRect(0,0,w,h);ctx.strokeStyle='rgba(0,229,255,0.85)';ctx.lineWidth=2;ctx.shadowColor='rgba(0,229,255,0.8)';ctx.shadowBlur=14;ctx.beginPath();for(let a=0;a<=360;a+=3){const angle=(a+laserTime*60+po*20)*Math.PI/180,wx=rx+Math.sin(laserTime*4+a*.06+po)*3,wy=ry+Math.cos(laserTime*3.5+a*.05+po)*3,x=cx+Math.cos(angle)*wx,y=cy+Math.sin(angle)*wy;a===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.closePath();ctx.stroke();ctx.shadowBlur=0;}requestAnimationFrame(animateAllLasers);}
-animateAllLasers();
-
-setTimeout(()=>{document.getElementById('splashScreen').classList.add('hidden');setTimeout(()=>{cancelAnimationFrame(splashRaf);splashCanvas.remove();},600);},3000);
-
-/* ═══ IOS DB ═══ */
-const IOS_DB={
+const IOS_DB = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
   tree:[{t:'Arrêtez le train au 1er quai disponible.',d:0},{t:'Avisez le PC immédiatement.',d:0},{t:'Appliquez le GD.',d:0},{t:'✅ Dépannage terminé.',d:0,fin:1}]},
@@ -1055,7 +1037,8 @@ const IOS_DB={
 '245':{id:'245',pri:'m',desc:'Défaut refroidissement STM',kw:['245','refroidissement','stm'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Avisez le PC.',d:0,fin:1}]},
 '246':{id:'246',pri:'m',desc:"Isolation de la surveillance d'UM homogène par le commutateur",kw:['246','um','surveillance'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Avisez le PC et conformez-vous aux instructions.',d:0,fin:1}]},
 '247':{id:'247',pri:'m',desc:"Présence d'une composition d'UM hétérogène",kw:['247','um','heterogene'],instr:['Aviser PC — Appliquer GD'],tree:[{t:'Séparez les éléments si en UM. Placez Z(IS-UM-HO) sur ISOLÉ si train en US. Avisez le PC.',d:0,fin:1}]}
-};ALIAS_DB={'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
+};
+const ALIAS_DB = {'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['061'],'chaleur':['061'],
 'secours':['002','048','222'],'urgence':['048','222'],
 'patin magnetique':['071'],'patin magnétique':['071'],'patin':['071'],
 'frein friction ce1':['083'],'frein friction c1':['084'],'frein friction ce2':['085'],
@@ -1077,81 +1060,283 @@ const IOS_DB={
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
-for(let i=0;i<=247;i++){const id=String(i).padStart(3,'0');if(!IOS_DB[id])IOS_DB[id]={id,pri:'l',desc:'Information technique / retour maintenance',instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],symboles:'',vitesse:'',tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],kw:[]};}
-let curIOS=null,guideOn=!1,guideSteps=[],stepIdx=0,iosInfoShown=!1,micOn=!0,isListening=!1,isSpeaking=!1,recognition=null,restartTimer=null,earlyListenTimer=null,currentUtterance=null,procStart=null,procEnd=null,procLog=[],cachedVoice=null;
-const synth=speechSynthesis,hasVoice=!!synth;
-if(hasVoice){synth.getVoices();synth.onvoiceschanged=()=>{cachedVoice=null;getVoice();}}
-function getVoice(){if(cachedVoice)return cachedVoice;const vx=synth.getVoices();if(!vx.length)return null;const f=['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine'],m=['male','homme','masculin','thomas','pierre','jean','paul','jacques','robert','louis','nicolas','daniel','michel','alain','philippe','pascal','patrick','renaud','laurent','olivier','denis','serge','bruno','marc','guy','yves'];let v=vx.find(x=>x.lang.startsWith('fr')&&f.some(y=>x.name.toLowerCase().includes(y)));if(!v)v=vx.find(x=>x.lang.startsWith('fr')&&!m.some(y=>x.name.toLowerCase().includes(y)));if(!v)v=vx.find(x=>x.lang.startsWith('fr'));cachedVoice=v;return v;}
-function speak(t,cb){if(!hasVoice){cb&&cb();return}if(isSpeaking)synth.cancel();clearTimeout(earlyListenTimer);let x=t.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'').replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L').replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès').replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s').replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J').replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M').replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F').replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M').replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M').replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S').replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J').replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ').replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10)).replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10)).replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();currentUtterance=new SpeechSynthesisUtterance(x);currentUtterance.lang='fr-FR';currentUtterance.rate=.92;currentUtterance.volume=1;const v=getVoice();if(v)currentUtterance.voice=v;const ed=(x.length/12)*1000,eld=Math.max(ed-2000,500);isSpeaking=!0;setUI('speak');earlyListenTimer=setTimeout(()=>{if(isSpeaking&&micOn&&!isListening){setUI('earlyListen');startListening();}},eld);currentUtterance.onend=()=>{isSpeaking=!1;clearTimeout(earlyListenTimer);setUI('idle');if(micOn&&!isListening)schedRestart();cb&&cb();currentUtterance=null;};currentUtterance.onerror=()=>{isSpeaking=!1;clearTimeout(earlyListenTimer);setUI('error');if(micOn&&!isListening)schedRestart();cb&&cb();currentUtterance=null;};synth.speak(currentUtterance);}
-function $(id){return document.getElementById(id);}
-function setUI(s){const d=$('statusDot'),t=$('statusTxt'),b=$('bars'),m=$('micBtn');const h={idle:'Micro actif · Dites un numéro IOS',listen:'Écoute en cours…',speak:'Synthèse vocale…',earlyListen:'Prêt à répondre…',blocked:'Procédure active — terminez ou annulez',error:'Erreur — relance automatique',muted:'Micro coupé'};d.className='status-indicator '+(s==='listen'?'listen':s==='speak'?'speak':s==='earlyListen'?'earlyListen':s==='blocked'?'blocked':s==='error'?'error':'');t.className='status-text '+(s==='listen'?'listen':s==='speak'?'speak':s==='blocked'?'blocked':'');t.textContent=h[s]||h.idle;b.className='bars '+(s==='listen'?'listen':s==='speak'?'speak':s==='earlyListen'?'earlyListen':s==='error'?'error':s==='muted'?'muted':'');m.className='mic-outer '+(s==='listen'?'listen':s==='speak'?'speak':s==='earlyListen'?'earlyListen':s==='error'?'error':'');}
-function toast(msg,ms=2800){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
-function addMsg(html,role='ai'){const log=$('chatLog'),d=document.createElement('div');d.className='t-msg '+role;d.innerHTML='<div class="t-bubble">'+html+'</div>';log.appendChild(d);log.scrollTop=log.scrollHeight;while(log.children.length>100)log.removeChild(log.firstChild);}
-function renderGuideCard(){const c=$('guideCard');if(!guideOn||stepIdx>=guideSteps.length){c.classList.remove('show');iosInfoShown=!1;return}const s=guideSteps[stepIdx];if(s.fin){c.classList.remove('show');iosInfoShown=!1;return}c.classList.add('show');$('gLabel').textContent='PROCÉDURE GUIDÉE';$('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;$('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length;$('gBody').textContent=s.t;$('gYes').style.display=s.d?'inline-flex':'none';$('gNo').style.display=s.d?'inline-flex':'none';$('gPrev').style.display='inline-flex';$('gNext').textContent='SUIVANT →';$('gNext').style.display='inline-flex';$('gCancel').textContent='ANNULER';iosInfoShown=!1;}
-function showIosInfoCard(){if(!curIOS)return;const c=$('guideCard');c.classList.add('show');$('gLabel').textContent='IOS DÉTECTÉ';$('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;$('gStepLbl').textContent=curIOS.desc;$('gBody').textContent='Prêt à démarrer. Dites « guidage ».';$('gYes').style.display='none';$('gNo').style.display='none';$('gPrev').style.display='none';$('gNext').textContent='▶ DÉMARRER';$('gNext').style.display='inline-flex';$('gCancel').textContent='ANNULER';$('gCancel').style.display='inline-flex';iosInfoShown=!0;}
-function showEndCard(msg){const c=$('guideCard');c.classList.add('show');$('gLabel').textContent='TERMINÉ';$('gIosId').textContent='';$('gStepLbl').textContent='';$('gBody').textContent=msg;$('gYes').style.display='none';$('gNo').style.display='none';$('gPrev').style.display='none';$('gNext').style.display='none';$('gCancel').textContent='FERMER';$('gCancel').style.display='inline-flex';iosInfoShown=!1;}
-function renderIosCard(ios){$('iosCard').classList.add('show');$('icCode').textContent='IOS-'+ios.id;$('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';$('icPrio').className='prio-tag prio-'+ios.pri;$('icDesc').textContent=ios.desc;$('icInfo').textContent='📋 '+ios.tree.length+' étapes.';}
-function findIOS(q){q=q.toLowerCase().trim();const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i);if(m){const id=m[1].padStart(3,'0');if(IOS_DB[id])return IOS_DB[id];}for(const[a,id]of Object.entries(ALIAS_DB)){if(q.includes(a))return IOS_DB[id];}for(const io of Object.values(IOS_DB)){if(io.desc.toLowerCase().includes(q))return io;if(io.kw&&io.kw.some(k=>q.includes(k)))return io;}return null;}
-function loadIOS(ios){curIOS=ios;guideOn=!1;iosInfoShown=!1;renderIosCard(ios);addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc);speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80));showIosInfoCard();procStart=null;procEnd=null;procLog=[];}
-function startGuide(){if(!curIOS)return;guideOn=!0;guideSteps=[];stepIdx=0;if(curIOS.instructions)for(const i of curIOS.instructions)guideSteps.push({t:i.t,d:0});if(curIOS.symboles)guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0});if(curIOS.vitesse)guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});for(const s of curIOS.tree)guideSteps.push(s);procStart=new Date();procEnd=null;procLog=[];iosInfoShown=!1;renderGuideCard();addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id);runStep();}
-function runStep(){if(!guideOn||stepIdx>=guideSteps.length){finishProc('✅ Fin de procédure.');return}const s=guideSteps[stepIdx];if(s.fin){finishProc(s.t||'✅ Procédure achevée.');return}renderGuideCard();procLog.push(s.t);speak(s.t);}
-function answerYes(){if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d)return;branch(!0);}
-function answerNo(){if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d)return;branch(!1);}
-function branch(y){const s=guideSteps[stepIdx],n=y?(s.oui||[]):(s.non||[]);addMsg(y?'✓ OUI':'✗ NON','user');procLog.push(y?'OUI':'NON');if(!n.length){finishProc('✅ Fin de procédure.');return}guideSteps=n;stepIdx=0;runStep();}
-function nextStep(){if(!guideOn){if(iosInfoShown&&curIOS){startGuide();return}return}const s=guideSteps[stepIdx];if(s&&s.d){speak('Veuillez répondre par oui ou par non.');return}stepIdx++;runStep();}
-function prevStep(){if(!guideOn)return;if(stepIdx>0){stepIdx--;runStep();}else speak('Première étape.');}
-function cancelProc(){guideOn=!1;iosInfoShown=!1;$('guideCard').classList.remove('show');$('endBar').classList.remove('show');addMsg('❌ Procédure annulée.');speak('Procédure annulée.');}
-function finishProc(msg){guideOn=!1;procEnd=new Date();addMsg(msg);speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg);showEndCard(msg);$('endBar').classList.add('show');}
-function goHome(){cancelProc();curIOS=null;$('iosCard').classList.remove('show');$('guideCard').classList.remove('show');$('endBar').classList.remove('show');$('spSearch').value='';addMsg('🏠 Retour accueil.');speak("Retour à l'accueil.");}
-function ft(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-function fd(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function genRecap(){if(!curIOS||!procStart)return'';const e=procEnd||new Date();return['═══════════════','BULLETIN IAOS T4','═══════════════','Date:'+fd(procStart),'IOS:'+curIOS.id,'Priorité:'+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'Début:'+ft(procStart),'Fin:'+ft(e),'Durée:'+Math.round((e-procStart)/60000)+'min','Étapes:',...procLog.map((s,i)=>' '+(i+1)+'. '+s),'Statut: Terminé'].join('\n');}
-function openRecap(){$('recapBody').textContent=genRecap();$('recapBg').classList.add('on');}
-function closeRecap(){$('recapBg').classList.remove('on');}
-function printRecap(){const w=window.open('','','width=680,height=600');w.document.write('<pre>'+$('recapBody').textContent+'</pre>');w.document.close();w.print();}
-function buildList(){const ul=$('modalList');ul.innerHTML='';const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));for(const id of ids){const io=IOS_DB[id],r=document.createElement('div');r.className='ios-row';const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l',pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF';r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>';r.addEventListener('click',()=>{closeList();if(!isProcActive())loadIOS(io);else toast('Terminez la procédure.');});ul.appendChild(r);}}
-function openList(){buildList();$('listBg').classList.add('on');}
-function closeList(){$('listBg').classList.remove('on');}
-function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes</h4><ul><li><span class="cmd-pill">IOS [N°]</span> Charger</li><li><span class="cmd-pill">guidage</span> Lancer</li><li><span class="cmd-pill">suivant / ok</span> Suite</li><li><span class="cmd-pill">précédent</span> Reculer</li><li><span class="cmd-pill">oui / non</span> Répondre</li><li><span class="cmd-pill">répète</span> Redire</li><li><span class="cmd-pill">annuler</span> Stopper</li></ul>`;$('infoBg').classList.add('on');}
-function closeInfo(){$('infoBg').classList.remove('on');}
-function isProcActive(){return guideOn||isSpeaking||iosInfoShown;}
-const CMDS={cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],next:[/\b(suivant|suite|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|next|terminé|effectué|fait|valider|valide?)\b/i],prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i],repeat:[/\b(répète?|redis|encore|répète\s+ça|repeat|pardon|hein|reformule?)\b/i],greet:[/\b(bonjour|salut|salam|coucou|hello|hi|hey|bonsoir)\b/i],oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|confirmé|validé|présent|allumé|ça\s+marche)\b/i],non:[/\bnon\b/i,/\bnan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bmarche\s+pas\b/i,/\bpas\b/i],time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],creator:[/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien)\b/i],fermer:[/\b(fermer|ferme|close|fermez|clore)\b/i],bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i]};
-function match(t,k){return CMDS[k].some(r=>r.test(t));}
-function isNon(t){if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(t))return!0;return CMDS.non.some(r=>r.test(t));}
-function isOui(t){if(isNon(t))return!1;return CMDS.oui.some(r=>r.test(t));}
-function processVoice(raw){const txt=raw.trim();if(!txt)return;addMsg(txt,'user');const ea=$('endBar').classList.contains('show');if(ea){if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){$('endBar').classList.remove('show');$('guideCard').classList.remove('show');addMsg('Fermé.');speak('Fenêtre fermée.');return}if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){$('endBar').classList.remove('show');openRecap();return}}if(match(txt,'inutile')){const r=['C\'est toi le boloss ! Applique le guide.','Boloss, applique le guide de dépannage.'][Math.floor(Math.random()*2)];addMsg(r);speak(r);return}if(match(txt,'cancel')){cancelProc();return}if(match(txt,'home')){goHome();return}if(match(txt,'greet')){if(/salam/i.test(txt)){addMsg('Wa aleykoum salam.');speak('Wa aleykoum salam.');return}addMsg('Bonjour !');speak('Bonjour !');return}if(isProcActive()){if(match(txt,'repeat')){if(guideOn&&guideSteps[stepIdx])speak(guideSteps[stepIdx].t);else if(curIOS)speak("l'IOS "+parseInt(curIOS.id,10));return}if(match(txt,'prev')){if(guideOn){prevStep();return}}if(match(txt,'next')){nextStep();return}if(match(txt,'guide')&&curIOS&&!guideOn){startGuide();return}if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){if(isNon(txt)){answerNo();return}if(isOui(txt)){answerYes();return}}if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){addMsg('⚠ Procédure en cours.');speak("Occupé avec l'IOS "+parseInt(curIOS.id,10));setUI('blocked');setTimeout(()=>setUI('idle'),2200);return}return}if(match(txt,'repeat')){if(curIOS)speak("l'IOS "+parseInt(curIOS.id,10));return}if(match(txt,'guide')){if(curIOS){startGuide();return}speak("Cherchez d'abord un i o s.");return}if(match(txt,'list')){openList();return}if(match(txt,'help')){openInfo();return}if(match(txt,'creator')){addMsg('👤 Zaber.');speak('Zabèr.');return}if(match(txt,'time')){speak('Il est '+ft(new Date()));return}if(match(txt,'date')){speak('Nous sommes le '+fd(new Date()));return}if(match(txt,'elapsed')){if(!procStart){speak('Aucune procédure.');return}const d=new Date()-procStart,m=Math.floor(d/60000);speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.');return}const io=findIOS(txt);if(io){loadIOS(io);return}speak('Aucun i o s trouvé.');}
-function schedRestart(){clearTimeout(restartTimer);restartTimer=setTimeout(()=>{if(micOn&&!isSpeaking&&!isListening)startListening();},300);}
-function startListening(){if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window)){toast('Non supporté');return}if(isSpeaking||isListening)return;try{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();recognition.lang='fr-FR';recognition.continuous=!0;recognition.interimResults=!0;recognition.maxAlternatives=8;let final='',silTimer=null;recognition.onstart=()=>{isListening=!0;final='';setUI('listen')};recognition.onresult=(ev)=>{clearTimeout(silTimer);let interim='';for(let i=ev.resultIndex;i<ev.results.length;i++){if(ev.results[i].isFinal){let best='',bestConf=0;for(let j=0;j<ev.results[i].length;j++){if(ev.results[i][j].confidence>bestConf){bestConf=ev.results[i][j].confidence;best=ev.results[i][j].transcript;}}if(best&&bestConf>.02)final+=' '+best;}else{interim+=ev.results[i][0].transcript;}}if(final.trim()&&!interim){const t=final.trim();final='';processVoice(t);}else{silTimer=setTimeout(()=>{if(final.trim()){const t=final.trim();final='';processVoice(t);}},900);}};recognition.onerror=()=>{isListening=!1;final='';setUI('idle');if(micOn&&!isSpeaking)schedRestart();};recognition.onend=()=>{isListening=!1;if(final.trim()){processVoice(final.trim());final='';}if(micOn&&!isSpeaking)schedRestart();else setUI('idle');};recognition.start();}catch(e){if(micOn)setTimeout(startListening,700);}}
-function stopListening(){clearTimeout(restartTimer);if(recognition){try{recognition.stop();}catch(e){}recognition=null;}isListening=!1;setUI('idle');}
-function toggleMic(){if(isSpeaking)return;micOn=!micOn;if(micOn){startListening();toast('Micro activé');}else{stopListening();setUI('muted');$('statusTxt').textContent='Micro coupé';toast('Micro coupé');}}
-function updateClock(){$('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-setInterval(updateClock,1000);updateClock();
+
+for(let i=0;i<=247;i++){
+  const id = String(i).padStart(3,'0');
+  if(!IOS_DB[id]) IOS_DB[id] = {
+    id, pri:'l', desc:'Information technique / retour maintenance',
+    instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],
+    symboles:'', vitesse:'',
+    tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],
+    kw:[]
+  };
+}
+
+/* ═══ ÉTAT ═══ */
+let curIOS = null;
+let guideOn = false, guideSteps = [], stepIdx = 0;
+let iosInfoShown = false;
+let micOn = true, isListening = false, isSpeaking = false;
+let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
+let procStart = null, procEnd = null, procLog = [];
+let cachedVoice = null;
+
+/* ═══ SYNTH ═══ */
+const synth = window.speechSynthesis;
+const hasVoice = !!synth;
+
+if(hasVoice){ synth.getVoices(); synth.onvoiceschanged = ()=>{ cachedVoice=null; getVoice(); }; }
+
+function getVoice(){
+  if(cachedVoice) return cachedVoice;
+  const vx = synth.getVoices();
+  if(!vx.length) return null;
+  const fem = ['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine'];
+  const mal = ['male','homme','masculin','thomas','pierre','jean','paul','jacques','robert','louis','nicolas','daniel','michel','alain','philippe','pascal','patrick','renaud','laurent','olivier','denis','serge','bruno','marc','guy','yves'];
+  let v = vx.find(x=>x.lang.startsWith('fr') && fem.some(f=>x.name.toLowerCase().includes(f)));
+  if(!v) v = vx.find(x=>x.lang.startsWith('fr') && !mal.some(m=>x.name.toLowerCase().includes(m)));
+  if(!v) v = vx.find(x=>x.lang.startsWith('fr'));
+  cachedVoice = v;
+  return v;
+}
+
+function speak(txt, cb){
+  if(!hasVoice){ cb && cb(); return; }
+  if(isSpeaking) synth.cancel();
+  clearTimeout(earlyListenTimer);
+  let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
+    .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
+    .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
+    .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s')
+    .replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
+    .replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J')
+    .replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M')
+    .replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F')
+    .replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M')
+    .replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M')
+    .replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S')
+    .replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J')
+    .replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure')
+    .replace(/\bart\.\s*/gi,'article ')
+    .replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10))
+    .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
+    .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
+
+  currentUtterance = new SpeechSynthesisUtterance(x);
+  currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
+  const v = getVoice(); if(v) currentUtterance.voice=v;
+  const estimatedDuration = (x.length / 12) * 1000;
+  const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
+  isSpeaking=true; setUI('speak');
+  earlyListenTimer = setTimeout(() => { if(isSpeaking && micOn && !isListening){ setUI('earlyListen'); startListening(); } }, earlyListenDelay);
+  currentUtterance.onend = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('idle'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
+  currentUtterance.onerror = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('error'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
+  synth.speak(currentUtterance);
+}
+
+/* ═══ UI STATE ═══ */
+function $(id){ return document.getElementById(id); }
+
+function setUI(state){
+  const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
+  const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Synthèse vocale…', earlyListen:'Prêt à répondre…', blocked:'Procédure active — terminez ou annulez', error:'Erreur — relance automatique', muted:'Micro coupé' };
+  dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':'');
+  txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':'');
+  txt.textContent = hints[state] || hints.idle;
+  bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':'');
+  mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':'');
+}
+
+function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
+function addMsg(html, role='ai'){ const log=$('chatLog'); const d=document.createElement('div'); d.className='t-msg '+role; d.innerHTML='<div class="t-bubble">'+html+'</div>'; log.appendChild(d); log.scrollTop=log.scrollHeight; while(log.children.length>100) log.removeChild(log.firstChild); }
+
+/* ═══ GUIDE CARD ═══ */
+function renderGuideCard(){
+  const card=$('guideCard');
+  if(!guideOn || stepIdx>=guideSteps.length){ card.classList.remove('show'); iosInfoShown=false; return; }
+  const s=guideSteps[stepIdx]; if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; }
+  card.classList.add('show');
+  $('gLabel').textContent='PROCÉDURE GUIDÉE';
+  $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
+  $('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length;
+  $('gBody').textContent=s.t;
+  $('gYes').style.display=s.d?'inline-flex':'none'; $('gNo').style.display=s.d?'inline-flex':'none';
+  $('gPrev').style.display='inline-flex'; $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER'; iosInfoShown=false;
+}
+
+function showIosInfoCard(){
+  if(!curIOS) return;
+  const card=$('guideCard'); card.classList.add('show');
+  $('gLabel').textContent='IOS DÉTECTÉ';
+  $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
+  $('gStepLbl').textContent=curIOS.desc;
+  $('gBody').textContent='Prêt à démarrer la procédure de guidage. Dites « guidage » ou appuyez sur DÉMARRER.';
+  $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none';
+  $('gNext').textContent='▶ DÉMARRER LE GUIDAGE'; $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER'; $('gCancel').style.display='inline-flex';
+  iosInfoShown=true;
+}
+
+function showEndCard(msg){
+  const card=$('guideCard'); card.classList.add('show');
+  $('gLabel').textContent='TERMINÉ'; $('gIosId').textContent=''; $('gStepLbl').textContent='';
+  $('gBody').textContent=msg;
+  $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').style.display='none';
+  $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex';
+  iosInfoShown=false;
+}
+
+/* ═══ PANEL IOS CARD ═══ */
+function renderIosCard(ios){
+  $('iosCard').classList.add('show');
+  $('icCode').textContent='IOS-'+ios.id;
+  $('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';
+  $('icPrio').className='prio-tag prio-'+ios.pri;
+  $('icDesc').textContent=ios.desc;
+  $('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.';
+}
+
+/* ═══ IOS LOGIC ═══ */
+function findIOS(q){ q=q.toLowerCase().trim(); const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; } for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; } for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) return io; if(io.kw && io.kw.some(k=>q.includes(k))) return io; } return null; }
+
+function loadIOS(ios){ curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; }
+
+function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); }
+function runStep(){ if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; } const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; } renderGuideCard(); procLog.push(s.t); speak(s.t); }
+function answerYes(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(true); }
+function answerNo(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(false); }
+function branch(yes){ const s=guideSteps[stepIdx]; const next=yes?(s.oui||[]):(s.non||[]); addMsg(yes?'✓ OUI':'✗ NON','user'); procLog.push(yes?'OUI':'NON'); if(!next.length){ finishProc('✅ Fin de procédure.'); return; } guideSteps=next; stepIdx=0; runStep(); }
+function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); return; } return; } const s=guideSteps[stepIdx]; if(s&&s.d){ speak('Veuillez répondre par oui ou par non.'); return; } stepIdx++; runStep(); }
+function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
+function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); }
+function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); }
+function goHome(){ cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil."); }
+
+/* ═══ RAPPORT ═══ */
+function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function genRecap(){ if(!curIOS||!procStart) return ''; const e=procEnd||new Date(); return ['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n'); }
+function openRecap(){ $('recapBody').textContent=genRecap(); $('recapBg').classList.add('on'); }
+function closeRecap(){ $('recapBg').classList.remove('on'); }
+function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre>'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
+
+/* ═══ IOS LIST ═══ */
+function buildList(){ const ul=$('modalList'); ul.innerHTML=''; const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b)); for(const id of ids){ const io=IOS_DB[id]; const r=document.createElement('div'); r.className='ios-row'; const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l'; const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF'; r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>'; r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); }); ul.appendChild(r); } }
+function openList(){ buildList(); $('listBg').classList.add('on'); }
+function closeList(){ $('listBg').classList.remove('on'); }
+
+/* ═══ INFO ═══ */
+function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué.</p>`; $('infoBg').classList.add('on'); }
+function closeInfo(){ $('infoBg').classList.remove('on'); }
+
+function isProcActive(){ return guideOn || isSpeaking || iosInfoShown; }
+
+/* ═══ VOICE COMMANDS ═══ */
+const CMDS = {
+  cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
+  home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
+  guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],
+  next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
+  prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i,/\b(?!retour\s+accueil)retour\b/i],
+  repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
+  greet:[/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
+  oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
+  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bpas\s+vraiment\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bmarche\s+pas\b/i,/\bpas\b/i],
+  time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
+  date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
+  elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
+  list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
+  help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
+  creator:[/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
+  inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
+  fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
+  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i]
+};
+
+function match(txt,key){ return CMDS[key].some(r=>r.test(txt)); }
+function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)); }
+function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)); }
+
+function processVoice(raw){
+  const txt=raw.trim(); if(!txt) return;
+  addMsg(txt,'user');
+  const endActive=$('endBar').classList.contains('show');
+  if(endActive){
+    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
+    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; }
+  }
+  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; addMsg(r); speak(r); return; }
+  if(match(txt,'cancel')){ cancelProc(); return; }
+  if(match(txt,'home')){ goHome(); return; }
+  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
+  if(isProcActive()){ if(match(txt,'repeat')){ if(guideOn&&guideSteps[stepIdx]) speak(guideSteps[stepIdx].t); else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
+  if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; }
+  if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
+  if(match(txt,'list')){ openList(); return; }
+  if(match(txt,'help')){ openInfo(); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr.'); return; }
+  if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
+  if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
+  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
+  const io=findIOS(txt); if(io){ loadIOS(io); return; }
+  speak('Aucun i o s trouvé.');
+}
+
+/* ═══ RECONNAISSANCE VOCALE ═══ */
+function schedRestart(){ clearTimeout(restartTimer); restartTimer=setTimeout(()=>{ if(micOn&&!isSpeaking&&!isListening) startListening(); },300); }
+function startListening(){
+  if(!('SpeechRecognition' in window)&&!('webkitSpeechRecognition' in window)){ toast('Reconnaissance vocale non supportée'); return; }
+  if(isSpeaking||isListening) return;
+  try{
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; recognition=new SR();
+    recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
+    let final=''; let silTimer=null;
+    recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
+    recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()){ const t=final.trim(); final=''; processVoice(t); } },900); } };
+    recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking) schedRestart(); };
+    recognition.onend=()=>{ isListening=false; if(final.trim()){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
+    recognition.start();
+  }catch(e){ if(micOn) setTimeout(startListening,700); }
+}
+function stopListening(){ clearTimeout(restartTimer); if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; } isListening=false; setUI('idle'); }
+function toggleMic(){ if(isSpeaking) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé'; toast('Microphone coupé'); } }
+
+/* ═══ HORLOGE ═══ */
+function updateClock(){ $('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+setInterval(updateClock,1000); updateClock();
+
+/* ═══ EVENTS ═══ */
 $('micBtn').addEventListener('click',toggleMic);
-$('panelBtn').addEventListener('click',()=>{$('sidePanel').classList.add('open');$('overlay').classList.add('on');});
-$('overlay').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
-$('spClose').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
-$('infoBtn').addEventListener('click',openInfo);$('infoX').addEventListener('click',closeInfo);
-$('infoBg').addEventListener('click',e=>{if(e.target===$('infoBg'))closeInfo();});
-function doSearch(v){if(!v.trim())return;if(isProcActive()){toast('Procédure active');return}processVoice(v);}
-$('spSearch').addEventListener('keypress',e=>{if(e.key==='Enter'){doSearch(e.target.value);e.target.value='';}});
-$('spSearchGo').addEventListener('click',()=>{doSearch($('spSearch').value);$('spSearch').value='';});
-$('showListBtn').addEventListener('click',openList);$('listX').addEventListener('click',closeList);
-$('listBg').addEventListener('click',e=>{if(e.target===$('listBg'))closeList();});
-$('icGuide').addEventListener('click',()=>{if(!isProcActive()||iosInfoShown)startGuide();});
-$('icCancel').addEventListener('click',cancelProc);$('icHome').addEventListener('click',goHome);$('icNew').addEventListener('click',goHome);
-$('gYes').addEventListener('click',answerYes);$('gNo').addEventListener('click',answerNo);
-$('gNext').addEventListener('click',()=>{if(iosInfoShown)startGuide();else nextStep();});
+$('panelBtn').addEventListener('click',()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
+$('overlay').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('spClose').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('infoBtn').addEventListener('click',openInfo);
+$('infoX').addEventListener('click',closeInfo);
+$('infoBg').addEventListener('click',e=>{ if(e.target===$('infoBg')) closeInfo(); });
+function doSearch(val){ if(!val.trim()) return; if(isProcActive()){ toast('Procédure active'); return; } processVoice(val); }
+$('spSearch').addEventListener('keypress',e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
+$('spSearchGo').addEventListener('click',()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
+$('showListBtn').addEventListener('click',openList);
+$('listX').addEventListener('click',closeList);
+$('listBg').addEventListener('click',e=>{ if(e.target===$('listBg')) closeList(); });
+$('icGuide').addEventListener('click',()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
+$('icCancel').addEventListener('click',cancelProc); $('icHome').addEventListener('click',goHome); $('icNew').addEventListener('click',goHome);
+$('gYes').addEventListener('click',answerYes); $('gNo').addEventListener('click',answerNo);
+$('gNext').addEventListener('click',()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
 $('gPrev').addEventListener('click',prevStep);
-$('gCancel').addEventListener('click',()=>{if(!guideOn&&$('guideCard').classList.contains('show')){$('guideCard').classList.remove('show');$('endBar').classList.remove('show');iosInfoShown=!1;}else cancelProc();});
-$('ebRecap').addEventListener('click',()=>{$('endBar').classList.remove('show');openRecap();});
-$('ebClose').addEventListener('click',()=>{$('endBar').classList.remove('show');$('guideCard').classList.remove('show');});
-$('recapX').addEventListener('click',closeRecap);$('recapClose2').addEventListener('click',closeRecap);
-$('recapBg').addEventListener('click',e=>{if(e.target===$('recapBg'))closeRecap();});
+$('gCancel').addEventListener('click',()=>{ if(!guideOn&&$('guideCard').classList.contains('show')){ $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); iosInfoShown=false; } else cancelProc(); });
+$('ebRecap').addEventListener('click',()=>{ $('endBar').classList.remove('show'); openRecap(); });
+$('ebClose').addEventListener('click',()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
+$('recapX').addEventListener('click',closeRecap); $('recapClose2').addEventListener('click',closeRecap);
+$('recapBg').addEventListener('click',e=>{ if(e.target===$('recapBg')) closeRecap(); });
 $('recapPrint').addEventListener('click',printRecap);
-$('clearChat').addEventListener('click',()=>{$('chatLog').innerHTML='';addMsg('Effacé.');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').classList.contains('on'))closeInfo();else if($('recapBg').classList.contains('on'))closeRecap();else if($('listBg').classList.contains('on'))closeList();else{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');}}});
-setUI('idle');micOn=!0;startListening();
-console.log('✅ IAOS T4 — Laser lettres — Zaber');
+$('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').classList.contains('on')) closeInfo(); else if($('recapBg').classList.contains('on')) closeRecap(); else if($('listBg').classList.contains('on')) closeList(); else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); } } });
+
+/* ═══ INIT ═══ */
+setUI('idle'); micOn=true; startListening();
+console.log('✅ IAOS T4 v5 — Créé par Zaber');
 })();
 </script>
 </body>
