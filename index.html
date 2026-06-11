@@ -257,82 +257,6 @@ body::after{
 .gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
 .gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
 
-.transcript-area{
-  width:100%;max-width:520px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:3px;
-  overflow:hidden;
-}
-.transcript-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:7px 12px;border-bottom:1px solid var(--border);
-}
-.transcript-header span{
-  font-family:'Space Mono',monospace;font-size:0.5rem;
-  letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;
-}
-.transcript-clear{
-  background:none;border:1px solid var(--border);
-  color:var(--text-dim);font-size:0.6rem;
-  padding:2px 8px;border-radius:2px;cursor:pointer;
-}
-.transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
-.transcript-msgs{
-  max-height:170px;overflow-y:auto;
-  padding:10px 12px;display:flex;flex-direction:column;gap:7px;
-  scroll-behavior:smooth;
-}
-.transcript-msgs::-webkit-scrollbar{width:3px}
-.transcript-msgs::-webkit-scrollbar-track{background:transparent}
-.transcript-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.t-msg{display:flex;flex-direction:column;gap:2px;animation:msgIn 0.2s ease}
-@keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.t-msg.user{align-items:flex-end}
-.t-msg.ai{align-items:flex-start}
-.t-bubble{
-  font-size:0.78rem;line-height:1.4;
-  padding:6px 11px;border-radius:2px;
-  max-width:90%;word-break:break-word;
-}
-.t-msg.user .t-bubble{
-  background:rgba(191,128,255,0.08);
-  border:1px solid rgba(191,128,255,0.25);
-  color:var(--text);
-}
-.t-msg.ai .t-bubble{
-  background:rgba(245,197,24,0.06);
-  border:1px solid rgba(245,197,24,0.18);
-  color:var(--text);
-}
-
-.search-row{
-  width:100%;max-width:520px;
-  display:flex;gap:7px;
-}
-.search-input{
-  flex:1;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:3px;
-  color:var(--text-bright);
-  font-family:'Rajdhani',sans-serif;font-size:0.9rem;font-weight:500;
-  padding:10px 14px;outline:none;
-  transition:border-color 0.2s ease;
-}
-.search-input::placeholder{color:var(--text-dim);font-size:0.8rem}
-.search-input:focus{border-color:var(--gold-dim)}
-.search-go{
-  background:rgba(245,197,24,0.08);
-  border:1px solid var(--gold-dim);
-  color:var(--gold);
-  border-radius:3px;padding:10px 16px;
-  cursor:pointer;font-family:'Orbitron',sans-serif;
-  font-size:0.52rem;letter-spacing:1px;text-transform:uppercase;
-  transition:all 0.18s ease;
-}
-.search-go:hover{background:rgba(245,197,24,0.18)}
-
 .toast{
   position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);
   background:var(--surface2);border:1px solid var(--gold-dim);
@@ -346,7 +270,7 @@ body::after{
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .overlay.on{opacity:1;pointer-events:auto}
 .side-panel{
-  position:fixed;top:0;right:0;bottom:0;width:min(94%,400px);
+  position:fixed;top:0;right:0;bottom:0;width:min(94%,420px);
   background:linear-gradient(180deg,#0d1117,#080c12);
   border-left:1px solid var(--border);
   z-index:210;
@@ -363,7 +287,7 @@ body::after{
 .sp-header h3{font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
 .sp-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
 .sp-close:hover{color:var(--gold);border-color:var(--gold-dim)}
-.sp-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.sp-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 .sp-body::-webkit-scrollbar{width:3px}
 .sp-body::-webkit-scrollbar-thumb{background:var(--border)}
 .ios-card{
@@ -389,6 +313,88 @@ body::after{
 .ac-btn.red{border-color:rgba(255,59,59,0.35);color:var(--red);background:rgba(255,59,59,0.04)}
 .ac-btn.red:hover{background:rgba(255,59,59,0.1);border-color:var(--red)}
 .ios-card-info{padding:10px 14px;font-size:0.78rem;color:var(--text-dim);line-height:1.5}
+
+/* Barre de recherche dans le panneau */
+.sp-search-row{
+  display:flex;gap:6px;
+}
+.sp-search-input{
+  flex:1;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:3px;
+  color:var(--text-bright);
+  font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;
+  padding:9px 12px;outline:none;
+  transition:border-color 0.2s ease;
+}
+.sp-search-input::placeholder{color:var(--text-dim);font-size:0.78rem}
+.sp-search-input:focus{border-color:var(--gold-dim)}
+.sp-search-go{
+  background:rgba(245,197,24,0.08);
+  border:1px solid var(--gold-dim);
+  color:var(--gold);
+  border-radius:3px;padding:9px 14px;
+  cursor:pointer;font-family:'Orbitron',sans-serif;
+  font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;
+  transition:all 0.18s ease;white-space:nowrap;
+}
+.sp-search-go:hover{background:rgba(245,197,24,0.18)}
+
+/* Transcript dans le panneau */
+.sp-transcript{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+  flex:1;
+  display:flex;flex-direction:column;
+  min-height:180px;
+}
+.sp-transcript-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 10px;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sp-transcript-header span{
+  font-family:'Space Mono',monospace;font-size:0.45rem;
+  letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+}
+.sp-transcript-clear{
+  background:none;border:1px solid var(--border);
+  color:var(--text-dim);font-size:0.55rem;
+  padding:2px 7px;border-radius:2px;cursor:pointer;
+}
+.sp-transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
+.sp-transcript-msgs{
+  flex:1;overflow-y:auto;
+  padding:8px 10px;display:flex;flex-direction:column;gap:6px;
+  scroll-behavior:smooth;
+  max-height:250px;
+}
+.sp-transcript-msgs::-webkit-scrollbar{width:3px}
+.sp-transcript-msgs::-webkit-scrollbar-track{background:transparent}
+.sp-transcript-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.t-msg{display:flex;flex-direction:column;gap:2px;animation:msgIn 0.2s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.t-msg.user{align-items:flex-end}
+.t-msg.ai{align-items:flex-start}
+.t-bubble{
+  font-size:0.72rem;line-height:1.4;
+  padding:5px 9px;border-radius:2px;
+  max-width:92%;word-break:break-word;
+}
+.t-msg.user .t-bubble{
+  background:rgba(191,128,255,0.08);
+  border:1px solid rgba(191,128,255,0.25);
+  color:var(--text);
+}
+.t-msg.ai .t-bubble{
+  background:rgba(245,197,24,0.06);
+  border:1px solid rgba(245,197,24,0.18);
+  color:var(--text);
+}
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-bg.on{opacity:1;pointer-events:auto}
@@ -483,11 +489,16 @@ body::after{
     <button class="sp-close" id="spClose">✕</button>
   </div>
   <div class="sp-body">
-    <div class="search-row">
-      <input class="search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
-      <button class="search-go" id="spSearchGo">GO</button>
+    <!-- Barre de recherche -->
+    <div class="sp-search-row">
+      <input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
+      <button class="sp-search-go" id="spSearchGo">GO</button>
     </div>
+    
+    <!-- Bouton liste -->
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
+    
+    <!-- Carte IOS -->
     <div class="ios-card" id="iosCard">
       <div class="ios-card-head">
         <div class="ios-card-code" id="icCode">IOS-???</div>
@@ -503,6 +514,17 @@ body::after{
         <button class="ac-btn" id="icNew">🔍 NOUVEAU</button>
       </div>
       <div class="ios-card-info" id="icInfo"></div>
+    </div>
+    
+    <!-- Transcript / Historique -->
+    <div class="sp-transcript">
+      <div class="sp-transcript-header">
+        <span>HISTORIQUE</span>
+        <button class="sp-transcript-clear" id="clearChat">Effacer</button>
+      </div>
+      <div class="sp-transcript-msgs" id="chatLog">
+        <div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -563,21 +585,6 @@ body::after{
       <button class="gcard-btn" id="gPrev">← PRÉC.</button>
       <button class="gcard-btn primary" id="gNext">SUIVANT →</button>
       <button class="gcard-btn" id="gCancel">ANNULER</button>
-    </div>
-  </div>
-
-  <div class="search-row" style="max-width:520px">
-    <input class="search-input" id="mainSearch" placeholder="Rechercher un IOS…" autocomplete="off" spellcheck="false">
-    <button class="search-go" id="mainSearchGo">GO</button>
-  </div>
-
-  <div class="transcript-area">
-    <div class="transcript-header">
-      <span>HISTORIQUE DIALOGUE</span>
-      <button class="transcript-clear" id="clearChat">Effacer</button>
-    </div>
-    <div class="transcript-msgs" id="chatLog">
-      <div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div>
     </div>
   </div>
 
@@ -1134,17 +1141,13 @@ function getVoice(){
   return v;
 }
 
-/* ─── TTS avec Early Listen ─── */
 function speak(txt, cb){
   if(!hasVoice){ cb && cb(); return; }
   if(isSpeaking) synth.cancel();
   clearTimeout(earlyListenTimer);
-
   let x = txt
-    .replace(/[<[\]{}_*#✅🚨]/g,'')
-    .replace(/&[a-z]+;/g,'')
-    .replace(/\bAEL\b/gi,'A E L')
-    .replace(/\bael\b/gi,'A E L')
+    .replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
+    .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
     .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
     .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s')
     .replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
@@ -1164,29 +1167,12 @@ function speak(txt, cb){
   currentUtterance = new SpeechSynthesisUtterance(x);
   currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
   const v = getVoice(); if(v) currentUtterance.voice=v;
-
   const estimatedDuration = (x.length / 12) * 1000;
   const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
-
   isSpeaking=true; setUI('speak');
-
-  earlyListenTimer = setTimeout(() => {
-    if(isSpeaking && micOn && !isListening){
-      setUI('earlyListen');
-      startListening();
-    }
-  }, earlyListenDelay);
-
-  currentUtterance.onend = ()=>{
-    isSpeaking=false; clearTimeout(earlyListenTimer);
-    setUI('idle'); if(micOn && !isListening) schedRestart();
-    cb && cb(); currentUtterance=null;
-  };
-  currentUtterance.onerror = ()=>{
-    isSpeaking=false; clearTimeout(earlyListenTimer);
-    setUI('error'); if(micOn && !isListening) schedRestart();
-    cb && cb(); currentUtterance=null;
-  };
+  earlyListenTimer = setTimeout(() => { if(isSpeaking && micOn && !isListening){ setUI('earlyListen'); startListening(); } }, earlyListenDelay);
+  currentUtterance.onend = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('idle'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
+  currentUtterance.onerror = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('error'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
   synth.speak(currentUtterance);
 }
 
@@ -1195,15 +1181,7 @@ function $(id){ return document.getElementById(id); }
 
 function setUI(state){
   const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
-  const hints = {
-    idle:'Micro actif · Dites un numéro IOS',
-    listen:'Écoute en cours…',
-    speak:'Synthèse vocale…',
-    earlyListen:'Prêt à répondre…',
-    blocked:'Procédure active — terminez ou annulez',
-    error:'Erreur — relance automatique',
-    muted:'Micro coupé'
-  };
+  const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Synthèse vocale…', earlyListen:'Prêt à répondre…', blocked:'Procédure active — terminez ou annulez', error:'Erreur — relance automatique', muted:'Micro coupé' };
   dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':'');
   txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':'');
   txt.textContent = hints[state] || hints.idle;
@@ -1211,39 +1189,32 @@ function setUI(state){
   mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':'');
 }
 
-/* ═══ TOAST ═══ */
-function toast(msg, ms=2800){
-  const t=$('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms);
-}
+function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
 
-/* ═══ CHAT ═══ */
 function addMsg(html, role='ai'){
   const log=$('chatLog');
   const d=document.createElement('div'); d.className='t-msg '+role;
   d.innerHTML='<div class="t-bubble">'+html+'</div>';
   log.appendChild(d); log.scrollTop=log.scrollHeight;
-  while(log.children.length>80) log.removeChild(log.firstChild);
+  while(log.children.length>100) log.removeChild(log.firstChild);
 }
 
-/* ═══ GUIDE CARD RENDERING ═══ */
+/* ═══ GUIDE CARD ═══ */
 function renderGuideCard(){
   const card=$('guideCard');
   if(!guideOn || stepIdx>=guideSteps.length){ card.classList.remove('show'); iosInfoShown=false; return; }
-  const s = guideSteps[stepIdx];
-  if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; }
+  const s=guideSteps[stepIdx]; if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; }
   card.classList.add('show');
-  $('gLabel').textContent = 'PROCÉDURE GUIDÉE';
-  $('gIosId').innerHTML = 'IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
-  $('gStepLbl').textContent = 'Étape '+(stepIdx+1)+' / '+guideSteps.length;
-  $('gBody').textContent = s.t;
-  $('gYes').style.display = s.d ? 'inline-flex':'none';
-  $('gNo').style.display  = s.d ? 'inline-flex':'none';
-  $('gPrev').style.display = 'inline-flex';
-  $('gNext').textContent = 'SUIVANT →';
-  $('gNext').style.display = 'inline-flex';
-  $('gCancel').textContent = 'ANNULER';
-  iosInfoShown = false;
+  $('gLabel').textContent='PROCÉDURE GUIDÉE';
+  $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
+  $('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length;
+  $('gBody').textContent=s.t;
+  $('gYes').style.display=s.d?'inline-flex':'none';
+  $('gNo').style.display=s.d?'inline-flex':'none';
+  $('gPrev').style.display='inline-flex';
+  $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER';
+  iosInfoShown=false;
 }
 
 function showIosInfoCard(){
@@ -1255,20 +1226,17 @@ function showIosInfoCard(){
   $('gBody').textContent='Prêt à démarrer la procédure de guidage. Dites « guidage » ou appuyez sur DÉMARRER.';
   $('gYes').style.display='none'; $('gNo').style.display='none';
   $('gPrev').style.display='none';
-  $('gNext').textContent='▶ DÉMARRER LE GUIDAGE';
-  $('gNext').style.display='inline-flex';
-  $('gCancel').textContent='ANNULER';
-  $('gCancel').style.display='inline-flex';
+  $('gNext').textContent='▶ DÉMARRER LE GUIDAGE'; $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER'; $('gCancel').style.display='inline-flex';
   iosInfoShown=true;
 }
 
 function showEndCard(msg){
   const card=$('guideCard'); card.classList.add('show');
-  $('gLabel').textContent='TERMINÉ';
-  $('gIosId').textContent='';$('gStepLbl').textContent='';
+  $('gLabel').textContent='TERMINÉ'; $('gIosId').textContent=''; $('gStepLbl').textContent='';
   $('gBody').textContent=msg;
-  $('gYes').style.display='none';$('gNo').style.display='none';
-  $('gPrev').style.display='none';$('gNext').style.display='none';
+  $('gYes').style.display='none'; $('gNo').style.display='none';
+  $('gPrev').style.display='none'; $('gNext').style.display='none';
   $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex';
   iosInfoShown=false;
 }
@@ -1277,8 +1245,8 @@ function showEndCard(msg){
 function renderIosCard(ios){
   $('iosCard').classList.add('show');
   $('icCode').textContent='IOS-'+ios.id;
-  const pt=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';
-  $('icPrio').textContent=pt; $('icPrio').className='prio-tag prio-'+ios.pri;
+  $('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';
+  $('icPrio').className='prio-tag prio-'+ios.pri;
   $('icDesc').textContent=ios.desc;
   $('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.';
 }
@@ -1289,10 +1257,7 @@ function findIOS(q){
   const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i);
   if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; }
   for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; }
-  for(const io of Object.values(IOS_DB)){
-    if(io.desc.toLowerCase().includes(q)) return io;
-    if(io.kw && io.kw.some(k=>q.includes(k))) return io;
-  }
+  for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) return io; if(io.kw && io.kw.some(k=>q.includes(k))) return io; }
   return null;
 }
 
@@ -1310,7 +1275,7 @@ function startGuide(){
   guideOn=true; guideSteps=[]; stepIdx=0;
   if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0});
   if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0});
-  if(curIOS.vitesse)  guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});
+  if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});
   for(const s of curIOS.tree) guideSteps.push(s);
   procStart=new Date(); procEnd=null; procLog=[];
   iosInfoShown=false;
@@ -1320,280 +1285,79 @@ function startGuide(){
 
 function runStep(){
   if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; }
-  const s=guideSteps[stepIdx];
-  if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; }
-  renderGuideCard();
-  procLog.push(s.t);
-  speak(s.t);
+  const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; }
+  renderGuideCard(); procLog.push(s.t); speak(s.t);
 }
 
-function answerYes(){
-  if(!guideOn || !guideSteps[stepIdx] || !guideSteps[stepIdx].d) return;
-  branch(true);
-}
-function answerNo(){
-  if(!guideOn || !guideSteps[stepIdx] || !guideSteps[stepIdx].d) return;
-  branch(false);
-}
-function branch(yes){
-  const s=guideSteps[stepIdx];
-  const next = yes ? (s.oui||[]) : (s.non||[]);
-  addMsg(yes?'✓ OUI':'✗ NON','user');
-  procLog.push(yes?'OUI':'NON');
-  if(!next.length){ finishProc('✅ Fin de procédure.'); return; }
-  guideSteps=next; stepIdx=0; runStep();
-}
-
-function nextStep(){
-  if(!guideOn){
-    if(iosInfoShown && curIOS){ startGuide(); return; }
-    return;
-  }
-  const s=guideSteps[stepIdx];
-  if(s && s.d){ speak('Veuillez répondre par oui ou par non.'); return; }
-  stepIdx++; runStep();
-}
-function prevStep(){
-  if(!guideOn) return;
-  if(stepIdx>0){ stepIdx--; runStep(); }
-  else speak('Vous êtes à la première étape.');
-}
-
-function cancelProc(){
-  guideOn=false; iosInfoShown=false;
-  $('guideCard').classList.remove('show');
-  $('endBar').classList.remove('show');
-  $('gCancel').textContent='ANNULER';
-  $('gNext').style.display='inline-flex';
-  addMsg('❌ Procédure annulée.');
-  speak('Procédure annulée.');
-}
-
-function finishProc(msg){
-  guideOn=false; procEnd=new Date();
-  addMsg(msg);
-  speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg);
-  showEndCard(msg);
-  $('endBar').classList.add('show');
-}
-
-function goHome(){
-  cancelProc();
-  curIOS=null; $('iosCard').classList.remove('show');
-  $('guideCard').classList.remove('show');
-  $('endBar').classList.remove('show');
-  $('mainSearch').value=''; $('spSearch').value='';
-  addMsg('🏠 Retour à l\'accueil.');
-  speak("Retour à l'accueil.");
-}
+function answerYes(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(true); }
+function answerNo(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(false); }
+function branch(yes){ const s=guideSteps[stepIdx]; const next=yes?(s.oui||[]):(s.non||[]); addMsg(yes?'✓ OUI':'✗ NON','user'); procLog.push(yes?'OUI':'NON'); if(!next.length){ finishProc('✅ Fin de procédure.'); return; } guideSteps=next; stepIdx=0; runStep(); }
+function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); return; } return; } const s=guideSteps[stepIdx]; if(s&&s.d){ speak('Veuillez répondre par oui ou par non.'); return; } stepIdx++; runStep(); }
+function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
+function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('gCancel').textContent='ANNULER'; $('gNext').style.display='inline-flex'; addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); }
+function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); }
+function goHome(){ cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil."); }
 
 /* ═══ RAPPORT ═══ */
 function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
-
-function genRecap(){
-  if(!curIOS||!procStart) return '';
-  const e=procEnd||new Date();
-  return [
-    '═══════════════════════════════════',
-    '    BULLETIN DE SERVICE — IAOS T4',
-    '═══════════════════════════════════',
-    '',
-    '📅 Date      : '+fd(procStart),
-    '🔧 IOS       : '+curIOS.id,
-    '📝 Desc.     : '+curIOS.desc,
-    '⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),
-    '⏱  Début     : '+ft(procStart),
-    '⏱  Fin       : '+ft(e),
-    '⏱  Durée     : '+Math.round((e-procStart)/60000)+' min',
-    '',
-    '📋 ÉTAPES EFFECTUÉES :',
-    ...procLog.map((s,i)=>'   '+(i+1)+'. '+s),
-    '',
-    '✅ Statut : Terminé',
-    '═══════════════════════════════════',
-  ].join('\n');
-}
-
-function openRecap(){
-  $('recapBody').textContent=genRecap();
-  $('recapBg').classList.add('on');
-}
+function genRecap(){ if(!curIOS||!procStart) return ''; const e=procEnd||new Date(); return ['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n'); }
+function openRecap(){ $('recapBody').textContent=genRecap(); $('recapBg').classList.add('on'); }
 function closeRecap(){ $('recapBg').classList.remove('on'); }
-function printRecap(){
-  const w=window.open('','','width=680,height=600');
-  w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:#000;background:#fff">'+$('recapBody').textContent+'</pre>');
-  w.document.close(); w.print();
-}
+function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:#000;background:#fff">'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
 
 /* ═══ IOS LIST ═══ */
-function buildList(){
-  const ul=$('modalList'); ul.innerHTML='';
-  const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));
-  for(const id of ids){
-    const io=IOS_DB[id];
-    const r=document.createElement('div'); r.className='ios-row';
-    const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l';
-    const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF';
-    r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>';
-    r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); });
-    ul.appendChild(r);
-  }
-}
+function buildList(){ const ul=$('modalList'); ul.innerHTML=''; const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b)); for(const id of ids){ const io=IOS_DB[id]; const r=document.createElement('div'); r.className='ios-row'; const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l'; const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF'; r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>'; r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); }); ul.appendChild(r); } }
 function openList(){ buildList(); $('listBg').classList.add('on'); }
 function closeList(){ $('listBg').classList.remove('on'); }
 
-/* ═══ INFO MODAL ═══ */
-function openInfo(){
-  $('infoContent').innerHTML=`
-<h4>🎤 Commandes vocales</h4>
-<ul>
-  <li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li>
-  <li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer la procédure</li>
-  <li><span class="cmd-pill">suivant / ok / c'est bon / j'ai fait</span> — Étape suivante</li>
-  <li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li>
-  <li><span class="cmd-pill">oui / affirmatif / correct</span> — Réponse OUI</li>
-  <li><span class="cmd-pill">non / négatif / rien / pas</span> — Réponse NON</li>
-  <li><span class="cmd-pill">répète / redis / pardon</span> — Répéter l'étape</li>
-  <li><span class="cmd-pill">annuler / stop</span> — Stopper la procédure</li>
-  <li><span class="cmd-pill">accueil / menu / reset</span> — Retour à l'accueil</li>
-  <li><span class="cmd-pill">temps écoulé</span> — Durée de la procédure</li>
-  <li><span class="cmd-pill">quelle heure</span> — Heure actuelle</li>
-  <li><span class="cmd-pill">quelle date</span> — Date du jour</li>
-  <li><span class="cmd-pill">liste des ios</span> — Afficher tous les IOS</li>
-  <li><span class="cmd-pill">fermer / bulletin / BS</span> — Fin de procédure</li>
-</ul>
-<h4>🛡 Protection procédure</h4>
-<p>Pendant une procédure active, toute demande de nouvel IOS est bloquée. Terminez ou annulez d'abord.</p>
-<h4>🎨 Code couleur</h4>
-<ul>
-  <li><span style="color:#f5c518">■</span> Jaune — En veille</li>
-  <li><span style="color:#39ff87">■</span> Vert — Écoute active</li>
-  <li><span style="color:#bf80ff">■</span> Violet — Synthèse vocale</li>
-  <li><span style="color:#00e5ff">■</span> Cyan — Micro réactivé (early listen)</li>
-  <li><span style="color:#ffb300">■</span> Orange — Bloqué</li>
-  <li><span style="color:#ff3b3b">■</span> Rouge — Erreur / Urgence IOS</li>
-</ul>
-<h4>✏️ Créateur</h4>
-<p>Développé par <strong>Zaber</strong>, Conducteur Moniteur Formateur — DUALIS U53700 T4.</p>
-`;
-  $('infoBg').classList.add('on');
-}
+/* ═══ INFO ═══ */
+function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer la procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon / j'ai fait</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / affirmatif / correct</span> — Réponse OUI</li><li><span class="cmd-pill">non / négatif / rien / pas</span> — Réponse NON</li><li><span class="cmd-pill">répète / redis / pardon</span> — Répéter l'étape</li><li><span class="cmd-pill">annuler / stop</span> — Stopper la procédure</li><li><span class="cmd-pill">accueil / menu / reset</span> — Retour à l'accueil</li><li><span class="cmd-pill">temps écoulé</span> — Durée de la procédure</li><li><span class="cmd-pill">quelle heure</span> — Heure actuelle</li><li><span class="cmd-pill">quelle date</span> — Date du jour</li><li><span class="cmd-pill">liste des ios</span> — Afficher tous les IOS</li><li><span class="cmd-pill">fermer / bulletin / BS</span> — Fin de procédure</li></ul><h4>🛡 Protection procédure</h4><p>Pendant une procédure active, toute demande de nouvel IOS est bloquée. Terminez ou annulez d'abord.</p><h4>🎨 Code couleur</h4><ul><li><span style="color:#f5c518">■</span> Jaune — En veille</li><li><span style="color:#39ff87">■</span> Vert — Écoute active</li><li><span style="color:#bf80ff">■</span> Violet — Synthèse vocale</li><li><span style="color:#00e5ff">■</span> Cyan — Micro réactivé</li><li><span style="color:#ffb300">■</span> Orange — Bloqué</li><li><span style="color:#ff3b3b">■</span> Rouge — Erreur</li></ul><h4>✏️ Créateur</h4><p>Développé par <strong>Zaber</strong>, Conducteur Moniteur Formateur — DUALIS U53700 T4.</p>`; $('infoBg').classList.add('on'); }
 function closeInfo(){ $('infoBg').classList.remove('on'); }
 
 /* ═══ HELPERS ═══ */
 function isProcActive(){ return guideOn || isSpeaking || iosInfoShown; }
 
-/* ═══ VOICE COMMAND PARSER ═══ */
+/* ═══ VOICE COMMANDS ═══ */
 const CMDS = {
-  cancel:  [/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
-  home:    [/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
-  guide:   [/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],
-  next:    [/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
-  prev:    [/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i, /\b(?!retour\s+accueil)retour\b/i],
-  repeat:  [/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
-  greet:   [/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
-  oui:     [/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
-  non:[
-    /\bnon\b/i, /\bnan\b/i, /\bnaan\b/i, /\bnada\b/i, /\bnope\b/i, /\bnah\b/i, /\bniet\b/i, /\bniks\b/i, /\bno\b/i,
-    /n+[aeiou]*n+/i, /\bnégatif\b/i, /\bnegative\b/i, /c'est\s+mort/i, /ha\s*nan/i, /ah\s*nan/i,
-    /\bpas\s+du\s+tout\b/i, /\bpas\s+vraiment\b/i, /\bpas\s+exactement\b/i, /\bpas\s+affiché\b/i,
-    /\bfaux\b/i, /\bincorrect\b/i, /\bdisparu\b/i, /\babsent\b/i, /\béteint\b/i, /\beteint\b/i,
-    /\bdésactivé\b/i, /\bdesactive\b/i, /\binactif\b/i, /\baucun\b/i, /\brien\b/i,
-    /\bque\s+dalle\b/i, /\bwalou\b/i, /\bque\s+couic\b/i, /\bmarche\s+pas\b/i, /\bne\s+marche\s+pas\b/i,
-    /non\s+merci/i, /non\s+plus/i, /\bpas\b/i
-  ],
-  time:    [/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
-  date:    [/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
-  elapsed: [/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
-  list:    [/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
-  help:    [/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
-  creator: [/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
-  inutile: [/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
-  fermer:  [/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
-  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i, /\bb\s*s\b/i, /\bb[ée]\s*s\b/i]
+  cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
+  home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
+  guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],
+  next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
+  prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i,/\b(?!retour\s+accueil)retour\b/i],
+  repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
+  greet:[/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
+  oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
+  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bpas\s+vraiment\b/i,/\bpas\s+exactement\b/i,/\bpas\s+affiché\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\beteint\b/i,/\bdésactivé\b/i,/\bdesactive\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bque\s+couic\b/i,/\bmarche\s+pas\b/i,/\bne\s+marche\s+pas\b/i,/non\s+merci/i,/non\s+plus/i,/\bpas\b/i],
+  time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
+  date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
+  elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
+  list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
+  help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
+  creator:[/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
+  inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
+  fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
+  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i]
 };
 
-function match(txt, key){ return CMDS[key].some(r=>r.test(txt)); }
+function match(txt,key){ return CMDS[key].some(r=>r.test(txt)); }
+function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)); }
+function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)); }
+function extractIosNum(txt){ const m=txt.match(/(?:ios[.\s]*)?(\d{1,3})/i); return m?m[1].padStart(3,'0'):null; }
 
-function isNon(txt){
-  if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true;
-  return CMDS.non.some(r=>r.test(txt));
-}
-function isOui(txt){
-  if(isNon(txt)) return false;
-  return CMDS.oui.some(r=>r.test(txt));
-}
-
-function extractIosNum(txt){
-  const m = txt.match(/(?:ios[.\s]*)?(\d{1,3})/i);
-  return m ? m[1].padStart(3,'0') : null;
-}
-
-/* ═══ PROCESSEUR VOCAL PRINCIPAL ═══ */
 function processVoice(raw){
-  const txt = raw.trim();
-  if(!txt) return;
-  addMsg(txt, 'user');
-
-  /* ── Gestion fin de procédure ── */
-  const endActive = $('endBar').classList.contains('show');
+  const txt=raw.trim(); if(!txt) return;
+  addMsg(txt,'user');
+  const endActive=$('endBar').classList.contains('show');
   if(endActive){
-    if(match(txt,'fermer') || /\b(non|nan|no|nope|nah)\b/i.test(txt) || (/\b(pas|veux|souhaite)\b/i.test(txt) && /\b(non|pas)\b/i.test(txt))){
-      $('endBar').classList.remove('show');
-      $('guideCard').classList.remove('show');
-      addMsg('Fenêtre fermée.');
-      speak('Fenêtre fermée.');
-      return;
-    }
-    if(match(txt,'bulletin') || /\bb\s*s\b/i.test(txt) || /\bb[ée]\s*s\b/i.test(txt) || match(txt,'oui')){
-      $('endBar').classList.remove('show');
-      openRecap();
-      return;
-    }
+    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)||(/\b(pas|veux|souhaite)\b/i.test(txt)&&/\b(non|pas)\b/i.test(txt))){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
+    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; }
   }
-
-  /* ── Réponse inutile ── */
-  if(match(txt,'inutile')){
-    const reponses = ['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend.'];
-    const r = reponses[Math.floor(Math.random()*reponses.length)];
-    addMsg(r); speak(r); return;
-  }
-
+  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend.'][Math.floor(Math.random()*5)]; addMsg(r); speak(r); return; }
   if(match(txt,'cancel')){ cancelProc(); return; }
   if(match(txt,'home')){ goHome(); return; }
-
-  if(match(txt,'greet')){
-    if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){
-      addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return;
-    }
-    addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour ! i o s T4 à votre service.'); return;
-  }
-
-  if(isProcActive()){
-    if(match(txt,'repeat')){
-      if(guideOn && guideSteps[stepIdx]) speak(guideSteps[stepIdx].t);
-      else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80));
-      return;
-    }
-    if(match(txt,'prev') && !match(txt,'home')){ if(guideOn){ prevStep(); return; } }
-    if(match(txt,'next')){ nextStep(); return; }
-    if(match(txt,'guide') && curIOS && !guideOn){ startGuide(); return; }
-
-    if(guideOn && guideSteps[stepIdx] && guideSteps[stepIdx].d){
-      if(isNon(txt)){ answerNo(); return; }
-      if(isOui(txt)){ answerYes(); return; }
-    }
-
-    if(extractIosNum(txt) || /\bios\b/i.test(txt)){
-      addMsg('⚠ Procédure IOS-'+curIOS.id+' en cours. Terminez ou annulez d\'abord.');
-      speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)+'. Terminez ou annulez d\'abord.');
-      setUI('blocked'); setTimeout(()=>setUI('idle'),2200);
-      return;
-    }
-    return;
-  }
-
+  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour ! i o s T4 à votre service.'); return; }
+  if(isProcActive()){ if(match(txt,'repeat')){ if(guideOn&&guideSteps[stepIdx]) speak(guideSteps[stepIdx].t); else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80)); return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(extractIosNum(txt)||/\bios\b/i.test(txt)){ addMsg('⚠ Procédure IOS-'+curIOS.id+' en cours. Terminez ou annulez d\'abord.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)+'. Terminez ou annulez d\'abord.'); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
   if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80)); return; }
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
@@ -1601,174 +1365,73 @@ function processVoice(raw){
   if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>, Conducteur Moniteur Formateur.'); speak('Mon créateur est Zabèr, conducteur moniteur formateur.'); return; }
   if(match(txt,'time')){ const t=ft(new Date()); addMsg('⏰ '+t); speak('Il est '+t.replace(/:/g,' heure ')); return; }
   if(match(txt,'date')){ const d=fd(new Date()); addMsg('📅 '+d); speak('Nous sommes le '+d); return; }
-  if(match(txt,'elapsed')){
-    if(!procStart){ speak('Aucune procédure en cours.'); return; }
-    const d=new Date()-procStart, m=Math.floor(d/60000), s=Math.floor((d%60000)/1000);
-    speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+' et '+s+' seconde'+(s>1?'s':'')+'.');
-    return;
-  }
-
-  const io = findIOS(txt);
-  if(io){ loadIOS(io); return; }
-
+  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000),s=Math.floor((d%60000)/1000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+' et '+s+' seconde'+(s>1?'s':'')+'.'); return; }
+  const io=findIOS(txt); if(io){ loadIOS(io); return; }
   addMsg('❓ Aucun IOS trouvé pour "'+txt.substring(0,50)+'".');
   speak('Aucun i o s trouvé. Énoncer le numéro IOS.');
 }
 
 /* ═══ RECONNAISSANCE VOCALE ═══ */
-function schedRestart(){
-  clearTimeout(restartTimer);
-  restartTimer=setTimeout(()=>{ if(micOn && !isSpeaking && !isListening) startListening(); },300);
-}
-
+function schedRestart(){ clearTimeout(restartTimer); restartTimer=setTimeout(()=>{ if(micOn&&!isSpeaking&&!isListening) startListening(); },300); }
 function startListening(){
-  if(!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)){
-    toast('Reconnaissance vocale non supportée sur ce navigateur'); return;
-  }
-  if(isSpeaking || isListening) return;
+  if(!('SpeechRecognition' in window)&&!('webkitSpeechRecognition' in window)){ toast('Reconnaissance vocale non supportée'); return; }
+  if(isSpeaking||isListening) return;
   try{
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SR();
-    recognition.lang='fr-FR';
-    recognition.continuous=true;
-    recognition.interimResults=true;
-    recognition.maxAlternatives=8;
-
-    let final='';
-    let silTimer=null;
-
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; recognition=new SR();
+    recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
+    let final=''; let silTimer=null;
     recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
-
-    recognition.onresult=(ev)=>{
-      clearTimeout(silTimer);
-      let interim='';
-      for(let i=ev.resultIndex;i<ev.results.length;i++){
-        if(ev.results[i].isFinal){
-          let best='', bestConf=0;
-          for(let j=0;j<ev.results[i].length;j++){
-            if(ev.results[i][j].confidence > bestConf){
-              bestConf=ev.results[i][j].confidence;
-              best=ev.results[i][j].transcript;
-            }
-          }
-          if(best && bestConf>0.02) final+=' '+best;
-        } else {
-          interim+=ev.results[i][0].transcript;
-        }
-      }
-      if(final.trim() && !interim){
-        const t=final.trim(); final='';
-        processVoice(t);
-      } else {
-        silTimer=setTimeout(()=>{
-          if(final.trim()){ const t=final.trim(); final=''; processVoice(t); }
-        },900);
-      }
-    };
-
-    recognition.onerror=(e)=>{
-      isListening=false; final='';
-      if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; }
-      setUI('idle');
-      if(micOn && !isSpeaking) schedRestart();
-    };
-
-    recognition.onend=()=>{
-      isListening=false;
-      if(final.trim()){ processVoice(final.trim()); final=''; }
-      if(micOn && !isSpeaking) schedRestart();
-      else setUI('idle');
-    };
-
+    recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()){ const t=final.trim(); final=''; processVoice(t); } },900); } };
+    recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking) schedRestart(); };
+    recognition.onend=()=>{ isListening=false; if(final.trim()){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
     recognition.start();
-  } catch(e){ if(micOn) setTimeout(startListening,700); }
+  }catch(e){ if(micOn) setTimeout(startListening,700); }
 }
-
-function stopListening(){
-  clearTimeout(restartTimer);
-  if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; }
-  isListening=false; setUI('idle');
-}
-
-function toggleMic(){
-  if(isSpeaking) return;
-  micOn=!micOn;
-  if(micOn){ startListening(); toast('Microphone activé'); }
-  else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé — appuyer pour réactiver'; toast('Microphone coupé'); }
-}
+function stopListening(){ clearTimeout(restartTimer); if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; } isListening=false; setUI('idle'); }
+function toggleMic(){ if(isSpeaking) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé — appuyer pour réactiver'; toast('Microphone coupé'); } }
 
 /* ═══ HORLOGE ═══ */
-function updateClock(){
-  $('clock').textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
+function updateClock(){ $('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 setInterval(updateClock,1000); updateClock();
 
 /* ═══ EVENTS ═══ */
-$('micBtn').addEventListener('click', toggleMic);
-$('micBtn').addEventListener('keydown', e=>{ if(e.key===' '||e.key==='Enter') toggleMic(); });
+$('micBtn').addEventListener('click',toggleMic);
+$('micBtn').addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter') toggleMic(); });
+$('panelBtn').addEventListener('click',()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
+$('overlay').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('spClose').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('infoBtn').addEventListener('click',openInfo);
+$('infoX').addEventListener('click',closeInfo);
+$('infoBg').addEventListener('click',e=>{ if(e.target===$('infoBg')) closeInfo(); });
 
-$('panelBtn').addEventListener('click', ()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
-$('overlay').addEventListener('click', ()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
-$('spClose').addEventListener('click', ()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+function doSearch(val){ if(!val.trim()) return; if(isProcActive()){ toast('Procédure active — terminez d\'abord.'); return; } processVoice(val); }
+$('spSearch').addEventListener('keypress',e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
+$('spSearchGo').addEventListener('click',()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
 
-$('infoBtn').addEventListener('click', openInfo);
-$('infoX').addEventListener('click', closeInfo);
-$('infoBg').addEventListener('click', e=>{ if(e.target===$('infoBg')) closeInfo(); });
-
-function doSearch(val){
-  if(!val.trim()) return;
-  if(isProcActive()){ toast('Procédure active — terminez d\'abord.'); return; }
-  processVoice(val);
-}
-$('mainSearch').addEventListener('keypress', e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
-$('mainSearchGo').addEventListener('click', ()=>{ doSearch($('mainSearch').value); $('mainSearch').value=''; });
-$('spSearch').addEventListener('keypress', e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
-$('spSearchGo').addEventListener('click', ()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
-
-$('showListBtn').addEventListener('click', openList);
-$('listX').addEventListener('click', closeList);
-$('listBg').addEventListener('click', e=>{ if(e.target===$('listBg')) closeList(); });
-
-$('icGuide').addEventListener('click', ()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
-$('icCancel').addEventListener('click', cancelProc);
-$('icHome').addEventListener('click', goHome);
-$('icNew').addEventListener('click', goHome);
-
-$('gYes').addEventListener('click', answerYes);
-$('gNo').addEventListener('click', answerNo);
-$('gNext').addEventListener('click', ()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
-$('gPrev').addEventListener('click', prevStep);
-$('gCancel').addEventListener('click', ()=>{
-  if(!guideOn && $('guideCard').classList.contains('show')){
-    $('guideCard').classList.remove('show'); $('endBar').classList.remove('show');
-    iosInfoShown=false; $('gCancel').textContent='ANNULER';
-  } else cancelProc();
-});
-
-$('ebRecap').addEventListener('click', ()=>{ $('endBar').classList.remove('show'); openRecap(); });
-$('ebClose').addEventListener('click', ()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
-
-$('recapX').addEventListener('click', closeRecap);
-$('recapClose2').addEventListener('click', closeRecap);
-$('recapBg').addEventListener('click', e=>{ if(e.target===$('recapBg')) closeRecap(); });
-$('recapPrint').addEventListener('click', printRecap);
-
-$('clearChat').addEventListener('click', ()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
-
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape'){
-    if($('infoBg').classList.contains('on')) closeInfo();
-    else if($('recapBg').classList.contains('on')) closeRecap();
-    else if($('listBg').classList.contains('on')) closeList();
-    else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); }
-  }
-});
+$('showListBtn').addEventListener('click',openList);
+$('listX').addEventListener('click',closeList);
+$('listBg').addEventListener('click',e=>{ if(e.target===$('listBg')) closeList(); });
+$('icGuide').addEventListener('click',()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
+$('icCancel').addEventListener('click',cancelProc);
+$('icHome').addEventListener('click',goHome);
+$('icNew').addEventListener('click',goHome);
+$('gYes').addEventListener('click',answerYes);
+$('gNo').addEventListener('click',answerNo);
+$('gNext').addEventListener('click',()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
+$('gPrev').addEventListener('click',prevStep);
+$('gCancel').addEventListener('click',()=>{ if(!guideOn&&$('guideCard').classList.contains('show')){ $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); iosInfoShown=false; $('gCancel').textContent='ANNULER'; } else cancelProc(); });
+$('ebRecap').addEventListener('click',()=>{ $('endBar').classList.remove('show'); openRecap(); });
+$('ebClose').addEventListener('click',()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
+$('recapX').addEventListener('click',closeRecap);
+$('recapClose2').addEventListener('click',closeRecap);
+$('recapBg').addEventListener('click',e=>{ if(e.target===$('recapBg')) closeRecap(); });
+$('recapPrint').addEventListener('click',printRecap);
+$('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').classList.contains('on')) closeInfo(); else if($('recapBg').classList.contains('on')) closeRecap(); else if($('listBg').classList.contains('on')) closeList(); else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); } } });
 
 /* ═══ INIT ═══ */
-setUI('idle');
-micOn=true;
-startListening();
-console.log('✅ IAOS T4 v2 — Créé par Zaber');
+setUI('idle'); micOn=true; startListening();
+console.log('✅ IAOS T4 v3 — Créé par Zaber');
 })();
 </script>
 </body>
