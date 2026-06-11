@@ -92,11 +92,12 @@
     }
     .hero-sub {
       font-family: 'Space Mono', monospace;
-      font-size: 0.55rem;
+      font-size: clamp(0.4rem, 1.8vw, 0.55rem);
       letter-spacing: 6px;
       color: var(--bat-gold);
       text-transform: uppercase;
       margin-top: 0.1rem;
+      white-space: nowrap;
     }
 
     .voice-commands-bar {
@@ -105,13 +106,13 @@
       background: var(--bg-card);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(245,197,24,0.25);
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.8rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
+      gap: 0.3rem;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      overflow: hidden;
     }
     .voice-icon {
       background: rgba(245,197,24,0.12);
@@ -128,23 +129,29 @@
     }
     .voice-cmd-list {
       display: flex;
-      gap: 0.35rem;
-      flex-wrap: wrap;
+      gap: 0.3rem;
+      flex-wrap: nowrap;
       justify-content: center;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
     }
     .voice-cmd-item {
-      padding: 0.15rem 0.5rem;
+      padding: 0.15rem 0.45rem;
       background: rgba(245,197,24,0.06);
       border: 1px solid rgba(245,197,24,0.2);
       font-family: 'Space Mono', monospace;
-      font-size: 0.55rem;
+      font-size: clamp(0.4rem, 1.5vw, 0.55rem);
       white-space: nowrap;
+      flex-shrink: 1;
+      min-width: 0;
     }
     .cmd-key {
       color: var(--bat-yellow);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-size: inherit;
     }
 
     .center-stage {
@@ -420,40 +427,12 @@
     .info-modal-content .cmd{color:var(--bat-yellow);font-family:'Space Mono',monospace;font-size:0.65rem}
 
     @media(max-width:480px){
-      .hero-sub {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .voice-cmd-list {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        justify-content: flex-start;
-        mask-image: linear-gradient(to right, black 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-      }
-      .voice-cmd-list::-webkit-scrollbar { display: none; }
-      .voice-commands-bar {
-        padding: 0.4rem 0.6rem;
-        gap: 0.2rem;
-        flex-wrap: nowrap;
-        overflow: hidden;
-      }
-      .voice-icon {
-        min-width: 22px;
-        width: 22px;
-        height: 22px;
-        font-size: 0.6rem;
-        flex-shrink: 0;
-      }
-      .voice-cmd-item {
-        padding: 0.1rem 0.35rem;
-        font-size: 0.48rem;
-        flex-shrink: 0;
-      }
-      .cmd-key { font-size: 0.45rem; }
+      .hero-sub { font-size: 0.42rem; letter-spacing: 4px; }
+      .voice-commands-bar { padding: 0.4rem 0.5rem; gap: 0.2rem; }
+      .voice-icon { min-width: 22px; width: 22px; height: 22px; font-size: 0.6rem; }
+      .voice-cmd-list { gap: 0.2rem; }
+      .voice-cmd-item { padding: 0.1rem 0.3rem; font-size: 0.42rem; }
+      .cmd-key { font-size: 0.42rem; letter-spacing: 0.5px; }
       .mic-wave-container { width: 150px; height: 150px; }
       .mic-ring:nth-child(1) { width: 70px; height: 70px; }
       .mic-ring:nth-child(2) { width: 98px; height: 98px; }
@@ -461,15 +440,15 @@
       .step-title { font-size: 0.85rem; }
       .step-text { font-size: 0.8rem; }
       .status-pill { padding: 6px 16px; font-size: 0.6rem; }
-      .end-questions {
-        bottom: 90px;
-        transform: translateY(calc(100% + 90px));
-      }
+      .end-questions { bottom: 90px; transform: translateY(calc(100% + 90px)); }
     }
     @media(max-width:360px){
-      .voice-cmd-item { padding: 0.08rem 0.25rem; font-size: 0.42rem; }
-      .cmd-key { font-size: 0.4rem; }
+      .hero-sub { font-size: 0.38rem; letter-spacing: 3px; }
+      .voice-commands-bar { padding: 0.35rem 0.4rem; gap: 0.15rem; }
       .voice-icon { min-width: 18px; width: 18px; height: 18px; font-size: 0.5rem; }
+      .voice-cmd-list { gap: 0.15rem; }
+      .voice-cmd-item { padding: 0.08rem 0.25rem; font-size: 0.38rem; }
+      .cmd-key { font-size: 0.38rem; }
     }
   </style>
 </head>
@@ -1029,6 +1008,7 @@
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
+
     for (let i = 0; i <= 247; i++) {
       let id = i.toString().padStart(3, '0');
       if (!IOS[id]) IOS[id] = {
@@ -1096,10 +1076,13 @@
       if (speakingFlag) synth.cancel();
       clearTimeout(earlyListenTimer);
       let x = t.replace(/[<[\]{}_*#✅🚨]/g, '').replace(/&[a-z]+;/g, '');
+      // Prononciation AEL lettre par lettre : "A E L"
+      x = x.replace(/\bAEL\b/gi, "A E L");
+      x = x.replace(/\bael\b/gi, "A E L");
       x = x.replace(/\bl'IOS\b/gi, "li oès").replace(/\bl'ios\b/gi, "li oès");
       x = x.replace(/\bun IOS\b/gi, "un i o s").replace(/\bd'IOS\b/gi, "d'i o s").replace(/\bdes IOS\b/gi, "des i o s");
       x = x.replace(/\bIOS\b/g, "i o s").replace(/\bios\b/g, "i o s");
-      x = x.replace(/\bAEL\b/gi, "a e l"); x = x.replace(/\bFS\b/g, 'F S'); x = x.replace(/\bFU\b/g, 'F U'); x = x.replace(/\bDJ\b/g, 'D J');
+      x = x.replace(/\bFS\b/g, 'F S'); x = x.replace(/\bFU\b/g, 'F U'); x = x.replace(/\bDJ\b/g, 'D J');
       x = x.replace(/\bCVS\b/g, 'C V S'); x = x.replace(/\bKVB\b/g, 'K V B'); x = x.replace(/\bSTM\b/g, 'S T M');
       x = x.replace(/\bSAI\b/g, 'S A I'); x = x.replace(/\bSAEIV\b/g, 'S A E I V'); x = x.replace(/\bETF\b/g, 'E T F');
       x = x.replace(/\bEFAS\b/g, 'E F A S'); x = x.replace(/\bTETRA\b/g, 'T E T R A'); x = x.replace(/\bIHM\b/g, 'I H M');
@@ -1242,23 +1225,23 @@
 
     // === COMMANDES VOCALES ENRICHIES ===
     const DICO = {
-      salutations: ['bonjour','salut','salam','coucou','hello','hi','hey','bonsoir','wesh','yo','bonjourno','salutation','rebonjour','bonjour à tous','salut à tous','coucou tout le monde','hello la team','bonsoir à vous','salam aleikoum','salam alaykoum','as salam alaykoum'],
-      createur: ['qui ta créé','qui est ton créateur','ton créateur','qui ta fait','ton maitre','ton maître','ton boss','ton papa','ton concepteur','ton développeur','ton developpeur','qui tes','tu es qui','cest qui ton createur','ta maman c\'est qui','ton pere c\'est qui'],
-      heure: ['quelle heure','il est quelle heure','donne l\'heure','heure','quelle heure est-il','tu as l\'heure','l\'heure','l\'heure actuelle'],
-      date: ['quelle date','donne la date','date aujourd\'hui','date','quel jour','on est quel jour','quelle jour','la date','date du jour'],
-      temps: ['temps écoulé','durée','depuis combien de temps','combien de temps','minuteur','chrono','depuis le début','temps','depuis quand','ça fait combien de temps'],
-      liste: ['liste des ios','tous les ios','affiche la liste','liste ios','montre les ios','voir les ios','afficher ios','liste complète'],
-      demarrer: ['démarrer','commencer','lance','guidage','guide','start','go','exécute','appliquer','applique','fais le guidage','lance la procédure','démarre le guidage','on y va','c\'est parti','allez','go guidage','lance guidage','débuter','exécuter la procédure','mettre en route'],
-      suivant: ['suivant','suite','après','ensuite','prochaine','continuer','continue','j\'ai fini','ok','c\'est bon','d\'accord','next','terminé','effectué','fait','c\'est fait','j\'ai terminé','terminer','étape suivante','passer à la suite','passer','avancer','avance','suite logique','étape d\'après','ok suivant','ok ça marche','ok c\'est bon','ok c\'est fait','ok terminé','ok effectué','ok validé','validé','valider','confirmer','je valide','c\'est validé'],
-      precedent: ['précédent','reviens','retour','en arrière','recule','back','remonte','reculer','étape précédente','avant','précédente','revenir','retourne','retourner'],
-      oui: ['oui','ouais','yes','yep','affirmatif','exact','correct','bien sûr','tout à fait','confirmé','validé','présent','allumé','ça marche','actif','bien sur','oui oui','ouais ouais','exactement','effectivement','absolument','certes','certainement','oui merci','oui parfait'],
-      non: ['non','nan','naan','nada','no','yet','negative','c\'est mort','ha nan','ah nan','négatif','pas du tout','faux','incorrect','disparu','absent','éteint','eteint','pas affiché','aucun','rien','marche pas','désactivé','desactive','inactif','niet','niks','nope','nah','que dalle','walou','que couic','non merci','non plus','pas vraiment','pas exactement','pas du tou','pas forcément','absolument pas','certainement pas','non non','nan nan','nnon','nnan','nnooon','nnnaaan','niet niet','nope nope'],
-      annuler: ['annuler','stop','arrête','arrêter','interrompt','abandonne','abandonner','cancel','termine','terminez','quitte','quitter','stoppe','stopper','fini','fin','terminer','annule','annulation','j\'annule','je stoppe','je quitte','laisse tomber','laisse'],
-      accueil: ['accueil','menu','retour accueil','home','reset','revenir au début','page d\'accueil','menu principal','retour','revenir'],
-      repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait'],
-      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu ne sers à rien','t sers a rien','t sers à rien','tu es inutile','t es inutile','t\'es inutile','tu es nul','t es nul','t\'es nul','tu es nulle','t es nulle','t\'es nulle','tu vaux rien','tu ne vaux rien','tu vaut rien','tu ne vaut rien','a quoi tu sers','à quoi tu sers','tu sers a quoi','tu sers à quoi','quelle est ton utilité','ton utilité'],
-      fermer: ['fermer','ferme','ferme la fenêtre','close','fermer la fenetre','fermez','ferme ça','fermer ça','clore','clôture','cloture','termine la fenêtre','termine la fenetre'],
-      recapitulatif: ['récapitulatif','recapitulatif','bulletin','bulletin de service','b s','bs','bé esse','bé s','bulletin service','rapport','compte rendu','compte-rendu','resume','résume','résumé','resumé','recap','récap','faire le bilan','bilan','affiche le bulletin','affiche bulletin']
+      salutations: ['bonjour','salut','salam','coucou','hello','hi','hey','bonsoir','wesh','yo'],
+      createur: ['qui ta créé','qui est ton créateur','ton créateur','qui ta fait','ton maitre','ton boss','ton papa','ton concepteur'],
+      heure: ['quelle heure','il est quelle heure','donne l\'heure','heure'],
+      date: ['quelle date','donne la date','date aujourd\'hui','date','quel jour'],
+      temps: ['temps écoulé','durée','depuis combien de temps','combien de temps','minuteur'],
+      liste: ['liste des ios','tous les ios','affiche la liste','liste ios'],
+      demarrer: ['démarrer','commencer','lance','guidage','guide','start','go'],
+      suivant: ['suivant','suite','après','ensuite','prochaine','continuer','ok','c\'est bon','next','terminé','effectué','fait','validé'],
+      precedent: ['précédent','reviens','retour','en arrière','recule','back','remonte'],
+      oui: ['oui','ouais','yes','yep','affirmatif','exact','correct','bien sûr','tout à fait','confirmé','validé','présent','allumé','ça marche'],
+      non: ['non','nan','naan','nada','no','yet','negative','c\'est mort','ha nan','ah nan','négatif','pas du tout','faux','incorrect','disparu','absent','éteint','aucun','rien','marche pas','désactivé','inactif','niet','nope','nah','que dalle','walou'],
+      annuler: ['annuler','stop','arrête','abandonne','cancel','termine','quitte'],
+      accueil: ['accueil','menu','retour accueil','home'],
+      repeter: ['répète','redis','encore','répète ça','what','repeat','pardon','hein'],
+      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu es inutile','tu es nul','tu vaux rien','a quoi tu sers'],
+      fermer: ['fermer','ferme','ferme la fenêtre','close','fermez','ferme ça','clore','termine la fenêtre'],
+      bulletin: ['récapitulatif','recapitulatif','bulletin','bulletin de service','b s','bs','bé esse','bé s','bulletin service','rapport','compte rendu','resume','résumé','recap','récap','bilan','affiche le bulletin']
     };
 
     function fuzzyContains(text, wordList) {
@@ -1273,16 +1256,23 @@
       if (!l || l.length < 1) return;
       addMessage('' + txt + '', 'user');
 
-      // Commandes de fin de procédure (toujours actives)
-      if (document.getElementById('endQuestions').classList.contains('active')) {
-        if (fuzzyContains(l, DICO.fermer) || fuzzyContains(l, ['non','fermer'])) {
+      // Commandes de fin de procédure (traitement prioritaire renforcé)
+      const endActive = document.getElementById('endQuestions').classList.contains('active');
+      if (endActive) {
+        // Détection directe des mots-clés
+        if (/\b(?:fermer|ferme|close|fermez|clore|termine)\b/i.test(l) ||
+            /\b(?:non|nan|no|nope|nah)\b/i.test(l) ||
+            (/\b(?:pas|veux|souhaite)\b/i.test(l) && /\b(?:non|pas)\b/i.test(l))) {
           document.getElementById('endQuestions').classList.remove('active');
           document.getElementById('guideStepCard').classList.remove('active');
           addMessage('Fenêtre fermée.', 'ai');
           speakText('Fenêtre fermée.');
           return;
         }
-        if (fuzzyContains(l, DICO.recapitulatif) || fuzzyContains(l, DICO.oui)) {
+        if (/\b(?:récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i.test(l) ||
+            /\bb\s*s\b/i.test(l) ||
+            /\bb[ée]\s*s\b/i.test(l) ||
+            /\b(?:oui|ouais|yes|affiche|montre|voir|go)\b/i.test(l)) {
           document.getElementById('endQuestions').classList.remove('active');
           sr();
           return;
@@ -1290,9 +1280,9 @@
       }
 
       if (fuzzyContains(l, DICO.inutile)) {
-        const reponses = ['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage au lieu de critiquer.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage et arrête de te plaindre.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage, feignasse.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.'];
-        const r = reponses[Math.floor(Math.random() * reponses.length)];
-        addMessage(r, 'ai'); speakText(r); return;
+        const reponses = ['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend.'];
+        addMessage(reponses[Math.floor(Math.random() * reponses.length)], 'ai');
+        speakText(reponses[Math.floor(Math.random() * reponses.length)]); return;
       }
 
       if (fuzzyContains(l, DICO.annuler)) { ccp(); return; }
@@ -1301,8 +1291,8 @@
       if (fuzzyContains(l, DICO.salutations)) {
         if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) { addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return; }
         const greetings = ['Bonjour ! IAOS T4 à votre service.','Salut ! Je suis prêt à vous assister.','Hello ! Dites-moi ce dont vous avez besoin.','Bonjour, je vous écoute.'];
-        addMessage(greetings[Math.floor(Math.random() * greetings.length)], 'ai');
-        speakText(greetings[Math.floor(Math.random() * greetings.length)]); return;
+        const g = greetings[Math.floor(Math.random() * greetings.length)];
+        addMessage(g, 'ai'); speakText(g); return;
       }
 
       if (isProcedureActive()) {
@@ -1355,7 +1345,7 @@
 
     function initInfoContent() {
       document.getElementById('infoModalContent').innerHTML = `
-        <h4>🎤 COMMANDES VOCALES</h4><ul><li><span class="cmd">"IOS [numéro]"</span> — Rechercher un IOS</li><li><span class="cmd">"démarrer le guidage"</span> — Lancer la procédure</li><li><span class="cmd">"suivant", "ok", "c'est bon"</span> — Étape suivante</li><li><span class="cmd">"précédent", "retour"</span> — Étape précédente</li><li><span class="cmd">"oui", "non"</span> — Répondre à une question</li><li><span class="cmd">"répète"</span> — Répéter l'étape</li><li><span class="cmd">"annuler"</span> — Annuler la procédure</li><li><span class="cmd">"accueil"</span> — Retour à l'accueil</li><li><span class="cmd">"temps écoulé"</span> — Temps depuis début</li><li><span class="cmd">"quelle heure"</span> — Heure actuelle</li><li><span class="cmd">"quelle date"</span> — Date du jour</li><li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li><li><span class="cmd">"bonjour", "salut"</span> — Salutation</li><li><span class="cmd">"qui t'a créé"</span> — Info créateur</li><li><span class="cmd">"fermer", "b s", "bulletin"</span> — Fin de procédure</li></ul><h4>⚠️ PROTECTION</h4><p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p><h4>🎨 COULEURS</h4><ul><li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li><li><span style="color:var(--green)">Vert</span> — Écoute</li><li><span style="color:var(--purple)">Violet</span> — Parole</li><li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li><li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li><li><span style="color:var(--red)">Rouge</span> — Erreur</li></ul>
+        <h4>🎤 COMMANDES VOCALES</h4><ul><li><span class="cmd">"IOS [numéro]"</span> — Rechercher un IOS</li><li><span class="cmd">"démarrer le guidage"</span> — Lancer la procédure</li><li><span class="cmd">"suivant", "ok", "c'est bon"</span> — Étape suivante</li><li><span class="cmd">"précédent", "retour"</span> — Étape précédente</li><li><span class="cmd">"oui", "non"</span> — Répondre à une question</li><li><span class="cmd">"répète"</span> — Répéter l'étape</li><li><span class="cmd">"annuler"</span> — Annuler la procédure</li><li><span class="cmd">"accueil"</span> — Retour à l'accueil</li><li><span class="cmd">"temps écoulé"</span> — Temps depuis début</li><li><span class="cmd">"quelle heure"</span> — Heure actuelle</li><li><span class="cmd">"quelle date"</span> — Date du jour</li><li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li><li><span class="cmd">"bonjour", "salut"</span> — Salutation</li><li><span class="cmd">"qui t'a créé"</span> — Info créateur</li><li><span class="cmd">"fermer", "bulletin", "BS"</span> — Fin de procédure</li></ul><h4>⚠️ PROTECTION</h4><p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p><h4>🎨 COULEURS</h4><ul><li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li><li><span style="color:var(--green)">Vert</span> — Écoute</li><li><span style="color:var(--purple)">Violet</span> — Parole</li><li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li><li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li><li><span style="color:var(--red)">Rouge</span> — Erreur</li></ul>
       `;
     }
 
