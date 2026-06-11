@@ -14,47 +14,38 @@
       -webkit-tap-highlight-color: transparent;
     }
     :root {
-      --bg-dark: #0a0a0a;
-      --bg-panel: rgba(10, 10, 10, 0.97);
+      --bg-deep: #020108;
+      --bg-card: rgba(8, 4, 22, 0.92);
       --bat-yellow: #f5c518;
       --bat-gold: #c8a415;
-      --bat-gray: #2a2a2a;
-      --bat-light-gray: #3d3d3d;
-      --bat-steel: #4a4a5a;
+      --bat-gray: #1c1c2e;
+      --bat-light: #2d2d44;
+      --steel: #4a4a6a;
       --cyan: #00e5ff;
       --purple: #b388ff;
       --green: #69f0ae;
       --red: #ff5252;
       --amber: #ffd740;
-      --text: #e0e0e0;
-      --text-dim: #8a8a8a;
-      --bat-wing: #1a1a2e;
+      --text: #e0e0e8;
+      --text-dim: #8888a0;
+      --glow-yellow: rgba(245, 197, 24, 0.5);
     }
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--bg-dark);
+      background: var(--bg-deep);
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(ellipse at 50% 0%, rgba(245, 197, 24, 0.03) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 50%),
-        radial-gradient(ellipse at 20% 80%, rgba(179, 136, 255, 0.02) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(245,197,24,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(0,229,255,0.04) 0%, transparent 50%);
     }
     .holo-bg {
       position: fixed;
       inset: 0;
-      background: 
-        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(245, 197, 24, 0.01) 2px, rgba(245, 197, 24, 0.01) 4px),
-        radial-gradient(ellipse at 50% 30%, rgba(245, 197, 24, 0.04) 0%, transparent 60%);
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(245,197,24,0.015) 3px, rgba(245,197,24,0.015) 6px);
       pointer-events: none;
       z-index: 0;
     }
@@ -66,144 +57,130 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      padding: 1rem 1rem 130px;
-      gap: 1rem;
+      padding: 1.2rem 1rem 130px;
+      gap: 1.2rem;
     }
     .title-wrap {
       text-align: center;
       padding: 0.8rem 2rem;
-      border-radius: 4px;
-      background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(26, 26, 46, 0.8));
-      border: 1px solid var(--bat-gold);
-      border-left: 3px solid var(--bat-yellow);
-      border-right: 3px solid var(--bat-yellow);
+      background: linear-gradient(135deg, rgba(8,4,22,0.95), rgba(28,28,46,0.9));
+      border: 1px solid rgba(245,197,24,0.4);
+      border-left: 4px solid var(--bat-yellow);
+      border-right: 4px solid var(--bat-yellow);
       width: 100%;
       max-width: 600px;
-      box-shadow: 0 0 30px rgba(245, 197, 24, 0.1), inset 0 0 20px rgba(245, 197, 24, 0.03);
+      box-shadow: 0 0 30px rgba(245,197,24,0.15);
       position: relative;
     }
-    .title-wrap::before {
+    .title-wrap::after {
       content: '';
       position: absolute;
-      top: -1px;
-      left: 20%;
-      right: 20%;
+      bottom: -1px;
+      left: 10%;
+      right: 10%;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--bat-yellow), transparent);
     }
     .hero {
       font-family: 'Orbitron', sans-serif;
       font-weight: 900;
-      font-size: clamp(2.2rem, 7vw, 3.8rem);
+      font-size: clamp(2rem, 6vw, 3.2rem);
       color: var(--bat-yellow);
-      letter-spacing: 0.05em;
-      line-height: 1.1;
-      text-shadow: 0 0 20px rgba(245, 197, 24, 0.4), 0 0 40px rgba(245, 197, 24, 0.2);
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 20px var(--glow-yellow), 0 0 40px rgba(245,197,24,0.3);
       text-transform: uppercase;
     }
     .hero-sub {
       font-family: 'Space Mono', monospace;
       font-size: 0.55rem;
-      letter-spacing: 5px;
+      letter-spacing: 6px;
       color: var(--bat-gold);
-      margin-top: 0.2rem;
       text-transform: uppercase;
+      margin-top: 0.1rem;
     }
 
     .voice-commands-bar {
       width: 100%;
       max-width: 600px;
-      background: linear-gradient(135deg, rgba(10, 10, 10, 0.85), rgba(26, 26, 46, 0.75));
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(245, 197, 24, 0.3);
-      border-radius: 4px;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(245,197,24,0.25);
       padding: 0.5rem 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
-      font-family: 'Space Mono', monospace;
-      color: var(--text-dim);
-      overflow: hidden;
       flex-wrap: wrap;
-      box-shadow: 0 0 15px rgba(245, 197, 24, 0.05), inset 0 0 10px rgba(245, 197, 24, 0.02);
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
     .voice-icon {
+      background: rgba(245,197,24,0.12);
+      border: 1px solid rgba(245,197,24,0.4);
+      min-width: 26px;
+      width: 26px;
+      height: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(245, 197, 24, 0.1);
-      border-radius: 2px;
-      min-width: 24px;
-      width: 24px;
-      height: 24px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--bat-yellow);
       flex-shrink: 0;
-      border: 1px solid rgba(245, 197, 24, 0.3);
     }
     .voice-cmd-list {
       display: flex;
       gap: 0.35rem;
       flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
-      flex: 1;
-      min-width: 0;
     }
     .voice-cmd-item {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      padding: 0.12rem 0.4rem;
-      background: rgba(245, 197, 24, 0.05);
-      border-radius: 2px;
-      border: 1px solid rgba(245, 197, 24, 0.2);
-      font-size: 0.6rem;
+      padding: 0.15rem 0.5rem;
+      background: rgba(245,197,24,0.06);
+      border: 1px solid rgba(245,197,24,0.2);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
       white-space: nowrap;
     }
     .cmd-key {
       color: var(--bat-yellow);
       font-weight: 700;
-      font-size: 0.55rem;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .center-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.2rem;
+      gap: 1.5rem;
       width: 100%;
       max-width: 600px;
     }
 
     .mic-wave-container {
       position: relative;
-      width: 170px;
-      height: 170px;
+      width: 180px;
+      height: 180px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: transform 0.2s ease;
-      user-select: none;
+      transition: transform 0.15s ease;
       flex-shrink: 0;
     }
-    .mic-wave-container:active { transform: scale(0.95); }
+    .mic-wave-container:active { transform: scale(0.96); }
     .mic-ring {
       position: absolute;
       border-radius: 50%;
-      border: 1.5px solid rgba(245, 197, 24, 0.3);
-      animation: pulseRing 2.8s infinite ease-in-out;
+      border: 1.5px solid rgba(245,197,24,0.3);
+      animation: pulseRing 2.5s infinite ease-in-out;
     }
-    .mic-ring:nth-child(1) { width: 80px; height: 80px; animation-delay: 0s; }
-    .mic-ring:nth-child(2) { width: 112px; height: 112px; animation-delay: 0.5s; }
-    .mic-ring:nth-child(3) { width: 145px; height: 145px; animation-delay: 1s; }
+    .mic-ring:nth-child(1) { width: 85px; height: 85px; }
+    .mic-ring:nth-child(2) { width: 120px; height: 120px; animation-delay: 0.4s; }
+    .mic-ring:nth-child(3) { width: 155px; height: 155px; animation-delay: 0.8s; }
     @keyframes pulseRing {
-      0% { transform: scale(0.93); opacity: 0.5; border-color: rgba(245, 197, 24, 0.3); }
-      50% { transform: scale(1.04); opacity: 1; border-color: rgba(245, 197, 24, 0.8); box-shadow: 0 0 20px rgba(245, 197, 24, 0.4); }
-      100% { transform: scale(0.93); opacity: 0.5; }
+      0% { transform: scale(0.92); opacity: 0.4; border-color: rgba(245,197,24,0.4); }
+      50% { transform: scale(1.05); opacity: 1; border-color: rgba(245,197,24,0.9); box-shadow: 0 0 22px var(--glow-yellow); }
+      100% { transform: scale(0.92); opacity: 0.4; }
     }
     .wave-bars {
       position: relative;
@@ -212,84 +189,77 @@
       align-items: center;
       justify-content: center;
       gap: 3px;
-      height: 50px;
-      width: 65px;
+      height: 55px;
+      width: 70px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 197, 24, 0.08), transparent 70%);
-      transition: all 0.3s ease;
+      background: radial-gradient(circle, rgba(245,197,24,0.1), transparent 70%);
     }
     .wave-bar {
       width: 4px;
-      border-radius: 2px;
       background: var(--bat-yellow);
-      box-shadow: 0 0 8px rgba(245, 197, 24, 0.5);
-      transition: all 0.15s ease;
-      animation: waveBarAnim 0.8s infinite ease-in-out;
+      box-shadow: 0 0 10px var(--glow-yellow);
+      animation: waveAnim 0.7s infinite ease-in-out;
     }
-    .wave-bar:nth-child(1) { height: 14px; animation-delay: 0s; }
-    .wave-bar:nth-child(2) { height: 24px; animation-delay: 0.1s; }
-    .wave-bar:nth-child(3) { height: 34px; animation-delay: 0.2s; }
-    .wave-bar:nth-child(4) { height: 24px; animation-delay: 0.3s; }
-    .wave-bar:nth-child(5) { height: 14px; animation-delay: 0.4s; }
-    @keyframes waveBarAnim {
-      0%,100% { transform: scaleY(0.5); opacity: 0.5; }
+    .wave-bar:nth-child(1) { height: 16px; }
+    .wave-bar:nth-child(2) { height: 26px; animation-delay: 0.08s; }
+    .wave-bar:nth-child(3) { height: 36px; animation-delay: 0.16s; }
+    .wave-bar:nth-child(4) { height: 26px; animation-delay: 0.24s; }
+    .wave-bar:nth-child(5) { height: 16px; animation-delay: 0.32s; }
+    @keyframes waveAnim {
+      0%,100% { transform: scaleY(0.4); opacity: 0.4; }
       50% { transform: scaleY(1); opacity: 1; }
     }
-    .wave-bars.idle .wave-bar { background: var(--bat-yellow); box-shadow: 0 0 8px rgba(245, 197, 24, 0.5); }
-    .wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 14px rgba(105, 240, 174, 0.7); animation-duration: 0.5s; }
-    .wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 14px rgba(179, 136, 255, 0.7); animation-duration: 0.6s; }
-    .wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 12px rgba(255, 82, 82, 0.6); animation: errorShake 0.4s; }
-    @keyframes errorShake { 0%,100%{transform:translateX(0) scaleY(1)} 20%{transform:translateX(-4px) scaleY(0.7)} 40%{transform:translateX(4px) scaleY(1.2)} 60%{transform:translateX(-3px) scaleY(0.8)} 80%{transform:translateX(3px) scaleY(1.1)} }
-    .mic-wave-container.listening .mic-ring { border-color: rgba(105, 240, 174, 0.5)!important; animation-duration:1.8s; }
-    .mic-wave-container.speaking .mic-ring { border-color: rgba(179, 136, 255, 0.5)!important; animation-duration:1.6s; }
+    .wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 14px rgba(105,240,174,0.7); animation-duration: 0.45s; }
+    .wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 14px rgba(179,136,255,0.7); animation-duration: 0.55s; }
+    .wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 12px rgba(255,82,82,0.6); animation: errorShake 0.4s; }
+    @keyframes errorShake { 0%,100%{transform:translateX(0) scaleY(1)} 20%{transform:translateX(-4px) scaleY(0.6)} 40%{transform:translateX(4px) scaleY(1.3)} 60%{transform:translateX(-3px) scaleY(0.7)} 80%{transform:translateX(3px) scaleY(1.2)} }
+    .mic-wave-container.listening .mic-ring { border-color: rgba(105,240,174,0.6)!important; animation-duration:1.6s; }
+    .mic-wave-container.speaking .mic-ring { border-color: rgba(179,136,255,0.6)!important; animation-duration:1.4s; }
 
     .guide-step-card {
-      background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(26, 26, 46, 0.85));
-      border: 1px solid rgba(245, 197, 24, 0.4);
-      border-radius: 4px;
-      padding: 1rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(245,197,24,0.35);
+      padding: 1.2rem 1.4rem;
       width: 100%;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(15px);
       display: none;
       text-align: center;
-      animation: fadeUp 0.3s ease;
-      box-shadow: 0 0 20px rgba(245, 197, 24, 0.08);
+      animation: fadeUp 0.25s ease;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
     }
     .guide-step-card.active { display: block; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .step-header {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       letter-spacing: 3px;
       color: var(--bat-yellow);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
       text-transform: uppercase;
     }
     .step-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 700;
       color: #fff;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.4rem;
     }
     .step-text {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 400;
-      line-height: 1.4;
-      margin-bottom: 0.7rem;
-      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
     }
     .step-actions {
       display: flex;
-      gap: 0.4rem;
+      gap: 0.5rem;
       justify-content: center;
       flex-wrap: wrap;
     }
     .step-btn {
-      background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(42, 42, 42, 0.8));
-      border: 1px solid rgba(245, 197, 24, 0.4);
-      padding: 0.4rem 1rem;
-      border-radius: 2px;
+      background: rgba(28,28,46,0.9);
+      border: 1px solid rgba(245,197,24,0.4);
+      padding: 0.5rem 1.1rem;
       color: #fff;
       font-size: 0.65rem;
       cursor: pointer;
@@ -298,20 +268,19 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
-    .step-btn:active { transform: scale(0.96); }
-    .step-btn:hover { background: linear-gradient(135deg, rgba(245, 197, 24, 0.1), rgba(200, 164, 21, 0.05)); border-color: var(--bat-yellow); }
-    .step-btn.yes { background: linear-gradient(135deg, rgba(105, 240, 174, 0.1), rgba(0, 200, 83, 0.05)); border-color: rgba(105, 240, 174, 0.5); color: #69f0ae; font-weight: 600; }
-    .step-btn.no { background: linear-gradient(135deg, rgba(255, 82, 82, 0.1), rgba(213, 0, 0, 0.05)); border-color: rgba(255, 82, 82, 0.5); color: #ff5252; font-weight: 600; }
+    .step-btn:hover { background: rgba(245,197,24,0.12); border-color: var(--bat-yellow); }
+    .step-btn:active { transform: scale(0.97); }
+    .step-btn.yes { background: rgba(105,240,174,0.1); border-color: rgba(105,240,174,0.5); color: #69f0ae; font-weight: 700; }
+    .step-btn.no { background: rgba(255,82,82,0.1); border-color: rgba(255,82,82,0.5); color: #ff5252; font-weight: 700; }
 
     .status-pill {
       display: flex;
       gap: 10px;
       align-items: center;
-      background: linear-gradient(135deg, rgba(10, 10, 10, 0.8), rgba(26, 26, 46, 0.7));
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(245, 197, 24, 0.3);
-      border-radius: 2px;
-      padding: 8px 22px;
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(245,197,24,0.3);
+      padding: 8px 24px;
       font-size: 0.65rem;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 1px;
@@ -319,105 +288,104 @@
     .status-dot {
       width: 8px;
       height: 8px;
-      border-radius: 2px;
-      background: #4a4a5a;
-      transition: all 0.3s ease;
+      background: #4a4a6a;
+      transition: all 0.3s;
       flex-shrink: 0;
     }
     .status-dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); }
     .status-dot.speaking { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
     .status-dot.blocked { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
 
-    .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+    .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .panel-overlay.active{opacity:1;pointer-events:auto}
-    .info-panel{position:fixed;top:0;right:0;width:min(94%,420px);height:100%;background:linear-gradient(180deg, rgba(10,10,10,0.98), rgba(26,26,46,0.96));backdrop-filter:blur(20px);border-left:1px solid rgba(245,197,24,0.4);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-10px 0 50px rgba(0,0,0,0.8)}
+    .info-panel{position:fixed;top:0;right:0;width:min(94%,420px);height:100%;background:var(--bg-card);backdrop-filter:blur(25px);border-left:1px solid rgba(245,197,24,0.4);z-index:100;transform:translateX(105%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);display:flex;flex-direction:column;box-shadow:-10px 0 50px rgba(0,0,0,0.8)}
     .info-panel.open{transform:translateX(0)}
-    .panel-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(245,197,24,0.3);background:rgba(0,0,0,0.5)}
+    .panel-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(245,197,24,0.3);background:rgba(0,0,0,0.4)}
     .panel-header h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--bat-yellow);text-transform:uppercase}
-    .close-panel{background:rgba(0,0,0,0.3);border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:30px;height:30px;border-radius:2px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center}
+    .close-panel{background:rgba(0,0,0,0.3);border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .close-panel:hover{color:var(--bat-yellow);border-color:var(--bat-yellow)}
     .panel-content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
-    .panel-toggle{position:fixed;bottom:24px;right:24px;width:50px;height:50px;border-radius:2px;background:linear-gradient(135deg,rgba(10,10,10,0.9),rgba(26,26,46,0.8));backdrop-filter:blur(12px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 20px rgba(245,197,24,0.2)}
+    .panel-toggle{position:fixed;bottom:24px;right:24px;width:52px;height:52px;background:var(--bg-card);backdrop-filter:blur(15px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.5rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 0 20px rgba(245,197,24,0.25)}
     .panel-toggle:hover{transform:scale(1.06);box-shadow:0 0 30px rgba(245,197,24,0.4)}
-    .gear-icon{transition:transform 0.5s ease}
+    .gear-icon{transition:transform 0.5s}
     .panel-toggle:hover .gear-icon{transform:rotate(90deg)}
     .panel-toggle.panel-open .gear-icon{transform:rotate(180deg)}
-    .search-box{background:rgba(0,0,0,0.5);border:1px solid rgba(245,197,24,0.3);border-radius:2px;display:flex;align-items:center;padding:4px 4px 4px 16px;gap:8px}
+    .search-box{background:rgba(0,0,0,0.4);border:1px solid rgba(245,197,24,0.3);display:flex;align-items:center;padding:4px 4px 4px 16px;gap:8px}
     .search-box input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.85rem;padding:10px 0}
     .search-box input::placeholder{color:var(--text-dim)}
-    .search-box button{background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.4);padding:7px 16px;border-radius:2px;color:var(--bat-yellow);cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.6rem;text-transform:uppercase;letter-spacing:1px}
+    .search-box button{background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.4);padding:7px 16px;color:var(--bat-yellow);cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.6rem;text-transform:uppercase;letter-spacing:1px}
     .search-box button:hover{background:rgba(245,197,24,0.2)}
-    .ios-detail-card{background:linear-gradient(135deg,rgba(10,10,10,0.9),rgba(26,26,46,0.85));border:1px solid rgba(245,197,24,0.4);border-radius:4px;overflow:hidden;display:none;animation:fadeUp 0.3s ease;box-shadow:0 0 15px rgba(245,197,24,0.08)}
+    .ios-detail-card{background:var(--bg-card);border:1px solid rgba(245,197,24,0.4);overflow:hidden;display:none;animation:fadeUp 0.3s;box-shadow:0 0 15px rgba(0,0,0,0.5)}
     .ios-detail-card.show{display:block}
     .card-header{padding:14px;border-bottom:1px solid rgba(245,197,24,0.2)}
     .ios-code{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--bat-yellow);letter-spacing:1px}
-    .prio-badge{font-size:0.5rem;padding:3px 8px;border-radius:2px;display:inline-block;margin-top:5px;font-family:'Orbitron',sans-serif;letter-spacing:2px;text-transform:uppercase}
+    .prio-badge{font-size:0.5rem;padding:3px 8px;display:inline-block;margin-top:5px;font-family:'Orbitron',sans-serif;letter-spacing:2px;text-transform:uppercase}
     .prio-h{background:rgba(255,82,82,0.15);color:#ff5252;border:1px solid rgba(255,82,82,0.5);animation:prioUrgentPulse 1.5s infinite}
     @keyframes prioUrgentPulse{0%,100%{box-shadow:0 0 5px rgba(255,82,82,0.3)}50%{box-shadow:0 0 15px rgba(255,82,82,0.6)}}
     .prio-m{background:rgba(255,215,64,0.1);color:#ffd740;border:1px solid rgba(255,215,64,0.4)}
     .prio-l{background:rgba(105,240,174,0.1);color:#69f0ae;border:1px solid rgba(105,240,174,0.4)}
     .card-actions{padding:12px 14px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid rgba(245,197,24,0.1)}
-    .action-btn{background:rgba(245,197,24,0.05);border:1px solid rgba(245,197,24,0.3);padding:6px 14px;border-radius:2px;color:var(--bat-yellow);font-size:0.6rem;cursor:pointer;transition:all 0.2s;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:1px}
+    .action-btn{background:rgba(245,197,24,0.05);border:1px solid rgba(245,197,24,0.3);padding:6px 14px;color:var(--bat-yellow);font-size:0.6rem;cursor:pointer;transition:all 0.2s;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:1px}
     .action-btn:hover{background:rgba(245,197,24,0.15);border-color:var(--bat-yellow)}
     .action-btn.green{background:rgba(105,240,174,0.08);border-color:rgba(105,240,174,0.5);color:#69f0ae}
     .action-btn.red{background:rgba(255,82,82,0.08);border-color:rgba(255,82,82,0.5);color:#ff5252}
     .card-body{padding:14px;font-size:0.8rem;color:var(--text-dim);line-height:1.5}
-    .chat-area{background:rgba(0,0,0,0.5);border-radius:4px;border:1px solid rgba(245,197,24,0.2);overflow:hidden}
+    .chat-area{background:rgba(0,0,0,0.4);border:1px solid rgba(245,197,24,0.2);overflow:hidden}
     .chat-messages{height:200px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
-    .message{display:flex;gap:6px;max-width:88%;animation:messageIn 0.25s ease}
+    .message{display:flex;gap:6px;max-width:88%;animation:messageIn 0.25s}
     @keyframes messageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
     .message.user{align-self:flex-end;flex-direction:row-reverse}
-    .message.ai .bubble{background:rgba(245,197,24,0.08);border-radius:2px 10px 10px 10px;border:1px solid rgba(245,197,24,0.2)}
-    .message.user .bubble{background:rgba(179,136,255,0.1);border-radius:10px 2px 10px 10px;border:1px solid rgba(179,136,255,0.4)}
+    .message.ai .bubble{background:rgba(245,197,24,0.08);border:1px solid rgba(245,197,24,0.2)}
+    .message.user .bubble{background:rgba(179,136,255,0.1);border:1px solid rgba(179,136,255,0.4)}
     .bubble{padding:8px 12px;font-size:0.78rem;line-height:1.4;word-break:break-word}
     
-    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0a0a0a;border:1px solid var(--bat-yellow);border-radius:2px;padding:8px 20px;font-size:0.65rem;opacity:0;transition:opacity 0.3s ease;z-index:200;pointer-events:none;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--bat-yellow)}
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg-deep);border:1px solid var(--bat-yellow);padding:8px 20px;font-size:0.65rem;opacity:0;transition:opacity 0.3s;z-index:200;pointer-events:none;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--bat-yellow)}
     .toast.show{opacity:1}
     
-    .ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+    .ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .ios-list-overlay.active{opacity:1;pointer-events:auto}
-    .ios-list-panel{background:linear-gradient(180deg,rgba(10,10,10,0.99),rgba(26,26,46,0.97));border:1px solid rgba(245,197,24,0.5);border-radius:4px;width:min(90%,480px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
+    .ios-list-panel{background:var(--bg-card);border:1px solid rgba(245,197,24,0.5);width:min(90%,480px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
     .ios-list-header{padding:14px 18px;border-bottom:1px solid rgba(245,197,24,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5)}
     .ios-list-header h3{font-family:'Orbitron',sans-serif;color:var(--bat-yellow);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase}
-    .ios-list-close{background:none;border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer}
+    .ios-list-close{background:none;border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:28px;height:28px;cursor:pointer}
     .ios-list-close:hover{color:var(--bat-yellow);border-color:var(--bat-yellow)}
     .ios-list-scroll{overflow-y:auto;flex:1;padding:8px}
-    .ios-list-item{padding:10px 14px;border-bottom:1px solid rgba(245,197,24,0.08);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px;border-radius:2px;margin:2px 0}
+    .ios-list-item{padding:10px 14px;border-bottom:1px solid rgba(245,197,24,0.08);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px}
     .ios-list-item:hover{background:rgba(245,197,24,0.08)}
     .ios-list-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--bat-yellow);min-width:45px;font-size:0.75rem;letter-spacing:1px}
     .ios-list-desc{font-size:0.78rem;color:var(--text);flex:1}
-    .ios-list-prio{font-size:0.5rem;padding:2px 7px;border-radius:2px;font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase}
+    .ios-list-prio{font-size:0.5rem;padding:2px 7px;font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase}
     .ios-list-prio.h{background:rgba(255,82,82,0.15);color:#ff5252}
     .ios-list-prio.m{background:rgba(255,215,64,0.1);color:#ffd740}
     .ios-list-prio.l{background:rgba(105,240,174,0.1);color:#69f0ae}
     
-    .recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+    .recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .recap-overlay.active{opacity:1;pointer-events:auto}
-    .recap-panel{background:#1a1a1a;border:1px solid rgba(245,197,24,0.5);border-radius:4px;width:min(92%,520px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,0.8);overflow:hidden}
-    .recap-header{padding:14px 18px;border-bottom:1px solid rgba(245,197,24,0.3);display:flex;justify-content:space-between;align-items:center;background:#0a0a0a}
+    .recap-panel{background:#1a1a2a;border:1px solid rgba(245,197,24,0.5);width:min(92%,520px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,0.8);overflow:hidden}
+    .recap-header{padding:14px 18px;border-bottom:1px solid rgba(245,197,24,0.3);display:flex;justify-content:space-between;align-items:center;background:#0a0a14}
     .recap-header h3{font-family:'Orbitron',sans-serif;color:var(--bat-yellow);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase}
-    .recap-close{background:none;border:1px solid rgba(245,197,24,0.3);color:#8a8a8a;width:28px;height:28px;border-radius:2px;cursor:pointer}
+    .recap-close{background:none;border:1px solid rgba(245,197,24,0.3);color:#8a8a8a;width:28px;height:28px;cursor:pointer}
     .recap-close:hover{color:var(--bat-yellow);border-color:var(--bat-yellow)}
     .recap-content{padding:20px;overflow-y:auto;flex:1;color:#c0c0c0;font-size:0.8rem;line-height:1.6;white-space:pre-wrap;font-family:'Space Mono',monospace}
-    .recap-actions{padding:12px 18px;border-top:1px solid rgba(245,197,24,0.3);display:flex;gap:8px;justify-content:flex-end;background:#0a0a0a}
-    .recap-btn{padding:7px 16px;border-radius:2px;border:1px solid rgba(245,197,24,0.4);background:rgba(245,197,24,0.05);color:var(--bat-yellow);cursor:pointer;font-size:0.65rem;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:1px}
+    .recap-actions{padding:12px 18px;border-top:1px solid rgba(245,197,24,0.3);display:flex;gap:8px;justify-content:flex-end;background:#0a0a14}
+    .recap-btn{padding:7px 16px;border:1px solid rgba(245,197,24,0.4);background:rgba(245,197,24,0.05);color:var(--bat-yellow);cursor:pointer;font-size:0.65rem;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:1px}
     .recap-btn:hover{background:rgba(245,197,24,0.15)}
     .recap-btn.primary{background:rgba(245,197,24,0.15);color:#fff;border-color:var(--bat-yellow)}
     
-    .end-questions{position:fixed;bottom:0;left:0;width:100%;background:linear-gradient(0deg,rgba(10,10,10,0.99),rgba(26,26,46,0.95));backdrop-filter:blur(20px);border-top:1px solid rgba(245,197,24,0.5);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s ease}
+    .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(2,1,8,0.98);backdrop-filter:blur(20px);border-top:1px solid rgba(245,197,24,0.5);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s}
     .end-questions.active{transform:translateY(0)}
     .end-questions-text{font-size:0.8rem;margin-bottom:8px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
     .end-questions-buttons{display:flex;gap:8px;flex-wrap:wrap}
     
-    .info-btn{position:fixed;bottom:24px;left:24px;width:50px;height:50px;border-radius:2px;background:linear-gradient(135deg,rgba(10,10,10,0.9),rgba(26,26,46,0.8));backdrop-filter:blur(12px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.3rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;box-shadow:0 0 20px rgba(245,197,24,0.2)}
+    .info-btn{position:fixed;bottom:24px;left:24px;width:52px;height:52px;background:var(--bg-card);backdrop-filter:blur(15px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 0 20px rgba(245,197,24,0.25)}
     .info-btn:hover{transform:scale(1.06);box-shadow:0 0 30px rgba(245,197,24,0.4)}
     
-    .info-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:170;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+    .info-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:170;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .info-overlay.active{opacity:1;pointer-events:auto}
-    .info-modal{background:linear-gradient(180deg,rgba(10,10,10,0.99),rgba(26,26,46,0.97));border:1px solid rgba(245,197,24,0.5);border-radius:4px;width:min(90%,520px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
+    .info-modal{background:var(--bg-card);border:1px solid rgba(245,197,24,0.5);width:min(90%,520px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
     .info-modal-header{padding:14px 18px;border-bottom:1px solid rgba(245,197,24,0.3);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5)}
     .info-modal-header h3{font-family:'Orbitron',sans-serif;color:var(--bat-yellow);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase}
-    .info-modal-close{background:none;border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer}
+    .info-modal-close{background:none;border:1px solid rgba(245,197,24,0.3);color:var(--text-dim);width:28px;height:28px;cursor:pointer}
     .info-modal-close:hover{color:var(--bat-yellow);border-color:var(--bat-yellow)}
     .info-modal-content{padding:20px;overflow-y:auto;flex:1;color:var(--text);font-size:0.8rem;line-height:1.6}
     .info-modal-content h4{color:var(--bat-yellow);margin:10px 0 5px;font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase}
@@ -426,24 +394,18 @@
     .info-modal-content .cmd{color:var(--bat-yellow);font-family:'Space Mono',monospace;font-size:0.65rem}
     
     @media(max-width:480px){
-      .mic-wave-container{width:140px;height:140px}
-      .mic-ring:nth-child(1){width:65px;height:65px}
-      .mic-ring:nth-child(2){width:90px;height:90px}
-      .mic-ring:nth-child(3){width:115px;height:115px}
-      .voice-commands-bar{padding:0.35rem 0.6rem;gap:0.25rem;border-radius:2px}
-      .voice-icon{min-width:20px;width:20px;height:20px;font-size:0.6rem}
+      .mic-wave-container{width:150px;height:150px}
+      .mic-ring:nth-child(1){width:70px;height:70px}
+      .mic-ring:nth-child(2){width:98px;height:98px}
+      .mic-ring:nth-child(3){width:126px;height:126px}
+      .voice-commands-bar{padding:0.4rem 0.7rem;gap:0.25rem}
+      .voice-icon{min-width:22px;width:22px;height:22px;font-size:0.65rem}
       .voice-cmd-list{gap:0.2rem}
-      .voice-cmd-item{padding:0.1rem 0.3rem;font-size:0.5rem;border-radius:2px}
+      .voice-cmd-item{padding:0.1rem 0.35rem;font-size:0.5rem}
       .cmd-key{font-size:0.48rem}
-      .step-title{font-size:0.8rem}
+      .step-title{font-size:0.85rem}
       .step-text{font-size:0.8rem}
       .status-pill{padding:6px 16px;font-size:0.6rem}
-    }
-    @media(max-width:360px){
-      .voice-commands-bar{padding:0.3rem 0.5rem;gap:0.2rem;border-radius:2px}
-      .voice-cmd-item{padding:0.08rem 0.25rem;font-size:0.45rem}
-      .cmd-key{font-size:0.42rem}
-      .voice-icon{min-width:18px;width:18px;height:18px;font-size:0.55rem}
     }
   </style>
 </head>
@@ -528,6 +490,7 @@
 
 <script>
   (function() {
+    // === BASE DE DONNÉES IOS (À REMPLIR) ===
     const IOS = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
@@ -1007,23 +970,32 @@
       };
     }
 
+    // === ÉTAT GLOBAL ===
     let currentIOS = null, guideActive = false, guideSteps = [], stepIndex = 0;
     let listening = false, speakingFlag = false, micActive = true, iosInfoShown = false;
     let recognition = null, procedureStartTime = null, procedureEndTime = null, procedureStepsLog = [];
     const synth = window.speechSynthesis, voiceSupport = !!synth;
     let recognitionRestartTimer = null, accumulatedTranscript = '';
     let femaleVoiceCache = null;
+    let conversationContext = [];
 
-    function toast(m, d = 2500) { const t = document.getElementById('toastMsg'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d); }
+    function toast(m, d = 2500) {
+      const t = document.getElementById('toastMsg');
+      t.textContent = m; t.classList.add('show');
+      clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), d);
+    }
 
     function updateUIForState(s) {
-      const w = document.getElementById('waveBars'), m = document.getElementById('micWaveContainer'), d = document.getElementById('statusDot'), t = document.getElementById('statusText');
-      m.classList.remove('listening', 'speaking', 'error'); w.classList.remove('idle', 'listening', 'speaking', 'error'); d.classList.remove('active', 'speaking', 'blocked');
+      const w = document.getElementById('waveBars'), m = document.getElementById('micWaveContainer'),
+            d = document.getElementById('statusDot'), t = document.getElementById('statusText');
+      m.classList.remove('listening', 'speaking', 'error');
+      w.classList.remove('idle', 'listening', 'speaking', 'error');
+      d.classList.remove('active', 'speaking', 'blocked');
       if (s === 'listen') { m.classList.add('listening'); w.classList.add('listening'); d.classList.add('active'); t.innerText = 'Écoute active...'; }
       else if (s === 'speak') { m.classList.add('speaking'); w.classList.add('speaking'); d.classList.add('speaking'); t.innerText = 'Parle...'; }
       else if (s === 'error') { m.classList.add('error'); w.classList.add('error'); setTimeout(() => { m.classList.remove('error'); w.classList.remove('error'); w.classList.add('idle'); }, 500); }
       else if (s === 'blocked') { w.classList.add('idle'); d.classList.add('blocked'); t.innerText = 'Occupez-vous de l\'IOS en cours'; }
-      else { w.classList.add('idle'); d.style.background = '#4a4a5a'; t.innerText = 'Micro actif · Dites bonjour'; }
+      else { w.classList.add('idle'); d.style.background = '#4a4a6a'; t.innerText = 'Micro actif · Dites bonjour'; }
     }
 
     function openPanel() { document.getElementById('infoPanel').classList.add('open'); document.getElementById('panelOverlay').classList.add('active'); document.getElementById('panelToggle').classList.add('panel-open'); }
@@ -1032,20 +1004,17 @@
     function ft(d) { return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
     function fd(d) { return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
     function isProcedureActive() { return guideActive || speakingFlag || iosInfoShown; }
+    function blockNewIosSearch() { updateUIForState('blocked'); setTimeout(() => { if (!speakingFlag && !listening && !guideActive && !iosInfoShown) updateUIForState('idle'); }, 2000); }
 
-    function blockNewIosSearch() {
-      updateUIForState('blocked');
-      setTimeout(() => { if (!speakingFlag && !listening && !guideActive && !iosInfoShown) updateUIForState('idle'); }, 2000);
-    }
-
+    // === VOIX FÉMININE ===
     function getFemaleVoice() {
       if (femaleVoiceCache) return femaleVoiceCache;
       const voices = synth.getVoices();
       if (!voices.length) return null;
-      let v = voices.find(voice => voice.lang.startsWith('fr') && (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('femme') || voice.name.toLowerCase().includes('féminin') || voice.name.toLowerCase().includes('feminin') || voice.name.toLowerCase().includes('siri') || voice.name.toLowerCase().includes('amelie') || voice.name.toLowerCase().includes('amélie') || voice.name.toLowerCase().includes('céline') || voice.name.toLowerCase().includes('celine') || voice.name.toLowerCase().includes('florence') || voice.name.toLowerCase().includes('chantal') || voice.name.toLowerCase().includes('audrey') || voice.name.toLowerCase().includes('capucine') || voice.name.toLowerCase().includes('french-fr')));
-      if (!v) v = voices.find(voice => voice.lang.startsWith('fr') && !voice.name.toLowerCase().includes('male') && !voice.name.toLowerCase().includes('homme') && !voice.name.toLowerCase().includes('masculin') && !voice.name.toLowerCase().includes('thomas') && !voice.name.toLowerCase().includes('pierre') && !voice.name.toLowerCase().includes('jean') && !voice.name.toLowerCase().includes('paul') && !voice.name.toLowerCase().includes('jacques') && !voice.name.toLowerCase().includes('robert') && !voice.name.toLowerCase().includes('louis') && !voice.name.toLowerCase().includes('nicolas') && !voice.name.toLowerCase().includes('daniel') && !voice.name.toLowerCase().includes('michel') && !voice.name.toLowerCase().includes('alain') && !voice.name.toLowerCase().includes('philippe') && !voice.name.toLowerCase().includes('pascal') && !voice.name.toLowerCase().includes('patrick') && !voice.name.toLowerCase().includes('renaud') && !voice.name.toLowerCase().includes('laurent') && !voice.name.toLowerCase().includes('olivier') && !voice.name.toLowerCase().includes('denis') && !voice.name.toLowerCase().includes('serge') && !voice.name.toLowerCase().includes('bruno') && !voice.name.toLowerCase().includes('marc') && !voice.name.toLowerCase().includes('guy') && !voice.name.toLowerCase().includes('yves'));
+      let v = voices.find(voice => voice.lang.startsWith('fr') && (voice.name.toLowerCase().includes('female') || voice.name.toLowerCase().includes('femme') || voice.name.toLowerCase().includes('féminin') || voice.name.toLowerCase().includes('feminin') || voice.name.toLowerCase().includes('siri') || voice.name.toLowerCase().includes('amelie') || voice.name.toLowerCase().includes('amélie') || voice.name.toLowerCase().includes('céline') || voice.name.toLowerCase().includes('celine') || voice.name.toLowerCase().includes('florence') || voice.name.toLowerCase().includes('chantal') || voice.name.toLowerCase().includes('audrey') || voice.name.toLowerCase().includes('capucine')));
+      if (!v) v = voices.find(voice => voice.lang.startsWith('fr') && !voice.name.toLowerCase().includes('male') && !voice.name.toLowerCase().includes('homme') && !voice.name.toLowerCase().includes('masculin'));
       if (!v) v = voices.find(voice => voice.lang.startsWith('fr'));
-      if (v) { femaleVoiceCache = v; console.log('🗣️ Voix féminine :', v.name); }
+      if (v) { femaleVoiceCache = v; console.log('🗣️ Voix:', v.name); }
       return v;
     }
 
@@ -1069,9 +1038,8 @@
       x = x.replace(/li oès\s*(\d)(\d)(\d)/gi, (_, a, b, c) => 'li oès ' + parseInt(a + b + c, 10));
       x = x.replace(/\b0+(\d+)/g, '$1'); x = x.replace(/\s+/g, ' ');
       const u = new SpeechSynthesisUtterance(x);
-      u.lang = 'fr-FR'; u.rate = 0.9; u.volume = 1;
-      const femaleVoice = getFemaleVoice();
-      if (femaleVoice) u.voice = femaleVoice;
+      u.lang = 'fr-FR'; u.rate = 0.92; u.volume = 1; u.pitch = 1.02;
+      const fv = getFemaleVoice(); if (fv) u.voice = fv;
       speakingFlag = true; updateUIForState('speak');
       u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
       u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
@@ -1080,8 +1048,16 @@
 
     if (voiceSupport) { synth.getVoices(); synth.onvoiceschanged = () => { femaleVoiceCache = null; getFemaleVoice(); }; }
 
-    function addMessage(t, r) { const c = document.getElementById('chatMsgs'), d = document.createElement('div'); d.className = 'message ' + r; d.innerHTML = '<div class="bubble">' + t + '</div>'; c.appendChild(d); c.scrollTop = c.scrollHeight; while (c.children.length > 60) c.removeChild(c.firstChild); }
+    function addMessage(t, r) {
+      const c = document.getElementById('chatMsgs'), d = document.createElement('div');
+      d.className = 'message ' + r; d.innerHTML = '<div class="bubble">' + t + '</div>';
+      c.appendChild(d); c.scrollTop = c.scrollHeight;
+      while (c.children.length > 80) c.removeChild(c.firstChild);
+      conversationContext.push({ role: r, text: t });
+      if (conversationContext.length > 20) conversationContext.shift();
+    }
 
+    // === CARTE CENTRALE ===
     function showIosInfoCard() {
       if (!currentIOS) return;
       const card = document.getElementById('guideStepCard'); card.classList.add('active');
@@ -1118,7 +1094,15 @@
       iosInfoShown = false;
     }
 
-    function fiq(l) { let q = l.toLowerCase().trim(); let m = q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i); if (m) { let id = m[1].padStart(3, '0'); if (IOS[id]) return IOS[id]; } for (let [a, id] of Object.entries(ALIAS)) { if (q.includes(a)) return IOS[id]; } for (let i of Object.values(IOS)) { if (i.desc.toLowerCase().includes(q)) return i; if (i.kw && i.kw.some(k => q.includes(k))) return i; } return null; }
+    // === RECHERCHE IOS ===
+    function fiq(l) {
+      let q = l.toLowerCase().trim();
+      let m = q.match(/(?:ios\s*)?(\d{3}|\d{1,3})/i);
+      if (m) { let id = m[1].padStart(3, '0'); if (IOS[id]) return IOS[id]; }
+      for (let [a, id] of Object.entries(ALIAS)) { if (q.includes(a)) return IOS[id]; }
+      for (let i of Object.values(IOS)) { if (i.desc.toLowerCase().includes(q)) return i; if (i.kw && i.kw.some(k => q.includes(k))) return i; }
+      return null;
+    }
 
     function sdi(ios) {
       currentIOS = ios; guideActive = false; iosInfoShown = false;
@@ -1136,6 +1120,7 @@
     function oil() { bil(); document.getElementById('iosListOverlay').classList.add('active'); }
     function cil() { document.getElementById('iosListOverlay').classList.remove('active'); }
 
+    // === GUIDAGE ===
     function sg() { if (!currentIOS) return; guideActive = true; guideSteps = []; if (currentIOS.instructions) for (let i of currentIOS.instructions) guideSteps.push({ t: i.t, d: 0 }); if (currentIOS.symboles) guideSteps.push({ t: 'Symboles : ' + currentIOS.symboles, d: 0 }); if (currentIOS.vitesse) guideSteps.push({ t: 'Vitesse limite : ' + currentIOS.vitesse, d: 0 }); for (let s of currentIOS.tree) guideSteps.push(s); stepIndex = 0; procedureStartTime = new Date(); procedureEndTime = null; procedureStepsLog = []; iosInfoShown = false; updateGuideStepCard(); addMessage('🚀 Guidage lancé pour IOS-' + currentIOS.id, 'ai'); rs(); }
     function rs() { if (!guideActive || stepIndex >= guideSteps.length) { fp('✅ Fin de la procédure.'); return; } let s = guideSteps[stepIndex]; if (s.fin) { fp(s.t || 'Procédure achevée.'); return; } updateGuideStepCard(); procedureStepsLog.push(s.t); speakText(s.t); }
     function ay() { if (guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) pa(true); }
@@ -1151,50 +1136,121 @@
     function cr() { document.getElementById('recapOverlay').classList.remove('active'); }
     function pr() { const c = document.getElementById('recapContent').textContent; const w = window.open('', '', 'width=700,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:black;background:white;">' + c + '</pre>'); w.document.close(); w.print(); }
 
-    function extractIosNumber(text) { let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i); return m ? m[1].padStart(3, '0') : null; }
-    function isGreeting(text) { return /\b(?:bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i.test(text); }
-    function isCancelCommand(text) { return /\b(?:annuler|stop|arrête|interrompt|abandonne|cancel|termine|quitte)\b/i.test(text); }
-    function isHomeCommand(text) { return /\b(?:accueil|menu|retour accueil|home|reset)\b/i.test(text); }
-    function isGuidanceStart(text) { return /\b(?:démarrer|commencer|lance|guidage|guide|start|go|exécute|appliquer)\b/i.test(text); }
-    function isNextStep(text) { return /\b(?:suivant|passe à la suite|après|ensuite|prochaine|continuer|j'ai fini|ok|c'est bon|d'accord|next|terminé|effectué|fait)\b/i.test(text) && !/\b(?:non|précédent)\b/i.test(text); }
-    function isPrevStep(text) { return /\b(?:précédent|reviens|retour en arrière|recule|back|remonte)\b/i.test(text) && !/\b(?:retour accueil|non)\b/i.test(text); }
-    function isRepeatCommand(text) { return /\b(?:répète|redis|encore|répète ça|what|repeat|pardon|hein|j'ai pas compris|reformule)\b/i.test(text); }
-    function isYesAnswer(text) { return /\b(?:oui|ouais|yes|yep|affirmatif|exact|correct|bien sûr|tout à fait|confirmé|validé|présent|allumé|ça marche|actif)\b/i.test(text) && !/\b(?:non|pas|nan|no|nada|naan|negative|mort)\b/i.test(text); }
-    function isNoAnswer(text) { const noPatterns = [/\bnon\b/i, /\bnan\b/i, /\bnaan\b/i, /\bnada\b/i, /\bno\b/i, /\byet\b/i, /\bn+o+n+/i, /\bn+a+n+/i, /\bn+o+\b/i, /\bn+a+\b/i, /\bnegative\b/i, /c'est mort/i, /ha nan/i, /ah nan/i, /\bnégatif\b/i, /\bpas du tout\b/i, /\bfaux\b/i, /\bincorrect\b/i, /\bdisparu\b/i, /\babsent\b/i, /\béteint\b/i, /\beteint\b/i, /\bpas affiché\b/i, /\baucun\b/i, /\brien\b/i, /\bmarche pas\b/i, /\bdésactivé\b/i, /\bdesactive\b/i, /\binactif\b/i, /\bniet\b/i, /\bniks\b/i, /\bnope\b/i, /\bnah\b/i, /\bque dalle\b/i, /\bwalou\b/i, /\bque couic\b/i, /\bmmm+\s*(?:non|nan)\b/i, /\b(?:non|nan)\s*merci\b/i, /\bpas\s+(?:du tout|vraiment|exactement|forcement|du tou)\b/i, /\bnon\s+(?:plus|merci|monsieur|madame)\b/i]; return noPatterns.some(p => p.test(text)); }
+    // === COMMANDES VOCALES ENRICHIES ===
+    const DICO = {
+      salutations: ['bonjour','salut','salam','coucou','hello','hi','hey','bonsoir','wesh','yo','bonjourno','salutation','rebonjour','bonjour à tous','salut à tous','coucou tout le monde','hello la team','bonsoir à vous','salam aleikoum','salam alaykoum','as salam alaykoum'],
+      createur: ['qui ta créé','qui est ton créateur','ton créateur','qui ta fait','ton maitre','ton maître','ton boss','ton papa','ton concepteur','ton développeur','ton developpeur','qui tes','tu es qui','cest qui ton createur','ta maman c\'est qui','ton pere c\'est qui'],
+      heure: ['quelle heure','il est quelle heure','donne l\'heure','heure','quelle heure est-il','tu as l\'heure','l\'heure','l\'heure actuelle'],
+      date: ['quelle date','donne la date','date aujourd\'hui','date','quel jour','on est quel jour','quelle jour','la date','date du jour'],
+      temps: ['temps écoulé','durée','depuis combien de temps','combien de temps','minuteur','chrono','depuis le début','temps','depuis quand','ça fait combien de temps'],
+      liste: ['liste des ios','tous les ios','affiche la liste','liste ios','montre les ios','voir les ios','afficher ios','liste complète'],
+      demarrer: ['démarrer','commencer','lance','guidage','guide','start','go','exécute','appliquer','applique','fais le guidage','lance la procédure','démarre le guidage','on y va','c\'est parti','allez','go guidage','lance guidage','débuter','exécuter la procédure','mettre en route'],
+      suivant: ['suivant','suite','après','ensuite','prochaine','continuer','continue','j\'ai fini','ok','c\'est bon','d\'accord','next','terminé','effectué','fait','c\'est fait','j\'ai terminé','terminer','étape suivante','passer à la suite','passer','avancer','avance','suite logique','étape d\'après','ok suivant','ok ça marche','ok c\'est bon','ok c\'est fait','ok terminé','ok effectué','ok validé','validé','valider','confirmer','je valide','c\'est validé'],
+      precedent: ['précédent','reviens','retour','en arrière','recule','back','remonte','reculer','étape précédente','avant','précédente','revenir','retourne','retourner'],
+      oui: ['oui','ouais','yes','yep','affirmatif','exact','correct','bien sûr','tout à fait','confirmé','validé','présent','allumé','ça marche','actif','bien sur','oui oui','ouais ouais','exactement','effectivement','absolument','certes','certainement','oui merci','oui parfait'],
+      non: ['non','nan','naan','nada','no','yet','negative','c\'est mort','ha nan','ah nan','négatif','pas du tout','faux','incorrect','disparu','absent','éteint','eteint','pas affiché','aucun','rien','marche pas','désactivé','desactive','inactif','niet','niks','nope','nah','que dalle','walou','que couic','non merci','non plus','pas vraiment','pas exactement','pas du tou','pas forcément','absolument pas','certainement pas','non non','nan nan','nnon','nnan','nnooon','nnnaaan','niet niet','nope nope'],
+      annuler: ['annuler','stop','arrête','arrêter','interrompt','abandonne','abandonner','cancel','termine','terminez','quitte','quitter','stoppe','stopper','fini','fin','terminer','annule','annulation','j\'annule','je stoppe','je quitte','laisse tomber','laisse'],
+      accueil: ['accueil','menu','retour accueil','home','reset','revenir au début','page d\'accueil','menu principal','retour','revenir'],
+      repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait']
+    };
 
-    function pvc(txt) {
-      let l = txt.toLowerCase().trim(); if (!l) return; addMessage('' + txt + '', 'user');
-      if (isCancelCommand(l)) { ccp(); return; }
-      if (isHomeCommand(l)) { hr(); return; }
-      if (isGreeting(l)) { if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) { addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return; } speakText("Bonjour ! IAOS T4 à votre service."); return; }
-      if (isProcedureActive()) { if (isRepeatCommand(l)) { if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t); else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80)); return; } if (isPrevStep(l)) { if (guideActive) { ps(); return; } } if (isNextStep(l)) { if (guideActive) { ns(); return; } if (iosInfoShown && currentIOS) { sg(); return; } } if (isYesAnswer(l) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; } if (isNoAnswer(l) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; } if (isGuidanceStart(l)) { if (currentIOS && !guideActive) { sg(); return; } if (iosInfoShown && currentIOS) { sg(); return; } } if (extractIosNumber(l) || /\bios\b/i.test(l)) { addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai'); speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord."); blockNewIosSearch(); return; } return; }
-      if (isRepeatCommand(l)) { if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80)); return; }
-      if (isGuidanceStart(l)) { if (currentIOS) { sg(); return; } speakText("Cherchez d'abord un i o s."); return; }
-      let f = fiq(l); if (f) { sdi(f); return; }
-      if (/\b(?:qui t'a créé|ton créateur|ton maître)\b/i.test(l)) { addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur.', 'ai'); speakText('Mon créateur est Zabèr, conducteur moniteur formateur.'); return; }
-      if (/\b(?:quelle heure|il est quelle heure)\b/i.test(l)) { speakText('Il est ' + ft(new Date()) + '.'); return; }
-      if (/\b(?:quelle date|donne la date|date aujourd'hui)\b/i.test(l)) { speakText('Nous sommes le ' + fd(new Date()) + '.'); return; }
-      if (/\b(?:temps écoulé|durée|duree|depuis combien de temps)\b/i.test(l)) { if (!procedureStartTime) { speakText('Aucune procédure en cours.'); return; } let d = new Date() - procedureStartTime, m = Math.floor(d / 60000), s = Math.floor((d % 60000) / 1000); speakText('Temps écoulé : ' + m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '') + '.'); return; }
-      if (/\b(?:liste des ios|tous les ios|affiche la liste)\b/i.test(l)) { oil(); return; }
-      if (/\b(?:aide|help|commandes|mode d'emploi)\b/i.test(l)) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
-      speakText('Aucun i o s trouvé.');
+    function fuzzyContains(text, wordList) {
+      const clean = text.toLowerCase().replace(/[.,!?;:'"()]/g, ' ').replace(/\s+/g, ' ').trim();
+      return wordList.some(word => clean.includes(word));
     }
 
-    function scheduleRestart() { clearTimeout(recognitionRestartTimer); recognitionRestartTimer = setTimeout(() => { if (micActive && !speakingFlag && !listening) sl(); }, 250); }
+    function extractIosNumber(text) { let m = text.match(/(?:i[oe]s[.\s]*)?(\d{1,3})/i); return m ? m[1].padStart(3, '0') : null; }
+
+    function pvc(txt) {
+      let l = txt.toLowerCase().replace(/[.,!?;:'"()]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!l || l.length < 1) return;
+      addMessage('' + txt + '', 'user');
+
+      if (fuzzyContains(l, DICO.annuler)) { ccp(); return; }
+      if (fuzzyContains(l, DICO.accueil)) { hr(); return; }
+
+      if (fuzzyContains(l, DICO.salutations)) {
+        if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) {
+          addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return;
+        }
+        const greetings = ['Bonjour ! IAOS T4 à votre service.', 'Salut ! Je suis prêt à vous assister.', 'Hello ! Dites-moi ce dont vous avez besoin.', 'Bonjour, je vous écoute.'];
+        const g = greetings[Math.floor(Math.random() * greetings.length)];
+        addMessage(g, 'ai'); speakText(g); return;
+      }
+
+      if (isProcedureActive()) {
+        if (fuzzyContains(l, DICO.repeter)) {
+          if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
+          else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
+          return;
+        }
+        if (fuzzyContains(l, DICO.precedent)) { if (guideActive) { ps(); return; } }
+        if (fuzzyContains(l, DICO.suivant)) { if (guideActive) { ns(); return; } if (iosInfoShown && currentIOS) { sg(); return; } }
+        if (fuzzyContains(l, DICO.oui) && !fuzzyContains(l, DICO.non) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; }
+        if (fuzzyContains(l, DICO.non) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; }
+        if (fuzzyContains(l, DICO.demarrer)) { if (currentIOS && !guideActive) { sg(); return; } if (iosInfoShown && currentIOS) { sg(); return; } }
+        if (extractIosNumber(l) || /\bios\b/i.test(l)) {
+          addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai');
+          speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord.");
+          blockNewIosSearch(); return;
+        }
+        return;
+      }
+
+      if (fuzzyContains(l, DICO.repeter)) { if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80)); return; }
+      if (fuzzyContains(l, DICO.demarrer)) { if (currentIOS) { sg(); return; } speakText("Cherchez d'abord un i o s."); return; }
+
+      let f = fiq(l);
+      if (f) { sdi(f); return; }
+
+      if (fuzzyContains(l, DICO.createur)) {
+        addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !', 'ai');
+        speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.'); return;
+      }
+      if (fuzzyContains(l, DICO.heure)) { const r = 'Il est ' + ft(new Date()) + '.'; addMessage(r, 'ai'); speakText(r); return; }
+      if (fuzzyContains(l, DICO.date)) { const r = 'Nous sommes le ' + fd(new Date()) + '.'; addMessage(r, 'ai'); speakText(r); return; }
+      if (fuzzyContains(l, DICO.temps)) {
+        if (!procedureStartTime) { speakText('Aucune procédure en cours.'); addMessage('Aucune procédure en cours.', 'ai'); return; }
+        let d = new Date() - procedureStartTime, m = Math.floor(d / 60000), s = Math.floor((d % 60000) / 1000);
+        const r = 'Temps écoulé : ' + m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '') + '.';
+        addMessage('⏱️ ' + r, 'ai'); speakText(r); return;
+      }
+      if (fuzzyContains(l, DICO.liste)) { oil(); return; }
+      if (/\b(?:aide|help|commandes|mode d'emploi|infos)\b/i.test(l)) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
+
+      const notFound = ['Aucun IOS trouvé pour cette recherche.', 'Je n\'ai rien trouvé correspondant à votre demande.', 'Désolé, aucun résultat pour cette requête.', 'Essayez avec un numéro d\'IOS ou un mot-clé différent.'];
+      const nf = notFound[Math.floor(Math.random() * notFound.length)];
+      speakText(nf);
+    }
+
+    // === RECONNAISSANCE VOCALE FLUIDE ===
+    function scheduleRestart() { clearTimeout(recognitionRestartTimer); recognitionRestartTimer = setTimeout(() => { if (micActive && !speakingFlag && !listening) sl(); }, 200); }
 
     function sl() {
       if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) { toast('Reconnaissance vocale non supportée'); return; }
       if (speakingFlag || listening) return;
       try {
         let SR = window.SpeechRecognition || window.webkitSpeechRecognition; recognition = new SR();
-        recognition.lang = 'fr-FR'; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 10;
+        recognition.lang = 'fr-FR'; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 12;
         let finalTranscript = ''; let silenceTimer = null;
         recognition.onstart = () => { listening = true; finalTranscript = ''; accumulatedTranscript = ''; updateUIForState('listen'); };
-        recognition.onresult = (e) => { clearTimeout(silenceTimer); let interimTranscript = ''; for (let i = e.resultIndex; i < e.results.length; i++) { if (e.results[i].isFinal) { let best = '', bestConf = 0; for (let j = 0; j < e.results[i].length; j++) { if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; } } if (best && bestConf > 0.03) finalTranscript += ' ' + best; } else { interimTranscript += e.results[i][0].transcript; } } if (finalTranscript.trim() && !interimTranscript) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } silenceTimer = setTimeout(() => { if (finalTranscript.trim()) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } }, 800); };
+        recognition.onresult = (e) => {
+          clearTimeout(silenceTimer);
+          let interimTranscript = '';
+          for (let i = e.resultIndex; i < e.results.length; i++) {
+            if (e.results[i].isFinal) {
+              let best = '', bestConf = 0;
+              for (let j = 0; j < e.results[i].length; j++) { if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; } }
+              if (best && bestConf > 0.02) finalTranscript += ' ' + best;
+            } else { interimTranscript += e.results[i][0].transcript; }
+          }
+          if (finalTranscript.trim() && !interimTranscript) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; }
+          silenceTimer = setTimeout(() => { if (finalTranscript.trim()) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } }, 700);
+        };
         recognition.onerror = (e) => { listening = false; clearTimeout(silenceTimer); if (finalTranscript.trim()) pvc(finalTranscript.trim()); finalTranscript = ''; accumulatedTranscript = ''; updateUIForState('idle'); if (micActive && !speakingFlag) scheduleRestart(); };
         recognition.onend = () => { listening = false; clearTimeout(silenceTimer); if (finalTranscript.trim()) pvc(finalTranscript.trim()); finalTranscript = ''; accumulatedTranscript = ''; if (micActive && !speakingFlag) scheduleRestart(); else updateUIForState('idle'); };
         recognition.start();
-      } catch (e) { if (micActive) setTimeout(sl, 600); }
+      } catch (e) { if (micActive) setTimeout(sl, 500); }
     }
 
     function stl() { clearTimeout(recognitionRestartTimer); if (recognition) { try { recognition.stop(); } catch (e) {} recognition = null; } listening = false; updateUIForState('idle'); }
@@ -1234,6 +1290,7 @@
     function showInfo() { initInfoContent(); document.getElementById('infoOverlay').classList.add('active'); }
     function hideInfo() { document.getElementById('infoOverlay').classList.remove('active'); }
 
+    // === ÉVÉNEMENTS ===
     document.getElementById('micWaveContainer').addEventListener('click', function() { if (speakingFlag) return; micActive = !micActive; if (micActive) { sl(); document.getElementById('statusDot').style.background = ''; document.getElementById('statusText').innerText = 'Micro actif'; } else { stl(); document.getElementById('statusText').innerText = 'Micro en pause'; document.getElementById('statusDot').style.background = '#ff5252'; } });
     document.getElementById('panelToggle').addEventListener('click', togglePanel);
     document.getElementById('panelOverlay').addEventListener('click', closePanel);
@@ -1247,16 +1304,11 @@
     document.getElementById('showAllIosBtn').addEventListener('click', oil);
     document.getElementById('iosListClose').addEventListener('click', cil);
     document.getElementById('iosListOverlay').addEventListener('click', function(e) { if (e.target === document.getElementById('iosListOverlay')) cil(); });
-    document.getElementById('recapClose').addEventListener('click', cr);
-    document.getElementById('recapCloseBtn').addEventListener('click', cr);
-    document.getElementById('recapPrintBtn').addEventListener('click', pr);
+    document.getElementById('recapClose').addEventListener('click', cr); document.getElementById('recapCloseBtn').addEventListener('click', cr); document.getElementById('recapPrintBtn').addEventListener('click', pr);
     document.getElementById('recapOverlay').addEventListener('click', function(e) { if (e.target === document.getElementById('recapOverlay')) cr(); });
     document.getElementById('guideStartBtn').addEventListener('click', function() { if (!isProcedureActive() || (currentIOS && !guideActive)) sg(); });
-    document.getElementById('cancelGuideBtn').addEventListener('click', ccp);
-    document.getElementById('homeBtn').addEventListener('click', hr);
-    document.getElementById('newSearchBtn').addEventListener('click', hr);
-    document.getElementById('stepYesBtn').addEventListener('click', ay);
-    document.getElementById('stepNoBtn').addEventListener('click', an);
+    document.getElementById('cancelGuideBtn').addEventListener('click', ccp); document.getElementById('homeBtn').addEventListener('click', hr); document.getElementById('newSearchBtn').addEventListener('click', hr);
+    document.getElementById('stepYesBtn').addEventListener('click', ay); document.getElementById('stepNoBtn').addEventListener('click', an);
     document.getElementById('stepNextBtn').addEventListener('click', function() { if (iosInfoShown && currentIOS) sg(); else ns(); });
     document.getElementById('stepPrevBtn').addEventListener('click', ps);
     document.getElementById('stepCancelBtn').addEventListener('click', function() { if (!guideActive && document.getElementById('guideStepCard').classList.contains('active')) { document.getElementById('guideStepCard').classList.remove('active'); document.getElementById('endQuestions').classList.remove('active'); iosInfoShown = false; } else { ccp(); } });
@@ -1264,7 +1316,7 @@
     document.getElementById('endRecapNo').addEventListener('click', function() { document.getElementById('endQuestions').classList.remove('active'); document.getElementById('guideStepCard').classList.remove('active'); });
 
     initInfoContent(); micActive = true; updateUIForState('idle'); sl();
-    console.log('✅ IAOS T4 - Prêt - Créé par Zaber');
+    console.log('✅ IAOS T4 - Prêt - Hébergé sur GitHub Pages - Créé par Zaber');
   })();
 </script>
 </body>
