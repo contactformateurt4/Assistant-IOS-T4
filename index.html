@@ -31,6 +31,75 @@
 html,body{height:100%;overflow:hidden}
 body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;position:relative;overflow:hidden}
 
+/* ═══ SPLASH SCREEN ═══ */
+#splashScreen {
+  position:fixed;inset:0;z-index:9999;
+  background:#080c0f;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+  opacity:1;visibility:visible;
+}
+#splashScreen.hidden {
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.splash-canvas {
+  position:absolute;inset:0;z-index:1;
+}
+.splash-content {
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+}
+.splash-phoenix {
+  font-size:5rem;
+  animation: phoenixFloat 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(0,229,255,0.8)) drop-shadow(0 0 60px rgba(255,179,0,0.6));
+}
+@keyframes phoenixFloat {
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-12px) scale(1.08)}
+}
+.splash-title {
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:2.2rem;color:var(--gold);
+  letter-spacing:0.06em;
+  text-shadow:0 0 20px rgba(245,197,24,0.6),0 0 40px rgba(245,197,24,0.3),0 0 80px rgba(0,229,255,0.4);
+  animation:titleGlow 1.8s ease-in-out infinite;
+}
+@keyframes titleGlow {
+  0%,100%{text-shadow:0 0 20px rgba(245,197,24,0.6),0 0 40px rgba(245,197,24,0.3),0 0 80px rgba(0,229,255,0.4)}
+  50%{text-shadow:0 0 35px rgba(245,197,24,0.9),0 0 70px rgba(245,197,24,0.5),0 0 120px rgba(0,229,255,0.7)}
+}
+.splash-subtitle {
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;letter-spacing:6px;
+  color:var(--gold-dim);text-transform:uppercase;
+  animation:fadeInUp 1s ease 0.5s both;
+}
+@keyframes fadeInUp {
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.splash-loading {
+  width:180px;height:3px;
+  background:rgba(245,197,24,0.1);
+  border-radius:3px;overflow:hidden;
+  margin-top:10px;
+}
+.splash-loading-bar {
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--amber),var(--green));
+  background-size:300% 100%;
+  animation:loadingBar 2.5s ease-in-out forwards,loadingShimmer 1.5s linear infinite;
+  border-radius:3px;
+}
+@keyframes loadingBar {
+  0%{width:0%}100%{width:100%}
+}
+@keyframes loadingShimmer {
+  0%{background-position:0% 50%}100%{background-position:300% 50%}
+}
+
 body::after{
   content:'';position:fixed;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);
@@ -225,7 +294,8 @@ body::after{
 .prio-l{background:rgba(57,255,135,0.07);color:var(--green);border:1px solid rgba(57,255,135,0.3)}
 .gcard-step-label{
   font-family:'Space Mono',monospace;font-size:0.52rem;letter-spacing:2px;
-  color:var(--text-dim);padding:0 16px 5px;
+  color:#fff;
+  padding:0 16px 5px;
 }
 .gcard-body{
   font-size:1rem;font-weight:500;line-height:1.5;
@@ -314,47 +384,31 @@ body::after{
 .ac-btn.red:hover{background:rgba(255,59,59,0.1);border-color:var(--red)}
 .ios-card-info{padding:10px 14px;font-size:0.78rem;color:var(--text-dim);line-height:1.5}
 
-/* Barre de recherche dans le panneau */
-.sp-search-row{
-  display:flex;gap:6px;
-}
+.sp-search-row{display:flex;gap:6px}
 .sp-search-input{
   flex:1;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:3px;
-  color:var(--text-bright);
-  font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;
-  padding:9px 12px;outline:none;
-  transition:border-color 0.2s ease;
+  background:var(--surface2);border:1px solid var(--border);border-radius:3px;
+  color:var(--text-bright);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;
+  padding:9px 12px;outline:none;transition:border-color 0.2s ease;
 }
 .sp-search-input::placeholder{color:var(--text-dim);font-size:0.78rem}
 .sp-search-input:focus{border-color:var(--gold-dim)}
 .sp-search-go{
-  background:rgba(245,197,24,0.08);
-  border:1px solid var(--gold-dim);
-  color:var(--gold);
-  border-radius:3px;padding:9px 14px;
+  background:rgba(245,197,24,0.08);border:1px solid var(--gold-dim);
+  color:var(--gold);border-radius:3px;padding:9px 14px;
   cursor:pointer;font-family:'Orbitron',sans-serif;
   font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;
   transition:all 0.18s ease;white-space:nowrap;
 }
 .sp-search-go:hover{background:rgba(245,197,24,0.18)}
 
-/* Transcript dans le panneau */
 .sp-transcript{
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:3px;
-  overflow:hidden;
-  flex:1;
-  display:flex;flex-direction:column;
-  min-height:180px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:3px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:180px;
 }
 .sp-transcript-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:6px 10px;border-bottom:1px solid var(--border);
-  flex-shrink:0;
+  padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0;
 }
 .sp-transcript-header span{
   font-family:'Space Mono',monospace;font-size:0.45rem;
@@ -367,10 +421,8 @@ body::after{
 }
 .sp-transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
 .sp-transcript-msgs{
-  flex:1;overflow-y:auto;
-  padding:8px 10px;display:flex;flex-direction:column;gap:6px;
-  scroll-behavior:smooth;
-  max-height:250px;
+  flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;
+  scroll-behavior:smooth;max-height:250px;
 }
 .sp-transcript-msgs::-webkit-scrollbar{width:3px}
 .sp-transcript-msgs::-webkit-scrollbar-track{background:transparent}
@@ -380,29 +432,16 @@ body::after{
 @keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .t-msg.user{align-items:flex-end}
 .t-msg.ai{align-items:flex-start}
-.t-bubble{
-  font-size:0.72rem;line-height:1.4;
-  padding:5px 9px;border-radius:2px;
-  max-width:92%;word-break:break-word;
-}
-.t-msg.user .t-bubble{
-  background:rgba(191,128,255,0.08);
-  border:1px solid rgba(191,128,255,0.25);
-  color:var(--text);
-}
-.t-msg.ai .t-bubble{
-  background:rgba(245,197,24,0.06);
-  border:1px solid rgba(245,197,24,0.18);
-  color:var(--text);
-}
+.t-bubble{font-size:0.72rem;line-height:1.4;padding:5px 9px;border-radius:2px;max-width:92%;word-break:break-word}
+.t-msg.user .t-bubble{background:rgba(191,128,255,0.08);border:1px solid rgba(191,128,255,0.25);color:var(--text)}
+.t-msg.ai .t-bubble{background:rgba(245,197,24,0.06);border:1px solid rgba(245,197,24,0.18);color:var(--text)}
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-bg.on{opacity:1;pointer-events:auto}
 .modal{
   background:var(--surface);border:1px solid var(--border);
   border-radius:4px;width:min(92%,460px);max-height:82vh;
-  display:flex;flex-direction:column;
-  box-shadow:0 20px 60px rgba(0,0,0,0.9);
+  display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.9);
   overflow:hidden;animation:modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes modalIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:none}}
@@ -414,10 +453,8 @@ body::after{
 .modal-list::-webkit-scrollbar{width:3px}
 .modal-list::-webkit-scrollbar-thumb{background:var(--border)}
 .ios-row{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:2px;cursor:pointer;
-  transition:background 0.15s ease;
-  border-bottom:1px solid rgba(30,45,61,0.5);
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;cursor:pointer;
+  transition:background 0.15s ease;border-bottom:1px solid rgba(30,45,61,0.5);
 }
 .ios-row:hover{background:rgba(245,197,24,0.06)}
 .ios-row-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.72rem;min-width:52px;letter-spacing:1px}
@@ -444,8 +481,7 @@ body::after{
 .end-bar{
   position:fixed;bottom:0;left:0;right:0;
   background:linear-gradient(0deg,rgba(8,12,15,0.99),rgba(13,17,23,0.96));
-  border-top:1px solid var(--border);
-  backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);backdrop-filter:blur(16px);
   padding:14px 18px;z-index:90;
   transform:translateY(100%);transition:transform 0.3s ease;
 }
@@ -474,10 +510,25 @@ body::after{
   .ring-2{width:83px;height:83px}
   .ring-3{width:112px;height:112px}
   .gcard-body{font-size:0.92rem}
+  .splash-phoenix{font-size:3.5rem}
+  .splash-title{font-size:1.5rem}
 }
 </style>
 </head>
 <body>
+
+<!-- ═══ SPLASH SCREEN ═══ -->
+<div id="splashScreen">
+  <canvas class="splash-canvas" id="splashCanvas"></canvas>
+  <div class="splash-content">
+    <div class="splash-phoenix">🐦‍🔥</div>
+    <div class="splash-title">IAOS T4</div>
+    <div class="splash-subtitle">DUALIS U53700 · ASSISTANT</div>
+    <div class="splash-loading">
+      <div class="splash-loading-bar"></div>
+    </div>
+  </div>
+</div>
 
 <div class="corner-tl"></div><div class="corner-tr"></div>
 <div class="corner-bl"></div><div class="corner-br"></div>
@@ -489,16 +540,11 @@ body::after{
     <button class="sp-close" id="spClose">✕</button>
   </div>
   <div class="sp-body">
-    <!-- Barre de recherche -->
     <div class="sp-search-row">
       <input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
       <button class="sp-search-go" id="spSearchGo">GO</button>
     </div>
-    
-    <!-- Bouton liste -->
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
-    
-    <!-- Carte IOS -->
     <div class="ios-card" id="iosCard">
       <div class="ios-card-head">
         <div class="ios-card-code" id="icCode">IOS-???</div>
@@ -515,8 +561,6 @@ body::after{
       </div>
       <div class="ios-card-info" id="icInfo"></div>
     </div>
-    
-    <!-- Transcript / Historique -->
     <div class="sp-transcript">
       <div class="sp-transcript-header">
         <span>HISTORIQUE</span>
@@ -628,6 +672,107 @@ body::after{
 <script>
 (function(){
 'use strict';
+
+/* ═══════════════════════════════════
+   SPLASH SCREEN - FLAMMES ANIMÉES
+═══════════════════════════════════ */
+const splashCanvas = document.getElementById('splashCanvas');
+const splashCtx = splashCanvas.getContext('2d');
+let splashWidth, splashHeight;
+let flameParticles = [];
+let splashAnimId;
+const FLAME_COLORS = [
+  'rgba(0,229,255,', 'rgba(57,255,135,', 'rgba(191,128,255,',
+  'rgba(255,179,0,', 'rgba(245,197,24,', 'rgba(255,59,59,',
+  'rgba(0,200,255,', 'rgba(255,140,0,'
+];
+
+function resizeSplashCanvas() {
+  splashWidth = splashCanvas.width = window.innerWidth;
+  splashHeight = splashCanvas.height = window.innerHeight;
+}
+resizeSplashCanvas();
+window.addEventListener('resize', resizeSplashCanvas);
+
+function createFlameParticle() {
+  const baseX = splashWidth / 2;
+  const baseY = splashHeight / 2 - 60;
+  return {
+    x: baseX + (Math.random() - 0.5) * 200,
+    y: baseY + Math.random() * 180,
+    vx: (Math.random() - 0.5) * 2.5,
+    vy: -(Math.random() * 3 + 1.5),
+    life: 1, decay: 0.006 + Math.random() * 0.025,
+    size: 3 + Math.random() * 8,
+    color: FLAME_COLORS[Math.floor(Math.random() * FLAME_COLORS.length)],
+    phase: Math.random() * Math.PI * 2
+  };
+}
+
+function initFlameParticles() {
+  flameParticles = [];
+  for (let i = 0; i < 130; i++) {
+    const p = createFlameParticle();
+    p.y = splashHeight / 2 + 60;
+    p.life = Math.random();
+    flameParticles.push(p);
+  }
+}
+
+function animateSplash() {
+  splashCtx.clearRect(0, 0, splashWidth, splashHeight);
+  const gradient = splashCtx.createRadialGradient(splashWidth/2, splashHeight/2-40, 10, splashWidth/2, splashHeight/2, splashWidth*0.7);
+  gradient.addColorStop(0, 'rgba(8,12,15,0.2)');
+  gradient.addColorStop(0.5, 'rgba(8,12,15,0.6)');
+  gradient.addColorStop(1, 'rgba(8,12,15,0.95)');
+  splashCtx.fillStyle = gradient;
+  splashCtx.fillRect(0, 0, splashWidth, splashHeight);
+
+  for (let i = 0; i < flameParticles.length; i++) {
+    const p = flameParticles[i];
+    p.x += p.vx + Math.sin(p.phase + performance.now()*0.002)*0.8;
+    p.y += p.vy;
+    p.life -= p.decay;
+    p.size *= 0.997;
+    if (p.life <= 0 || p.y < -50 || p.size < 0.5) {
+      flameParticles[i] = createFlameParticle();
+      flameParticles[i].y = splashHeight/2 + 60;
+      flameParticles[i].life = 1;
+      continue;
+    }
+    const alpha = p.life * 0.75;
+    splashCtx.beginPath();
+    splashCtx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+    splashCtx.fillStyle = p.color + alpha + ')';
+    splashCtx.shadowColor = p.color + alpha + ')';
+    splashCtx.shadowBlur = p.size * 4;
+    splashCtx.fill();
+    splashCtx.shadowBlur = 0;
+  }
+
+  const coreGrad = splashCtx.createRadialGradient(splashWidth/2, splashHeight/2-50, 5, splashWidth/2, splashHeight/2-50, 90);
+  coreGrad.addColorStop(0, 'rgba(0,229,255,0.7)');
+  coreGrad.addColorStop(0.3, 'rgba(255,140,0,0.5)');
+  coreGrad.addColorStop(0.7, 'rgba(191,128,255,0.2)');
+  coreGrad.addColorStop(1, 'rgba(0,229,255,0)');
+  splashCtx.beginPath();
+  splashCtx.arc(splashWidth/2, splashHeight/2-50, 90, 0, Math.PI*2);
+  splashCtx.fillStyle = coreGrad;
+  splashCtx.fill();
+
+  splashAnimId = requestAnimationFrame(animateSplash);
+}
+
+initFlameParticles();
+animateSplash();
+
+setTimeout(() => {
+  document.getElementById('splashScreen').classList.add('hidden');
+  setTimeout(() => {
+    cancelAnimationFrame(splashAnimId);
+    splashCanvas.remove();
+  }, 600);
+}, 3000);
 
 /* ═══════════════════════════════════
    BASE DE DONNÉES IOS (À REMPLIR)
@@ -1145,8 +1290,7 @@ function speak(txt, cb){
   if(!hasVoice){ cb && cb(); return; }
   if(isSpeaking) synth.cancel();
   clearTimeout(earlyListenTimer);
-  let x = txt
-    .replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
+  let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
     .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
     .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
     .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s')
@@ -1190,14 +1334,7 @@ function setUI(state){
 }
 
 function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
-
-function addMsg(html, role='ai'){
-  const log=$('chatLog');
-  const d=document.createElement('div'); d.className='t-msg '+role;
-  d.innerHTML='<div class="t-bubble">'+html+'</div>';
-  log.appendChild(d); log.scrollTop=log.scrollHeight;
-  while(log.children.length>100) log.removeChild(log.firstChild);
-}
+function addMsg(html, role='ai'){ const log=$('chatLog'); const d=document.createElement('div'); d.className='t-msg '+role; d.innerHTML='<div class="t-bubble">'+html+'</div>'; log.appendChild(d); log.scrollTop=log.scrollHeight; while(log.children.length>100) log.removeChild(log.firstChild); }
 
 /* ═══ GUIDE CARD ═══ */
 function renderGuideCard(){
@@ -1209,12 +1346,9 @@ function renderGuideCard(){
   $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
   $('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length;
   $('gBody').textContent=s.t;
-  $('gYes').style.display=s.d?'inline-flex':'none';
-  $('gNo').style.display=s.d?'inline-flex':'none';
-  $('gPrev').style.display='inline-flex';
-  $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex';
-  $('gCancel').textContent='ANNULER';
-  iosInfoShown=false;
+  $('gYes').style.display=s.d?'inline-flex':'none'; $('gNo').style.display=s.d?'inline-flex':'none';
+  $('gPrev').style.display='inline-flex'; $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex';
+  $('gCancel').textContent='ANNULER'; iosInfoShown=false;
 }
 
 function showIosInfoCard(){
@@ -1224,8 +1358,7 @@ function showIosInfoCard(){
   $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;
   $('gStepLbl').textContent=curIOS.desc;
   $('gBody').textContent='Prêt à démarrer la procédure de guidage. Dites « guidage » ou appuyez sur DÉMARRER.';
-  $('gYes').style.display='none'; $('gNo').style.display='none';
-  $('gPrev').style.display='none';
+  $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none';
   $('gNext').textContent='▶ DÉMARRER LE GUIDAGE'; $('gNext').style.display='inline-flex';
   $('gCancel').textContent='ANNULER'; $('gCancel').style.display='inline-flex';
   iosInfoShown=true;
@@ -1235,8 +1368,7 @@ function showEndCard(msg){
   const card=$('guideCard'); card.classList.add('show');
   $('gLabel').textContent='TERMINÉ'; $('gIosId').textContent=''; $('gStepLbl').textContent='';
   $('gBody').textContent=msg;
-  $('gYes').style.display='none'; $('gNo').style.display='none';
-  $('gPrev').style.display='none'; $('gNext').style.display='none';
+  $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').style.display='none';
   $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex';
   iosInfoShown=false;
 }
@@ -1252,49 +1384,18 @@ function renderIosCard(ios){
 }
 
 /* ═══ IOS LOGIC ═══ */
-function findIOS(q){
-  q=q.toLowerCase().trim();
-  const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i);
-  if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; }
-  for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; }
-  for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) return io; if(io.kw && io.kw.some(k=>q.includes(k))) return io; }
-  return null;
-}
+function findIOS(q){ q=q.toLowerCase().trim(); const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; } for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; } for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) return io; if(io.kw && io.kw.some(k=>q.includes(k))) return io; } return null; }
 
-function loadIOS(ios){
-  curIOS=ios; guideOn=false; iosInfoShown=false;
-  renderIosCard(ios);
-  addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc);
-  speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80));
-  showIosInfoCard();
-  procStart=null; procEnd=null; procLog=[];
-}
+function loadIOS(ios){ curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; }
 
-function startGuide(){
-  if(!curIOS) return;
-  guideOn=true; guideSteps=[]; stepIdx=0;
-  if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0});
-  if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0});
-  if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});
-  for(const s of curIOS.tree) guideSteps.push(s);
-  procStart=new Date(); procEnd=null; procLog=[];
-  iosInfoShown=false;
-  renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id);
-  runStep();
-}
-
-function runStep(){
-  if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; }
-  const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; }
-  renderGuideCard(); procLog.push(s.t); speak(s.t);
-}
-
+function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); }
+function runStep(){ if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; } const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; } renderGuideCard(); procLog.push(s.t); speak(s.t); }
 function answerYes(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(true); }
 function answerNo(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(false); }
 function branch(yes){ const s=guideSteps[stepIdx]; const next=yes?(s.oui||[]):(s.non||[]); addMsg(yes?'✓ OUI':'✗ NON','user'); procLog.push(yes?'OUI':'NON'); if(!next.length){ finishProc('✅ Fin de procédure.'); return; } guideSteps=next; stepIdx=0; runStep(); }
 function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); return; } return; } const s=guideSteps[stepIdx]; if(s&&s.d){ speak('Veuillez répondre par oui ou par non.'); return; } stepIdx++; runStep(); }
 function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
-function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('gCancel').textContent='ANNULER'; $('gNext').style.display='inline-flex'; addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); }
+function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); }
 function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); }
 function goHome(){ cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil."); }
 
@@ -1304,7 +1405,7 @@ function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digi
 function genRecap(){ if(!curIOS||!procStart) return ''; const e=procEnd||new Date(); return ['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n'); }
 function openRecap(){ $('recapBody').textContent=genRecap(); $('recapBg').classList.add('on'); }
 function closeRecap(){ $('recapBg').classList.remove('on'); }
-function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;color:#000;background:#fff">'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
+function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre>'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
 
 /* ═══ IOS LIST ═══ */
 function buildList(){ const ul=$('modalList'); ul.innerHTML=''; const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b)); for(const id of ids){ const io=IOS_DB[id]; const r=document.createElement('div'); r.className='ios-row'; const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l'; const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF'; r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>'; r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); }); ul.appendChild(r); } }
@@ -1312,10 +1413,9 @@ function openList(){ buildList(); $('listBg').classList.add('on'); }
 function closeList(){ $('listBg').classList.remove('on'); }
 
 /* ═══ INFO ═══ */
-function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer la procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon / j'ai fait</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / affirmatif / correct</span> — Réponse OUI</li><li><span class="cmd-pill">non / négatif / rien / pas</span> — Réponse NON</li><li><span class="cmd-pill">répète / redis / pardon</span> — Répéter l'étape</li><li><span class="cmd-pill">annuler / stop</span> — Stopper la procédure</li><li><span class="cmd-pill">accueil / menu / reset</span> — Retour à l'accueil</li><li><span class="cmd-pill">temps écoulé</span> — Durée de la procédure</li><li><span class="cmd-pill">quelle heure</span> — Heure actuelle</li><li><span class="cmd-pill">quelle date</span> — Date du jour</li><li><span class="cmd-pill">liste des ios</span> — Afficher tous les IOS</li><li><span class="cmd-pill">fermer / bulletin / BS</span> — Fin de procédure</li></ul><h4>🛡 Protection procédure</h4><p>Pendant une procédure active, toute demande de nouvel IOS est bloquée. Terminez ou annulez d'abord.</p><h4>🎨 Code couleur</h4><ul><li><span style="color:#f5c518">■</span> Jaune — En veille</li><li><span style="color:#39ff87">■</span> Vert — Écoute active</li><li><span style="color:#bf80ff">■</span> Violet — Synthèse vocale</li><li><span style="color:#00e5ff">■</span> Cyan — Micro réactivé</li><li><span style="color:#ffb300">■</span> Orange — Bloqué</li><li><span style="color:#ff3b3b">■</span> Rouge — Erreur</li></ul><h4>✏️ Créateur</h4><p>Développé par <strong>Zaber</strong>, Conducteur Moniteur Formateur — DUALIS U53700 T4.</p>`; $('infoBg').classList.add('on'); }
+function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué.</p>`; $('infoBg').classList.add('on'); }
 function closeInfo(){ $('infoBg').classList.remove('on'); }
 
-/* ═══ HELPERS ═══ */
 function isProcActive(){ return guideOn || isSpeaking || iosInfoShown; }
 
 /* ═══ VOICE COMMANDS ═══ */
@@ -1328,7 +1428,7 @@ const CMDS = {
   repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
   greet:[/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
   oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
-  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bpas\s+vraiment\b/i,/\bpas\s+exactement\b/i,/\bpas\s+affiché\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\beteint\b/i,/\bdésactivé\b/i,/\bdesactive\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bque\s+couic\b/i,/\bmarche\s+pas\b/i,/\bne\s+marche\s+pas\b/i,/non\s+merci/i,/non\s+plus/i,/\bpas\b/i],
+  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bpas\s+vraiment\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bmarche\s+pas\b/i,/\bpas\b/i],
   time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
   date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
   elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
@@ -1343,32 +1443,30 @@ const CMDS = {
 function match(txt,key){ return CMDS[key].some(r=>r.test(txt)); }
 function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)); }
 function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)); }
-function extractIosNum(txt){ const m=txt.match(/(?:ios[.\s]*)?(\d{1,3})/i); return m?m[1].padStart(3,'0'):null; }
 
 function processVoice(raw){
   const txt=raw.trim(); if(!txt) return;
   addMsg(txt,'user');
   const endActive=$('endBar').classList.contains('show');
   if(endActive){
-    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)||(/\b(pas|veux|souhaite)\b/i.test(txt)&&/\b(non|pas)\b/i.test(txt))){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
+    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
     if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; }
   }
-  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend.'][Math.floor(Math.random()*5)]; addMsg(r); speak(r); return; }
+  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; addMsg(r); speak(r); return; }
   if(match(txt,'cancel')){ cancelProc(); return; }
   if(match(txt,'home')){ goHome(); return; }
-  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour ! i o s T4 à votre service.'); return; }
-  if(isProcActive()){ if(match(txt,'repeat')){ if(guideOn&&guideSteps[stepIdx]) speak(guideSteps[stepIdx].t); else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80)); return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(extractIosNum(txt)||/\bios\b/i.test(txt)){ addMsg('⚠ Procédure IOS-'+curIOS.id+' en cours. Terminez ou annulez d\'abord.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)+'. Terminez ou annulez d\'abord.'); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
-  if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)+'. '+curIOS.desc.substring(0,80)); return; }
+  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
+  if(isProcActive()){ if(match(txt,'repeat')){ if(guideOn&&guideSteps[stepIdx]) speak(guideSteps[stepIdx].t); else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
+  if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; }
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
-  if(match(txt,'help')){ openInfo(); speak('Guide d\'utilisation affiché.'); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>, Conducteur Moniteur Formateur.'); speak('Mon créateur est Zabèr, conducteur moniteur formateur.'); return; }
-  if(match(txt,'time')){ const t=ft(new Date()); addMsg('⏰ '+t); speak('Il est '+t.replace(/:/g,' heure ')); return; }
-  if(match(txt,'date')){ const d=fd(new Date()); addMsg('📅 '+d); speak('Nous sommes le '+d); return; }
-  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000),s=Math.floor((d%60000)/1000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+' et '+s+' seconde'+(s>1?'s':'')+'.'); return; }
+  if(match(txt,'help')){ openInfo(); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr.'); return; }
+  if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
+  if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
+  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
   const io=findIOS(txt); if(io){ loadIOS(io); return; }
-  addMsg('❓ Aucun IOS trouvé pour "'+txt.substring(0,50)+'".');
-  speak('Aucun i o s trouvé. Énoncer le numéro IOS.');
+  speak('Aucun i o s trouvé.');
 }
 
 /* ═══ RECONNAISSANCE VOCALE ═══ */
@@ -1388,7 +1486,7 @@ function startListening(){
   }catch(e){ if(micOn) setTimeout(startListening,700); }
 }
 function stopListening(){ clearTimeout(restartTimer); if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; } isListening=false; setUI('idle'); }
-function toggleMic(){ if(isSpeaking) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé — appuyer pour réactiver'; toast('Microphone coupé'); } }
+function toggleMic(){ if(isSpeaking) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé'; toast('Microphone coupé'); } }
 
 /* ═══ HORLOGE ═══ */
 function updateClock(){ $('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
@@ -1396,34 +1494,27 @@ setInterval(updateClock,1000); updateClock();
 
 /* ═══ EVENTS ═══ */
 $('micBtn').addEventListener('click',toggleMic);
-$('micBtn').addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter') toggleMic(); });
 $('panelBtn').addEventListener('click',()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
 $('overlay').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
 $('spClose').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
 $('infoBtn').addEventListener('click',openInfo);
 $('infoX').addEventListener('click',closeInfo);
 $('infoBg').addEventListener('click',e=>{ if(e.target===$('infoBg')) closeInfo(); });
-
-function doSearch(val){ if(!val.trim()) return; if(isProcActive()){ toast('Procédure active — terminez d\'abord.'); return; } processVoice(val); }
+function doSearch(val){ if(!val.trim()) return; if(isProcActive()){ toast('Procédure active'); return; } processVoice(val); }
 $('spSearch').addEventListener('keypress',e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
 $('spSearchGo').addEventListener('click',()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
-
 $('showListBtn').addEventListener('click',openList);
 $('listX').addEventListener('click',closeList);
 $('listBg').addEventListener('click',e=>{ if(e.target===$('listBg')) closeList(); });
 $('icGuide').addEventListener('click',()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
-$('icCancel').addEventListener('click',cancelProc);
-$('icHome').addEventListener('click',goHome);
-$('icNew').addEventListener('click',goHome);
-$('gYes').addEventListener('click',answerYes);
-$('gNo').addEventListener('click',answerNo);
+$('icCancel').addEventListener('click',cancelProc); $('icHome').addEventListener('click',goHome); $('icNew').addEventListener('click',goHome);
+$('gYes').addEventListener('click',answerYes); $('gNo').addEventListener('click',answerNo);
 $('gNext').addEventListener('click',()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
 $('gPrev').addEventListener('click',prevStep);
-$('gCancel').addEventListener('click',()=>{ if(!guideOn&&$('guideCard').classList.contains('show')){ $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); iosInfoShown=false; $('gCancel').textContent='ANNULER'; } else cancelProc(); });
+$('gCancel').addEventListener('click',()=>{ if(!guideOn&&$('guideCard').classList.contains('show')){ $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); iosInfoShown=false; } else cancelProc(); });
 $('ebRecap').addEventListener('click',()=>{ $('endBar').classList.remove('show'); openRecap(); });
 $('ebClose').addEventListener('click',()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
-$('recapX').addEventListener('click',closeRecap);
-$('recapClose2').addEventListener('click',closeRecap);
+$('recapX').addEventListener('click',closeRecap); $('recapClose2').addEventListener('click',closeRecap);
 $('recapBg').addEventListener('click',e=>{ if(e.target===$('recapBg')) closeRecap(); });
 $('recapPrint').addEventListener('click',printRecap);
 $('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
@@ -1431,7 +1522,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').cl
 
 /* ═══ INIT ═══ */
 setUI('idle'); micOn=true; startListening();
-console.log('✅ IAOS T4 v3 — Créé par Zaber');
+console.log('✅ IAOS T4 v6 — Phénix Emoji Restauré — Créé par Zaber');
 })();
 </script>
 </body>
