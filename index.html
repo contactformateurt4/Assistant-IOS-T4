@@ -375,10 +375,33 @@
     .recap-btn:hover{background:rgba(245,197,24,0.15)}
     .recap-btn.primary{background:rgba(245,197,24,0.15);color:#fff;border-color:var(--bat-yellow)}
 
-    .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(2,1,8,0.98);backdrop-filter:blur(20px);border-top:1px solid rgba(245,197,24,0.5);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s}
-    .end-questions.active{transform:translateY(0)}
-    .end-questions-text{font-size:0.8rem;margin-bottom:8px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
-    .end-questions-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .end-questions {
+      position: fixed;
+      bottom: 100px;
+      left: 0;
+      width: 100%;
+      background: rgba(2,1,8,0.98);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(245,197,24,0.5);
+      padding: 14px 20px;
+      z-index: 91;
+      transform: translateY(calc(100% + 100px));
+      transition: transform 0.35s;
+    }
+    .end-questions.active {
+      transform: translateY(0);
+    }
+    .end-questions-text {
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+    }
+    .end-questions-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     .info-btn{position:fixed;bottom:24px;left:24px;width:52px;height:52px;background:var(--bg-card);backdrop-filter:blur(15px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 0 20px rgba(245,197,24,0.25)}
     .info-btn:hover{transform:scale(1.06);box-shadow:0 0 30px rgba(245,197,24,0.4)}
@@ -397,18 +420,56 @@
     .info-modal-content .cmd{color:var(--bat-yellow);font-family:'Space Mono',monospace;font-size:0.65rem}
 
     @media(max-width:480px){
-      .mic-wave-container{width:150px;height:150px}
-      .mic-ring:nth-child(1){width:70px;height:70px}
-      .mic-ring:nth-child(2){width:98px;height:98px}
-      .mic-ring:nth-child(3){width:126px;height:126px}
-      .voice-commands-bar{padding:0.4rem 0.7rem;gap:0.25rem}
-      .voice-icon{min-width:22px;width:22px;height:22px;font-size:0.65rem}
-      .voice-cmd-list{gap:0.2rem}
-      .voice-cmd-item{padding:0.1rem 0.35rem;font-size:0.5rem}
-      .cmd-key{font-size:0.48rem}
-      .step-title{font-size:0.85rem}
-      .step-text{font-size:0.8rem}
-      .status-pill{padding:6px 16px;font-size:0.6rem}
+      .hero-sub {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .voice-cmd-list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+        mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+      }
+      .voice-cmd-list::-webkit-scrollbar { display: none; }
+      .voice-commands-bar {
+        padding: 0.4rem 0.6rem;
+        gap: 0.2rem;
+        flex-wrap: nowrap;
+        overflow: hidden;
+      }
+      .voice-icon {
+        min-width: 22px;
+        width: 22px;
+        height: 22px;
+        font-size: 0.6rem;
+        flex-shrink: 0;
+      }
+      .voice-cmd-item {
+        padding: 0.1rem 0.35rem;
+        font-size: 0.48rem;
+        flex-shrink: 0;
+      }
+      .cmd-key { font-size: 0.45rem; }
+      .mic-wave-container { width: 150px; height: 150px; }
+      .mic-ring:nth-child(1) { width: 70px; height: 70px; }
+      .mic-ring:nth-child(2) { width: 98px; height: 98px; }
+      .mic-ring:nth-child(3) { width: 126px; height: 126px; }
+      .step-title { font-size: 0.85rem; }
+      .step-text { font-size: 0.8rem; }
+      .status-pill { padding: 6px 16px; font-size: 0.6rem; }
+      .end-questions {
+        bottom: 90px;
+        transform: translateY(calc(100% + 90px));
+      }
+    }
+    @media(max-width:360px){
+      .voice-cmd-item { padding: 0.08rem 0.25rem; font-size: 0.42rem; }
+      .cmd-key { font-size: 0.4rem; }
+      .voice-icon { min-width: 18px; width: 18px; height: 18px; font-size: 0.5rem; }
     }
   </style>
 </head>
@@ -488,7 +549,13 @@
 
 <div class="ios-list-overlay" id="iosListOverlay"><div class="ios-list-panel"><div class="ios-list-header"><h3>📋 LISTE DES IOS</h3><button class="ios-list-close" id="iosListClose">✕</button></div><div class="ios-list-scroll" id="iosListScroll"></div></div></div>
 <div class="recap-overlay" id="recapOverlay"><div class="recap-panel"><div class="recap-header"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapClose">✕</button></div><div class="recap-content" id="recapContent"></div><div class="recap-actions"><button class="recap-btn" id="recapPrintBtn">🖨️ Imprimer</button><button class="recap-btn primary" id="recapCloseBtn">Fermer</button></div></div></div>
-<div class="end-questions" id="endQuestions"><div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div><div class="end-questions-buttons"><button class="step-btn yes" id="endRecapYes">📄 Récapitulatif</button><button class="step-btn no" id="endRecapNo">✕ Fermer</button></div></div>
+<div class="end-questions" id="endQuestions">
+  <div class="end-questions-text">Procédure terminée. Souhaitez-vous :</div>
+  <div class="end-questions-buttons">
+    <button class="step-btn yes" id="endRecapYes">📄 Récapitulatif</button>
+    <button class="step-btn no" id="endRecapNo">✕ Fermer</button>
+  </div>
+</div>
 <div class="toast" id="toastMsg"></div>
 
 <script>
@@ -1049,14 +1116,12 @@
       currentUtterance.lang = 'fr-FR'; currentUtterance.rate = 0.92; currentUtterance.volume = 1; currentUtterance.pitch = 1.02;
       const fv = getFemaleVoice(); if (fv) currentUtterance.voice = fv;
 
-      // Estimer la durée de la parole
       let estimatedDuration = (x.length / 12) * 1000;
       let earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
 
       speakingFlag = true;
       updateUIForState('speak');
 
-      // Réactiver le micro 2 secondes avant la fin
       earlyListenTimer = setTimeout(() => {
         if (speakingFlag && micActive && !listening) {
           updateUIForState('earlyListen');
@@ -1191,7 +1256,9 @@
       annuler: ['annuler','stop','arrête','arrêter','interrompt','abandonne','abandonner','cancel','termine','terminez','quitte','quitter','stoppe','stopper','fini','fin','terminer','annule','annulation','j\'annule','je stoppe','je quitte','laisse tomber','laisse'],
       accueil: ['accueil','menu','retour accueil','home','reset','revenir au début','page d\'accueil','menu principal','retour','revenir'],
       repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait'],
-      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu ne sers à rien','t sers a rien','t sers à rien','tu es inutile','t es inutile','t\'es inutile','tu es nul','t es nul','t\'es nul','tu es nulle','t es nulle','t\'es nulle','tu vaux rien','tu ne vaux rien','tu vaut rien','tu ne vaut rien','a quoi tu sers','à quoi tu sers','tu sers a quoi','tu sers à quoi','quelle est ton utilité','ton utilité']
+      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu ne sers à rien','t sers a rien','t sers à rien','tu es inutile','t es inutile','t\'es inutile','tu es nul','t es nul','t\'es nul','tu es nulle','t es nulle','t\'es nulle','tu vaux rien','tu ne vaux rien','tu vaut rien','tu ne vaut rien','a quoi tu sers','à quoi tu sers','tu sers a quoi','tu sers à quoi','quelle est ton utilité','ton utilité'],
+      fermer: ['fermer','ferme','ferme la fenêtre','close','fermer la fenetre','fermez','ferme ça','fermer ça','clore','clôture','cloture','termine la fenêtre','termine la fenetre'],
+      recapitulatif: ['récapitulatif','recapitulatif','bulletin','bulletin de service','b s','bs','bé esse','bé s','bulletin service','rapport','compte rendu','compte-rendu','resume','résume','résumé','resumé','recap','récap','faire le bilan','bilan','affiche le bulletin','affiche bulletin']
     };
 
     function fuzzyContains(text, wordList) {
@@ -1206,49 +1273,46 @@
       if (!l || l.length < 1) return;
       addMessage('' + txt + '', 'user');
 
-      // Réponse à "tu sers à rien"
+      // Commandes de fin de procédure (toujours actives)
+      if (document.getElementById('endQuestions').classList.contains('active')) {
+        if (fuzzyContains(l, DICO.fermer) || fuzzyContains(l, ['non','fermer'])) {
+          document.getElementById('endQuestions').classList.remove('active');
+          document.getElementById('guideStepCard').classList.remove('active');
+          addMessage('Fenêtre fermée.', 'ai');
+          speakText('Fenêtre fermée.');
+          return;
+        }
+        if (fuzzyContains(l, DICO.recapitulatif) || fuzzyContains(l, DICO.oui)) {
+          document.getElementById('endQuestions').classList.remove('active');
+          sr();
+          return;
+        }
+      }
+
       if (fuzzyContains(l, DICO.inutile)) {
-        const reponses = [
-          'C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage au lieu de critiquer.',
-          'Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage et arrête de te plaindre.',
-          'Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage, feignasse.',
-          'Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.',
-          'C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.'
-        ];
+        const reponses = ['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage au lieu de critiquer.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage et arrête de te plaindre.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage, feignasse.','Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.','C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.'];
         const r = reponses[Math.floor(Math.random() * reponses.length)];
-        addMessage(r, 'ai');
-        speakText(r);
-        return;
+        addMessage(r, 'ai'); speakText(r); return;
       }
 
       if (fuzzyContains(l, DICO.annuler)) { ccp(); return; }
       if (fuzzyContains(l, DICO.accueil)) { hr(); return; }
 
       if (fuzzyContains(l, DICO.salutations)) {
-        if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) {
-          addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return;
-        }
-        const greetings = ['Bonjour ! IAOS T4 à votre service.', 'Salut ! Je suis prêt à vous assister.', 'Hello ! Dites-moi ce dont vous avez besoin.', 'Bonjour, je vous écoute.'];
-        const g = greetings[Math.floor(Math.random() * greetings.length)];
-        addMessage(g, 'ai'); speakText(g); return;
+        if (/\b(?:salam|salem|salamou)\s*(?:al[ae]ykoum?|aleikoum?)/i.test(l)) { addMessage('Wa aleykoum salam.', 'ai'); speakText('Wa aleykoum salam.'); return; }
+        const greetings = ['Bonjour ! IAOS T4 à votre service.','Salut ! Je suis prêt à vous assister.','Hello ! Dites-moi ce dont vous avez besoin.','Bonjour, je vous écoute.'];
+        addMessage(greetings[Math.floor(Math.random() * greetings.length)], 'ai');
+        speakText(greetings[Math.floor(Math.random() * greetings.length)]); return;
       }
 
       if (isProcedureActive()) {
-        if (fuzzyContains(l, DICO.repeter)) {
-          if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t);
-          else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80));
-          return;
-        }
+        if (fuzzyContains(l, DICO.repeter)) { if (guideActive && guideSteps[stepIndex]) speakText(guideSteps[stepIndex].t); else if (currentIOS) speakText("l'IOS " + parseInt(currentIOS.id, 10) + ". " + currentIOS.desc.substring(0, 80)); return; }
         if (fuzzyContains(l, DICO.precedent)) { if (guideActive) { ps(); return; } }
         if (fuzzyContains(l, DICO.suivant)) { if (guideActive) { ns(); return; } if (iosInfoShown && currentIOS) { sg(); return; } }
         if (fuzzyContains(l, DICO.oui) && !fuzzyContains(l, DICO.non) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { ay(); return; }
         if (fuzzyContains(l, DICO.non) && guideActive && guideSteps[stepIndex] && guideSteps[stepIndex].d) { an(); return; }
         if (fuzzyContains(l, DICO.demarrer)) { if (currentIOS && !guideActive) { sg(); return; } if (iosInfoShown && currentIOS) { sg(); return; } }
-        if (extractIosNumber(l) || /\bios\b/i.test(l)) {
-          addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai');
-          speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord.");
-          blockNewIosSearch(); return;
-        }
+        if (extractIosNumber(l) || /\bios\b/i.test(l)) { addMessage('⚠️ Occupé avec IOS-' + currentIOS.id + '. Terminez ou annulez d\'abord.', 'ai'); speakText("Occupé avec l'IOS " + parseInt(currentIOS.id, 10) + ". Terminez ou annulez d'abord."); blockNewIosSearch(); return; }
         return;
       }
 
@@ -1258,24 +1322,15 @@
       let f = fiq(l);
       if (f) { sdi(f); return; }
 
-      if (fuzzyContains(l, DICO.createur)) {
-        addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !', 'ai');
-        speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.'); return;
-      }
+      if (fuzzyContains(l, DICO.createur)) { addMessage('👤 Mon créateur est <strong>Zaber</strong>, conducteur moniteur formateur... et plus si affinité !', 'ai'); speakText('Mon créateur est Zabèr, conducteur moniteur formateur, et plus si affinité.'); return; }
       if (fuzzyContains(l, DICO.heure)) { const r = 'Il est ' + ft(new Date()) + '.'; addMessage(r, 'ai'); speakText(r); return; }
       if (fuzzyContains(l, DICO.date)) { const r = 'Nous sommes le ' + fd(new Date()) + '.'; addMessage(r, 'ai'); speakText(r); return; }
-      if (fuzzyContains(l, DICO.temps)) {
-        if (!procedureStartTime) { speakText('Aucune procédure en cours.'); addMessage('Aucune procédure en cours.', 'ai'); return; }
-        let d = new Date() - procedureStartTime, m = Math.floor(d / 60000), s = Math.floor((d % 60000) / 1000);
-        const r = 'Temps écoulé : ' + m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '') + '.';
-        addMessage('⏱️ ' + r, 'ai'); speakText(r); return;
-      }
+      if (fuzzyContains(l, DICO.temps)) { if (!procedureStartTime) { speakText('Aucune procédure en cours.'); addMessage('Aucune procédure en cours.', 'ai'); return; } let d = new Date() - procedureStartTime, m = Math.floor(d / 60000), s = Math.floor((d % 60000) / 1000); const r = 'Temps écoulé : ' + m + ' minute' + (m > 1 ? 's' : '') + ' et ' + s + ' seconde' + (s > 1 ? 's' : '') + '.'; addMessage('⏱️ ' + r, 'ai'); speakText(r); return; }
       if (fuzzyContains(l, DICO.liste)) { oil(); return; }
       if (/\b(?:aide|help|commandes|mode d'emploi|infos)\b/i.test(l)) { showInfo(); speakText('Voici le guide d\'utilisation.'); return; }
 
-      const notFound = ['Aucun IOS trouvé pour cette recherche.', 'Je n\'ai rien trouvé correspondant à votre demande.', 'Désolé, aucun résultat pour cette requête.', 'Essayez avec un numéro d\'IOS ou un mot-clé différent.'];
-      const nf = notFound[Math.floor(Math.random() * notFound.length)];
-      speakText(nf);
+      const notFound = ['Aucun IOS trouvé pour cette recherche.','Je n\'ai rien trouvé correspondant à votre demande.','Désolé, aucun résultat pour cette requête.','Essayez avec un numéro d\'IOS ou un mot-clé différent.'];
+      speakText(notFound[Math.floor(Math.random() * notFound.length)]);
     }
 
     // === RECONNAISSANCE VOCALE FLUIDE ===
@@ -1289,19 +1344,7 @@
         recognition.lang = 'fr-FR'; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 12;
         let finalTranscript = ''; let silenceTimer = null;
         recognition.onstart = () => { listening = true; finalTranscript = ''; accumulatedTranscript = ''; updateUIForState('listen'); };
-        recognition.onresult = (e) => {
-          clearTimeout(silenceTimer);
-          let interimTranscript = '';
-          for (let i = e.resultIndex; i < e.results.length; i++) {
-            if (e.results[i].isFinal) {
-              let best = '', bestConf = 0;
-              for (let j = 0; j < e.results[i].length; j++) { if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; } }
-              if (best && bestConf > 0.02) finalTranscript += ' ' + best;
-            } else { interimTranscript += e.results[i][0].transcript; }
-          }
-          if (finalTranscript.trim() && !interimTranscript) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; }
-          silenceTimer = setTimeout(() => { if (finalTranscript.trim()) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } }, 700);
-        };
+        recognition.onresult = (e) => { clearTimeout(silenceTimer); let interimTranscript = ''; for (let i = e.resultIndex; i < e.results.length; i++) { if (e.results[i].isFinal) { let best = '', bestConf = 0; for (let j = 0; j < e.results[i].length; j++) { if (e.results[i][j].confidence > bestConf) { bestConf = e.results[i][j].confidence; best = e.results[i][j].transcript; } } if (best && bestConf > 0.02) finalTranscript += ' ' + best; } else { interimTranscript += e.results[i][0].transcript; } } if (finalTranscript.trim() && !interimTranscript) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } silenceTimer = setTimeout(() => { if (finalTranscript.trim()) { accumulatedTranscript = finalTranscript.trim(); pvc(accumulatedTranscript); finalTranscript = ''; accumulatedTranscript = ''; } }, 700); };
         recognition.onerror = (e) => { listening = false; clearTimeout(silenceTimer); if (finalTranscript.trim()) pvc(finalTranscript.trim()); finalTranscript = ''; accumulatedTranscript = ''; updateUIForState('idle'); if (micActive && !speakingFlag) scheduleRestart(); };
         recognition.onend = () => { listening = false; clearTimeout(silenceTimer); if (finalTranscript.trim()) pvc(finalTranscript.trim()); finalTranscript = ''; accumulatedTranscript = ''; if (micActive && !speakingFlag) scheduleRestart(); else updateUIForState('idle'); };
         recognition.start();
@@ -1312,34 +1355,7 @@
 
     function initInfoContent() {
       document.getElementById('infoModalContent').innerHTML = `
-        <h4>🎤 COMMANDES VOCALES</h4>
-        <ul>
-          <li><span class="cmd">"IOS [numéro]"</span> — Rechercher un IOS</li>
-          <li><span class="cmd">"démarrer le guidage"</span> — Lancer la procédure</li>
-          <li><span class="cmd">"suivant", "ok", "c'est bon"</span> — Étape suivante</li>
-          <li><span class="cmd">"précédent", "retour"</span> — Étape précédente</li>
-          <li><span class="cmd">"oui", "non"</span> — Répondre à une question</li>
-          <li><span class="cmd">"répète"</span> — Répéter l'étape</li>
-          <li><span class="cmd">"annuler"</span> — Annuler la procédure</li>
-          <li><span class="cmd">"accueil"</span> — Retour à l'accueil</li>
-          <li><span class="cmd">"temps écoulé"</span> — Temps depuis début</li>
-          <li><span class="cmd">"quelle heure"</span> — Heure actuelle</li>
-          <li><span class="cmd">"quelle date"</span> — Date du jour</li>
-          <li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li>
-          <li><span class="cmd">"bonjour", "salut"</span> — Salutation</li>
-          <li><span class="cmd">"qui t'a créé"</span> — Info créateur</li>
-        </ul>
-        <h4>⚠️ PROTECTION</h4>
-        <p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p>
-        <h4>🎨 COULEURS</h4>
-        <ul>
-          <li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li>
-          <li><span style="color:var(--green)">Vert</span> — Écoute</li>
-          <li><span style="color:var(--purple)">Violet</span> — Parole</li>
-          <li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li>
-          <li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li>
-          <li><span style="color:var(--red)">Rouge</span> — Erreur</li>
-        </ul>
+        <h4>🎤 COMMANDES VOCALES</h4><ul><li><span class="cmd">"IOS [numéro]"</span> — Rechercher un IOS</li><li><span class="cmd">"démarrer le guidage"</span> — Lancer la procédure</li><li><span class="cmd">"suivant", "ok", "c'est bon"</span> — Étape suivante</li><li><span class="cmd">"précédent", "retour"</span> — Étape précédente</li><li><span class="cmd">"oui", "non"</span> — Répondre à une question</li><li><span class="cmd">"répète"</span> — Répéter l'étape</li><li><span class="cmd">"annuler"</span> — Annuler la procédure</li><li><span class="cmd">"accueil"</span> — Retour à l'accueil</li><li><span class="cmd">"temps écoulé"</span> — Temps depuis début</li><li><span class="cmd">"quelle heure"</span> — Heure actuelle</li><li><span class="cmd">"quelle date"</span> — Date du jour</li><li><span class="cmd">"liste des ios"</span> — Afficher tous les IOS</li><li><span class="cmd">"bonjour", "salut"</span> — Salutation</li><li><span class="cmd">"qui t'a créé"</span> — Info créateur</li><li><span class="cmd">"fermer", "b s", "bulletin"</span> — Fin de procédure</li></ul><h4>⚠️ PROTECTION</h4><p>Pendant une procédure, les nouveaux IOS sont <b>bloqués</b>.</p><h4>🎨 COULEURS</h4><ul><li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li><li><span style="color:var(--green)">Vert</span> — Écoute</li><li><span style="color:var(--purple)">Violet</span> — Parole</li><li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li><li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li><li><span style="color:var(--red)">Rouge</span> — Erreur</li></ul>
       `;
     }
 
