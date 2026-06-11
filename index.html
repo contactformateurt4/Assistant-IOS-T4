@@ -211,10 +211,12 @@
     }
     .wave-bars.listening .wave-bar { background: var(--green); box-shadow: 0 0 14px rgba(105,240,174,0.7); animation-duration: 0.45s; }
     .wave-bars.speaking .wave-bar { background: var(--purple); box-shadow: 0 0 14px rgba(179,136,255,0.7); animation-duration: 0.55s; }
+    .wave-bars.earlyListen .wave-bar { background: var(--cyan); box-shadow: 0 0 14px rgba(0,229,255,0.7); animation-duration: 0.5s; }
     .wave-bars.error .wave-bar { background: var(--red); box-shadow: 0 0 12px rgba(255,82,82,0.6); animation: errorShake 0.4s; }
     @keyframes errorShake { 0%,100%{transform:translateX(0) scaleY(1)} 20%{transform:translateX(-4px) scaleY(0.6)} 40%{transform:translateX(4px) scaleY(1.3)} 60%{transform:translateX(-3px) scaleY(0.7)} 80%{transform:translateX(3px) scaleY(1.2)} }
     .mic-wave-container.listening .mic-ring { border-color: rgba(105,240,174,0.6)!important; animation-duration:1.6s; }
     .mic-wave-container.speaking .mic-ring { border-color: rgba(179,136,255,0.6)!important; animation-duration:1.4s; }
+    .mic-wave-container.earlyListen .mic-ring { border-color: rgba(0,229,255,0.6)!important; animation-duration:1.5s; }
 
     .guide-step-card {
       background: var(--bg-card);
@@ -295,6 +297,7 @@
     .status-dot.active { background: var(--green); box-shadow: 0 0 10px var(--green); }
     .status-dot.speaking { background: var(--purple); box-shadow: 0 0 10px var(--purple); }
     .status-dot.blocked { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+    .status-dot.earlyListen { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
 
     .panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .panel-overlay.active{opacity:1;pointer-events:auto}
@@ -338,10 +341,10 @@
     .message.ai .bubble{background:rgba(245,197,24,0.08);border:1px solid rgba(245,197,24,0.2)}
     .message.user .bubble{background:rgba(179,136,255,0.1);border:1px solid rgba(179,136,255,0.4)}
     .bubble{padding:8px 12px;font-size:0.78rem;line-height:1.4;word-break:break-word}
-    
+
     .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg-deep);border:1px solid var(--bat-yellow);padding:8px 20px;font-size:0.65rem;opacity:0;transition:opacity 0.3s;z-index:200;pointer-events:none;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--bat-yellow)}
     .toast.show{opacity:1}
-    
+
     .ios-list-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:150;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .ios-list-overlay.active{opacity:1;pointer-events:auto}
     .ios-list-panel{background:var(--bg-card);border:1px solid rgba(245,197,24,0.5);width:min(90%,480px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
@@ -358,7 +361,7 @@
     .ios-list-prio.h{background:rgba(255,82,82,0.15);color:#ff5252}
     .ios-list-prio.m{background:rgba(255,215,64,0.1);color:#ffd740}
     .ios-list-prio.l{background:rgba(105,240,174,0.1);color:#69f0ae}
-    
+
     .recap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:160;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .recap-overlay.active{opacity:1;pointer-events:auto}
     .recap-panel{background:#1a1a2a;border:1px solid rgba(245,197,24,0.5);width:min(92%,520px);max-height:85vh;display:flex;flex-direction:column;box-shadow:0 0 50px rgba(0,0,0,0.8);overflow:hidden}
@@ -371,15 +374,15 @@
     .recap-btn{padding:7px 16px;border:1px solid rgba(245,197,24,0.4);background:rgba(245,197,24,0.05);color:var(--bat-yellow);cursor:pointer;font-size:0.65rem;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:1px}
     .recap-btn:hover{background:rgba(245,197,24,0.15)}
     .recap-btn.primary{background:rgba(245,197,24,0.15);color:#fff;border-color:var(--bat-yellow)}
-    
+
     .end-questions{position:fixed;bottom:0;left:0;width:100%;background:rgba(2,1,8,0.98);backdrop-filter:blur(20px);border-top:1px solid rgba(245,197,24,0.5);padding:14px 20px;z-index:91;transform:translateY(100%);transition:transform 0.35s}
     .end-questions.active{transform:translateY(0)}
     .end-questions-text{font-size:0.8rem;margin-bottom:8px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
     .end-questions-buttons{display:flex;gap:8px;flex-wrap:wrap}
-    
+
     .info-btn{position:fixed;bottom:24px;left:24px;width:52px;height:52px;background:var(--bg-card);backdrop-filter:blur(15px);border:1.5px solid rgba(245,197,24,0.5);color:var(--bat-yellow);font-size:1.4rem;cursor:pointer;z-index:102;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 0 20px rgba(245,197,24,0.25)}
     .info-btn:hover{transform:scale(1.06);box-shadow:0 0 30px rgba(245,197,24,0.4)}
-    
+
     .info-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:170;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
     .info-overlay.active{opacity:1;pointer-events:auto}
     .info-modal{background:var(--bg-card);border:1px solid rgba(245,197,24,0.5);width:min(90%,520px);max-height:80vh;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(0,0,0,0.9),0 0 20px rgba(245,197,24,0.1);overflow:hidden}
@@ -392,7 +395,7 @@
     .info-modal-content ul{margin-left:18px;margin-bottom:8px}
     .info-modal-content li{margin:3px 0}
     .info-modal-content .cmd{color:var(--bat-yellow);font-family:'Space Mono',monospace;font-size:0.65rem}
-    
+
     @media(max-width:480px){
       .mic-wave-container{width:150px;height:150px}
       .mic-ring:nth-child(1){width:70px;height:70px}
@@ -959,6 +962,7 @@
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
+
     for (let i = 0; i <= 247; i++) {
       let id = i.toString().padStart(3, '0');
       if (!IOS[id]) IOS[id] = {
@@ -978,6 +982,8 @@
     let recognitionRestartTimer = null, accumulatedTranscript = '';
     let femaleVoiceCache = null;
     let conversationContext = [];
+    let earlyListenTimer = null;
+    let currentUtterance = null;
 
     function toast(m, d = 2500) {
       const t = document.getElementById('toastMsg');
@@ -988,11 +994,12 @@
     function updateUIForState(s) {
       const w = document.getElementById('waveBars'), m = document.getElementById('micWaveContainer'),
             d = document.getElementById('statusDot'), t = document.getElementById('statusText');
-      m.classList.remove('listening', 'speaking', 'error');
-      w.classList.remove('idle', 'listening', 'speaking', 'error');
-      d.classList.remove('active', 'speaking', 'blocked');
+      m.classList.remove('listening', 'speaking', 'error', 'earlyListen');
+      w.classList.remove('idle', 'listening', 'speaking', 'error', 'earlyListen');
+      d.classList.remove('active', 'speaking', 'blocked', 'earlyListen');
       if (s === 'listen') { m.classList.add('listening'); w.classList.add('listening'); d.classList.add('active'); t.innerText = 'Écoute active...'; }
       else if (s === 'speak') { m.classList.add('speaking'); w.classList.add('speaking'); d.classList.add('speaking'); t.innerText = 'Parle...'; }
+      else if (s === 'earlyListen') { m.classList.add('earlyListen'); w.classList.add('earlyListen'); d.classList.add('earlyListen'); t.innerText = 'Prêt à répondre...'; }
       else if (s === 'error') { m.classList.add('error'); w.classList.add('error'); setTimeout(() => { m.classList.remove('error'); w.classList.remove('error'); w.classList.add('idle'); }, 500); }
       else if (s === 'blocked') { w.classList.add('idle'); d.classList.add('blocked'); t.innerText = 'Occupez-vous de l\'IOS en cours'; }
       else { w.classList.add('idle'); d.style.background = '#4a4a6a'; t.innerText = 'Micro actif · Dites bonjour'; }
@@ -1021,6 +1028,7 @@
     function speakText(t, cb) {
       if (!voiceSupport) { if (cb) cb(); return; }
       if (speakingFlag) synth.cancel();
+      clearTimeout(earlyListenTimer);
       let x = t.replace(/[<[\]{}_*#✅🚨]/g, '').replace(/&[a-z]+;/g, '');
       x = x.replace(/\bl'IOS\b/gi, "li oès").replace(/\bl'ios\b/gi, "li oès");
       x = x.replace(/\bun IOS\b/gi, "un i o s").replace(/\bd'IOS\b/gi, "d'i o s").replace(/\bdes IOS\b/gi, "des i o s");
@@ -1037,13 +1045,45 @@
       x = x.replace(/i o s\s*(\d)(\d)(\d)/gi, (_, a, b, c) => 'i o s ' + parseInt(a + b + c, 10));
       x = x.replace(/li oès\s*(\d)(\d)(\d)/gi, (_, a, b, c) => 'li oès ' + parseInt(a + b + c, 10));
       x = x.replace(/\b0+(\d+)/g, '$1'); x = x.replace(/\s+/g, ' ');
-      const u = new SpeechSynthesisUtterance(x);
-      u.lang = 'fr-FR'; u.rate = 0.92; u.volume = 1; u.pitch = 1.02;
-      const fv = getFemaleVoice(); if (fv) u.voice = fv;
-      speakingFlag = true; updateUIForState('speak');
-      u.onend = () => { speakingFlag = false; updateUIForState('idle'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
-      u.onerror = () => { speakingFlag = false; updateUIForState('error'); if (micActive && !listening) scheduleRestart(); if (cb) cb(); };
-      synth.speak(u);
+
+      currentUtterance = new SpeechSynthesisUtterance(x);
+      currentUtterance.lang = 'fr-FR'; currentUtterance.rate = 0.92; currentUtterance.volume = 1; currentUtterance.pitch = 1.02;
+      const fv = getFemaleVoice(); if (fv) currentUtterance.voice = fv;
+
+      // Estimer la durée de la parole
+      let estimatedDuration = (x.length / 12) * 1000;
+      let earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
+
+      speakingFlag = true;
+      updateUIForState('speak');
+
+      // Réactiver le micro 2 secondes avant la fin
+      earlyListenTimer = setTimeout(() => {
+        if (speakingFlag && micActive && !listening) {
+          updateUIForState('earlyListen');
+          sl();
+        }
+      }, earlyListenDelay);
+
+      currentUtterance.onend = () => {
+        speakingFlag = false;
+        clearTimeout(earlyListenTimer);
+        updateUIForState('idle');
+        if (micActive && !listening) scheduleRestart();
+        if (cb) cb();
+        currentUtterance = null;
+      };
+
+      currentUtterance.onerror = () => {
+        speakingFlag = false;
+        clearTimeout(earlyListenTimer);
+        updateUIForState('error');
+        if (micActive && !listening) scheduleRestart();
+        if (cb) cb();
+        currentUtterance = null;
+      };
+
+      synth.speak(currentUtterance);
     }
 
     if (voiceSupport) { synth.getVoices(); synth.onvoiceschanged = () => { femaleVoiceCache = null; getFemaleVoice(); }; }
@@ -1151,7 +1191,8 @@
       non: ['non','nan','naan','nada','no','yet','negative','c\'est mort','ha nan','ah nan','négatif','pas du tout','faux','incorrect','disparu','absent','éteint','eteint','pas affiché','aucun','rien','marche pas','désactivé','desactive','inactif','niet','niks','nope','nah','que dalle','walou','que couic','non merci','non plus','pas vraiment','pas exactement','pas du tou','pas forcément','absolument pas','certainement pas','non non','nan nan','nnon','nnan','nnooon','nnnaaan','niet niet','nope nope'],
       annuler: ['annuler','stop','arrête','arrêter','interrompt','abandonne','abandonner','cancel','termine','terminez','quitte','quitter','stoppe','stopper','fini','fin','terminer','annule','annulation','j\'annule','je stoppe','je quitte','laisse tomber','laisse'],
       accueil: ['accueil','menu','retour accueil','home','reset','revenir au début','page d\'accueil','menu principal','retour','revenir'],
-      repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait']
+      repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait'],
+      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu ne sers à rien','t sers a rien','t sers à rien','tu es inutile','t es inutile','t\'es inutile','tu es nul','t es nul','t\'es nul','tu es nulle','t es nulle','t\'es nulle','tu vaux rien','tu ne vaux rien','tu vaut rien','tu ne vaut rien','a quoi tu sers','à quoi tu sers','tu sers a quoi','tu sers à quoi','quelle est ton utilité','ton utilité']
     };
 
     function fuzzyContains(text, wordList) {
@@ -1165,6 +1206,21 @@
       let l = txt.toLowerCase().replace(/[.,!?;:'"()]/g, ' ').replace(/\s+/g, ' ').trim();
       if (!l || l.length < 1) return;
       addMessage('' + txt + '', 'user');
+
+      // Réponse à "tu sers à rien"
+      if (fuzzyContains(l, DICO.inutile)) {
+        const reponses = [
+          'C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage au lieu de critiquer.',
+          'Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage et arrête de te plaindre.',
+          'Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage, feignasse.',
+          'Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.',
+          'C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.'
+        ];
+        const r = reponses[Math.floor(Math.random() * reponses.length)];
+        addMessage(r, 'ai');
+        speakText(r);
+        return;
+      }
 
       if (fuzzyContains(l, DICO.annuler)) { ccp(); return; }
       if (fuzzyContains(l, DICO.accueil)) { hr(); return; }
@@ -1281,6 +1337,7 @@
           <li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li>
           <li><span style="color:var(--green)">Vert</span> — Écoute</li>
           <li><span style="color:var(--purple)">Violet</span> — Parole</li>
+          <li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li>
           <li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li>
           <li><span style="color:var(--red)">Rouge</span> — Erreur</li>
         </ul>
