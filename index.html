@@ -962,7 +962,6 @@
 'drive':['205'],'antiderive':['205'],
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
-
     for (let i = 0; i <= 247; i++) {
       let id = i.toString().padStart(3, '0');
       if (!IOS[id]) IOS[id] = {
@@ -1052,13 +1051,12 @@
 
       // Estimer la durée de la parole
       let estimatedDuration = (x.length / 12) * 1000;
-      // Réactiver le micro 4 secondes avant la fin
-      let earlyListenDelay = Math.max(estimatedDuration - 4000, 500);
+      let earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
 
       speakingFlag = true;
       updateUIForState('speak');
 
-      // Réactiver le micro 4 secondes avant la fin
+      // Réactiver le micro 2 secondes avant la fin
       earlyListenTimer = setTimeout(() => {
         if (speakingFlag && micActive && !listening) {
           updateUIForState('earlyListen');
@@ -1193,7 +1191,7 @@
       annuler: ['annuler','stop','arrête','arrêter','interrompt','abandonne','abandonner','cancel','termine','terminez','quitte','quitter','stoppe','stopper','fini','fin','terminer','annule','annulation','j\'annule','je stoppe','je quitte','laisse tomber','laisse'],
       accueil: ['accueil','menu','retour accueil','home','reset','revenir au début','page d\'accueil','menu principal','retour','revenir'],
       repeter: ['répète','redis','encore','répète ça','répéter','what','repeat','pardon','hein','j\'ai pas compris','reformule','redis moi','redis ça','répète moi','répète encore','encore une fois','quoi','comment','dis encore','répétez','redites','refais','refait'],
-      inutile: ['sers a rien','sers à rien','sert a rien','sert à rien','es inutile','est inutile','es nul','est nul','es nulle','est nulle','vaux rien','vaut rien','a quoi tu sers','à quoi tu sers','sers a quoi','sers à quoi','ton utilité','utilité','inutile','bon a rien','bon à rien','bonne a rien','bonne à rien','incapable','nul','nulle','nullissime','nullos','boulet','branche','branche toi','branche toi de la','branche toi delà']
+      inutile: ['tu sers a rien','tu ne sers a rien','tu sers à rien','tu ne sers à rien','t sers a rien','t sers à rien','tu es inutile','t es inutile','t\'es inutile','tu es nul','t es nul','t\'es nul','tu es nulle','t es nulle','t\'es nulle','tu vaux rien','tu ne vaux rien','tu vaut rien','tu ne vaut rien','a quoi tu sers','à quoi tu sers','tu sers a quoi','tu sers à quoi','quelle est ton utilité','ton utilité']
     };
 
     function fuzzyContains(text, wordList) {
@@ -1208,16 +1206,14 @@
       if (!l || l.length < 1) return;
       addMessage('' + txt + '', 'user');
 
-      // Réponse à "tu sers à rien" - Vérification PRIORITAIRE
+      // Réponse à "tu sers à rien"
       if (fuzzyContains(l, DICO.inutile)) {
         const reponses = [
           'C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage au lieu de critiquer.',
           'Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage et arrête de te plaindre.',
           'Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage, feignasse.',
           'Moi je bosse, contrairement à toi. Allez, au boulot, applique la procédure.',
-          'C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.',
-          'Regarde-toi avant de parler. Moi au moins je fais avancer les choses. Applique la procédure !',
-          'Le boloss c\'est toi, champion. Allez hop, au guide de dépannage !'
+          'C\'est ça, cause toujours. Pendant ce temps, le guide de dépannage t\'attend. Bouge-toi.'
         ];
         const r = reponses[Math.floor(Math.random() * reponses.length)];
         addMessage(r, 'ai');
@@ -1340,7 +1336,7 @@
           <li><span style="color:var(--bat-yellow)">Jaune</span> — En attente</li>
           <li><span style="color:var(--green)">Vert</span> — Écoute</li>
           <li><span style="color:var(--purple)">Violet</span> — Parole</li>
-          <li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé (4s avant fin)</li>
+          <li><span style="color:var(--cyan)">Cyan</span> — Micro réactivé</li>
           <li><span style="color:var(--amber)">Orange</span> — Recherche bloquée</li>
           <li><span style="color:var(--red)">Rouge</span> — Erreur</li>
         </ul>
