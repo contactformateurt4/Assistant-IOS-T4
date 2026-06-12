@@ -263,8 +263,6 @@ body::after{
 .gcard-btn.no:hover{background:rgba(255,59,59,0.12);border-color:var(--red)}
 .gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
 .gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
-.gcard-btn.learn{border-color:rgba(191,128,255,0.5);color:var(--purple);background:rgba(191,128,255,0.05)}
-.gcard-btn.learn:hover{background:rgba(191,128,255,0.15);border-color:var(--purple)}
 
 .toast{
   position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);
@@ -839,20 +837,29 @@ const LearningEngine = {
 
 /* ═══════════════════════════════════
    APPRENTISSAGE AUTONOME
-   Apprend sans commande explicite
+   Désactivé pendant la synthèse vocale
 ═══════════════════════════════════ */
 const AutonomousLearner = {
   learningSession: null,
-  confidenceThreshold: 2, // Nb d'utilisations avant apprentissage auto
-  unknownWords: {}, // { mot: { count, contexts, suggestions } }
-  originalProcessVoice: null,
+  unknownWords: {},
   
   init() {
-    this.originalProcessVoice = processVoice;
-    console.log('🤖 Apprentissage autonome activé');
+    console.log('🤖 Apprentissage autonome activé (désactivé pendant la lecture)');
+  },
+  
+  // Vérifier si l'apprentissage est autorisé en ce moment
+  isLearningAllowed() {
+    // Désactivé si le système est en train de parler
+    if (isSpeaking) return false;
+    // Désactivé si une session d'apprentissage est déjà en cours
+    if (this.learningSession) return false;
+    return true;
   },
   
   detectUnknown(txt) {
+    // Ne pas détecter pendant la parole
+    if (!this.isLearningAllowed()) return [];
+    
     const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w));
     const knownWords = LearningEngine.getAllKnownWords();
     const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3);
@@ -860,7 +867,7 @@ const AutonomousLearner = {
     if (unknowns.length > 0) {
       console.log('🔍 Mots inconnus:', unknowns);
       unknowns.forEach(w => {
-        if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [], suggestions: [] };
+        if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [] };
         this.unknownWords[w].count++;
         this.unknownWords[w].contexts.push({
           fullText: txt,
@@ -876,27 +883,28 @@ const AutonomousLearner = {
   },
   
   guessMeaning(unknownWord) {
-    const suggestions = [];
-    const ctx = this.unknownWords[unknownWord]?.contexts?.slice(-1)[0] || {};
+    if (!this.isLearningAllowed()) return [];
     
-    // Contexte 1 : Procédure en cours, étape avec branchement O/N
+    const suggestions = [];
+    
+    // Contexte : Procédure en cours, étape avec branchement O/N
     if (guideOn && guideSteps[stepIdx]?.d) {
       suggestions.push({ command: 'oui', confidence: 0.45, reason: 'Question oui/non en cours' });
       suggestions.push({ command: 'non', confidence: 0.45, reason: 'Question oui/non en cours' });
     }
     
-    // Contexte 2 : Procédure en cours, étape simple
+    // Contexte : Procédure en cours, étape simple
     if (guideOn && !guideSteps[stepIdx]?.d) {
       suggestions.push({ command: 'next', confidence: 0.55, reason: 'Étape suivante attendue' });
     }
     
-    // Contexte 3 : Fin de procédure
+    // Contexte : Fin de procédure
     if (document.getElementById('endBar').classList.contains('show')) {
       suggestions.push({ command: 'bulletin', confidence: 0.4, reason: 'Procédure terminée' });
       suggestions.push({ command: 'fermer', confidence: 0.4, reason: 'Procédure terminée' });
     }
     
-    // Contexte 4 : Similarité phonétique avec des mots connus
+    // Similarité phonétique avec des mots connus
     const knownWords = LearningEngine.getAllKnownWords();
     const similar = this.findSimilarWords(unknownWord, knownWords);
     for (const sim of similar.slice(0, 2)) {
@@ -937,6 +945,10 @@ const AutonomousLearner = {
   },
   
   async startLearningSession(unknownWord, suggestions) {
+    // DOUBLE VÉRIFICATION : ne pas démarrer si on parle
+    if (isSpeaking) return;
+    if (!this.isLearningAllowed()) return;
+    
     this.learningSession = {
       word: unknownWord,
       suggestions,
@@ -958,10 +970,9 @@ const AutonomousLearner = {
     speak(msg);
     setUI('learning');
     
-    // Attendre 15 secondes max pour une réponse
+    // Timeout pour la 2ème suggestion
     setTimeout(() => {
-      if (this.learningSession && !this.learningSession.resolved) {
-        // Proposer la 2ème suggestion
+      if (this.learningSession && !this.learningSession.resolved && !isSpeaking) {
         if (suggestions.length > 1) {
           const second = suggestions[1];
           const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`;
@@ -969,7 +980,7 @@ const AutonomousLearner = {
           speak(msg2);
         }
         setTimeout(() => {
-          if (this.learningSession && !this.learningSession.resolved) {
+          if (this.learningSession && !this.learningSession.resolved && !isSpeaking) {
             this.endSession();
           }
         }, 10000);
@@ -978,7 +989,7 @@ const AutonomousLearner = {
   },
   
   endSession() {
-    if (this.learningSession) {
+    if (this.learningSession && !isSpeaking) {
       const word = this.learningSession.word;
       const msg = `Je n'ai pas compris "${word}". Dites "apprends ${word} = [commande]" pour m'apprendre.`;
       addMsg(msg, 'learning');
@@ -1524,6 +1535,14 @@ function speak(txt, cb){
   if(!hasVoice){ cb && cb(); return; }
   if(isSpeaking) synth.cancel();
   clearTimeout(earlyListenTimer);
+  
+  // ═══ DÉSACTIVER L'APPRENTISSAGE AUTONOME PENDANT LA PAROLE ═══
+  // Annuler toute session d'apprentissage en cours
+  if (AutonomousLearner.learningSession) {
+    AutonomousLearner.learningSession = null;
+    setUI('speak');
+  }
+  
   let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
     .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
     .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
@@ -1686,7 +1705,7 @@ function openInfo(){
       <li><span class="cmd-pill">accueil / menu</span> — Retour</li>
     </ul>
     <h4>🧠 Apprentissage autonome</h4>
-    <p>L'IAOS apprend tout seul en vous posant des questions quand il détecte un mot inconnu. Dites <span class="cmd-pill">oui/non</span> pour confirmer.</p>
+    <p>L'IAOS apprend tout seul en vous posant des questions quand il détecte un mot inconnu. L'apprentissage est automatiquement désactivé pendant la lecture vocale.</p>
     <h4>🛡 Protection</h4>
     <p>Procédure active = nouvel IOS bloqué.</p>
     <h4>☁️ Firebase</h4>
@@ -1739,6 +1758,13 @@ function isOui(txt){
 
 function processVoice(raw){
   const txt=raw.trim(); if(!txt) return;
+  
+  // ═══ IGNORER L'ENTRÉE SI LE SYSTÈME PARLE ═══
+  if (isSpeaking) {
+    console.log('🔇 Entrée ignorée - système en train de parler');
+    return;
+  }
+  
   addMsg(txt,'user');
   LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
   
@@ -1746,13 +1772,11 @@ function processVoice(raw){
   if (AutonomousLearner.learningSession) {
     const session = AutonomousLearner.learningSession;
     
-    // L'utilisateur confirme la suggestion
     if (isOui(txt)) {
       AutonomousLearner.confirmLearning(session.word, session.suggestions[0].command);
       return;
     }
     
-    // L'utilisateur refuse - essayer la suggestion suivante
     if (isNon(txt)) {
       session.suggestions.shift();
       if (session.suggestions.length > 0) {
@@ -1767,13 +1791,10 @@ function processVoice(raw){
       }
     }
     
-    // L'utilisateur donne une commande d'apprentissage explicite
     if (match(txt, 'learn')) {
       AutonomousLearner.learningSession = null;
       setUI('idle');
-      // Continuer le traitement normal
     } else {
-      // Réponse non comprise dans le contexte d'apprentissage
       AutonomousLearner.endSession();
       return;
     }
@@ -1834,7 +1855,7 @@ function processVoice(raw){
     } 
     
     /* ═══ APPRENTISSAGE AUTONOME : DÉTECTER MOTS INCONNUS ═══ */
-    if (!AutonomousLearner.learningSession) {
+    if (!AutonomousLearner.learningSession && !isSpeaking) {
       const unknowns = AutonomousLearner.detectUnknown(txt);
       if (unknowns.length > 0) {
         const word = unknowns[0];
@@ -1855,7 +1876,7 @@ function processVoice(raw){
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr,conducteur,moniteur,formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
   if(match(txt,'elapsed')){ 
@@ -1868,7 +1889,7 @@ function processVoice(raw){
   if(io){ loadIOS(io); return; }
   
   /* ═══ APPRENTISSAGE AUTONOME : MOT INCONNU HORS PROCÉDURE ═══ */
-  if (!AutonomousLearner.learningSession) {
+  if (!AutonomousLearner.learningSession && !isSpeaking) {
     const unknowns = AutonomousLearner.detectUnknown(txt);
     if (unknowns.length > 0) {
       const word = unknowns[0];
@@ -1892,10 +1913,38 @@ function startListening(){
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition; recognition=new SR();
     recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
     let final=''; let silTimer=null;
-    recognition.onstart=()=>{ isListening=true; final=''; setUI(AutonomousLearner.learningSession ? 'learning' : 'listen'); };
-    recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()){ const t=final.trim(); final=''; processVoice(t); } },900); } };
+    recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
+    recognition.onresult=(ev)=>{ 
+      clearTimeout(silTimer); 
+      let interim=''; 
+      for(let i=ev.resultIndex;i<ev.results.length;i++){ 
+        if(ev.results[i].isFinal){ 
+          let best='',bestConf=0; 
+          for(let j=0;j<ev.results[i].length;j++){ 
+            if(ev.results[i][j].confidence>bestConf){ 
+              bestConf=ev.results[i][j].confidence; 
+              best=ev.results[i][j].transcript; 
+            } 
+          } 
+          if(best&&bestConf>0.02) final+=' '+best; 
+        } else { 
+          interim+=ev.results[i][0].transcript; 
+        } 
+      } 
+      if(final.trim()&&!interim&&!isSpeaking){ 
+        const t=final.trim(); final=''; 
+        processVoice(t); 
+      } else { 
+        silTimer=setTimeout(()=>{ 
+          if(final.trim()&&!isSpeaking){ 
+            const t=final.trim(); final=''; 
+            processVoice(t); 
+          } 
+        },900); 
+      } 
+    };
     recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking) schedRestart(); };
-    recognition.onend=()=>{ isListening=false; if(final.trim()){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
+    recognition.onend=()=>{ isListening=false; if(final.trim()&&!isSpeaking){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
     recognition.start();
   }catch(e){ if(micOn) setTimeout(startListening,700); }
 }
@@ -1936,8 +1985,9 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').cl
 
 /* ═══ INIT ═══ */
 async function initApp() {
-  console.log('🚀 IAOS T4 v7 - Apprentissage Autonome');
+  console.log('🚀 IAOS T4 v7.1 - Apprentissage Autonome Protégé');
   console.log('📋 Firebase:', firebaseConfig.databaseURL);
+  console.log('🛡️ Apprentissage désactivé pendant la synthèse vocale');
   
   await LearningEngine.init();
   AutonomousLearner.init();
@@ -1947,13 +1997,12 @@ async function initApp() {
   micOn=true; 
   startListening();
   
-  console.log('✅ IAOS T4 prêt - Apprentissage autonome actif');
-  console.log('🧠 Le système va poser des questions pour apprendre de nouveaux mots');
+  console.log('✅ IAOS T4 prêt');
   
   if (firebaseAvailable) {
     LearningEngine.logUsage('app_started', { 
       timestamp: new Date().toISOString(),
-      version: 'v7-autonomous'
+      version: 'v7.1-protected'
     });
   }
 }
