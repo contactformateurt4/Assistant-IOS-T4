@@ -72,6 +72,7 @@ body::after{
 }
 .hdr-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
 .hdr-clock{font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--text-dim);letter-spacing:2px;min-width:60px;text-align:right}
+.fb-status{font-size:0.55rem;color:var(--text-dim);letter-spacing:1px;margin-left:4px}
 
 .app-body{
   flex:1 1 auto;
@@ -434,6 +435,17 @@ body::after{
 .info-content li{margin:4px 0;line-height:1.5}
 .cmd-pill{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--gold);background:rgba(245,197,24,0.07);border:1px solid rgba(245,197,24,0.2);border-radius:2px;padding:1px 6px}
 
+.sync-panel{
+  background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:10px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;
+}
+.sync-panel span{font-size:0.6rem;color:var(--text-dim);font-family:'Space Mono',monospace;letter-spacing:1px}
+.sync-status{width:8px;height:8px;border-radius:50%}
+.sync-status.online{background:var(--green);box-shadow:0 0 8px var(--green)}
+.sync-status.offline{background:var(--red);box-shadow:0 0 8px var(--red)}
+.sync-status.syncing{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:syncPulse 0.8s infinite}
+@keyframes syncPulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
 @media(max-width:420px){
   .logo{font-size:1.3rem}
   .mic-outer{width:130px;height:130px}
@@ -461,6 +473,12 @@ body::after{
       <button class="sp-search-go" id="spSearchGo">GO</button>
     </div>
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
+    
+    <div class="sync-panel" id="syncPanel">
+      <span id="syncLabel">Firebase: Connexion...</span>
+      <div class="sync-status syncing" id="syncDot"></div>
+    </div>
+    
     <div class="ios-card" id="iosCard">
       <div class="ios-card-head">
         <div class="ios-card-code" id="icCode">IOS-???</div>
@@ -495,6 +513,7 @@ body::after{
     <div class="logo-sub">DUALIS U53700 · ASSISTANT</div>
   </div>
   <div class="header-right">
+    <span class="fb-status" id="fbHeaderStatus">⚡</span>
     <div class="hdr-clock" id="clock">--:--:--</div>
     <button class="hdr-btn" id="infoBtn" title="Guide d'utilisation">ℹ</button>
     <button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button>
@@ -585,9 +604,251 @@ body::after{
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <script>
 (function(){
 'use strict';
+
+/* ═══════════════════════════════════════════════════════════
+   CONFIGURATION FIREBASE - IAOS T4
+   Projet: iaos-t4
+   Database: iaos-t4-default-rtdb (europe-west1)
+   URL CORRIGÉE !
+═══════════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDAZb4At6Hx5UAeDowzfJVUrJly5FB8Anc",
+  authDomain: "iaos-t4.firebaseapp.com",
+  databaseURL: "https://iaos-t4-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "iaos-t4",
+  storageBucket: "iaos-t4.firebasestorage.app",
+  messagingSenderId: "315508710422",
+  appId: "1:315508710422:web:2d8a24d44b9a5125cce937"
+};
+
+/* ═══ INIT FIREBASE ═══ */
+let firebaseAvailable = false;
+let db = null;
+let firebaseRefs = {};
+let firebaseConnected = false;
+
+try {
+  if (typeof firebase === 'undefined') {
+    throw new Error('Firebase SDK non chargé');
+  }
+  
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  firebaseAvailable = true;
+  
+  console.log('✅ Firebase initialisé');
+  console.log('   URL:', firebaseConfig.databaseURL);
+  
+  firebaseRefs = {
+    learning: db.ref('learning'),
+    synonyms: db.ref('learning/synonyms'),
+    corrections: db.ref('learning/corrections'),
+    usageStats: db.ref('learning/usageStats'),
+    iosSearches: db.ref('learning/iosSearches'),
+    userFeedback: db.ref('learning/userFeedback'),
+    connected: db.ref('.info/connected')
+  };
+  
+  firebaseRefs.connected.on('value', (snap) => {
+    firebaseConnected = snap.val() === true;
+    updateFirebaseUI();
+    if (firebaseConnected) {
+      console.log('🟢 Firebase connecté !');
+      LearningEngine.syncFromFirebase();
+    } else {
+      console.log('🔴 Firebase déconnecté');
+    }
+  });
+  
+} catch(e) {
+  console.error('❌ Erreur Firebase:', e.message);
+  firebaseAvailable = false;
+  updateFirebaseUI();
+}
+
+function updateFirebaseUI() {
+  let statusText, statusClass;
+  
+  if (!firebaseAvailable) {
+    statusText = 'Firebase: Erreur config';
+    statusClass = 'offline';
+  } else if (firebaseConnected) {
+    statusText = 'Firebase: Connecté';
+    statusClass = 'online';
+  } else {
+    statusText = 'Firebase: En attente...';
+    statusClass = 'syncing';
+  }
+  
+  const syncLabel = document.getElementById('syncLabel');
+  const syncDot = document.getElementById('syncDot');
+  const fbHeader = document.getElementById('fbHeaderStatus');
+  
+  if (syncLabel) syncLabel.textContent = statusText;
+  if (syncDot) syncDot.className = 'sync-status ' + statusClass;
+  if (fbHeader) {
+    fbHeader.textContent = firebaseConnected ? '🟢' : (firebaseAvailable ? '🟡' : '🔴');
+  }
+}
+
+/* ═══════════════════════════════════
+   MOTEUR D'APPRENTISSAGE FIREBASE
+═══════════════════════════════════ */
+const LearningEngine = {
+  localCache: {},
+  globalCache: {},
+  initialized: false,
+  
+  async init() {
+    const saved = localStorage.getItem('iaos_learning_cache');
+    if (saved) {
+      try { this.localCache = JSON.parse(saved); } catch(e) {}
+    }
+    
+    if (firebaseAvailable && firebaseConnected) {
+      await this.syncFromFirebase();
+    }
+    
+    this.initialized = true;
+    console.log('🧠 Moteur d\'apprentissage initialisé');
+  },
+  
+  async syncFromFirebase() {
+    if (!firebaseAvailable || !db) return;
+    try {
+      const snapshot = await firebaseRefs.learning.once('value');
+      const data = snapshot.val() || {};
+      this.globalCache = {
+        synonyms: data.synonyms || {},
+        corrections: data.corrections || {},
+        iosSearches: data.iosSearches || {}
+      };
+      console.log('📥 Données globales synchronisées');
+    } catch(e) {
+      console.warn('⚠️ Erreur sync Firebase:', e.message);
+    }
+  },
+  
+  async learnSynonym(command, newWord, confidence = 1) {
+    if (!this.localCache.synonyms) this.localCache.synonyms = {};
+    if (!this.localCache.synonyms[command]) this.localCache.synonyms[command] = [];
+    
+    if (!this.localCache.synonyms[command].includes(newWord)) {
+      this.localCache.synonyms[command].push(newWord);
+      this.saveLocal();
+      console.log(`📝 Appris localement: "${newWord}" → "${command}"`);
+    }
+    
+    if (firebaseAvailable && firebaseConnected) {
+      try {
+        const ref = firebaseRefs.synonyms.child(command);
+        const snap = await ref.once('value');
+        const existing = snap.val() || [];
+        
+        if (!existing.includes(newWord)) {
+          existing.push(newWord);
+          await ref.set(existing);
+          await this.logUsage('synonym_learned', { command, word: newWord, confidence });
+          console.log(`🌍 Appris globalement: "${newWord}" → "${command}"`);
+        } else {
+          await this.incrementUsage(command, newWord);
+        }
+      } catch(e) {
+        console.warn('⚠️ Erreur apprentissage global:', e.message);
+      }
+    }
+  },
+  
+  async learnCorrection(originalQuery, correctIOS, userFeedback) {
+    if (!this.localCache.corrections) this.localCache.corrections = {};
+    
+    const key = originalQuery.toLowerCase().trim();
+    if (!this.localCache.corrections[key]) {
+      this.localCache.corrections[key] = { correctIOS, count: 0, feedback: [] };
+    }
+    this.localCache.corrections[key].count++;
+    if (userFeedback) this.localCache.corrections[key].feedback.push(userFeedback);
+    this.saveLocal();
+    
+    if (firebaseAvailable && firebaseConnected) {
+      try {
+        await firebaseRefs.corrections.child(encodeURIComponent(key)).transaction((current) => {
+          if (!current) {
+            return { correctIOS, count: 1, feedback: userFeedback ? [userFeedback] : [] };
+          }
+          current.count++;
+          if (userFeedback) current.feedback.push(userFeedback);
+          return current;
+        });
+      } catch(e) {
+        console.warn('⚠️ Erreur correction globale:', e.message);
+      }
+    }
+  },
+  
+  async logIOSSearch(query, foundIOS, success) {
+    if (firebaseAvailable && firebaseConnected) {
+      try {
+        const ref = firebaseRefs.iosSearches.push();
+        await ref.set({
+          query: query.toLowerCase().trim(),
+          foundIOS: foundIOS || null,
+          success: !!success,
+          timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+      } catch(e) {}
+    }
+  },
+  
+  async logUsage(action, data = {}) {
+    if (firebaseAvailable && firebaseConnected) {
+      try {
+        await firebaseRefs.usageStats.push().set({
+          action,
+          data,
+          timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+      } catch(e) {}
+    }
+  },
+  
+  async incrementUsage(command, word) {
+    if (firebaseAvailable && firebaseConnected) {
+      try {
+        const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`);
+        await ref.transaction((count) => (count || 0) + 1);
+      } catch(e) {}
+    }
+  },
+  
+  matchWithLearning(txt, command, basePatterns) {
+    if (basePatterns && basePatterns.some(r => r.test(txt))) return true;
+    
+    const localSynonyms = this.localCache.synonyms?.[command] || [];
+    for (const syn of localSynonyms) {
+      if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
+    }
+    
+    const globalSynonyms = this.globalCache.synonyms?.[command] || [];
+    for (const syn of globalSynonyms) {
+      if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
+    }
+    
+    return false;
+  },
+  
+  saveLocal() {
+    try {
+      localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache));
+    } catch(e) {}
+  }
+};
 
 /* ═══════════════════════════════════
    BASE DE DONNÉES IOS (À REMPLIR)
@@ -1081,7 +1342,8 @@ let micOn = true, isListening = false, isSpeaking = false;
 let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
 let procStart = null, procEnd = null, procLog = [];
 let cachedVoice = null;
-let lastSpokenText = ''; // Stocke la dernière phrase prononcée
+let lastSpokenText = '';
+let lastUserQuery = '';
 
 /* ═══ SYNTH ═══ */
 const synth = window.speechSynthesis;
@@ -1124,7 +1386,6 @@ function speak(txt, cb){
     .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
     .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
 
-  // Stocke la dernière phrase prononcée (version propre)
   lastSpokenText = x;
 
   currentUtterance = new SpeechSynthesisUtterance(x);
@@ -1203,19 +1464,54 @@ function renderIosCard(ios){
 }
 
 /* ═══ IOS LOGIC ═══ */
-function findIOS(q){ q=q.toLowerCase().trim(); const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) return IOS_DB[id]; } for(const [a,id] of Object.entries(ALIAS_DB)){ if(q.includes(a)) return IOS_DB[id]; } for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) return io; if(io.kw && io.kw.some(k=>q.includes(k))) return io; } return null; }
+function findIOS(q){ 
+  q=q.toLowerCase().trim(); 
+  lastUserQuery = q;
+  const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); 
+  if(m){ 
+    const id=m[1].padStart(3,'0'); 
+    if(IOS_DB[id]) {
+      LearningEngine.logIOSSearch(q, id, true);
+      return IOS_DB[id]; 
+    }
+  } 
+  for(const [a,id] of Object.entries(ALIAS_DB)){ 
+    if(q.includes(a)) {
+      LearningEngine.logIOSSearch(q, id, true);
+      return IOS_DB[id]; 
+    }
+  } 
+  for(const io of Object.values(IOS_DB)){ 
+    if(io.desc.toLowerCase().includes(q)) {
+      LearningEngine.logIOSSearch(q, io.id, true);
+      return io; 
+    }
+    if(io.kw && io.kw.some(k=>q.includes(k))) {
+      LearningEngine.logIOSSearch(q, io.id, true);
+      return io; 
+    }
+  }
+  LearningEngine.logIOSSearch(q, null, false);
+  return null; 
+}
 
-function loadIOS(ios){ curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; }
+function loadIOS(ios){ 
+  curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); 
+  addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); 
+  speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); 
+  showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; 
+  LearningEngine.logUsage('ios_loaded', { ios: ios.id, pri: ios.pri });
+}
 
-function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); }
+function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); LearningEngine.logUsage('guide_started', { ios: curIOS.id }); }
 function runStep(){ if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; } const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; } renderGuideCard(); procLog.push(s.t); speak(s.t); }
 function answerYes(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(true); }
 function answerNo(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(false); }
 function branch(yes){ const s=guideSteps[stepIdx]; const next=yes?(s.oui||[]):(s.non||[]); addMsg(yes?'✓ OUI':'✗ NON','user'); procLog.push(yes?'OUI':'NON'); if(!next.length){ finishProc('✅ Fin de procédure.'); return; } guideSteps=next; stepIdx=0; runStep(); }
 function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); return; } return; } const s=guideSteps[stepIdx]; if(s&&s.d){ speak('Veuillez répondre par oui ou par non.'); return; } stepIdx++; runStep(); }
 function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
-function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); }
-function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); }
+function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); LearningEngine.logUsage('procedure_cancelled'); }
+function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); LearningEngine.logUsage('procedure_finished', { ios: curIOS?.id, duration: procEnd - procStart }); }
 function goHome(){ cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil."); }
 
 /* ═══ RAPPORT ═══ */
@@ -1232,7 +1528,28 @@ function openList(){ buildList(); $('listBg').classList.add('on'); }
 function closeList(){ $('listBg').classList.remove('on'); }
 
 /* ═══ INFO ═══ */
-function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué.</p>`; $('infoBg').classList.add('on'); }
+function openInfo(){ 
+  $('infoContent').innerHTML=`
+    <h4>🎤 Commandes vocales</h4>
+    <ul>
+      <li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li>
+      <li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li>
+      <li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li>
+      <li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li>
+      <li><span class="cmd-pill">oui / non</span> — Répondre</li>
+      <li><span class="cmd-pill">répète / redis</span> — Répéter</li>
+      <li><span class="cmd-pill">annuler / stop</span> — Stopper</li>
+      <li><span class="cmd-pill">accueil / menu</span> — Retour</li>
+    </ul>
+    <h4>🧠 Apprentissage adaptatif</h4>
+    <p>Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour ajouter un synonyme.</p>
+    <h4>🛡 Protection</h4>
+    <p>Procédure active = nouvel IOS bloqué.</p>
+    <h4>☁️ Firebase</h4>
+    <p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>
+  `; 
+  $('infoBg').classList.add('on'); 
+}
 function closeInfo(){ $('infoBg').classList.remove('on'); }
 
 function isProcActive(){ return guideOn || isSpeaking || iosInfoShown; }
@@ -1256,36 +1573,128 @@ const CMDS = {
   creator:[/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
   inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
   fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
-  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i]
+  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i],
+  learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i,/\bapprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i]
 };
 
-function match(txt,key){ return CMDS[key].some(r=>r.test(txt)); }
-function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)); }
-function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)); }
+function match(txt,key){ 
+  const learnedMatch = LearningEngine.matchWithLearning(txt, key, CMDS[key] || []);
+  if (learnedMatch) return true;
+  return CMDS[key]?.some(r=>r.test(txt)) || false; 
+}
+
+function isNon(txt){ 
+  if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; 
+  return CMDS.non.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'non', []); 
+}
+
+function isOui(txt){ 
+  if(isNon(txt)) return false; 
+  return CMDS.oui.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'oui', []); 
+}
 
 function processVoice(raw){
   const txt=raw.trim(); if(!txt) return;
   addMsg(txt,'user');
+  LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
+  
   const endActive=$('endBar').classList.contains('show');
   if(endActive){
-    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
-    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; }
+    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ 
+      $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); 
+      addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; 
+    }
+    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ 
+      $('endBar').classList.remove('show'); openRecap(); return; 
+    }
   }
-  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; addMsg(r); speak(r); return; }
+  
+  if(match(txt,'learn')){
+    const learnMatch = txt.match(/apprends?\s+(.+?)\s*=\s*(.+?)$/i) || txt.match(/apprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i);
+    if (learnMatch) {
+      const word = learnMatch[1].trim();
+      const command = learnMatch[2].trim().toLowerCase();
+      LearningEngine.learnSynonym(command, word);
+      addMsg(`🧠 Appris : "${word}" → commande "${command}"`);
+      speak(`J'ai appris que ${word} correspond à la commande ${command}.`);
+      return;
+    }
+  }
+  
+  if(match(txt,'inutile')){ 
+    const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; 
+    addMsg(r); speak(r); return; 
+  }
   if(match(txt,'cancel')){ cancelProc(); return; }
   if(match(txt,'home')){ goHome(); return; }
-  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
-  if(isProcActive()){ if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
-  if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; }
+  if(match(txt,'greet')){ 
+    if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ 
+      addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; 
+    } 
+    addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; 
+  }
+  if(isProcActive()){ 
+    if(match(txt,'repeat')){ 
+      if(lastSpokenText){ speak(lastSpokenText); } 
+      else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } 
+      else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } 
+      return; 
+    } 
+    if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } 
+    if(match(txt,'next')){ nextStep(); return; } 
+    if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } 
+    if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ 
+      if(isNon(txt)){ answerNo(); return; } 
+      if(isOui(txt)){ answerYes(); return; } 
+    } 
+    if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ 
+      addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); 
+      setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; 
+    } 
+    detectPotentialNewWord(txt);
+    return; 
+  }
+  if(match(txt,'repeat')){ 
+    if(lastSpokenText){ speak(lastSpokenText); } 
+    else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } 
+    return; 
+  }
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr,conducteur, moniteur, formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
-  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
-  const io=findIOS(txt); if(io){ loadIOS(io); return; }
+  if(match(txt,'elapsed')){ 
+    if(!procStart){ speak('Aucune procédure en cours.'); return; } 
+    const d=new Date()-procStart,m=Math.floor(d/60000); 
+    speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; 
+  }
+  
+  const io=findIOS(txt); 
+  if(io){ loadIOS(io); return; }
+  
+  detectPotentialNewWord(txt);
   speak('Aucun i o s trouvé.');
+}
+
+function detectPotentialNewWord(txt) {
+  const words = txt.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  const knownCommands = Object.keys(CMDS);
+  
+  for (const word of words) {
+    let isKnown = false;
+    for (const cmd of knownCommands) {
+      if (CMDS[cmd].some(r => r.test(word))) {
+        isKnown = true;
+        break;
+      }
+    }
+    if (!isKnown && word.length > 4) {
+      LearningEngine.logUsage('unknown_word', { word, context: txt.substring(0, 200) });
+      break;
+    }
+  }
 }
 
 /* ═══ RECONNAISSANCE VOCALE ═══ */
@@ -1340,8 +1749,28 @@ $('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg(
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').classList.contains('on')) closeInfo(); else if($('recapBg').classList.contains('on')) closeRecap(); else if($('listBg').classList.contains('on')) closeList(); else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); } } });
 
 /* ═══ INIT ═══ */
-setUI('idle'); micOn=true; startListening();
-console.log('✅ IAOS T4 v5 — Créé par Zaber');
+async function initApp() {
+  console.log('🚀 Démarrage IAOS T4 v6 Firebase');
+  console.log('📋 URL:', firebaseConfig.databaseURL);
+  
+  await LearningEngine.init();
+  updateFirebaseUI();
+  
+  setUI('idle'); 
+  micOn=true; 
+  startListening();
+  
+  console.log('✅ IAOS T4 prêt');
+  
+  if (firebaseAvailable) {
+    LearningEngine.logUsage('app_started', { 
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+
+initApp();
+
 })();
 </script>
 </body>
