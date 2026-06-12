@@ -264,7 +264,6 @@ body::after{
 .gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
 .gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
 
-/* ═══ SÉLECTION MULTIPLE ═══ */
 .selection-card{
   width:100%;max-width:520px;
   background:var(--surface);
@@ -620,7 +619,6 @@ body::after{
     <div class="cmd-tag">Accueil</div>
   </div>
 
-  <!-- Zone d'affichage dynamique (guide card OU sélection multiple) -->
   <div id="dynamicZone"></div>
 
   <div class="guide-card" id="guideCard">
@@ -721,10 +719,7 @@ try {
   firebaseRefs.connected.on('value', (snap) => {
     firebaseConnected = snap.val() === true;
     updateFirebaseUI();
-    if (firebaseConnected) {
-      console.log('🟢 Firebase connecté !');
-      LearningEngine.syncFromFirebase();
-    }
+    if (firebaseConnected) { LearningEngine.syncFromFirebase(); }
   });
 } catch(e) {
   console.error('❌ Erreur Firebase:', e.message);
@@ -733,20 +728,14 @@ try {
 }
 
 function updateFirebaseUI() {
-  const statusText = !firebaseAvailable ? 'Firebase: Erreur' : 
-    firebaseConnected ? 'Firebase: Connecté' : 'Firebase: En attente...';
-  const statusClass = !firebaseAvailable ? 'offline' : 
-    firebaseConnected ? 'online' : 'syncing';
-  
+  const statusText = !firebaseAvailable ? 'Firebase: Erreur' : firebaseConnected ? 'Firebase: Connecté' : 'Firebase: En attente...';
+  const statusClass = !firebaseAvailable ? 'offline' : firebaseConnected ? 'online' : 'syncing';
   const syncLabel = document.getElementById('syncLabel');
   const syncDot = document.getElementById('syncDot');
   const fbHeader = document.getElementById('fbHeaderStatus');
-  
   if (syncLabel) syncLabel.textContent = statusText;
   if (syncDot) syncDot.className = 'sync-status ' + statusClass;
-  if (fbHeader) {
-    fbHeader.textContent = firebaseConnected ? '🟢' : (firebaseAvailable ? '🟡' : '🔴');
-  }
+  if (fbHeader) fbHeader.textContent = firebaseConnected ? '🟢' : (firebaseAvailable ? '🟡' : '🔴');
 }
 
 /* ═══════════════════════════════════
@@ -762,7 +751,6 @@ const LearningEngine = {
     if (saved) { try { this.localCache = JSON.parse(saved); } catch(e) {} }
     if (firebaseAvailable && firebaseConnected) await this.syncFromFirebase();
     this.initialized = true;
-    console.log('🧠 Moteur d\'apprentissage initialisé');
   },
   
   async syncFromFirebase() {
@@ -775,8 +763,7 @@ const LearningEngine = {
         corrections: data.corrections || {},
         learnedAssociations: data.learnedAssociations || {}
       };
-      console.log('📥 Sync Firebase OK');
-    } catch(e) { console.warn('⚠️ Sync Firebase:', e.message); }
+    } catch(e) {}
   },
   
   async learnSynonym(command, newWord, confidence = 1) {
@@ -785,7 +772,6 @@ const LearningEngine = {
     if (!this.localCache.synonyms[command].includes(newWord)) {
       this.localCache.synonyms[command].push(newWord);
       this.saveLocal();
-      console.log(`📝 Local: "${newWord}" → "${command}"`);
     }
     if (firebaseAvailable && firebaseConnected) {
       try {
@@ -796,9 +782,7 @@ const LearningEngine = {
           existing.push(newWord);
           await ref.set(existing);
           await this.logUsage('synonym_learned', { command, word: newWord, confidence });
-        } else {
-          await this.incrementUsage(command, newWord);
-        }
+        } else { await this.incrementUsage(command, newWord); }
       } catch(e) {}
     }
   },
@@ -806,13 +790,10 @@ const LearningEngine = {
   async learnAssociation(unknownWord, knownCommand, context = {}) {
     if (!this.localCache.learnedAssociations) this.localCache.learnedAssociations = {};
     this.localCache.learnedAssociations[unknownWord.toLowerCase()] = {
-      command: knownCommand,
-      context,
-      learnedAt: Date.now(),
+      command: knownCommand, context, learnedAt: Date.now(),
       usageCount: (this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount || 0) + 1
     };
     this.saveLocal();
-    
     if (firebaseAvailable && firebaseConnected) {
       try {
         await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current) => {
@@ -826,58 +807,35 @@ const LearningEngine = {
   
   async logIOSSearch(query, foundIOS, success) {
     if (firebaseAvailable && firebaseConnected) {
-      try {
-        await firebaseRefs.iosSearches.push().set({
-          query: query.toLowerCase().trim(),
-          foundIOS: foundIOS || null,
-          success: !!success,
-          timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-      } catch(e) {}
+      try { await firebaseRefs.iosSearches.push().set({ query: query.toLowerCase().trim(), foundIOS: foundIOS || null, success: !!success, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {}
     }
   },
   
   async logUsage(action, data = {}) {
     if (firebaseAvailable && firebaseConnected) {
-      try {
-        await firebaseRefs.usageStats.push().set({
-          action, data,
-          timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-      } catch(e) {}
+      try { await firebaseRefs.usageStats.push().set({ action, data, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {}
     }
   },
   
   async incrementUsage(command, word) {
     if (firebaseAvailable && firebaseConnected) {
-      try {
-        const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`);
-        await ref.transaction((count) => (count || 0) + 1);
-      } catch(e) {}
+      try { const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`); await ref.transaction((count) => (count || 0) + 1); } catch(e) {}
     }
   },
   
   matchWithLearning(txt, command, basePatterns) {
     if (basePatterns && basePatterns.some(r => r.test(txt))) return true;
     const localSynonyms = this.localCache.synonyms?.[command] || [];
-    for (const syn of localSynonyms) {
-      if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
-    }
+    for (const syn of localSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; }
     const globalSynonyms = this.globalCache.synonyms?.[command] || [];
-    for (const syn of globalSynonyms) {
-      if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
-    }
+    for (const syn of globalSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; }
     return false;
   },
   
   getAssociation(word) {
     const w = word.toLowerCase();
-    if (this.localCache.learnedAssociations?.[w]) {
-      return this.localCache.learnedAssociations[w];
-    }
-    if (this.globalCache.learnedAssociations?.[w]) {
-      return this.globalCache.learnedAssociations[w];
-    }
+    if (this.localCache.learnedAssociations?.[w]) return this.localCache.learnedAssociations[w];
+    if (this.globalCache.learnedAssociations?.[w]) return this.globalCache.learnedAssociations[w];
     return null;
   },
   
@@ -895,9 +853,7 @@ const LearningEngine = {
     return [...words];
   },
   
-  saveLocal() {
-    try { localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache)); } catch(e) {}
-  }
+  saveLocal() { try { localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache)); } catch(e) {} }
 };
 
 /* ═══════════════════════════════════
@@ -907,35 +863,20 @@ const AutonomousLearner = {
   learningSession: null,
   unknownWords: {},
   
-  init() {
-    console.log('🤖 Apprentissage autonome activé');
-  },
+  init() { console.log('🤖 Apprentissage autonome activé'); },
   
-  isLearningAllowed() {
-    if (isSpeaking) return false;
-    if (this.learningSession) return false;
-    return true;
-  },
+  isLearningAllowed() { if (isSpeaking) return false; if (this.learningSession) return false; return true; },
   
   detectUnknown(txt) {
     if (!this.isLearningAllowed()) return [];
-    
     const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w));
     const knownWords = LearningEngine.getAllKnownWords();
     const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3);
-    
     if (unknowns.length > 0) {
       unknowns.forEach(w => {
         if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [] };
         this.unknownWords[w].count++;
-        this.unknownWords[w].contexts.push({
-          fullText: txt,
-          hasIOS: !!curIOS,
-          iosId: curIOS?.id,
-          inGuide: guideOn,
-          stepIdx,
-          timestamp: Date.now()
-        });
+        this.unknownWords[w].contexts.push({ fullText: txt, hasIOS: !!curIOS, iosId: curIOS?.id, inGuide: guideOn, stepIdx, timestamp: Date.now() });
       });
     }
     return unknowns;
@@ -943,99 +884,47 @@ const AutonomousLearner = {
   
   guessMeaning(unknownWord) {
     if (!this.isLearningAllowed()) return [];
-    
     const suggestions = [];
-    
-    if (guideOn && guideSteps[stepIdx]?.d) {
-      suggestions.push({ command: 'oui', confidence: 0.45, reason: 'Question oui/non en cours' });
-      suggestions.push({ command: 'non', confidence: 0.45, reason: 'Question oui/non en cours' });
-    }
-    
-    if (guideOn && !guideSteps[stepIdx]?.d) {
-      suggestions.push({ command: 'next', confidence: 0.55, reason: 'Étape suivante attendue' });
-    }
-    
-    if (document.getElementById('endBar').classList.contains('show')) {
-      suggestions.push({ command: 'bulletin', confidence: 0.4, reason: 'Procédure terminée' });
-      suggestions.push({ command: 'fermer', confidence: 0.4, reason: 'Procédure terminée' });
-    }
-    
+    if (guideOn && guideSteps[stepIdx]?.d) { suggestions.push({ command: 'oui', confidence: 0.45, reason: 'Question oui/non en cours' }); suggestions.push({ command: 'non', confidence: 0.45, reason: 'Question oui/non en cours' }); }
+    if (guideOn && !guideSteps[stepIdx]?.d) { suggestions.push({ command: 'next', confidence: 0.55, reason: 'Étape suivante attendue' }); }
+    if (document.getElementById('endBar').classList.contains('show')) { suggestions.push({ command: 'bulletin', confidence: 0.4, reason: 'Procédure terminée' }); suggestions.push({ command: 'fermer', confidence: 0.4, reason: 'Procédure terminée' }); }
     const knownWords = LearningEngine.getAllKnownWords();
     const similar = this.findSimilarWords(unknownWord, knownWords);
-    for (const sim of similar.slice(0, 2)) {
-      suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6, reason: `Ressemble à "${sim.word}"` });
-    }
-    
+    for (const sim of similar.slice(0, 2)) { suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6, reason: `Ressemble à "${sim.word}"` }); }
     const existingAssociation = LearningEngine.getAssociation(unknownWord);
-    if (existingAssociation) {
-      suggestions.unshift({ 
-        command: existingAssociation.command, 
-        confidence: 0.9, 
-        reason: 'Déjà appris précédemment' 
-      });
-    }
-    
+    if (existingAssociation) { suggestions.unshift({ command: existingAssociation.command, confidence: 0.9, reason: 'Déjà appris précédemment' }); }
     return suggestions.sort((a, b) => b.confidence - a.confidence);
   },
   
   findSimilarWords(word, dictionary) {
-    return dictionary
-      .map(w => ({ word: w, similarity: this.stringSimilarity(word, w) }))
-      .filter(s => s.similarity > 0.5)
-      .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, 5);
+    return dictionary.map(w => ({ word: w, similarity: this.stringSimilarity(word, w) })).filter(s => s.similarity > 0.5).sort((a, b) => b.similarity - a.similarity).slice(0, 5);
   },
   
   stringSimilarity(a, b) {
     a = a.toLowerCase(); b = b.toLowerCase();
-    if (a === b) return 1;
-    if (a.length < 2 || b.length < 2) return 0;
-    const pairsA = new Set();
-    for (let i = 0; i < a.length - 1; i++) pairsA.add(a.substring(i, i + 2));
-    const pairsB = new Set();
-    for (let i = 0; i < b.length - 1; i++) pairsB.add(b.substring(i, i + 2));
+    if (a === b) return 1; if (a.length < 2 || b.length < 2) return 0;
+    const pairsA = new Set(); for (let i = 0; i < a.length - 1; i++) pairsA.add(a.substring(i, i + 2));
+    const pairsB = new Set(); for (let i = 0; i < b.length - 1; i++) pairsB.add(b.substring(i, i + 2));
     const intersection = new Set([...pairsA].filter(x => pairsB.has(x)));
     return (2.0 * intersection.size) / (pairsA.size + pairsB.size);
   },
   
   async startLearningSession(unknownWord, suggestions) {
-    if (isSpeaking) return;
-    if (!this.isLearningAllowed()) return;
-    
-    this.learningSession = {
-      word: unknownWord,
-      suggestions,
-      startTime: Date.now(),
-      resolved: false
-    };
-    
+    if (isSpeaking) return; if (!this.isLearningAllowed()) return;
+    this.learningSession = { word: unknownWord, suggestions, startTime: Date.now(), resolved: false };
     if (suggestions.length === 0) {
       const msg = `Je ne comprends pas "${unknownWord}". Pouvez-vous reformuler ?`;
-      addMsg(msg, 'learning');
-      speak(msg);
+      addMsg(msg, 'learning'); speak(msg);
       setTimeout(() => { if (this.learningSession && !this.learningSession.resolved) this.endSession(); }, 12000);
       return;
     }
-    
     const best = suggestions[0];
-    const msg = `Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`;
-    addMsg(msg, 'learning');
-    speak(msg);
-    setUI('learning');
-    
+    const msg = `🤔 Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`;
+    addMsg(msg, 'learning'); speak(msg); setUI('learning');
     setTimeout(() => {
       if (this.learningSession && !this.learningSession.resolved && !isSpeaking) {
-        if (suggestions.length > 1) {
-          const second = suggestions[1];
-          const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`;
-          addMsg(msg2, 'learning');
-          speak(msg2);
-        }
-        setTimeout(() => {
-          if (this.learningSession && !this.learningSession.resolved && !isSpeaking) {
-            this.endSession();
-          }
-        }, 10000);
+        if (suggestions.length > 1) { const second = suggestions[1]; const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`; addMsg(msg2, 'learning'); speak(msg2); }
+        setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { this.endSession(); } }, 10000);
       }
     }, 10000);
   },
@@ -1044,25 +933,17 @@ const AutonomousLearner = {
     if (this.learningSession && !isSpeaking) {
       const word = this.learningSession.word;
       const msg = `Je n'ai pas compris "${word}". Dites "apprends ${word} = [commande]" pour m'apprendre.`;
-      addMsg(msg, 'learning');
-      speak(msg);
-      this.learningSession = null;
-      setUI('idle');
+      addMsg(msg, 'learning'); speak(msg);
+      this.learningSession = null; setUI('idle');
     }
   },
   
   async confirmLearning(unknownWord, command) {
     await LearningEngine.learnSynonym(command, unknownWord);
-    await LearningEngine.learnAssociation(unknownWord, command, {
-      learnedVia: 'autonomous',
-      context: curIOS?.id || 'none'
-    });
-    const msg = `J'ai appris automatiquement : "${unknownWord}" = "${command}".`;
-    addMsg(msg, 'learning');
-    speak(msg);
-    this.learningSession = null;
-    setUI('idle');
-    
+    await LearningEngine.learnAssociation(unknownWord, command, { learnedVia: 'autonomous', context: curIOS?.id || 'none' });
+    const msg = `✅ J'ai appris automatiquement : "${unknownWord}" = "${command}".`;
+    addMsg(msg, 'learning'); speak(msg);
+    this.learningSession = null; setUI('idle');
     if (command === 'next') nextStep();
     else if (command === 'oui') answerYes();
     else if (command === 'non') answerNo();
@@ -1071,9 +952,7 @@ const AutonomousLearner = {
 };
 
 /* ═══════════════════════════════════
-   BASE DE DONNÉES IOS (À REMPLIR)
-   ALIAS_DB peut maintenant avoir des alias
-   qui pointent vers PLUSIEURS IOS
+   BASE DE DONNÉES IOS
 ═══════════════════════════════════ */
 const IOS_DB = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
@@ -1701,10 +1580,6 @@ for(let i=0;i<=247;i++){
   };
 }
 
-/* ═══ EXEMPLE D'ALIAS VERS PLUSIEURS IOS ═══ */
-// ALIAS_DB["problème électrique"] = ["061", "062", "063"];
-// ALIAS_DB["freinage"] = ["100", "101", "102"];
-
 /* ═══ ÉTAT ═══ */
 let curIOS = null;
 let guideOn = false, guideSteps = [], stepIdx = 0;
@@ -1716,6 +1591,7 @@ let cachedVoice = null;
 let lastSpokenText = '';
 let lastUserQuery = '';
 let multiSelectActive = false;
+let micWasOnBeforeHome = true;
 
 /* ═══ SYNTH ═══ */
 const synth = window.speechSynthesis;
@@ -1736,7 +1612,7 @@ function getVoice(){
 }
 
 function speak(txt, cb){
-  if(!hasVoice){ cb && cb(); return; }
+  if(!hasVoice){ if(cb) cb(); return; }
   if(isSpeaking) synth.cancel();
   clearTimeout(earlyListenTimer);
   
@@ -1772,8 +1648,8 @@ function speak(txt, cb){
   const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
   isSpeaking=true; setUI('speak');
   earlyListenTimer = setTimeout(() => { if(isSpeaking && micOn && !isListening){ setUI('earlyListen'); startListening(); } }, earlyListenDelay);
-  currentUtterance.onend = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('idle'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
-  currentUtterance.onerror = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('error'); if(micOn && !isListening) schedRestart(); cb && cb(); currentUtterance=null; };
+  currentUtterance.onend = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('idle'); if(micOn && !isListening) schedRestart(); if(cb) cb(); currentUtterance=null; };
+  currentUtterance.onerror = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('error'); if(micOn && !isListening) schedRestart(); if(cb) cb(); currentUtterance=null; };
   synth.speak(currentUtterance);
 }
 
@@ -1795,64 +1671,29 @@ function addMsg(html, role='ai'){ const log=$('chatLog'); const d=document.creat
 
 /* ═══ SÉLECTION MULTIPLE ═══ */
 function showMultiSelect(alias, iosIds) {
-  // Cacher la guide card
   $('guideCard').classList.remove('show');
   multiSelectActive = true;
-  
   const zone = $('dynamicZone');
-  
   let html = '<div class="selection-card" id="multiSelectCard">';
   html += '<div class="selection-header"><h3>🔍 "' + alias + '" correspond à plusieurs IOS</h3></div>';
   html += '<div class="selection-list">';
-  
-  iosIds.forEach((id, index) => {
+  iosIds.forEach((id) => {
     const io = IOS_DB[id];
     if (io) {
       const prioClass = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l');
       const prioText = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF');
-      html += `
-        <div class="selection-item" data-ios="${io.id}" onclick="selectFromMulti('${io.id}')">
-          <span class="selection-item-num">IOS-${io.id}</span>
-          <span class="selection-item-desc">${io.desc}</span>
-          <span class="selection-item-prio ${prioClass}">${prioText}</span>
-          <span class="selection-arrow">→</span>
-        </div>`;
+      html += `<div class="selection-item" data-ios="${io.id}" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-item-prio ${prioClass}">${prioText}</span><span class="selection-arrow">→</span></div>`;
     }
   });
-  
-  html += '</div>';
-  html += '<div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div>';
-  html += '</div>';
-  
+  html += '</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>';
   zone.innerHTML = html;
-  
   const msg = `Plusieurs IOS correspondent. Sélectionnez celui qui vous concerne.`;
-  addMsg(msg);
-  speak("Plusieurs IOS correspondent. Veuillez sélectionner celui qui vous concerne.");
+  addMsg(msg); speak("Plusieurs IOS correspondent. Veuillez sélectionner celui qui vous concerne.");
 }
 
-function selectFromMulti(iosId) {
-  closeMultiSelect();
-  const io = IOS_DB[iosId];
-  if (io) {
-    loadIOS(io);
-    LearningEngine.logIOSSearch(lastUserQuery, iosId, true);
-  }
-}
-
-function cancelMultiSelect() {
-  closeMultiSelect();
-  addMsg('❌ Sélection annulée.');
-  speak('Sélection annulée.');
-}
-
-function closeMultiSelect() {
-  multiSelectActive = false;
-  const zone = $('dynamicZone');
-  zone.innerHTML = '';
-}
-
-// Exposer les fonctions globalement pour les onclick
+function selectFromMulti(iosId) { closeMultiSelect(); const io = IOS_DB[iosId]; if (io) { loadIOS(io); LearningEngine.logIOSSearch(lastUserQuery, iosId, true); } }
+function cancelMultiSelect() { closeMultiSelect(); addMsg('❌ Sélection annulée.'); speak('Sélection annulée.'); }
+function closeMultiSelect() { multiSelectActive = false; $('dynamicZone').innerHTML = ''; }
 window.selectFromMulti = selectFromMulti;
 window.cancelMultiSelect = cancelMultiSelect;
 
@@ -1907,64 +1748,20 @@ function renderIosCard(ios){
 function findIOS(q){ 
   q=q.toLowerCase().trim(); 
   lastUserQuery = q;
-  
-  // 1. Recherche par numéro IOS
   const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); 
-  if(m){ 
-    const id=m[1].padStart(3,'0'); 
-    if(IOS_DB[id]) {
-      LearningEngine.logIOSSearch(q, id, true);
-      return { single: IOS_DB[id] };
-    }
-  }
-  
-  // 2. Recherche par alias (peut retourner plusieurs IOS)
+  if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) { LearningEngine.logIOSSearch(q, id, true); return { single: IOS_DB[id] }; } }
   for(const [alias, ids] of Object.entries(ALIAS_DB)){ 
     if(q.includes(alias)) {
-      // Vérifier si c'est un alias simple (string) ou multiple (array)
       if (Array.isArray(ids)) {
-        // ALIAS VERS PLUSIEURS IOS
-        if (ids.length === 1) {
-          const io = IOS_DB[ids[0]];
-          if (io) {
-            LearningEngine.logIOSSearch(q, ids[0], true);
-            return { single: io };
-          }
-        } else {
-          // Plusieurs IOS trouvés
-          LearningEngine.logIOSSearch(q, 'multiple', true);
-          return { multiple: ids, alias: alias };
-        }
-      } else if (typeof ids === 'string') {
-        // ALIAS VERS UN SEUL IOS (compatibilité)
-        const io = IOS_DB[ids];
-        if (io) {
-          LearningEngine.logIOSSearch(q, ids, true);
-          return { single: io };
-        }
-      }
+        if (ids.length === 1) { const io = IOS_DB[ids[0]]; if (io) { LearningEngine.logIOSSearch(q, ids[0], true); return { single: io }; } }
+        else { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: ids, alias: alias }; }
+      } else if (typeof ids === 'string') { const io = IOS_DB[ids]; if (io) { LearningEngine.logIOSSearch(q, ids, true); return { single: io }; } }
     }
   }
-  
-  // 3. Recherche par description et mots-clés
   const matches = [];
-  for(const io of Object.values(IOS_DB)){ 
-    if(io.desc.toLowerCase().includes(q)) {
-      matches.push(io.id);
-    }
-    if(io.kw && io.kw.some(k=>q.includes(k))) {
-      if (!matches.includes(io.id)) matches.push(io.id);
-    }
-  }
-  
-  if (matches.length === 1) {
-    LearningEngine.logIOSSearch(q, matches[0], true);
-    return { single: IOS_DB[matches[0]] };
-  } else if (matches.length > 1) {
-    LearningEngine.logIOSSearch(q, 'multiple', true);
-    return { multiple: matches, alias: q };
-  }
-  
+  for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) { matches.push(io.id); } if(io.kw && io.kw.some(k=>q.includes(k))) { if (!matches.includes(io.id)) matches.push(io.id); } }
+  if (matches.length === 1) { LearningEngine.logIOSSearch(q, matches[0], true); return { single: IOS_DB[matches[0]] }; }
+  else if (matches.length > 1) { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: matches, alias: q }; }
   LearningEngine.logIOSSearch(q, null, false);
   return null; 
 }
@@ -1986,7 +1783,43 @@ function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); retur
 function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
 function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); LearningEngine.logUsage('procedure_cancelled'); }
 function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); LearningEngine.logUsage('procedure_finished', { ios: curIOS?.id, duration: procEnd - procStart }); }
-function goHome(){ cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; closeMultiSelect(); addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil."); }
+
+/* ═══ goHome AVEC COUPURE MICRO PENDANT LE MESSAGE D'ACCUEIL ═══ */
+function goHome(){ 
+  // Sauvegarder l'état du micro avant de couper
+  micWasOnBeforeHome = micOn;
+  
+  // Annuler toute procédure en cours
+  cancelProc(); 
+  curIOS=null; 
+  $('iosCard').classList.remove('show'); 
+  $('guideCard').classList.remove('show'); 
+  $('endBar').classList.remove('show'); 
+  $('spSearch').value=''; 
+  closeMultiSelect(); 
+  
+  // COUPER LE MICRO
+  if (micOn) {
+    stopListening();
+    micOn = false;
+    setUI('muted');
+    $('statusTxt').textContent='Micro coupé · Message d\'accueil';
+  }
+  
+  addMsg('🏠 Retour à l\'accueil.');
+  
+  // Prononcer le message d'accueil et réactiver le micro après
+  speak("Retour à l'accueil.", () => {
+    // Callback après la fin de la parole : réactiver le micro s'il était actif avant
+    if (micWasOnBeforeHome) {
+      micOn = true;
+      startListening();
+      setUI('idle');
+      $('statusTxt').textContent='Micro actif · Dites un numéro IOS';
+      toast('Micro réactivé');
+    }
+  });
+}
 
 /* ═══ RAPPORT ═══ */
 function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
@@ -2004,25 +1837,11 @@ function closeList(){ $('listBg').classList.remove('on'); }
 /* ═══ INFO ═══ */
 function openInfo(){ 
   $('infoContent').innerHTML=`
-    <h4>🎤 Commandes vocales</h4>
-    <ul>
-      <li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li>
-      <li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li>
-      <li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li>
-      <li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li>
-      <li><span class="cmd-pill">oui / non</span> — Répondre</li>
-      <li><span class="cmd-pill">répète / redis</span> — Répéter</li>
-      <li><span class="cmd-pill">annuler / stop</span> — Stopper</li>
-      <li><span class="cmd-pill">accueil / menu</span> — Retour</li>
-    </ul>
-    <h4>🔍 Recherche par alias</h4>
-    <p>Si un alias correspond à plusieurs IOS, une liste de sélection s'affiche. Sélectionnez celui qui vous concerne.</p>
-    <h4>🧠 Apprentissage autonome</h4>
-    <p>L'IAOS apprend tout seul. Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour enseigner.</p>
-    <h4>🛡 Protection</h4>
-    <p>Procédure active = nouvel IOS bloqué.</p>
-    <h4>☁️ Firebase</h4>
-    <p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>
+    <h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour (micro coupé pendant le message)</li></ul>
+    <h4>🔍 Recherche par alias</h4><p>Si un alias correspond à plusieurs IOS, une liste de sélection s'affiche.</p>
+    <h4>🧠 Apprentissage autonome</h4><p>L'IAOS apprend tout seul. Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour enseigner.</p>
+    <h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué. Le micro est coupé pendant les messages d'accueil.</p>
+    <h4>☁️ Firebase</h4><p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>
   `; 
   $('infoBg').classList.add('on'); 
 }
@@ -2053,205 +1872,70 @@ const CMDS = {
   learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i,/\bapprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i]
 };
 
-function match(txt,key){ 
-  const learnedMatch = LearningEngine.matchWithLearning(txt, key, CMDS[key] || []);
-  if (learnedMatch) return true;
-  return CMDS[key]?.some(r=>r.test(txt)) || false; 
-}
-
-function isNon(txt){ 
-  if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; 
-  return CMDS.non.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'non', []); 
-}
-
-function isOui(txt){ 
-  if(isNon(txt)) return false; 
-  return CMDS.oui.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'oui', []); 
-}
+function match(txt,key){ const learnedMatch = LearningEngine.matchWithLearning(txt, key, CMDS[key] || []); if (learnedMatch) return true; return CMDS[key]?.some(r=>r.test(txt)) || false; }
+function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'non', []); }
+function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'oui', []); }
 
 function processVoice(raw){
   const txt=raw.trim(); if(!txt) return;
   
-  if (isSpeaking) {
-    console.log('🔇 Entrée ignorée - système en train de parler');
-    return;
-  }
+  if (isSpeaking) { console.log('🔇 Entrée ignorée - système en train de parler'); return; }
   
   addMsg(txt,'user');
   LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
   
-  /* ═══ GÉRER LA SÉLECTION MULTIPLE ═══ */
   if (multiSelectActive) {
-    // Chercher un numéro dans la réponse
     const numMatch = txt.match(/(\d{1,3})/);
-    if (numMatch) {
-      const iosId = numMatch[1].padStart(3, '0');
-      const selectionCard = document.getElementById('multiSelectCard');
-      if (selectionCard) {
-        const items = selectionCard.querySelectorAll('.selection-item');
-        for (const item of items) {
-          if (item.getAttribute('data-ios') === iosId) {
-            selectFromMulti(iosId);
-            return;
-          }
-        }
-      }
-      // Essayer de charger directement
-      if (IOS_DB[iosId]) {
-        selectFromMulti(iosId);
-        return;
-      }
-    }
-    
-    if (match(txt, 'cancel') || match(txt, 'home')) {
-      cancelMultiSelect();
-      return;
-    }
-    
-    addMsg('Veuillez sélectionner un IOS dans la liste ou dire son numéro.');
-    speak('Veuillez sélectionner un IOS dans la liste.');
-    return;
+    if (numMatch) { const iosId = numMatch[1].padStart(3, '0'); if (IOS_DB[iosId]) { selectFromMulti(iosId); return; } }
+    if (match(txt, 'cancel') || match(txt, 'home')) { cancelMultiSelect(); return; }
+    addMsg('Veuillez sélectionner un IOS dans la liste ou dire son numéro.'); speak('Veuillez sélectionner un IOS dans la liste.'); return;
   }
   
-  /* ═══ APPRENTISSAGE AUTONOME ═══ */
   if (AutonomousLearner.learningSession) {
     const session = AutonomousLearner.learningSession;
-    
-    if (isOui(txt)) {
-      AutonomousLearner.confirmLearning(session.word, session.suggestions[0].command);
-      return;
-    }
-    
-    if (isNon(txt)) {
-      session.suggestions.shift();
-      if (session.suggestions.length > 0) {
-        const next = session.suggestions[0];
-        const msg = `Alors, "${session.word}" veut-il dire "${next.command}" ?`;
-        addMsg(msg, 'learning');
-        speak(msg);
-        return;
-      } else {
-        AutonomousLearner.endSession();
-        return;
-      }
-    }
-    
-    if (match(txt, 'learn')) {
-      AutonomousLearner.learningSession = null;
-      setUI('idle');
-    } else {
-      AutonomousLearner.endSession();
-      return;
-    }
+    if (isOui(txt)) { AutonomousLearner.confirmLearning(session.word, session.suggestions[0].command); return; }
+    if (isNon(txt)) { session.suggestions.shift(); if (session.suggestions.length > 0) { const next = session.suggestions[0]; const msg = `Alors, "${session.word}" veut-il dire "${next.command}" ?`; addMsg(msg, 'learning'); speak(msg); return; } else { AutonomousLearner.endSession(); return; } }
+    if (match(txt, 'learn')) { AutonomousLearner.learningSession = null; setUI('idle'); } else { AutonomousLearner.endSession(); return; }
   }
   
   const endActive=$('endBar').classList.contains('show');
   if(endActive){
-    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ 
-      $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); 
-      addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; 
-    }
-    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ 
-      $('endBar').classList.remove('show'); openRecap(); return; 
-    }
+    if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; }
+    if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; }
   }
   
   if(match(txt,'learn')){
     const learnMatch = txt.match(/apprends?\s+(.+?)\s*=\s*(.+?)$/i) || txt.match(/apprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i);
-    if (learnMatch) {
-      const word = learnMatch[1].trim();
-      const command = learnMatch[2].trim().toLowerCase();
-      LearningEngine.learnSynonym(command, word);
-      addMsg(`🧠 Appris : "${word}" → commande "${command}"`);
-      speak(`J'ai appris que ${word} correspond à la commande ${command}.`);
-      return;
-    }
+    if (learnMatch) { const word = learnMatch[1].trim(); const command = learnMatch[2].trim().toLowerCase(); LearningEngine.learnSynonym(command, word); addMsg(`🧠 Appris : "${word}" → commande "${command}"`); speak(`J'ai appris que ${word} correspond à la commande ${command}.`); return; }
   }
   
-  if(match(txt,'inutile')){ 
-    const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; 
-    addMsg(r); speak(r); return; 
-  }
+  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; addMsg(r); speak(r); return; }
   if(match(txt,'cancel')){ cancelProc(); return; }
   if(match(txt,'home')){ goHome(); return; }
-  if(match(txt,'greet')){ 
-    if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ 
-      addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; 
-    } 
-    addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; 
-  }
+  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
   if(isProcActive()){ 
-    if(match(txt,'repeat')){ 
-      if(lastSpokenText){ speak(lastSpokenText); } 
-      else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } 
-      else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } 
-      return; 
-    } 
+    if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; } 
     if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } 
     if(match(txt,'next')){ nextStep(); return; } 
     if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } 
-    if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ 
-      if(isNon(txt)){ answerNo(); return; } 
-      if(isOui(txt)){ answerYes(); return; } 
-    } 
-    if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ 
-      addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); 
-      setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; 
-    } 
-    
-    if (!AutonomousLearner.learningSession && !isSpeaking) {
-      const unknowns = AutonomousLearner.detectUnknown(txt);
-      if (unknowns.length > 0) {
-        const word = unknowns[0];
-        const suggestions = AutonomousLearner.guessMeaning(word);
-        if (suggestions.length > 0 && suggestions[0].confidence > 0.3) {
-          AutonomousLearner.startLearningSession(word, suggestions);
-          return;
-        }
-      }
-    }
+    if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } 
+    if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } 
+    if (!AutonomousLearner.learningSession && !isSpeaking) { const unknowns = AutonomousLearner.detectUnknown(txt); if (unknowns.length > 0) { const word = unknowns[0]; const suggestions = AutonomousLearner.guessMeaning(word); if (suggestions.length > 0 && suggestions[0].confidence > 0.3) { AutonomousLearner.startLearningSession(word, suggestions); return; } } }
     return; 
   }
-  if(match(txt,'repeat')){ 
-    if(lastSpokenText){ speak(lastSpokenText); } 
-    else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } 
-    return; 
-  }
+  if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; }
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
   if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr,conducteur,moniteur,formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
-  if(match(txt,'elapsed')){ 
-    if(!procStart){ speak('Aucune procédure en cours.'); return; } 
-    const d=new Date()-procStart,m=Math.floor(d/60000); 
-    speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; 
-  }
+  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
   
-  /* ═══ RECHERCHE IOS ═══ */
   const result = findIOS(txt);
-  if (result) {
-    if (result.single) {
-      loadIOS(result.single);
-    } else if (result.multiple) {
-      showMultiSelect(result.alias, result.multiple);
-    }
-    return;
-  }
+  if (result) { if (result.single) { loadIOS(result.single); } else if (result.multiple) { showMultiSelect(result.alias, result.multiple); } return; }
   
-  /* ═══ APPRENTISSAGE AUTONOME ═══ */
-  if (!AutonomousLearner.learningSession && !isSpeaking) {
-    const unknowns = AutonomousLearner.detectUnknown(txt);
-    if (unknowns.length > 0) {
-      const word = unknowns[0];
-      const suggestions = AutonomousLearner.guessMeaning(word);
-      if (suggestions.length > 0 && suggestions[0].confidence > 0.25) {
-        AutonomousLearner.startLearningSession(word, suggestions);
-        return;
-      }
-    }
-  }
+  if (!AutonomousLearner.learningSession && !isSpeaking) { const unknowns = AutonomousLearner.detectUnknown(txt); if (unknowns.length > 0) { const word = unknowns[0]; const suggestions = AutonomousLearner.guessMeaning(word); if (suggestions.length > 0 && suggestions[0].confidence > 0.25) { AutonomousLearner.startLearningSession(word, suggestions); return; } } }
   
   speak('Aucun i o s trouvé.');
 }
@@ -2266,35 +1950,7 @@ function startListening(){
     recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
     let final=''; let silTimer=null;
     recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
-    recognition.onresult=(ev)=>{ 
-      clearTimeout(silTimer); 
-      let interim=''; 
-      for(let i=ev.resultIndex;i<ev.results.length;i++){ 
-        if(ev.results[i].isFinal){ 
-          let best='',bestConf=0; 
-          for(let j=0;j<ev.results[i].length;j++){ 
-            if(ev.results[i][j].confidence>bestConf){ 
-              bestConf=ev.results[i][j].confidence; 
-              best=ev.results[i][j].transcript; 
-            } 
-          } 
-          if(best&&bestConf>0.02) final+=' '+best; 
-        } else { 
-          interim+=ev.results[i][0].transcript; 
-        } 
-      } 
-      if(final.trim()&&!interim&&!isSpeaking){ 
-        const t=final.trim(); final=''; 
-        processVoice(t); 
-      } else { 
-        silTimer=setTimeout(()=>{ 
-          if(final.trim()&&!isSpeaking){ 
-            const t=final.trim(); final=''; 
-            processVoice(t); 
-          } 
-        },900); 
-      } 
-    };
+    recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim&&!isSpeaking){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()&&!isSpeaking){ const t=final.trim(); final=''; processVoice(t); } },900); } };
     recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking) schedRestart(); };
     recognition.onend=()=>{ isListening=false; if(final.trim()&&!isSpeaking){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
     recognition.start();
@@ -2337,28 +1993,16 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').cl
 
 /* ═══ INIT ═══ */
 async function initApp() {
-  console.log('🚀 IAOS T4 v7.2 - Sélection multiple IOS');
-  console.log('📋 Firebase:', firebaseConfig.databaseURL);
-  console.log('🔍 Alias multiples: affichage d\'une liste de sélection');
-  
+  console.log('🚀 IAOS T4 v7.3 - Micro coupé pendant accueil');
   await LearningEngine.init();
   AutonomousLearner.init();
   updateFirebaseUI();
-  
   setUI('idle'); 
   micOn=true; 
   startListening();
-  
   console.log('✅ IAOS T4 prêt');
-  
-  if (firebaseAvailable) {
-    LearningEngine.logUsage('app_started', { 
-      timestamp: new Date().toISOString(),
-      version: 'v7.2-multiselect'
-    });
-  }
+  if (firebaseAvailable) { LearningEngine.logUsage('app_started', { timestamp: new Date().toISOString(), version: 'v7.3-home-mute' }); }
 }
-
 initApp();
 
 })();
