@@ -1280,7 +1280,7 @@ function processVoice(raw){
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniyeur, formateur et plus si affinité.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
   if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
