@@ -1061,6 +1061,7 @@ const ALIAS_DB = {'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
 
+
 for(let i=0;i<=247;i++){
   const id = String(i).padStart(3,'0');
   if(!IOS_DB[id]) IOS_DB[id] = {
@@ -1080,6 +1081,7 @@ let micOn = true, isListening = false, isSpeaking = false;
 let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
 let procStart = null, procEnd = null, procLog = [];
 let cachedVoice = null;
+let lastSpokenText = ''; // Stocke la dernière phrase prononcée
 
 /* ═══ SYNTH ═══ */
 const synth = window.speechSynthesis;
@@ -1121,6 +1123,9 @@ function speak(txt, cb){
     .replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10))
     .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
     .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
+
+  // Stocke la dernière phrase prononcée (version propre)
+  lastSpokenText = x;
 
   currentUtterance = new SpeechSynthesisUtterance(x);
   currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
@@ -1270,12 +1275,12 @@ function processVoice(raw){
   if(match(txt,'cancel')){ cancelProc(); return; }
   if(match(txt,'home')){ goHome(); return; }
   if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
-  if(isProcActive()){ if(match(txt,'repeat')){ if(guideOn&&guideSteps[stepIdx]) speak(guideSteps[stepIdx].t); else if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
-  if(match(txt,'repeat')){ if(curIOS) speak("l'IOS "+parseInt(curIOS.id,10)); return; }
+  if(isProcActive()){ if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } return; }
+  if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; }
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniyeur, formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
   if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
