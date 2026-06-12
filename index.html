@@ -104,10 +104,13 @@ body::after{
 .status-indicator.blocked{background:var(--amber);box-shadow:0 0 10px var(--amber)}
 .status-indicator.error{background:var(--red);box-shadow:0 0 10px var(--red)}
 .status-indicator.earlyListen{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.status-indicator.learning{background:var(--purple);box-shadow:0 0 10px var(--purple);animation:learnPulse 1s infinite}
+@keyframes learnPulse{0%,100%{box-shadow:0 0 5px var(--purple)}50%{box-shadow:0 0 20px var(--purple)}}
 .status-text{color:var(--text-dim);flex:1;font-size:0.58rem}
 .status-text.listen{color:var(--green)}
 .status-text.speak{color:var(--purple)}
 .status-text.blocked{color:var(--amber)}
+.status-text.learning{color:var(--purple)}
 
 .mic-zone{
   display:flex;flex-direction:column;align-items:center;gap:14px;
@@ -134,6 +137,7 @@ body::after{
 .mic-outer.speak .ring{border-color:rgba(191,128,255,0.35);animation-duration:1.2s}
 .mic-outer.earlyListen .ring{border-color:rgba(0,229,255,0.4);animation-duration:1.3s}
 .mic-outer.error .ring{border-color:rgba(255,59,59,0.4)}
+.mic-outer.learning .ring{border-color:rgba(191,128,255,0.5);animation-duration:0.9s}
 
 .bars{
   position:relative;z-index:5;
@@ -158,6 +162,7 @@ body::after{
 .bars.speak .bar{background:var(--purple);box-shadow:0 0 10px rgba(191,128,255,0.6);animation-duration:0.65s}
 .bars.earlyListen .bar{background:var(--cyan);box-shadow:0 0 10px rgba(0,229,255,0.6);animation-duration:0.6s}
 .bars.error .bar{background:var(--red);animation:barErr 0.35s ease}
+.bars.learning .bar{background:var(--purple);box-shadow:0 0 10px rgba(191,128,255,0.6);animation-duration:0.5s}
 @keyframes barErr{0%,100%{transform:scaleY(1) translateX(0)}25%{transform:scaleY(0.6) translateX(-3px)}75%{transform:scaleY(1.3) translateX(3px)}}
 .bars.muted .bar{background:var(--text-dim);box-shadow:none;animation:barIdle 3s ease-in-out infinite}
 
@@ -258,6 +263,8 @@ body::after{
 .gcard-btn.no:hover{background:rgba(255,59,59,0.12);border-color:var(--red)}
 .gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
 .gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
+.gcard-btn.learn{border-color:rgba(191,128,255,0.5);color:var(--purple);background:rgba(191,128,255,0.05)}
+.gcard-btn.learn:hover{background:rgba(191,128,255,0.15);border-color:var(--purple)}
 
 .toast{
   position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);
@@ -367,6 +374,7 @@ body::after{
 .t-bubble{font-size:0.72rem;line-height:1.4;padding:5px 9px;border-radius:2px;max-width:92%;word-break:break-word}
 .t-msg.user .t-bubble{background:rgba(191,128,255,0.08);border:1px solid rgba(191,128,255,0.25);color:var(--text)}
 .t-msg.ai .t-bubble{background:rgba(245,197,24,0.06);border:1px solid rgba(245,197,24,0.18);color:var(--text)}
+.t-msg.learning .t-bubble{background:rgba(191,128,255,0.1);border:1px solid rgba(191,128,255,0.35);color:var(--purple)}
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-bg.on{opacity:1;pointer-events:auto}
@@ -613,9 +621,6 @@ body::after{
 
 /* ═══════════════════════════════════════════════════════════
    CONFIGURATION FIREBASE - IAOS T4
-   Projet: iaos-t4
-   Database: iaos-t4-default-rtdb (europe-west1)
-   URL CORRIGÉE !
 ═══════════════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDAZb4At6Hx5UAeDowzfJVUrJly5FB8Anc",
@@ -634,16 +639,11 @@ let firebaseRefs = {};
 let firebaseConnected = false;
 
 try {
-  if (typeof firebase === 'undefined') {
-    throw new Error('Firebase SDK non chargé');
-  }
-  
+  if (typeof firebase === 'undefined') throw new Error('Firebase SDK non chargé');
   firebase.initializeApp(firebaseConfig);
   db = firebase.database();
   firebaseAvailable = true;
-  
-  console.log('✅ Firebase initialisé');
-  console.log('   URL:', firebaseConfig.databaseURL);
+  console.log('✅ Firebase initialisé:', firebaseConfig.databaseURL);
   
   firebaseRefs = {
     learning: db.ref('learning'),
@@ -651,7 +651,7 @@ try {
     corrections: db.ref('learning/corrections'),
     usageStats: db.ref('learning/usageStats'),
     iosSearches: db.ref('learning/iosSearches'),
-    userFeedback: db.ref('learning/userFeedback'),
+    learnedAssociations: db.ref('learning/learnedAssociations'),
     connected: db.ref('.info/connected')
   };
   
@@ -661,11 +661,8 @@ try {
     if (firebaseConnected) {
       console.log('🟢 Firebase connecté !');
       LearningEngine.syncFromFirebase();
-    } else {
-      console.log('🔴 Firebase déconnecté');
     }
   });
-  
 } catch(e) {
   console.error('❌ Erreur Firebase:', e.message);
   firebaseAvailable = false;
@@ -673,18 +670,10 @@ try {
 }
 
 function updateFirebaseUI() {
-  let statusText, statusClass;
-  
-  if (!firebaseAvailable) {
-    statusText = 'Firebase: Erreur config';
-    statusClass = 'offline';
-  } else if (firebaseConnected) {
-    statusText = 'Firebase: Connecté';
-    statusClass = 'online';
-  } else {
-    statusText = 'Firebase: En attente...';
-    statusClass = 'syncing';
-  }
+  const statusText = !firebaseAvailable ? 'Firebase: Erreur' : 
+    firebaseConnected ? 'Firebase: Connecté' : 'Firebase: En attente...';
+  const statusClass = !firebaseAvailable ? 'offline' : 
+    firebaseConnected ? 'online' : 'syncing';
   
   const syncLabel = document.getElementById('syncLabel');
   const syncDot = document.getElementById('syncDot');
@@ -698,7 +687,7 @@ function updateFirebaseUI() {
 }
 
 /* ═══════════════════════════════════
-   MOTEUR D'APPRENTISSAGE FIREBASE
+   MOTEUR D'APPRENTISSAGE
 ═══════════════════════════════════ */
 const LearningEngine = {
   localCache: {},
@@ -707,14 +696,8 @@ const LearningEngine = {
   
   async init() {
     const saved = localStorage.getItem('iaos_learning_cache');
-    if (saved) {
-      try { this.localCache = JSON.parse(saved); } catch(e) {}
-    }
-    
-    if (firebaseAvailable && firebaseConnected) {
-      await this.syncFromFirebase();
-    }
-    
+    if (saved) { try { this.localCache = JSON.parse(saved); } catch(e) {} }
+    if (firebaseAvailable && firebaseConnected) await this.syncFromFirebase();
     this.initialized = true;
     console.log('🧠 Moteur d\'apprentissage initialisé');
   },
@@ -722,81 +705,66 @@ const LearningEngine = {
   async syncFromFirebase() {
     if (!firebaseAvailable || !db) return;
     try {
-      const snapshot = await firebaseRefs.learning.once('value');
-      const data = snapshot.val() || {};
+      const snap = await firebaseRefs.learning.once('value');
+      const data = snap.val() || {};
       this.globalCache = {
         synonyms: data.synonyms || {},
         corrections: data.corrections || {},
-        iosSearches: data.iosSearches || {}
+        learnedAssociations: data.learnedAssociations || {}
       };
-      console.log('📥 Données globales synchronisées');
-    } catch(e) {
-      console.warn('⚠️ Erreur sync Firebase:', e.message);
-    }
+      console.log('📥 Sync Firebase OK');
+    } catch(e) { console.warn('⚠️ Sync Firebase:', e.message); }
   },
   
   async learnSynonym(command, newWord, confidence = 1) {
     if (!this.localCache.synonyms) this.localCache.synonyms = {};
     if (!this.localCache.synonyms[command]) this.localCache.synonyms[command] = [];
-    
     if (!this.localCache.synonyms[command].includes(newWord)) {
       this.localCache.synonyms[command].push(newWord);
       this.saveLocal();
-      console.log(`📝 Appris localement: "${newWord}" → "${command}"`);
+      console.log(`📝 Local: "${newWord}" → "${command}"`);
     }
-    
     if (firebaseAvailable && firebaseConnected) {
       try {
         const ref = firebaseRefs.synonyms.child(command);
         const snap = await ref.once('value');
         const existing = snap.val() || [];
-        
         if (!existing.includes(newWord)) {
           existing.push(newWord);
           await ref.set(existing);
           await this.logUsage('synonym_learned', { command, word: newWord, confidence });
-          console.log(`🌍 Appris globalement: "${newWord}" → "${command}"`);
         } else {
           await this.incrementUsage(command, newWord);
         }
-      } catch(e) {
-        console.warn('⚠️ Erreur apprentissage global:', e.message);
-      }
+      } catch(e) {}
     }
   },
   
-  async learnCorrection(originalQuery, correctIOS, userFeedback) {
-    if (!this.localCache.corrections) this.localCache.corrections = {};
-    
-    const key = originalQuery.toLowerCase().trim();
-    if (!this.localCache.corrections[key]) {
-      this.localCache.corrections[key] = { correctIOS, count: 0, feedback: [] };
-    }
-    this.localCache.corrections[key].count++;
-    if (userFeedback) this.localCache.corrections[key].feedback.push(userFeedback);
+  async learnAssociation(unknownWord, knownCommand, context = {}) {
+    if (!this.localCache.learnedAssociations) this.localCache.learnedAssociations = {};
+    this.localCache.learnedAssociations[unknownWord.toLowerCase()] = {
+      command: knownCommand,
+      context,
+      learnedAt: Date.now(),
+      usageCount: (this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount || 0) + 1
+    };
     this.saveLocal();
     
     if (firebaseAvailable && firebaseConnected) {
       try {
-        await firebaseRefs.corrections.child(encodeURIComponent(key)).transaction((current) => {
-          if (!current) {
-            return { correctIOS, count: 1, feedback: userFeedback ? [userFeedback] : [] };
-          }
-          current.count++;
-          if (userFeedback) current.feedback.push(userFeedback);
+        await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current) => {
+          if (!current) return { command: knownCommand, context, learnedAt: Date.now(), usageCount: 1 };
+          current.usageCount = (current.usageCount || 0) + 1;
           return current;
         });
-      } catch(e) {
-        console.warn('⚠️ Erreur correction globale:', e.message);
-      }
+      } catch(e) {}
     }
   },
   
   async logIOSSearch(query, foundIOS, success) {
     if (firebaseAvailable && firebaseConnected) {
       try {
-        const ref = firebaseRefs.iosSearches.push();
-        await ref.set({
+        await firebaseRefs.iosSearches.push().set({
           query: query.toLowerCase().trim(),
           foundIOS: foundIOS || null,
           success: !!success,
@@ -810,8 +778,7 @@ const LearningEngine = {
     if (firebaseAvailable && firebaseConnected) {
       try {
         await firebaseRefs.usageStats.push().set({
-          action,
-          data,
+          action, data,
           timestamp: firebase.database.ServerValue.TIMESTAMP
         });
       } catch(e) {}
@@ -829,24 +796,215 @@ const LearningEngine = {
   
   matchWithLearning(txt, command, basePatterns) {
     if (basePatterns && basePatterns.some(r => r.test(txt))) return true;
-    
     const localSynonyms = this.localCache.synonyms?.[command] || [];
     for (const syn of localSynonyms) {
       if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
     }
-    
     const globalSynonyms = this.globalCache.synonyms?.[command] || [];
     for (const syn of globalSynonyms) {
       if (txt.toLowerCase().includes(syn.toLowerCase())) return true;
     }
-    
     return false;
   },
   
+  getAssociation(word) {
+    const w = word.toLowerCase();
+    if (this.localCache.learnedAssociations?.[w]) {
+      return this.localCache.learnedAssociations[w];
+    }
+    if (this.globalCache.learnedAssociations?.[w]) {
+      return this.globalCache.learnedAssociations[w];
+    }
+    return null;
+  },
+  
+  getAllKnownWords() {
+    const words = new Set();
+    Object.values(CMDS).flat().forEach(r => {
+      const str = r.toString();
+      const match = str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi);
+      if (match) match.forEach(m => words.add(m.replace(/\\/g,'').toLowerCase()));
+    });
+    const localSyns = this.localCache.synonyms || {};
+    Object.values(localSyns).flat().forEach(s => words.add(s.toLowerCase()));
+    const globalSyns = this.globalCache.synonyms || {};
+    Object.values(globalSyns).flat().forEach(s => words.add(s.toLowerCase()));
+    return [...words];
+  },
+  
   saveLocal() {
-    try {
-      localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache));
-    } catch(e) {}
+    try { localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache)); } catch(e) {}
+  }
+};
+
+/* ═══════════════════════════════════
+   APPRENTISSAGE AUTONOME
+   Apprend sans commande explicite
+═══════════════════════════════════ */
+const AutonomousLearner = {
+  learningSession: null,
+  confidenceThreshold: 2, // Nb d'utilisations avant apprentissage auto
+  unknownWords: {}, // { mot: { count, contexts, suggestions } }
+  originalProcessVoice: null,
+  
+  init() {
+    this.originalProcessVoice = processVoice;
+    console.log('🤖 Apprentissage autonome activé');
+  },
+  
+  detectUnknown(txt) {
+    const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w));
+    const knownWords = LearningEngine.getAllKnownWords();
+    const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3);
+    
+    if (unknowns.length > 0) {
+      console.log('🔍 Mots inconnus:', unknowns);
+      unknowns.forEach(w => {
+        if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [], suggestions: [] };
+        this.unknownWords[w].count++;
+        this.unknownWords[w].contexts.push({
+          fullText: txt,
+          hasIOS: !!curIOS,
+          iosId: curIOS?.id,
+          inGuide: guideOn,
+          stepIdx,
+          timestamp: Date.now()
+        });
+      });
+    }
+    return unknowns;
+  },
+  
+  guessMeaning(unknownWord) {
+    const suggestions = [];
+    const ctx = this.unknownWords[unknownWord]?.contexts?.slice(-1)[0] || {};
+    
+    // Contexte 1 : Procédure en cours, étape avec branchement O/N
+    if (guideOn && guideSteps[stepIdx]?.d) {
+      suggestions.push({ command: 'oui', confidence: 0.45, reason: 'Question oui/non en cours' });
+      suggestions.push({ command: 'non', confidence: 0.45, reason: 'Question oui/non en cours' });
+    }
+    
+    // Contexte 2 : Procédure en cours, étape simple
+    if (guideOn && !guideSteps[stepIdx]?.d) {
+      suggestions.push({ command: 'next', confidence: 0.55, reason: 'Étape suivante attendue' });
+    }
+    
+    // Contexte 3 : Fin de procédure
+    if (document.getElementById('endBar').classList.contains('show')) {
+      suggestions.push({ command: 'bulletin', confidence: 0.4, reason: 'Procédure terminée' });
+      suggestions.push({ command: 'fermer', confidence: 0.4, reason: 'Procédure terminée' });
+    }
+    
+    // Contexte 4 : Similarité phonétique avec des mots connus
+    const knownWords = LearningEngine.getAllKnownWords();
+    const similar = this.findSimilarWords(unknownWord, knownWords);
+    for (const sim of similar.slice(0, 2)) {
+      suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6, reason: `Ressemble à "${sim.word}"` });
+    }
+    
+    // Vérifier les associations déjà apprises
+    const existingAssociation = LearningEngine.getAssociation(unknownWord);
+    if (existingAssociation) {
+      suggestions.unshift({ 
+        command: existingAssociation.command, 
+        confidence: 0.9, 
+        reason: 'Déjà appris précédemment' 
+      });
+    }
+    
+    return suggestions.sort((a, b) => b.confidence - a.confidence);
+  },
+  
+  findSimilarWords(word, dictionary) {
+    return dictionary
+      .map(w => ({ word: w, similarity: this.stringSimilarity(word, w) }))
+      .filter(s => s.similarity > 0.5)
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 5);
+  },
+  
+  stringSimilarity(a, b) {
+    a = a.toLowerCase(); b = b.toLowerCase();
+    if (a === b) return 1;
+    if (a.length < 2 || b.length < 2) return 0;
+    const pairsA = new Set();
+    for (let i = 0; i < a.length - 1; i++) pairsA.add(a.substring(i, i + 2));
+    const pairsB = new Set();
+    for (let i = 0; i < b.length - 1; i++) pairsB.add(b.substring(i, i + 2));
+    const intersection = new Set([...pairsA].filter(x => pairsB.has(x)));
+    return (2.0 * intersection.size) / (pairsA.size + pairsB.size);
+  },
+  
+  async startLearningSession(unknownWord, suggestions) {
+    this.learningSession = {
+      word: unknownWord,
+      suggestions,
+      startTime: Date.now(),
+      resolved: false
+    };
+    
+    if (suggestions.length === 0) {
+      const msg = `Je ne comprends pas "${unknownWord}". Pouvez-vous reformuler ?`;
+      addMsg(msg, 'learning');
+      speak(msg);
+      setTimeout(() => { if (this.learningSession && !this.learningSession.resolved) this.endSession(); }, 12000);
+      return;
+    }
+    
+    const best = suggestions[0];
+    const msg = `🤔 Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`;
+    addMsg(msg, 'learning');
+    speak(msg);
+    setUI('learning');
+    
+    // Attendre 15 secondes max pour une réponse
+    setTimeout(() => {
+      if (this.learningSession && !this.learningSession.resolved) {
+        // Proposer la 2ème suggestion
+        if (suggestions.length > 1) {
+          const second = suggestions[1];
+          const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`;
+          addMsg(msg2, 'learning');
+          speak(msg2);
+        }
+        setTimeout(() => {
+          if (this.learningSession && !this.learningSession.resolved) {
+            this.endSession();
+          }
+        }, 10000);
+      }
+    }, 10000);
+  },
+  
+  endSession() {
+    if (this.learningSession) {
+      const word = this.learningSession.word;
+      const msg = `Je n'ai pas compris "${word}". Dites "apprends ${word} = [commande]" pour m'apprendre.`;
+      addMsg(msg, 'learning');
+      speak(msg);
+      this.learningSession = null;
+      setUI('idle');
+    }
+  },
+  
+  async confirmLearning(unknownWord, command) {
+    await LearningEngine.learnSynonym(command, unknownWord);
+    await LearningEngine.learnAssociation(unknownWord, command, {
+      learnedVia: 'autonomous',
+      context: curIOS?.id || 'none'
+    });
+    const msg = `✅ J'ai appris automatiquement : "${unknownWord}" = "${command}".`;
+    addMsg(msg, 'learning');
+    speak(msg);
+    this.learningSession = null;
+    setUI('idle');
+    
+    // Exécuter la commande apprise
+    if (command === 'next') nextStep();
+    else if (command === 'oui') answerYes();
+    else if (command === 'non') answerNo();
+    else if (command === 'repeat' && lastSpokenText) speak(lastSpokenText);
   }
 };
 
@@ -1322,7 +1480,6 @@ const ALIAS_DB = {'boite chaude':['061'],'boîte chaude':['061'],'surchauffe':['
 'msav':['232'],'moteur traction':['233'],
 'acces conducteur':['242'],'conducteur':['242']};
 
-
 for(let i=0;i<=247;i++){
   const id = String(i).padStart(3,'0');
   if(!IOS_DB[id]) IOS_DB[id] = {
@@ -1348,7 +1505,6 @@ let lastUserQuery = '';
 /* ═══ SYNTH ═══ */
 const synth = window.speechSynthesis;
 const hasVoice = !!synth;
-
 if(hasVoice){ synth.getVoices(); synth.onvoiceschanged = ()=>{ cachedVoice=null; getVoice(); }; }
 
 function getVoice(){
@@ -1405,12 +1561,12 @@ function $(id){ return document.getElementById(id); }
 
 function setUI(state){
   const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
-  const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Synthèse vocale…', earlyListen:'Prêt à répondre…', blocked:'Procédure active — terminez ou annulez', error:'Erreur — relance automatique', muted:'Micro coupé' };
-  dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':'');
-  txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':'');
+  const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Synthèse vocale…', earlyListen:'Prêt à répondre…', blocked:'Procédure active — terminez ou annulez', error:'Erreur — relance automatique', muted:'Micro coupé', learning:'Apprentissage en cours…' };
+  dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':state==='learning'?'learning':'');
+  txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':state==='learning'?'learning':'');
   txt.textContent = hints[state] || hints.idle;
-  bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':'');
-  mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':'');
+  bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':state==='learning'?'learning':'');
+  mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='learning'?'learning':'');
 }
 
 function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
@@ -1470,26 +1626,14 @@ function findIOS(q){
   const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); 
   if(m){ 
     const id=m[1].padStart(3,'0'); 
-    if(IOS_DB[id]) {
-      LearningEngine.logIOSSearch(q, id, true);
-      return IOS_DB[id]; 
-    }
+    if(IOS_DB[id]) { LearningEngine.logIOSSearch(q, id, true); return IOS_DB[id]; }
   } 
   for(const [a,id] of Object.entries(ALIAS_DB)){ 
-    if(q.includes(a)) {
-      LearningEngine.logIOSSearch(q, id, true);
-      return IOS_DB[id]; 
-    }
+    if(q.includes(a)) { LearningEngine.logIOSSearch(q, id, true); return IOS_DB[id]; }
   } 
   for(const io of Object.values(IOS_DB)){ 
-    if(io.desc.toLowerCase().includes(q)) {
-      LearningEngine.logIOSSearch(q, io.id, true);
-      return io; 
-    }
-    if(io.kw && io.kw.some(k=>q.includes(k))) {
-      LearningEngine.logIOSSearch(q, io.id, true);
-      return io; 
-    }
+    if(io.desc.toLowerCase().includes(q)) { LearningEngine.logIOSSearch(q, io.id, true); return io; }
+    if(io.kw && io.kw.some(k=>q.includes(k))) { LearningEngine.logIOSSearch(q, io.id, true); return io; }
   }
   LearningEngine.logIOSSearch(q, null, false);
   return null; 
@@ -1541,8 +1685,8 @@ function openInfo(){
       <li><span class="cmd-pill">annuler / stop</span> — Stopper</li>
       <li><span class="cmd-pill">accueil / menu</span> — Retour</li>
     </ul>
-    <h4>🧠 Apprentissage adaptatif</h4>
-    <p>Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour ajouter un synonyme.</p>
+    <h4>🧠 Apprentissage autonome</h4>
+    <p>L'IAOS apprend tout seul en vous posant des questions quand il détecte un mot inconnu. Dites <span class="cmd-pill">oui/non</span> pour confirmer.</p>
     <h4>🛡 Protection</h4>
     <p>Procédure active = nouvel IOS bloqué.</p>
     <h4>☁️ Firebase</h4>
@@ -1598,6 +1742,43 @@ function processVoice(raw){
   addMsg(txt,'user');
   LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
   
+  /* ═══ APPRENTISSAGE AUTONOME : GÉRER LA RÉPONSE ═══ */
+  if (AutonomousLearner.learningSession) {
+    const session = AutonomousLearner.learningSession;
+    
+    // L'utilisateur confirme la suggestion
+    if (isOui(txt)) {
+      AutonomousLearner.confirmLearning(session.word, session.suggestions[0].command);
+      return;
+    }
+    
+    // L'utilisateur refuse - essayer la suggestion suivante
+    if (isNon(txt)) {
+      session.suggestions.shift();
+      if (session.suggestions.length > 0) {
+        const next = session.suggestions[0];
+        const msg = `Alors, "${session.word}" veut-il dire "${next.command}" ?`;
+        addMsg(msg, 'learning');
+        speak(msg);
+        return;
+      } else {
+        AutonomousLearner.endSession();
+        return;
+      }
+    }
+    
+    // L'utilisateur donne une commande d'apprentissage explicite
+    if (match(txt, 'learn')) {
+      AutonomousLearner.learningSession = null;
+      setUI('idle');
+      // Continuer le traitement normal
+    } else {
+      // Réponse non comprise dans le contexte d'apprentissage
+      AutonomousLearner.endSession();
+      return;
+    }
+  }
+  
   const endActive=$('endBar').classList.contains('show');
   if(endActive){
     if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ 
@@ -1651,7 +1832,19 @@ function processVoice(raw){
       addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); 
       setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; 
     } 
-    detectPotentialNewWord(txt);
+    
+    /* ═══ APPRENTISSAGE AUTONOME : DÉTECTER MOTS INCONNUS ═══ */
+    if (!AutonomousLearner.learningSession) {
+      const unknowns = AutonomousLearner.detectUnknown(txt);
+      if (unknowns.length > 0) {
+        const word = unknowns[0];
+        const suggestions = AutonomousLearner.guessMeaning(word);
+        if (suggestions.length > 0 && suggestions[0].confidence > 0.3) {
+          AutonomousLearner.startLearningSession(word, suggestions);
+          return;
+        }
+      }
+    }
     return; 
   }
   if(match(txt,'repeat')){ 
@@ -1662,7 +1855,7 @@ function processVoice(raw){
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr,conducteur, moniteur, formateur et plus si affinité.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
   if(match(txt,'elapsed')){ 
@@ -1674,27 +1867,20 @@ function processVoice(raw){
   const io=findIOS(txt); 
   if(io){ loadIOS(io); return; }
   
-  detectPotentialNewWord(txt);
-  speak('Aucun i o s trouvé.');
-}
-
-function detectPotentialNewWord(txt) {
-  const words = txt.toLowerCase().split(/\s+/).filter(w => w.length > 3);
-  const knownCommands = Object.keys(CMDS);
-  
-  for (const word of words) {
-    let isKnown = false;
-    for (const cmd of knownCommands) {
-      if (CMDS[cmd].some(r => r.test(word))) {
-        isKnown = true;
-        break;
+  /* ═══ APPRENTISSAGE AUTONOME : MOT INCONNU HORS PROCÉDURE ═══ */
+  if (!AutonomousLearner.learningSession) {
+    const unknowns = AutonomousLearner.detectUnknown(txt);
+    if (unknowns.length > 0) {
+      const word = unknowns[0];
+      const suggestions = AutonomousLearner.guessMeaning(word);
+      if (suggestions.length > 0 && suggestions[0].confidence > 0.25) {
+        AutonomousLearner.startLearningSession(word, suggestions);
+        return;
       }
     }
-    if (!isKnown && word.length > 4) {
-      LearningEngine.logUsage('unknown_word', { word, context: txt.substring(0, 200) });
-      break;
-    }
   }
+  
+  speak('Aucun i o s trouvé.');
 }
 
 /* ═══ RECONNAISSANCE VOCALE ═══ */
@@ -1706,7 +1892,7 @@ function startListening(){
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition; recognition=new SR();
     recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
     let final=''; let silTimer=null;
-    recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
+    recognition.onstart=()=>{ isListening=true; final=''; setUI(AutonomousLearner.learningSession ? 'learning' : 'listen'); };
     recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()){ const t=final.trim(); final=''; processVoice(t); } },900); } };
     recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking) schedRestart(); };
     recognition.onend=()=>{ isListening=false; if(final.trim()){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking) schedRestart(); else setUI('idle'); };
@@ -1750,21 +1936,24 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').cl
 
 /* ═══ INIT ═══ */
 async function initApp() {
-  console.log('🚀 Démarrage IAOS T4 v6 Firebase');
-  console.log('📋 URL:', firebaseConfig.databaseURL);
+  console.log('🚀 IAOS T4 v7 - Apprentissage Autonome');
+  console.log('📋 Firebase:', firebaseConfig.databaseURL);
   
   await LearningEngine.init();
+  AutonomousLearner.init();
   updateFirebaseUI();
   
   setUI('idle'); 
   micOn=true; 
   startListening();
   
-  console.log('✅ IAOS T4 prêt');
+  console.log('✅ IAOS T4 prêt - Apprentissage autonome actif');
+  console.log('🧠 Le système va poser des questions pour apprendre de nouveaux mots');
   
   if (firebaseAvailable) {
     LearningEngine.logUsage('app_started', { 
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      version: 'v7-autonomous'
     });
   }
 }
