@@ -296,17 +296,13 @@ body::after{
   cursor:pointer;
   transition:all 0.15s ease;
 }
-.selection-item:hover{
-  background:rgba(245,197,24,0.08);
-}
+.selection-item:hover{background:rgba(245,197,24,0.08)}
 .selection-item-num{
   font-family:'Orbitron',sans-serif;font-weight:700;
   color:var(--gold);font-size:0.75rem;
   min-width:55px;letter-spacing:1px;
 }
-.selection-item-desc{
-  font-size:0.78rem;color:var(--text);flex:1;line-height:1.3;
-}
+.selection-item-desc{font-size:0.78rem;color:var(--text);flex:1;line-height:1.3}
 .selection-item-prio{
   font-family:'Space Mono',monospace;font-size:0.42rem;
   letter-spacing:1px;text-transform:uppercase;
@@ -316,11 +312,7 @@ body::after{
 .selection-item-prio.m{background:rgba(255,179,0,0.1);color:var(--amber);border:1px solid rgba(255,179,0,0.3)}
 .selection-item-prio.l{background:rgba(57,255,135,0.06);color:var(--green);border:1px solid rgba(57,255,135,0.2)}
 .selection-arrow{color:var(--gold-dim);font-size:0.7rem}
-.selection-cancel{
-  padding:10px 16px;
-  border-top:1px solid var(--border);
-  text-align:center;
-}
+.selection-cancel{padding:10px 16px;border-top:1px solid var(--border);text-align:center}
 .selection-cancel-btn{
   background:none;border:1px solid var(--border);
   color:var(--text-dim);font-family:'Orbitron',sans-serif;
@@ -330,63 +322,33 @@ body::after{
 }
 .selection-cancel-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
 
-/* ═══ BOUTON PLEIN ÉCRAN FLOTTANT ═══ */
 .fullscreen-fab{
   position:fixed;bottom:80px;right:20px;z-index:600;
   width:44px;height:44px;border-radius:50%;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  color:var(--text-dim);
-  font-size:1.1rem;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text-dim);font-size:1.1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
   transition:all 0.25s ease;
   box-shadow:0 4px 12px rgba(0,0,0,0.5);
   -webkit-tap-highlight-color:transparent;
 }
-.fullscreen-fab:hover,.fullscreen-fab:active{
-  border-color:var(--gold-dim);
-  color:var(--gold);
-  background:rgba(245,197,24,0.1);
-}
-.fullscreen-fab.active{
-  border-color:var(--green);
-  color:var(--green);
-  background:rgba(57,255,135,0.1);
-}
+.fullscreen-fab:hover,.fullscreen-fab:active{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.1)}
+.fullscreen-fab.active{border-color:var(--green);color:var(--green);background:rgba(57,255,135,0.1)}
 
-/* ═══ BANDEAU INVITATION PLEIN ÉCRAN ═══ */
 .fullscreen-banner{
   position:fixed;top:0;left:0;right:0;z-index:700;
   background:linear-gradient(180deg,rgba(13,17,23,0.98),rgba(13,17,23,0.9));
   border-bottom:1px solid var(--gold-dim);
-  padding:14px 18px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
-  transform:translateY(-100%);
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;transform:translateY(-100%);
   transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1);
   backdrop-filter:blur(10px);
 }
 .fullscreen-banner.show{transform:translateY(0)}
-.fullscreen-banner-text{
-  font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;
-  color:var(--gold);line-height:1.3;flex:1;
-}
-.fullscreen-banner-btn{
-  font-family:'Orbitron',sans-serif;font-size:0.5rem;
-  letter-spacing:2px;text-transform:uppercase;
-  padding:8px 16px;border-radius:3px;
-  background:rgba(245,197,24,0.15);
-  border:1px solid var(--gold-dim);
-  color:var(--gold);
-  cursor:pointer;white-space:nowrap;
-  transition:all 0.18s ease;
-}
+.fullscreen-banner-text{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;color:var(--gold);line-height:1.3;flex:1}
+.fullscreen-banner-btn{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:3px;background:rgba(245,197,24,0.15);border:1px solid var(--gold-dim);color:var(--gold);cursor:pointer;white-space:nowrap;transition:all 0.18s ease}
 .fullscreen-banner-btn:hover{background:rgba(245,197,24,0.25)}
-.fullscreen-banner-close{
-  background:none;border:none;color:var(--text-dim);
-  font-size:1rem;cursor:pointer;padding:4px;
-}
+.fullscreen-banner-close{background:none;border:none;color:var(--text-dim);font-size:1rem;cursor:pointer;padding:4px}
 .fullscreen-banner-close:hover{color:var(--gold)}
 
 .toast{
@@ -404,41 +366,25 @@ body::after{
 .side-panel{
   position:fixed;top:0;right:0;bottom:0;width:min(94%,420px);
   background:linear-gradient(180deg,#0d1117,#080c12);
-  border-left:1px solid var(--border);
-  z-index:210;
-  transform:translateX(106%);
-  transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);
+  border-left:1px solid var(--border);z-index:210;
+  transform:translateX(106%);transition:transform 0.35s cubic-bezier(0.22,0.61,0.36,1);
   display:flex;flex-direction:column;
 }
 .side-panel.open{transform:none}
-.sp-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;border-bottom:1px solid var(--border);
-  background:rgba(0,0,0,0.4);
-}
+.sp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
 .sp-header h3{font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
 .sp-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
 .sp-close:hover{color:var(--gold);border-color:var(--gold-dim)}
 .sp-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 .sp-body::-webkit-scrollbar{width:3px}
 .sp-body::-webkit-scrollbar-thumb{background:var(--border)}
-.ios-card{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:3px;overflow:hidden;display:none;
-}
+.ios-card{background:var(--surface2);border:1px solid var(--border);border-radius:3px;overflow:hidden;display:none}
 .ios-card.show{display:block}
 .ios-card-head{padding:12px 14px;border-bottom:1px solid var(--border)}
 .ios-card-code{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;color:var(--gold);letter-spacing:2px}
 .ios-card-desc{font-size:0.82rem;color:var(--text);margin-top:5px;line-height:1.4}
 .ios-card-actions{padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
-.ac-btn{
-  font-family:'Orbitron',sans-serif;font-size:0.5rem;
-  letter-spacing:1px;text-transform:uppercase;
-  padding:6px 13px;border-radius:2px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.03);
-  color:var(--text-dim);cursor:pointer;transition:all 0.18s ease;
-}
+.ac-btn{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;padding:6px 13px;border-radius:2px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text-dim);cursor:pointer;transition:all 0.18s ease}
 .ac-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
 .ac-btn.green{border-color:rgba(57,255,135,0.4);color:var(--green);background:rgba(57,255,135,0.05)}
 .ac-btn.green:hover{background:rgba(57,255,135,0.12);border-color:var(--green)}
@@ -447,45 +393,18 @@ body::after{
 .ios-card-info{padding:10px 14px;font-size:0.78rem;color:var(--text-dim);line-height:1.5}
 
 .sp-search-row{display:flex;gap:6px}
-.sp-search-input{
-  flex:1;
-  background:var(--surface2);border:1px solid var(--border);border-radius:3px;
-  color:var(--text-bright);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;
-  padding:9px 12px;outline:none;transition:border-color 0.2s ease;
-}
+.sp-search-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text-bright);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;padding:9px 12px;outline:none;transition:border-color 0.2s ease}
 .sp-search-input::placeholder{color:var(--text-dim);font-size:0.78rem}
 .sp-search-input:focus{border-color:var(--gold-dim)}
-.sp-search-go{
-  background:rgba(245,197,24,0.08);border:1px solid var(--gold-dim);
-  color:var(--gold);border-radius:3px;padding:9px 14px;
-  cursor:pointer;font-family:'Orbitron',sans-serif;
-  font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;
-  transition:all 0.18s ease;white-space:nowrap;
-}
+.sp-search-go{background:rgba(245,197,24,0.08);border:1px solid var(--gold-dim);color:var(--gold);border-radius:3px;padding:9px 14px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;transition:all 0.18s ease;white-space:nowrap}
 .sp-search-go:hover{background:rgba(245,197,24,0.18)}
 
-.sp-transcript{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:3px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:180px;
-}
-.sp-transcript-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.sp-transcript-header span{
-  font-family:'Space Mono',monospace;font-size:0.45rem;
-  letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
-}
-.sp-transcript-clear{
-  background:none;border:1px solid var(--border);
-  color:var(--text-dim);font-size:0.55rem;
-  padding:2px 7px;border-radius:2px;cursor:pointer;
-}
+.sp-transcript{background:var(--surface2);border:1px solid var(--border);border-radius:3px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:180px}
+.sp-transcript-header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sp-transcript-header span{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
+.sp-transcript-clear{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:0.55rem;padding:2px 7px;border-radius:2px;cursor:pointer}
 .sp-transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
-.sp-transcript-msgs{
-  flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;
-  scroll-behavior:smooth;max-height:250px;
-}
+.sp-transcript-msgs{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth;max-height:250px}
 .sp-transcript-msgs::-webkit-scrollbar{width:3px}
 .sp-transcript-msgs::-webkit-scrollbar-track{background:transparent}
 .sp-transcript-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -501,12 +420,7 @@ body::after{
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-bg.on{opacity:1;pointer-events:auto}
-.modal{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:4px;width:min(92%,460px);max-height:82vh;
-  display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.9);
-  overflow:hidden;animation:modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
-}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;width:min(92%,460px);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.9);overflow:hidden;animation:modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes modalIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:none}}
 .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
 .modal-head h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
@@ -515,10 +429,7 @@ body::after{
 .modal-list{overflow-y:auto;flex:1;padding:6px}
 .modal-list::-webkit-scrollbar{width:3px}
 .modal-list::-webkit-scrollbar-thumb{background:var(--border)}
-.ios-row{
-  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;cursor:pointer;
-  transition:background 0.15s ease;border-bottom:1px solid rgba(30,45,61,0.5);
-}
+.ios-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;cursor:pointer;transition:background 0.15s ease;border-bottom:1px solid rgba(30,45,61,0.5)}
 .ios-row:hover{background:rgba(245,197,24,0.06)}
 .ios-row-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.72rem;min-width:52px;letter-spacing:1px}
 .ios-row-desc{font-size:0.78rem;color:var(--text);flex:1;line-height:1.3}
@@ -541,13 +452,7 @@ body::after{
 .recap-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.07)}
 .recap-btn.primary:hover{background:rgba(245,197,24,0.16)}
 
-.end-bar{
-  position:fixed;bottom:0;left:0;right:0;
-  background:linear-gradient(0deg,rgba(8,12,15,0.99),rgba(13,17,23,0.96));
-  border-top:1px solid var(--border);backdrop-filter:blur(16px);
-  padding:14px 18px;z-index:90;
-  transform:translateY(100%);transition:transform 0.3s ease;
-}
+.end-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(8,12,15,0.99),rgba(13,17,23,0.96));border-top:1px solid var(--border);backdrop-filter:blur(16px);padding:14px 18px;z-index:90;transform:translateY(100%);transition:transform 0.3s ease}
 .end-bar.show{transform:none}
 .end-bar-text{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
 .end-bar-btns{display:flex;gap:8px;flex-wrap:wrap}
@@ -566,10 +471,7 @@ body::after{
 .info-content li{margin:4px 0;line-height:1.5}
 .cmd-pill{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--gold);background:rgba(245,197,24,0.07);border:1px solid rgba(245,197,24,0.2);border-radius:2px;padding:1px 6px}
 
-.sync-panel{
-  background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:10px 12px;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;
-}
+.sync-panel{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
 .sync-panel span{font-size:0.6rem;color:var(--text-dim);font-family:'Space Mono',monospace;letter-spacing:1px}
 .sync-status{width:8px;height:8px;border-radius:50%}
 .sync-status.online{background:var(--green);box-shadow:0 0 8px var(--green)}
@@ -593,159 +495,61 @@ body::after{
 <div class="corner-tl"></div><div class="corner-tr"></div>
 <div class="corner-bl"></div><div class="corner-br"></div>
 
-<!-- Bandeau invitation plein écran -->
 <div class="fullscreen-banner" id="fullscreenBanner">
   <span class="fullscreen-banner-text" id="fullscreenBannerText">📱 Passer en plein écran pour une meilleure expérience</span>
   <button class="fullscreen-banner-btn" id="fullscreenBannerBtn">PLEIN ÉCRAN</button>
   <button class="fullscreen-banner-close" id="fullscreenBannerClose">✕</button>
 </div>
 
-<!-- Bouton flottant plein écran -->
 <button class="fullscreen-fab" id="fullscreenFab" title="Plein écran">⛶</button>
 
 <div class="overlay" id="overlay"></div>
 <div class="side-panel" id="sidePanel">
-  <div class="sp-header">
-    <h3>⚡ DIAGNOSTIC</h3>
-    <button class="sp-close" id="spClose">✕</button>
-  </div>
+  <div class="sp-header"><h3>⚡ DIAGNOSTIC</h3><button class="sp-close" id="spClose">✕</button></div>
   <div class="sp-body">
-    <div class="sp-search-row">
-      <input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false">
-      <button class="sp-search-go" id="spSearchGo">GO</button>
-    </div>
+    <div class="sp-search-row"><input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false"><button class="sp-search-go" id="spSearchGo">GO</button></div>
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:10px">📋 LISTE DES IOS</button>
-    
-    <div class="sync-panel" id="syncPanel">
-      <span id="syncLabel">Firebase: Connexion...</span>
-      <div class="sync-status syncing" id="syncDot"></div>
-    </div>
-    
+    <div class="sync-panel" id="syncPanel"><span id="syncLabel">Firebase: Connexion...</span><div class="sync-status syncing" id="syncDot"></div></div>
     <div class="ios-card" id="iosCard">
-      <div class="ios-card-head">
-        <div class="ios-card-code" id="icCode">IOS-???</div>
-        <div style="margin-top:5px;display:flex;align-items:center;gap:8px">
-          <span class="prio-tag" id="icPrio"></span>
-        </div>
-        <div class="ios-card-desc" id="icDesc"></div>
-      </div>
-      <div class="ios-card-actions">
-        <button class="ac-btn green" id="icGuide">▶ GUIDAGE</button>
-        <button class="ac-btn red" id="icCancel">✕ ANNULER</button>
-        <button class="ac-btn" id="icHome">⌂ ACCUEIL</button>
-        <button class="ac-btn" id="icNew">🔍 NOUVEAU</button>
-      </div>
+      <div class="ios-card-head"><div class="ios-card-code" id="icCode">IOS-???</div><div style="margin-top:5px;display:flex;align-items:center;gap:8px"><span class="prio-tag" id="icPrio"></span></div><div class="ios-card-desc" id="icDesc"></div></div>
+      <div class="ios-card-actions"><button class="ac-btn green" id="icGuide">▶ GUIDAGE</button><button class="ac-btn red" id="icCancel">✕ ANNULER</button><button class="ac-btn" id="icHome">⌂ ACCUEIL</button><button class="ac-btn" id="icNew">🔍 NOUVEAU</button></div>
       <div class="ios-card-info" id="icInfo"></div>
     </div>
     <div class="sp-transcript">
-      <div class="sp-transcript-header">
-        <span>HISTORIQUE</span>
-        <button class="sp-transcript-clear" id="clearChat">Effacer</button>
-      </div>
-      <div class="sp-transcript-msgs" id="chatLog">
-        <div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div>
-      </div>
+      <div class="sp-transcript-header"><span>HISTORIQUE</span><button class="sp-transcript-clear" id="clearChat">Effacer</button></div>
+      <div class="sp-transcript-msgs" id="chatLog"><div class="t-msg ai"><div class="t-bubble">✨ Système prêt. Énoncer le numéro IOS ou décrire la panne.</div></div></div>
     </div>
   </div>
 </div>
 
 <div class="header">
-  <div class="logo-block">
-    <div class="logo">IAOS T4</div>
-    <div class="logo-sub">DUALIS U53700 · ASSISTANT</div>
-  </div>
-  <div class="header-right">
-    <span class="fb-status" id="fbHeaderStatus">⚡</span>
-    <div class="hdr-clock" id="clock">--:--:--</div>
-    <button class="hdr-btn" id="infoBtn" title="Guide d'utilisation">ℹ</button>
-    <button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button>
-  </div>
+  <div class="logo-block"><div class="logo">IAOS T4</div><div class="logo-sub">DUALIS U53700 · ASSISTANT</div></div>
+  <div class="header-right"><span class="fb-status" id="fbHeaderStatus">⚡</span><div class="hdr-clock" id="clock">--:--:--</div><button class="hdr-btn" id="infoBtn" title="Guide d'utilisation">ℹ</button><button class="hdr-btn" id="panelBtn" title="Panneau">⚙</button></div>
 </div>
 
 <div class="app-body">
-
-  <div class="status-bar">
-    <div class="status-indicator" id="statusDot"></div>
-    <span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span>
-  </div>
-
+  <div class="status-bar"><div class="status-indicator" id="statusDot"></div><span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span></div>
   <div class="mic-zone">
     <div class="mic-outer" id="micBtn" role="button" tabindex="0" aria-label="Activer/couper le micro">
-      <div class="ring ring-1"></div>
-      <div class="ring ring-2"></div>
-      <div class="ring ring-3"></div>
-      <div class="bars" id="bars">
-        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        <div class="bar"></div><div class="bar"></div>
-      </div>
+      <div class="ring ring-1"></div><div class="ring ring-2"></div><div class="ring ring-3"></div>
+      <div class="bars" id="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
     </div>
     <div class="mic-tap-hint" id="micHint">Appuyer pour couper / réactiver</div>
   </div>
-
-  <div class="cmd-strip">
-    <div class="cmd-tag">IOS [N°]</div>
-    <div class="cmd-tag active-hint">OUI</div>
-    <div class="cmd-tag active-hint">NON</div>
-    <div class="cmd-tag">Suivant</div>
-    <div class="cmd-tag">Précédent</div>
-    <div class="cmd-tag">Répéter</div>
-    <div class="cmd-tag">Guidage</div>
-    <div class="cmd-tag">Annuler</div>
-    <div class="cmd-tag">Accueil</div>
-  </div>
-
+  <div class="cmd-strip"><div class="cmd-tag">IOS [N°]</div><div class="cmd-tag active-hint">OUI</div><div class="cmd-tag active-hint">NON</div><div class="cmd-tag">Suivant</div><div class="cmd-tag">Précédent</div><div class="cmd-tag">Répéter</div><div class="cmd-tag">Guidage</div><div class="cmd-tag">Annuler</div><div class="cmd-tag">Accueil</div></div>
   <div id="dynamicZone"></div>
-
   <div class="guide-card" id="guideCard">
-    <div class="gcard-label" id="gLabel">ÉTAPE</div>
-    <div class="gcard-ios-id" id="gIosId"></div>
-    <div class="gcard-step-label" id="gStepLbl"></div>
-    <div class="gcard-body" id="gBody"></div>
+    <div class="gcard-label" id="gLabel">ÉTAPE</div><div class="gcard-ios-id" id="gIosId"></div><div class="gcard-step-label" id="gStepLbl"></div><div class="gcard-body" id="gBody"></div>
     <div class="gcard-divider"></div>
-    <div class="gcard-actions" id="gActions">
-      <button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button>
-      <button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button>
-      <button class="gcard-btn" id="gPrev">← PRÉC.</button>
-      <button class="gcard-btn primary" id="gNext">SUIVANT →</button>
-      <button class="gcard-btn" id="gCancel">ANNULER</button>
-    </div>
-  </div>
-
-</div>
-
-<div class="end-bar" id="endBar">
-  <div class="end-bar-text">Procédure terminée</div>
-  <div class="end-bar-btns">
-    <button class="gcard-btn yes" id="ebRecap">📄 Bulletin de service</button>
-    <button class="gcard-btn no" id="ebClose">Fermer</button>
+    <div class="gcard-actions" id="gActions"><button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button><button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button><button class="gcard-btn" id="gPrev">← PRÉC.</button><button class="gcard-btn primary" id="gNext">SUIVANT →</button><button class="gcard-btn" id="gCancel">ANNULER</button></div>
   </div>
 </div>
 
-<div class="modal-bg" id="listBg">
-  <div class="modal">
-    <div class="modal-head"><h3>📋 LISTE DES IOS</h3><button class="modal-x" id="listX">✕</button></div>
-    <div class="modal-list" id="modalList"></div>
-  </div>
-</div>
+<div class="end-bar" id="endBar"><div class="end-bar-text">Procédure terminée</div><div class="end-bar-btns"><button class="gcard-btn yes" id="ebRecap">📄 Bulletin de service</button><button class="gcard-btn no" id="ebClose">Fermer</button></div></div>
 
-<div class="recap-bg" id="recapBg">
-  <div class="recap-modal">
-    <div class="recap-head"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapX">✕</button></div>
-    <div class="recap-body" id="recapBody"></div>
-    <div class="recap-foot">
-      <button class="recap-btn" id="recapPrint">🖨 Imprimer</button>
-      <button class="recap-btn primary" id="recapClose2">Fermer</button>
-    </div>
-  </div>
-</div>
-
-<div class="info-bg" id="infoBg">
-  <div class="info-modal">
-    <div class="info-head"><h3>ℹ GUIDE D'UTILISATION</h3><button class="info-x" id="infoX">✕</button></div>
-    <div class="info-content" id="infoContent"></div>
-  </div>
-</div>
-
+<div class="modal-bg" id="listBg"><div class="modal"><div class="modal-head"><h3>📋 LISTE DES IOS</h3><button class="modal-x" id="listX">✕</button></div><div class="modal-list" id="modalList"></div></div></div>
+<div class="recap-bg" id="recapBg"><div class="recap-modal"><div class="recap-head"><h3>📄 BULLETIN DE SERVICE</h3><button class="recap-close" id="recapX">✕</button></div><div class="recap-body" id="recapBody"></div><div class="recap-foot"><button class="recap-btn" id="recapPrint">🖨 Imprimer</button><button class="recap-btn primary" id="recapClose2">Fermer</button></div></div></div>
+<div class="info-bg" id="infoBg"><div class="info-modal"><div class="info-head"><h3>ℹ GUIDE D'UTILISATION</h3><button class="info-x" id="infoX">✕</button></div><div class="info-content" id="infoContent"></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -755,9 +559,6 @@ body::after{
 (function(){
 'use strict';
 
-/* ═══════════════════════════════════════════════════════════
-   CONFIGURATION FIREBASE - IAOS T4
-═══════════════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDAZb4At6Hx5UAeDowzfJVUrJly5FB8Anc",
   authDomain: "iaos-t4.firebaseapp.com",
@@ -768,374 +569,88 @@ const firebaseConfig = {
   appId: "1:315508710422:web:2d8a24d44b9a5125cce937"
 };
 
-/* ═══ INIT FIREBASE ═══ */
-let firebaseAvailable = false;
-let db = null;
-let firebaseRefs = {};
-let firebaseConnected = false;
-
+let firebaseAvailable = false, db = null, firebaseRefs = {}, firebaseConnected = false;
 try {
   if (typeof firebase === 'undefined') throw new Error('Firebase SDK non chargé');
-  firebase.initializeApp(firebaseConfig);
-  db = firebase.database();
-  firebaseAvailable = true;
-  console.log('✅ Firebase initialisé:', firebaseConfig.databaseURL);
-  
-  firebaseRefs = {
-    learning: db.ref('learning'),
-    synonyms: db.ref('learning/synonyms'),
-    corrections: db.ref('learning/corrections'),
-    usageStats: db.ref('learning/usageStats'),
-    iosSearches: db.ref('learning/iosSearches'),
-    learnedAssociations: db.ref('learning/learnedAssociations'),
-    connected: db.ref('.info/connected')
-  };
-  
-  firebaseRefs.connected.on('value', (snap) => {
-    firebaseConnected = snap.val() === true;
-    updateFirebaseUI();
-    if (firebaseConnected) { LearningEngine.syncFromFirebase(); }
-  });
-} catch(e) {
-  console.error('❌ Erreur Firebase:', e.message);
-  firebaseAvailable = false;
-  updateFirebaseUI();
-}
+  firebase.initializeApp(firebaseConfig); db = firebase.database(); firebaseAvailable = true;
+  firebaseRefs = { learning: db.ref('learning'), synonyms: db.ref('learning/synonyms'), corrections: db.ref('learning/corrections'), usageStats: db.ref('learning/usageStats'), iosSearches: db.ref('learning/iosSearches'), learnedAssociations: db.ref('learning/learnedAssociations'), connected: db.ref('.info/connected') };
+  firebaseRefs.connected.on('value', (snap) => { firebaseConnected = snap.val() === true; updateFirebaseUI(); if (firebaseConnected) { LearningEngine.syncFromFirebase(); } });
+} catch(e) { console.error('❌ Erreur Firebase:', e.message); firebaseAvailable = false; updateFirebaseUI(); }
 
 function updateFirebaseUI() {
   const statusText = !firebaseAvailable ? 'Firebase: Erreur' : firebaseConnected ? 'Firebase: Connecté' : 'Firebase: En attente...';
   const statusClass = !firebaseAvailable ? 'offline' : firebaseConnected ? 'online' : 'syncing';
-  const syncLabel = document.getElementById('syncLabel');
-  const syncDot = document.getElementById('syncDot');
-  const fbHeader = document.getElementById('fbHeaderStatus');
+  const syncLabel = document.getElementById('syncLabel'), syncDot = document.getElementById('syncDot'), fbHeader = document.getElementById('fbHeaderStatus');
   if (syncLabel) syncLabel.textContent = statusText;
   if (syncDot) syncDot.className = 'sync-status ' + statusClass;
   if (fbHeader) fbHeader.textContent = firebaseConnected ? '🟢' : (firebaseAvailable ? '🟡' : '🔴');
 }
 
-/* ═══════════════════════════════════
-   MODULE PLEIN ÉCRAN AUTO
-   Déclenchement automatique au premier geste
-═══════════════════════════════════ */
 const FullscreenManager = {
-  isFullscreen: false,
-  bannerDismissed: false,
-  autoTriggered: false,
-  
+  isFullscreen: false, bannerDismissed: false, autoTriggered: false,
   init() {
-    this.isSupported = !!(
-      document.documentElement.requestFullscreen ||
-      document.documentElement.webkitRequestFullscreen ||
-      document.documentElement.msRequestFullscreen
-    );
-    
-    if (!this.isSupported) {
-      const fab = document.getElementById('fullscreenFab');
-      const banner = document.getElementById('fullscreenBanner');
-      if (fab) fab.style.display = 'none';
-      if (banner) banner.style.display = 'none';
-      return;
-    }
-    
-    document.addEventListener('fullscreenchange', () => this.updateUI());
-    document.addEventListener('webkitfullscreenchange', () => this.updateUI());
-    document.addEventListener('MSFullscreenChange', () => this.updateUI());
-    
-    const fab = document.getElementById('fullscreenFab');
-    if (fab) fab.addEventListener('click', (e) => { e.stopPropagation(); this.toggle(); });
-    
-    const bannerBtn = document.getElementById('fullscreenBannerBtn');
-    const bannerClose = document.getElementById('fullscreenBannerClose');
+    this.isSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || document.documentElement.msRequestFullscreen);
+    if (!this.isSupported) { const fab = document.getElementById('fullscreenFab'), banner = document.getElementById('fullscreenBanner'); if (fab) fab.style.display = 'none'; if (banner) banner.style.display = 'none'; return; }
+    document.addEventListener('fullscreenchange', () => this.updateUI()); document.addEventListener('webkitfullscreenchange', () => this.updateUI()); document.addEventListener('MSFullscreenChange', () => this.updateUI());
+    const fab = document.getElementById('fullscreenFab'); if (fab) fab.addEventListener('click', (e) => { e.stopPropagation(); this.toggle(); });
+    const bannerBtn = document.getElementById('fullscreenBannerBtn'), bannerClose = document.getElementById('fullscreenBannerClose');
     if (bannerBtn) bannerBtn.addEventListener('click', () => { this.request(); this.dismissBanner(); });
     if (bannerClose) bannerClose.addEventListener('click', () => this.dismissBanner());
-    
-    this.setupAutoFullscreen();
-    this.updateUI();
-    console.log('🖥️ Module plein écran auto initialisé');
+    this.setupAutoFullscreen(); this.updateUI();
   },
-  
   setupAutoFullscreen() {
     if (this.isFullscreen) return;
-    
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    
-    if (isIOS) {
-      console.log('📱 iOS détecté - proposer l\'ajout à l\'écran d\'accueil');
-      const bannerText = document.getElementById('fullscreenBannerText');
-      if (bannerText) bannerText.textContent = '📱 Ajoutez cette page à l\'écran d\'accueil pour le vrai plein écran';
-      setTimeout(() => this.showBanner(), 1500);
-      return;
-    }
-    
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS) { const bannerText = document.getElementById('fullscreenBannerText'); if (bannerText) bannerText.textContent = '📱 Ajoutez cette page à l\'écran d\'accueil pour le vrai plein écran'; setTimeout(() => this.showBanner(), 1500); return; }
     const triggerFullscreen = (e) => {
       if (this.autoTriggered || this.isFullscreen) return;
-      
-      const tag = e.target.tagName.toLowerCase();
-      const isInteractive = ['button', 'input', 'select', 'textarea', 'a'].includes(tag);
-      const isOurButton = e.target.closest('#fullscreenFab') || 
-                          e.target.closest('#fullscreenBannerBtn') ||
-                          e.target.closest('#fullscreenBannerClose') ||
-                          e.target.closest('#micBtn') ||
-                          e.target.closest('.hdr-btn') ||
-                          e.target.closest('.gcard-btn') ||
-                          e.target.closest('.ac-btn') ||
-                          e.target.closest('.selection-item');
-      
+      const tag = e.target.tagName.toLowerCase(), isInteractive = ['button','input','select','textarea','a'].includes(tag);
+      const isOurButton = e.target.closest('#fullscreenFab') || e.target.closest('#fullscreenBannerBtn') || e.target.closest('#fullscreenBannerClose') || e.target.closest('#micBtn') || e.target.closest('.hdr-btn') || e.target.closest('.gcard-btn') || e.target.closest('.ac-btn') || e.target.closest('.selection-item');
       if (isInteractive && !isOurButton) return;
-      
       this.autoTriggered = true;
-      
-      setTimeout(() => {
-        this.request();
-        this.dismissBanner();
-        console.log('📱 Plein écran automatique déclenché');
-      }, 300);
+      setTimeout(() => { this.request(); this.dismissBanner(); }, 300);
     };
-    
-    document.addEventListener('click', triggerFullscreen, { once: false });
-    document.addEventListener('touchstart', triggerFullscreen, { once: false, passive: true });
-    
-    setTimeout(() => {
-      if (!this.isFullscreen && !this.bannerDismissed) {
-        this.showBanner();
-      }
-    }, 5000);
-    
-    const cleanup = () => {
-      if (this.isFullscreen) {
-        document.removeEventListener('click', triggerFullscreen);
-        document.removeEventListener('touchstart', triggerFullscreen);
-      }
-    };
-    document.addEventListener('fullscreenchange', cleanup);
-    document.addEventListener('webkitfullscreenchange', cleanup);
+    document.addEventListener('click', triggerFullscreen, { once: false }); document.addEventListener('touchstart', triggerFullscreen, { once: false, passive: true });
+    setTimeout(() => { if (!this.isFullscreen && !this.bannerDismissed) { this.showBanner(); } }, 5000);
+    const cleanup = () => { if (this.isFullscreen) { document.removeEventListener('click', triggerFullscreen); document.removeEventListener('touchstart', triggerFullscreen); } };
+    document.addEventListener('fullscreenchange', cleanup); document.addEventListener('webkitfullscreenchange', cleanup);
   },
-  
-  request() {
-    try {
-      const el = document.documentElement;
-      if (el.requestFullscreen) { el.requestFullscreen().catch(() => {}); }
-      else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
-      else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
-    } catch(e) {}
-  },
-  
-  exit() {
-    try {
-      if (document.exitFullscreen) { document.exitFullscreen().catch(() => {}); }
-      else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-      else if (document.msExitFullscreen) { document.msExitFullscreen(); }
-    } catch(e) {}
-  },
-  
-  toggle() {
-    if (this.isFullscreen) { this.exit(); }
-    else { this.request(); this.dismissBanner(); }
-  },
-  
-  updateUI() {
-    this.isFullscreen = !!(
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      document.msFullscreenElement
-    );
-    
-    const fab = document.getElementById('fullscreenFab');
-    if (fab) {
-      fab.textContent = this.isFullscreen ? '✕' : '⛶';
-      fab.title = this.isFullscreen ? 'Quitter le plein écran' : 'Passer en plein écran';
-      fab.classList.toggle('active', this.isFullscreen);
-    }
-    
-    if (this.isFullscreen) { this.hideBanner(); }
-  },
-  
-  showBanner() {
-    const banner = document.getElementById('fullscreenBanner');
-    if (banner && !this.isFullscreen) { banner.classList.add('show'); }
-  },
-  
-  hideBanner() {
-    const banner = document.getElementById('fullscreenBanner');
-    if (banner) { banner.classList.remove('show'); }
-  },
-  
-  dismissBanner() {
-    this.bannerDismissed = true;
-    this.hideBanner();
-  }
+  request() { try { const el = document.documentElement; if (el.requestFullscreen) { el.requestFullscreen().catch(() => {}); } else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); } else if (el.msRequestFullscreen) { el.msRequestFullscreen(); } } catch(e) {} },
+  exit() { try { if (document.exitFullscreen) { document.exitFullscreen().catch(() => {}); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } else if (document.msExitFullscreen) { document.msExitFullscreen(); } } catch(e) {} },
+  toggle() { if (this.isFullscreen) { this.exit(); } else { this.request(); this.dismissBanner(); } },
+  updateUI() { this.isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement); const fab = document.getElementById('fullscreenFab'); if (fab) { fab.textContent = this.isFullscreen ? '✕' : '⛶'; fab.title = this.isFullscreen ? 'Quitter le plein écran' : 'Passer en plein écran'; fab.classList.toggle('active', this.isFullscreen); } if (this.isFullscreen) { this.hideBanner(); } },
+  showBanner() { const banner = document.getElementById('fullscreenBanner'); if (banner && !this.isFullscreen) { banner.classList.add('show'); } },
+  hideBanner() { const banner = document.getElementById('fullscreenBanner'); if (banner) { banner.classList.remove('show'); } },
+  dismissBanner() { this.bannerDismissed = true; this.hideBanner(); }
 };
 
-/* ═══════════════════════════════════
-   MOTEUR D'APPRENTISSAGE
-═══════════════════════════════════ */
 const LearningEngine = {
-  localCache: {},
-  globalCache: {},
-  initialized: false,
-  
-  async init() {
-    const saved = localStorage.getItem('iaos_learning_cache');
-    if (saved) { try { this.localCache = JSON.parse(saved); } catch(e) {} }
-    if (firebaseAvailable && firebaseConnected) await this.syncFromFirebase();
-    this.initialized = true;
-  },
-  
-  async syncFromFirebase() {
-    if (!firebaseAvailable || !db) return;
-    try {
-      const snap = await firebaseRefs.learning.once('value');
-      const data = snap.val() || {};
-      this.globalCache = {
-        synonyms: data.synonyms || {},
-        corrections: data.corrections || {},
-        learnedAssociations: data.learnedAssociations || {}
-      };
-    } catch(e) {}
-  },
-  
-  async learnSynonym(command, newWord, confidence = 1) {
-    if (!this.localCache.synonyms) this.localCache.synonyms = {};
-    if (!this.localCache.synonyms[command]) this.localCache.synonyms[command] = [];
-    if (!this.localCache.synonyms[command].includes(newWord)) {
-      this.localCache.synonyms[command].push(newWord);
-      this.saveLocal();
-    }
-    if (firebaseAvailable && firebaseConnected) {
-      try {
-        const ref = firebaseRefs.synonyms.child(command);
-        const snap = await ref.once('value');
-        const existing = snap.val() || [];
-        if (!existing.includes(newWord)) {
-          existing.push(newWord);
-          await ref.set(existing);
-          await this.logUsage('synonym_learned', { command, word: newWord, confidence });
-        } else { await this.incrementUsage(command, newWord); }
-      } catch(e) {}
-    }
-  },
-  
-  async learnAssociation(unknownWord, knownCommand, context = {}) {
-    if (!this.localCache.learnedAssociations) this.localCache.learnedAssociations = {};
-    this.localCache.learnedAssociations[unknownWord.toLowerCase()] = {
-      command: knownCommand, context, learnedAt: Date.now(),
-      usageCount: (this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount || 0) + 1
-    };
-    this.saveLocal();
-    if (firebaseAvailable && firebaseConnected) {
-      try {
-        await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current) => {
-          if (!current) return { command: knownCommand, context, learnedAt: Date.now(), usageCount: 1 };
-          current.usageCount = (current.usageCount || 0) + 1;
-          return current;
-        });
-      } catch(e) {}
-    }
-  },
-  
-  async logIOSSearch(query, foundIOS, success) {
-    if (firebaseAvailable && firebaseConnected) {
-      try { await firebaseRefs.iosSearches.push().set({ query: query.toLowerCase().trim(), foundIOS: foundIOS || null, success: !!success, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {}
-    }
-  },
-  
-  async logUsage(action, data = {}) {
-    if (firebaseAvailable && firebaseConnected) {
-      try { await firebaseRefs.usageStats.push().set({ action, data, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {}
-    }
-  },
-  
-  async incrementUsage(command, word) {
-    if (firebaseAvailable && firebaseConnected) {
-      try { const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`); await ref.transaction((count) => (count || 0) + 1); } catch(e) {}
-    }
-  },
-  
-  matchWithLearning(txt, command, basePatterns) {
-    if (basePatterns && basePatterns.some(r => r.test(txt))) return true;
-    const localSynonyms = this.localCache.synonyms?.[command] || [];
-    for (const syn of localSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; }
-    const globalSynonyms = this.globalCache.synonyms?.[command] || [];
-    for (const syn of globalSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; }
-    return false;
-  },
-  
-  getAssociation(word) {
-    const w = word.toLowerCase();
-    if (this.localCache.learnedAssociations?.[w]) return this.localCache.learnedAssociations[w];
-    if (this.globalCache.learnedAssociations?.[w]) return this.globalCache.learnedAssociations[w];
-    return null;
-  },
-  
-  getAllKnownWords() {
-    const words = new Set();
-    Object.values(CMDS).flat().forEach(r => {
-      const str = r.toString();
-      const match = str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi);
-      if (match) match.forEach(m => words.add(m.replace(/\\/g,'').toLowerCase()));
-    });
-    const localSyns = this.localCache.synonyms || {};
-    Object.values(localSyns).flat().forEach(s => words.add(s.toLowerCase()));
-    const globalSyns = this.globalCache.synonyms || {};
-    Object.values(globalSyns).flat().forEach(s => words.add(s.toLowerCase()));
-    return [...words];
-  },
-  
+  localCache: {}, globalCache: {}, initialized: false,
+  async init() { const saved = localStorage.getItem('iaos_learning_cache'); if (saved) { try { this.localCache = JSON.parse(saved); } catch(e) {} } if (firebaseAvailable && firebaseConnected) await this.syncFromFirebase(); this.initialized = true; },
+  async syncFromFirebase() { if (!firebaseAvailable || !db) return; try { const snap = await firebaseRefs.learning.once('value'); const data = snap.val() || {}; this.globalCache = { synonyms: data.synonyms || {}, corrections: data.corrections || {}, learnedAssociations: data.learnedAssociations || {} }; } catch(e) {} },
+  async learnSynonym(command, newWord, confidence = 1) { if (!this.localCache.synonyms) this.localCache.synonyms = {}; if (!this.localCache.synonyms[command]) this.localCache.synonyms[command] = []; if (!this.localCache.synonyms[command].includes(newWord)) { this.localCache.synonyms[command].push(newWord); this.saveLocal(); } if (firebaseAvailable && firebaseConnected) { try { const ref = firebaseRefs.synonyms.child(command); const snap = await ref.once('value'); const existing = snap.val() || []; if (!existing.includes(newWord)) { existing.push(newWord); await ref.set(existing); await this.logUsage('synonym_learned', { command, word: newWord, confidence }); } else { await this.incrementUsage(command, newWord); } } catch(e) {} } },
+  async learnAssociation(unknownWord, knownCommand, context = {}) { if (!this.localCache.learnedAssociations) this.localCache.learnedAssociations = {}; this.localCache.learnedAssociations[unknownWord.toLowerCase()] = { command: knownCommand, context, learnedAt: Date.now(), usageCount: (this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount || 0) + 1 }; this.saveLocal(); if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current) => { if (!current) return { command: knownCommand, context, learnedAt: Date.now(), usageCount: 1 }; current.usageCount = (current.usageCount || 0) + 1; return current; }); } catch(e) {} } },
+  async logIOSSearch(query, foundIOS, success) { if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.iosSearches.push().set({ query: query.toLowerCase().trim(), foundIOS: foundIOS || null, success: !!success, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {} } },
+  async logUsage(action, data = {}) { if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.usageStats.push().set({ action, data, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {} } },
+  async incrementUsage(command, word) { if (firebaseAvailable && firebaseConnected) { try { const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`); await ref.transaction((count) => (count || 0) + 1); } catch(e) {} } },
+  matchWithLearning(txt, command, basePatterns) { if (basePatterns && basePatterns.some(r => r.test(txt))) return true; const localSynonyms = this.localCache.synonyms?.[command] || []; for (const syn of localSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; } const globalSynonyms = this.globalCache.synonyms?.[command] || []; for (const syn of globalSynonyms) { if (txt.toLowerCase().includes(syn.toLowerCase())) return true; } return false; },
+  getAssociation(word) { const w = word.toLowerCase(); if (this.localCache.learnedAssociations?.[w]) return this.localCache.learnedAssociations[w]; if (this.globalCache.learnedAssociations?.[w]) return this.globalCache.learnedAssociations[w]; return null; },
+  getAllKnownWords() { const words = new Set(); Object.values(CMDS).flat().forEach(r => { const str = r.toString(); const match = str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi); if (match) match.forEach(m => words.add(m.replace(/\\/g,'').toLowerCase())); }); const localSyns = this.localCache.synonyms || {}; Object.values(localSyns).flat().forEach(s => words.add(s.toLowerCase())); const globalSyns = this.globalCache.synonyms || {}; Object.values(globalSyns).flat().forEach(s => words.add(s.toLowerCase())); return [...words]; },
   saveLocal() { try { localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache)); } catch(e) {} }
 };
 
-/* ═══════════════════════════════════
-   APPRENTISSAGE AUTONOME
-═══════════════════════════════════ */
 const AutonomousLearner = {
-  learningSession: null,
-  unknownWords: {},
-  init() { console.log('🤖 Apprentissage autonome activé'); },
+  learningSession: null, unknownWords: {}, init() {},
   isLearningAllowed() { if (isSpeaking) return false; if (this.learningSession) return false; return true; },
-  detectUnknown(txt) {
-    if (!this.isLearningAllowed()) return [];
-    const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w));
-    const knownWords = LearningEngine.getAllKnownWords();
-    const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3);
-    if (unknowns.length > 0) {
-      unknowns.forEach(w => {
-        if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [] };
-        this.unknownWords[w].count++;
-        this.unknownWords[w].contexts.push({ fullText: txt, hasIOS: !!curIOS, iosId: curIOS?.id, inGuide: guideOn, stepIdx, timestamp: Date.now() });
-      });
-    }
-    return unknowns;
-  },
-  guessMeaning(unknownWord) {
-    if (!this.isLearningAllowed()) return [];
-    const suggestions = [];
-    if (guideOn && guideSteps[stepIdx]?.d) { suggestions.push({ command: 'oui', confidence: 0.45, reason: 'Question oui/non en cours' }); suggestions.push({ command: 'non', confidence: 0.45, reason: 'Question oui/non en cours' }); }
-    if (guideOn && !guideSteps[stepIdx]?.d) { suggestions.push({ command: 'next', confidence: 0.55, reason: 'Étape suivante attendue' }); }
-    if (document.getElementById('endBar').classList.contains('show')) { suggestions.push({ command: 'bulletin', confidence: 0.4, reason: 'Procédure terminée' }); suggestions.push({ command: 'fermer', confidence: 0.4, reason: 'Procédure terminée' }); }
-    const knownWords = LearningEngine.getAllKnownWords();
-    const similar = this.findSimilarWords(unknownWord, knownWords);
-    for (const sim of similar.slice(0, 2)) { suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6, reason: `Ressemble à "${sim.word}"` }); }
-    const existingAssociation = LearningEngine.getAssociation(unknownWord);
-    if (existingAssociation) { suggestions.unshift({ command: existingAssociation.command, confidence: 0.9, reason: 'Déjà appris précédemment' }); }
-    return suggestions.sort((a, b) => b.confidence - a.confidence);
-  },
+  detectUnknown(txt) { if (!this.isLearningAllowed()) return []; const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w)); const knownWords = LearningEngine.getAllKnownWords(); const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3); if (unknowns.length > 0) { unknowns.forEach(w => { if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [] }; this.unknownWords[w].count++; this.unknownWords[w].contexts.push({ fullText: txt, hasIOS: !!curIOS, iosId: curIOS?.id, inGuide: guideOn, stepIdx, timestamp: Date.now() }); }); } return unknowns; },
+  guessMeaning(unknownWord) { if (!this.isLearningAllowed()) return []; const suggestions = []; if (guideOn && guideSteps[stepIdx]?.d) { suggestions.push({ command: 'oui', confidence: 0.45 }); suggestions.push({ command: 'non', confidence: 0.45 }); } if (guideOn && !guideSteps[stepIdx]?.d) { suggestions.push({ command: 'next', confidence: 0.55 }); } if (document.getElementById('endBar').classList.contains('show')) { suggestions.push({ command: 'bulletin', confidence: 0.4 }); suggestions.push({ command: 'fermer', confidence: 0.4 }); } const knownWords = LearningEngine.getAllKnownWords(); const similar = this.findSimilarWords(unknownWord, knownWords); for (const sim of similar.slice(0, 2)) { suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6 }); } const existingAssociation = LearningEngine.getAssociation(unknownWord); if (existingAssociation) { suggestions.unshift({ command: existingAssociation.command, confidence: 0.9 }); } return suggestions.sort((a, b) => b.confidence - a.confidence); },
   findSimilarWords(word, dictionary) { return dictionary.map(w => ({ word: w, similarity: this.stringSimilarity(word, w) })).filter(s => s.similarity > 0.5).sort((a, b) => b.similarity - a.similarity).slice(0, 5); },
   stringSimilarity(a, b) { a = a.toLowerCase(); b = b.toLowerCase(); if (a === b) return 1; if (a.length < 2 || b.length < 2) return 0; const pairsA = new Set(); for (let i = 0; i < a.length - 1; i++) pairsA.add(a.substring(i, i + 2)); const pairsB = new Set(); for (let i = 0; i < b.length - 1; i++) pairsB.add(b.substring(i, i + 2)); const intersection = new Set([...pairsA].filter(x => pairsB.has(x))); return (2.0 * intersection.size) / (pairsA.size + pairsB.size); },
-  async startLearningSession(unknownWord, suggestions) {
-    if (isSpeaking) return; if (!this.isLearningAllowed()) return;
-    this.learningSession = { word: unknownWord, suggestions, startTime: Date.now(), resolved: false };
-    if (suggestions.length === 0) { const msg = `Je ne comprends pas "${unknownWord}". Pouvez-vous reformuler ?`; addMsg(msg, 'learning'); speak(msg); setTimeout(() => { if (this.learningSession && !this.learningSession.resolved) this.endSession(); }, 12000); return; }
-    const best = suggestions[0]; const msg = `🤔 Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`; addMsg(msg, 'learning'); speak(msg); setUI('learning');
-    setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { if (suggestions.length > 1) { const second = suggestions[1]; const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`; addMsg(msg2, 'learning'); speak(msg2); } setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { this.endSession(); } }, 10000); } }, 10000);
-  },
+  async startLearningSession(unknownWord, suggestions) { if (isSpeaking) return; if (!this.isLearningAllowed()) return; this.learningSession = { word: unknownWord, suggestions, startTime: Date.now(), resolved: false }; if (suggestions.length === 0) { const msg = `Je ne comprends pas "${unknownWord}". Pouvez-vous reformuler ?`; addMsg(msg, 'learning'); speak(msg); setTimeout(() => { if (this.learningSession && !this.learningSession.resolved) this.endSession(); }, 12000); return; } const best = suggestions[0]; const msg = `🤔 Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`; addMsg(msg, 'learning'); speak(msg); setUI('learning'); setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { if (suggestions.length > 1) { const second = suggestions[1]; const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`; addMsg(msg2, 'learning'); speak(msg2); } setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { this.endSession(); } }, 10000); } }, 10000); },
   endSession() { if (this.learningSession && !isSpeaking) { const word = this.learningSession.word; const msg = `Je n'ai pas compris "${word}". Dites "apprends ${word} = [commande]" pour m'apprendre.`; addMsg(msg, 'learning'); speak(msg); this.learningSession = null; setUI('idle'); } },
   async confirmLearning(unknownWord, command) { await LearningEngine.learnSynonym(command, unknownWord); await LearningEngine.learnAssociation(unknownWord, command, { learnedVia: 'autonomous', context: curIOS?.id || 'none' }); const msg = `✅ J'ai appris automatiquement : "${unknownWord}" = "${command}".`; addMsg(msg, 'learning'); speak(msg); this.learningSession = null; setUI('idle'); if (command === 'next') nextStep(); else if (command === 'oui') answerYes(); else if (command === 'non') answerNo(); else if (command === 'repeat' && lastSpokenText) speak(lastSpokenText); }
 };
 
-/* ═══════════════════════════════════
-   BASE DE DONNÉES IOS
-═══════════════════════════════════ */
 const IOS_DB = {
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
@@ -1750,115 +1265,61 @@ const ALIAS_DB = {
   "surveillance": ["246"],
   "heterogene": ["247"]
 };
+for(let i=0;i<=247;i++){ const id = String(i).padStart(3,'0'); if(!IOS_DB[id]) IOS_DB[id] = { id, pri:'l', desc:'Information technique / retour maintenance', instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}], symboles:'', vitesse:'', tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}], kw:[] }; }
 
-for(let i=0;i<=247;i++){
-  const id = String(i).padStart(3,'0');
-  if(!IOS_DB[id]) IOS_DB[id] = {
-    id, pri:'l', desc:'Information technique / retour maintenance',
-    instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],
-    symboles:'', vitesse:'',
-    tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],
-    kw:[]
-  };
-}
-
-/* ═══ ÉTAT ═══ */
-let curIOS = null;
-let guideOn = false, guideSteps = [], stepIdx = 0;
-let iosInfoShown = false;
+let curIOS = null, guideOn = false, guideSteps = [], stepIdx = 0, iosInfoShown = false;
 let micOn = true, isListening = false, isSpeaking = false;
 let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
-let procStart = null, procEnd = null, procLog = [];
-let cachedVoice = null;
-let lastSpokenText = '';
-let lastUserQuery = '';
-let multiSelectActive = false;
-let micWasOnBeforeHome = true;
+let procStart = null, procEnd = null, procLog = [], cachedVoice = null;
+let lastSpokenText = '', lastUserQuery = '', multiSelectActive = false, micWasOnBeforeHome = true;
 
-/* ═══ SYNTH ═══ */
-const synth = window.speechSynthesis;
-const hasVoice = !!synth;
+const synth = window.speechSynthesis, hasVoice = !!synth;
 if(hasVoice){ synth.getVoices(); synth.onvoiceschanged = ()=>{ cachedVoice=null; getVoice(); }; }
 
 function getVoice(){
-  if(cachedVoice) return cachedVoice;
-  const vx = synth.getVoices();
-  if(!vx.length) return null;
+  if(cachedVoice) return cachedVoice; const vx = synth.getVoices(); if(!vx.length) return null;
   const fem = ['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine'];
   const mal = ['male','homme','masculin','thomas','pierre','jean','paul','jacques','robert','louis','nicolas','daniel','michel','alain','philippe','pascal','patrick','renaud','laurent','olivier','denis','serge','bruno','marc','guy','yves'];
   let v = vx.find(x=>x.lang.startsWith('fr') && fem.some(f=>x.name.toLowerCase().includes(f)));
   if(!v) v = vx.find(x=>x.lang.startsWith('fr') && !mal.some(m=>x.name.toLowerCase().includes(m)));
-  if(!v) v = vx.find(x=>x.lang.startsWith('fr'));
-  cachedVoice = v;
-  return v;
+  if(!v) v = vx.find(x=>x.lang.startsWith('fr')); cachedVoice = v; return v;
 }
 
 function speak(txt, cb){
-  if(!hasVoice){ if(cb) cb(); return; }
-  if(isSpeaking) synth.cancel();
-  clearTimeout(earlyListenTimer);
+  if(!hasVoice){ if(cb) cb(); return; } if(isSpeaking) synth.cancel(); clearTimeout(earlyListenTimer);
   if (AutonomousLearner.learningSession) { AutonomousLearner.learningSession = null; setUI('speak'); }
-  let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
-    .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
-    .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
-    .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s')
-    .replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
-    .replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J')
-    .replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M')
-    .replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F')
-    .replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M')
-    .replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M')
-    .replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S')
-    .replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J')
-    .replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure')
-    .replace(/\bart\.\s*/gi,'article ')
-    .replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10))
-    .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
-    .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
-  lastSpokenText = x;
-  currentUtterance = new SpeechSynthesisUtterance(x);
-  currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
-  const v = getVoice(); if(v) currentUtterance.voice=v;
-  const estimatedDuration = (x.length / 12) * 1000;
-  const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
-  isSpeaking=true; setUI('speak');
-  earlyListenTimer = setTimeout(() => { if(isSpeaking && micOn && !isListening){ setUI('earlyListen'); startListening(); } }, earlyListenDelay);
+  let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'').replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L').replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès').replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s').replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J').replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M').replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F').replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M').replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M').replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S').replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J').replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ').replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10)).replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10)).replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
+  lastSpokenText = x; currentUtterance = new SpeechSynthesisUtterance(x); currentUtterance.lang='fr-FR'; currentUtterance.rate=0.92; currentUtterance.volume=1;
+  const v = getVoice(); if(v) currentUtterance.voice=v; const estimatedDuration = (x.length / 12) * 1000; const earlyListenDelay = Math.max(estimatedDuration - 2000, 500);
+  isSpeaking=true; setUI('speak'); earlyListenTimer = setTimeout(() => { if(isSpeaking && micOn && !isListening){ setUI('earlyListen'); startListening(); } }, earlyListenDelay);
   currentUtterance.onend = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('idle'); if(micOn && !isListening) schedRestart(); if(cb) cb(); currentUtterance=null; };
   currentUtterance.onerror = ()=>{ isSpeaking=false; clearTimeout(earlyListenTimer); setUI('error'); if(micOn && !isListening) schedRestart(); if(cb) cb(); currentUtterance=null; };
   synth.speak(currentUtterance);
 }
 
-/* ═══ UI STATE ═══ */
 function $(id){ return document.getElementById(id); }
 function setUI(state){
   const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
   const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Synthèse vocale…', earlyListen:'Prêt à répondre…', blocked:'Procédure active — terminez ou annulez', error:'Erreur — relance automatique', muted:'Micro coupé', learning:'Apprentissage en cours…' };
   dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':state==='learning'?'learning':'');
   txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':state==='learning'?'learning':'');
-  txt.textContent = hints[state] || hints.idle;
-  bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':state==='learning'?'learning':'');
+  txt.textContent = hints[state] || hints.idle; bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':state==='learning'?'learning':'');
   mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='learning'?'learning':'');
 }
 function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
 function addMsg(html, role='ai'){ const log=$('chatLog'); const d=document.createElement('div'); d.className='t-msg '+role; d.innerHTML='<div class="t-bubble">'+html+'</div>'; log.appendChild(d); log.scrollTop=log.scrollHeight; while(log.children.length>100) log.removeChild(log.firstChild); }
 
-/* ═══ SÉLECTION MULTIPLE ═══ */
-function showMultiSelect(alias, iosIds) { $('guideCard').classList.remove('show'); multiSelectActive = true; const zone = $('dynamicZone'); let html = '<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "' + alias + '" correspond à plusieurs IOS</h3></div><div class="selection-list">'; iosIds.forEach((id) => { const io = IOS_DB[id]; if (io) { const prioClass = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l'); const prioText = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF'); html += `<div class="selection-item" data-ios="${io.id}" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-item-prio ${prioClass}">${prioText}</span><span class="selection-arrow">→</span></div>`; } }); html += '</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>'; zone.innerHTML = html; const msg = `Plusieurs IOS correspondent. Sélectionnez celui qui vous concerne.`; addMsg(msg); speak("Plusieurs IOS correspondent. Veuillez sélectionner celui qui vous concerne."); }
+function showMultiSelect(alias, iosIds) { $('guideCard').classList.remove('show'); multiSelectActive = true; const zone = $('dynamicZone'); let html = '<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "' + alias + '" correspond à plusieurs IOS</h3></div><div class="selection-list">'; iosIds.forEach((id) => { const io = IOS_DB[id]; if (io) { const prioClass = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l'); const prioText = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF'); html += `<div class="selection-item" data-ios="${io.id}" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-item-prio ${prioClass}">${prioText}</span><span class="selection-arrow">→</span></div>`; } }); html += '</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>'; zone.innerHTML = html; addMsg(`Plusieurs IOS correspondent. Sélectionnez celui qui vous concerne.`); speak("Plusieurs IOS correspondent. Veuillez sélectionner celui qui vous concerne."); }
 function selectFromMulti(iosId) { closeMultiSelect(); const io = IOS_DB[iosId]; if (io) { loadIOS(io); LearningEngine.logIOSSearch(lastUserQuery, iosId, true); } }
 function cancelMultiSelect() { closeMultiSelect(); addMsg('❌ Sélection annulée.'); speak('Sélection annulée.'); }
 function closeMultiSelect() { multiSelectActive = false; $('dynamicZone').innerHTML = ''; }
-window.selectFromMulti = selectFromMulti;
-window.cancelMultiSelect = cancelMultiSelect;
+window.selectFromMulti = selectFromMulti; window.cancelMultiSelect = cancelMultiSelect;
 
-/* ═══ GUIDE CARD ═══ */
 function renderGuideCard(){ const card=$('guideCard'); if(!guideOn || stepIdx>=guideSteps.length){ card.classList.remove('show'); iosInfoShown=false; return; } const s=guideSteps[stepIdx]; if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; } card.classList.add('show'); $('gLabel').textContent='PROCÉDURE GUIDÉE'; $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`; $('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length; $('gBody').textContent=s.t; $('gYes').style.display=s.d?'inline-flex':'none'; $('gNo').style.display=s.d?'inline-flex':'none'; $('gPrev').style.display='inline-flex'; $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex'; $('gCancel').textContent='ANNULER'; iosInfoShown=false; }
 function showIosInfoCard(){ if(!curIOS) return; const card=$('guideCard'); card.classList.add('show'); $('gLabel').textContent='IOS DÉTECTÉ'; $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`; $('gStepLbl').textContent=curIOS.desc; $('gBody').textContent='Prêt à démarrer la procédure de guidage. Dites « guidage » ou appuyez sur DÉMARRER.'; $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').textContent='▶ DÉMARRER LE GUIDAGE'; $('gNext').style.display='inline-flex'; $('gCancel').textContent='ANNULER'; $('gCancel').style.display='inline-flex'; iosInfoShown=true; }
 function showEndCard(msg){ const card=$('guideCard'); card.classList.add('show'); $('gLabel').textContent='TERMINÉ'; $('gIosId').textContent=''; $('gStepLbl').textContent=''; $('gBody').textContent=msg; $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').style.display='none'; $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex'; iosInfoShown=false; }
-
-/* ═══ PANEL IOS CARD ═══ */
 function renderIosCard(ios){ $('iosCard').classList.add('show'); $('icCode').textContent='IOS-'+ios.id; $('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO'; $('icPrio').className='prio-tag prio-'+ios.pri; $('icDesc').textContent=ios.desc; $('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.'; }
 
-/* ═══ IOS LOGIC ═══ */
 function findIOS(q){ q=q.toLowerCase().trim(); lastUserQuery = q; const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) { LearningEngine.logIOSSearch(q, id, true); return { single: IOS_DB[id] }; } } for(const [alias, ids] of Object.entries(ALIAS_DB)){ if(q.includes(alias)) { if (Array.isArray(ids)) { if (ids.length === 1) { const io = IOS_DB[ids[0]]; if (io) { LearningEngine.logIOSSearch(q, ids[0], true); return { single: io }; } } else { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: ids, alias: alias }; } } else if (typeof ids === 'string') { const io = IOS_DB[ids]; if (io) { LearningEngine.logIOSSearch(q, ids, true); return { single: io }; } } } } const matches = []; for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) { matches.push(io.id); } if(io.kw && io.kw.some(k=>q.includes(k))) { if (!matches.includes(io.id)) matches.push(io.id); } } if (matches.length === 1) { LearningEngine.logIOSSearch(q, matches[0], true); return { single: IOS_DB[matches[0]] }; } else if (matches.length > 1) { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: matches, alias: q }; } LearningEngine.logIOSSearch(q, null, false); return null; }
 function loadIOS(ios){ curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; LearningEngine.logUsage('ios_loaded', { ios: ios.id, pri: ios.pri }); }
 function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); LearningEngine.logUsage('guide_started', { ios: curIOS.id }); }
@@ -1872,7 +1333,6 @@ function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classLi
 function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); LearningEngine.logUsage('procedure_finished', { ios: curIOS?.id, duration: procEnd - procStart }); }
 function goHome(){ micWasOnBeforeHome = micOn; cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('spSearch').value=''; closeMultiSelect(); if (micOn) { stopListening(); micOn = false; setUI('muted'); $('statusTxt').textContent='Micro coupé · Message d\'accueil'; } addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil.", () => { if (micWasOnBeforeHome) { micOn = true; startListening(); setUI('idle'); $('statusTxt').textContent='Micro actif · Dites un numéro IOS'; toast('Micro réactivé'); } }); }
 
-/* ═══ RAPPORT ═══ */
 function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
 function genRecap(){ if(!curIOS||!procStart) return ''; const e=procEnd||new Date(); return ['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n'); }
@@ -1880,21 +1340,19 @@ function openRecap(){ $('recapBody').textContent=genRecap(); $('recapBg').classL
 function closeRecap(){ $('recapBg').classList.remove('on'); }
 function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre>'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
 
-/* ═══ IOS LIST ═══ */
 function buildList(){ const ul=$('modalList'); ul.innerHTML=''; const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b)); for(const id of ids){ const io=IOS_DB[id]; const r=document.createElement('div'); r.className='ios-row'; const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l'; const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF'; r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>'; r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); }); ul.appendChild(r); } }
 function openList(){ buildList(); $('listBg').classList.add('on'); }
 function closeList(){ $('listBg').classList.remove('on'); }
 
-/* ═══ INFO ═══ */
-function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / démarrer / go</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour (micro coupé pendant le message)</li></ul><h4>📱 Plein écran auto</h4><p>Touchez l'écran pour passer automatiquement en plein écran. Ou utilisez le bouton <span class="cmd-pill">⛶</span> en bas à droite.</p><h4>🔍 Recherche par alias</h4><p>Si un alias correspond à plusieurs IOS, une liste de sélection s'affiche.</p><h4>🧠 Apprentissage autonome</h4><p>L'IAOS apprend tout seul. Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour enseigner.</p><h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué. Le micro est coupé pendant les messages d'accueil.</p><h4>☁️ Firebase</h4><p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>`; $('infoBg').classList.add('on'); }
+function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / commencer le dépannage / dépanne ce défaut</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok / c'est bon</span> — Étape suivante</li><li><span class="cmd-pill">précédent / retour</span> — Étape précédente</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour (micro coupé pendant le message)</li></ul><h4>📱 Plein écran auto</h4><p>Touchez l'écran pour passer automatiquement en plein écran.</p><h4>🔍 Recherche par alias</h4><p>Si un alias correspond à plusieurs IOS, une liste de sélection s'affiche.</p><h4>🧠 Apprentissage autonome</h4><p>L'IAOS apprend tout seul. Dites <span class="cmd-pill">apprends [mot] = [commande]</span> pour enseigner.</p><h4>🛡 Protection</h4><p>Procédure active = nouvel IOS bloqué.</p><h4>☁️ Firebase</h4><p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>`; $('infoBg').classList.add('on'); }
 function closeInfo(){ $('infoBg').classList.remove('on'); }
 function isProcActive(){ return guideOn || isSpeaking || iosInfoShown || multiSelectActive; }
 
-/* ═══ VOICE COMMANDS ═══ */
+/* ═══ COMMANDES VOCALES ÉTENDUES ═══ */
 const CMDS = {
   cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
   home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
-  guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i],
+  guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i,/\bcommencer\s+le\s+dépannage\b/i,/\bdépanne\s+ce\s+défaut\b/i,/\bdépanner\s+l'ios\b/i,/\bdémarre\s+le\s+dépannage\b/i,/\baide\s+moi\s+[àa]\s+dépanner\b/i],
   next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
   prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i,/\b(?!retour\s+accueil)retour\b/i],
   repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
@@ -1906,8 +1364,8 @@ const CMDS = {
   elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
   list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
   help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
-  creator:[/\b(qui\s+t'a\s+créé|ton\s+créateur|ton\s+maître)\b/i],
-  inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+à\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|a\s+quoi\s+tu\s+sers)\b/i],
+  creator:[/\bqui\s+t['a]\s+créé\b/i,/\bqui\s+t['a]\s+conçu\b/i,/\bqui\s+est\s+ton\s+concepteur\b/i,/\bqui\s+t['a]\s+programmé\b/i,/\bqui\s+est\s+ton\s+créateur\b/i,/\bton\s+créateur\b/i,/\bton\s+maître\b/i,/\bqui\s+es-tu\b/i,/\bqui\s+tu\s+es\b/i],
+  inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+[àa]\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|[àa]\s+quoi\s+tu\s+sers)\b/i],
   fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
   bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i],
   learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i,/\bapprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i],
@@ -1921,8 +1379,7 @@ function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test
 function processVoice(raw){
   const txt=raw.trim(); if(!txt) return;
   if (isSpeaking) { console.log('🔇 Entrée ignorée - système en train de parler'); return; }
-  addMsg(txt,'user');
-  LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
+  addMsg(txt,'user'); LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
   
   if (multiSelectActive) { const numMatch = txt.match(/(\d{1,3})/); if (numMatch) { const iosId = numMatch[1].padStart(3, '0'); if (IOS_DB[iosId]) { selectFromMulti(iosId); return; } } if (match(txt, 'cancel') || match(txt, 'home')) { cancelMultiSelect(); return; } addMsg('Veuillez sélectionner un IOS dans la liste ou dire son numéro.'); speak('Veuillez sélectionner un IOS dans la liste.'); return; }
   if (AutonomousLearner.learningSession) { const session = AutonomousLearner.learningSession; if (isOui(txt)) { AutonomousLearner.confirmLearning(session.word, session.suggestions[0].command); return; } if (isNon(txt)) { session.suggestions.shift(); if (session.suggestions.length > 0) { const next = session.suggestions[0]; const msg = `Alors, "${session.word}" veut-il dire "${next.command}" ?`; addMsg(msg, 'learning'); speak(msg); return; } else { AutonomousLearner.endSession(); return; } } if (match(txt, 'learn')) { AutonomousLearner.learningSession = null; setUI('idle'); } else { AutonomousLearner.endSession(); return; } }
@@ -1941,7 +1398,7 @@ function processVoice(raw){
   if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
   if(match(txt,'list')){ openList(); return; }
   if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber</strong>.'); speak('Mon créateur est Zabèr.'); return; }
+  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber, conducteur, moniteur, formateur et plus si affinité !</strong>'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
   if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
   if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
   if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
@@ -1952,7 +1409,6 @@ function processVoice(raw){
   speak('Aucun i o s trouvé.');
 }
 
-/* ═══ RECONNAISSANCE VOCALE ═══ */
 function schedRestart(){ clearTimeout(restartTimer); restartTimer=setTimeout(()=>{ if(micOn&&!isSpeaking&&!isListening) startListening(); },300); }
 function startListening(){
   if(!('SpeechRecognition' in window)&&!('webkitSpeechRecognition' in window)){ toast('Reconnaissance vocale non supportée'); return; }
@@ -1971,11 +1427,9 @@ function startListening(){
 function stopListening(){ clearTimeout(restartTimer); if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; } isListening=false; setUI('idle'); }
 function toggleMic(){ if(isSpeaking) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé'; toast('Microphone coupé'); } }
 
-/* ═══ HORLOGE ═══ */
 function updateClock(){ $('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 setInterval(updateClock,1000); updateClock();
 
-/* ═══ EVENTS ═══ */
 $('micBtn').addEventListener('click',toggleMic);
 $('panelBtn').addEventListener('click',()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
 $('overlay').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
@@ -2003,16 +1457,12 @@ $('recapPrint').addEventListener('click',printRecap);
 $('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').classList.contains('on')) closeInfo(); else if($('recapBg').classList.contains('on')) closeRecap(); else if($('listBg').classList.contains('on')) closeList(); else if(multiSelectActive){ cancelMultiSelect(); } else if(FullscreenManager.isFullscreen){ FullscreenManager.exit(); } else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); } } });
 
-/* ═══ INIT ═══ */
 async function initApp() {
-  console.log('🚀 IAOS T4 v7.4 - Plein écran automatique');
-  await LearningEngine.init();
-  AutonomousLearner.init();
-  FullscreenManager.init();
-  updateFirebaseUI();
+  console.log('🚀 IAOS T4 v7.5 - Commandes étendues');
+  await LearningEngine.init(); AutonomousLearner.init(); FullscreenManager.init(); updateFirebaseUI();
   setUI('idle'); micOn=true; startListening();
-  console.log('✅ IAOS T4 prêt - Premier geste = plein écran');
-  if (firebaseAvailable) { LearningEngine.logUsage('app_started', { timestamp: new Date().toISOString(), version: 'v7.4-fullscreen-auto' }); }
+  console.log('✅ IAOS T4 prêt');
+  if (firebaseAvailable) { LearningEngine.logUsage('app_started', { timestamp: new Date().toISOString(), version: 'v7.5-extended-cmds' }); }
 }
 initApp();
 
