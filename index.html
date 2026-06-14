@@ -1170,7 +1170,7 @@ const ALIAS_DB = {
   "manipulateur": ["207", "208"],
   "lineaire": ["207"],
   "immobilisation": ["209"],
-  "sens": ["210"],
+  "sens": ["210"],a
   "marche": ["210"],
   "mesure": ["211"],
   "charge": ["211", "241"],
@@ -1257,33 +1257,37 @@ function addMsg(html,role='ai'){const log=$('chatLog');const d=document.createEl
 
 /* ═══════════════════════════════════
    PAGE 499 - MOTEUR PRINCIPAL
+   Toutes les fonctions sont globales (window)
+   pour être accessibles depuis onclick
 ═══════════════════════════════════ */
-function openPage499(){
+
+window.openPage499 = function(){
   if(isProcActive()&&!page499Active){toast('Terminez la procédure en cours');return;}
   page499Active=true;
   $('guideCard').classList.remove('show');
   $('page499Card').classList.add('show');
-  p499FullReset();
-  renderPage499();
+  window.p499FullReset();
+  window.renderPage499();
   setUI('blocked');
   addMsg('📋 Page 499 - Barème de vitesse limite');
   speak("Page 499. Barème de vitesse limite en cas d'incident de frein. Sélectionnez le type de frein.");
-}
+};
 
-function closePage499(){
+window.closePage499 = function(){
   page499Active=false;
   $('page499Card').classList.remove('show');
-  p499FullReset();
+  window.p499FullReset();
   setUI('idle');
   addMsg('Page 499 fermée.');
-}
+};
 
-function p499FullReset(){
+window.p499FullReset = function(){
   p499={step:'start',brakeType:null,bogieType:null,isolatedBogies:null,isolatedAxles:null};
-}
+};
 
-function renderPage499(){
+window.renderPage499 = function(){
   const body=$('p499Body');
+  if(!body)return;
   body.innerHTML='';
 
   if(p499.step==='start'){
@@ -1293,43 +1297,35 @@ function renderPage499(){
         Un test EFAS a été effectué en application du guide de dépannage annexe. Si le test EFAS est concluant, appliquer la page 499A « Barème de vitesse limite en cas d'incident de frein ».<br><br>
         Sélectionnez successivement : type de frein, type de bogie, nombre de bogies/essieux isolés.
       </div>
-      <div class="p499-nav"><button class="p499-btn primary" onclick="p499GoStep('brake')">COMMENCER</button></div>`;
+      <div class="p499-nav"><button class="p499-btn primary" onclick="window.p499GoStep('brake')">COMMENCER</button></div>`;
   }
   else if(p499.step==='brake'){
     body.innerHTML=`
       <div class="p499-step-title">Type de frein isolé</div>
       <div class="p499-options">
-        <div class="p499-option" onclick="p499SelectBrake('mechanical')">Frein mécanique</div>
-        <div class="p499-option" onclick="p499SelectBrake('electromagnetic')">Frein électromagnétique</div>
-        <div class="p499-option" onclick="p499SelectBrake('electric')">Frein électrique</div>
+        <div class="p499-option${p499.brakeType==='mechanical'?' selected':''}" onclick="window.p499SelectBrake('mechanical')">Frein mécanique</div>
+        <div class="p499-option${p499.brakeType==='electromagnetic'?' selected':''}" onclick="window.p499SelectBrake('electromagnetic')">Frein électromagnétique</div>
+        <div class="p499-option${p499.brakeType==='electric'?' selected':''}" onclick="window.p499SelectBrake('electric')">Frein électrique</div>
       </div>
-      <div class="p499-warning${p499.brakeType==='electric'?' show':''}" id="p499MixedWarning">En cas de mixité d'isolement entre le frein électrique et les autres équipements de frein, il y a lieu de respecter la limitation de vitesse la plus restrictive.</div>
+      <div class="p499-warning${p499.brakeType==='electric'?' show':''}">En cas de mixité d'isolement entre le frein électrique et les autres équipements de frein, il y a lieu de respecter la limitation de vitesse la plus restrictive.</div>
       <div class="p499-nav">
-        <button class="p499-btn" onclick="closePage499()">RETOUR</button>
-        <button class="p499-btn primary" id="p499BtnBrake"${p499.brakeType?'':' disabled'} onclick="p499AfterBrake()">CONTINUER</button>
+        <button class="p499-btn" onclick="window.closePage499()">RETOUR</button>
+        <button class="p499-btn primary"${p499.brakeType?'':' disabled'} onclick="window.p499AfterBrake()">CONTINUER</button>
       </div>`;
-    if(p499.brakeType){
-      const opt=document.querySelector(`.p499-option[onclick*="${p499.brakeType}"]`);
-      if(opt)opt.classList.add('selected');
-    }
   }
   else if(p499.step==='bogie'){
     body.innerHTML=`
       <div class="p499-step-title">Type de bogie</div>
       <div class="p499-options">
-        <div class="p499-option" onclick="p499SelectBogie('ce1')">CE1</div>
-        <div class="p499-option" onclick="p499SelectBogie('c1')">C1</div>
-        <div class="p499-option" onclick="p499SelectBogie('c2b')">C2B</div>
-        <div class="p499-option" onclick="p499SelectBogie('ce2')">CE2</div>
+        <div class="p499-option${p499.bogieType==='ce1'?' selected':''}" onclick="window.p499SelectBogie('ce1')">CE1</div>
+        <div class="p499-option${p499.bogieType==='c1'?' selected':''}" onclick="window.p499SelectBogie('c1')">C1</div>
+        <div class="p499-option${p499.bogieType==='c2b'?' selected':''}" onclick="window.p499SelectBogie('c2b')">C2B</div>
+        <div class="p499-option${p499.bogieType==='ce2'?' selected':''}" onclick="window.p499SelectBogie('ce2')">CE2</div>
       </div>
       <div class="p499-nav">
-        <button class="p499-btn" onclick="p499GoStep('brake')">RETOUR</button>
-        <button class="p499-btn primary" id="p499BtnBogie"${p499.bogieType?'':' disabled'} onclick="p499AfterBogie()">CONTINUER</button>
+        <button class="p499-btn" onclick="window.p499GoStep('brake')">RETOUR</button>
+        <button class="p499-btn primary"${p499.bogieType?'':' disabled'} onclick="window.p499AfterBogie()">CONTINUER</button>
       </div>`;
-    if(p499.bogieType){
-      const opt=document.querySelector(`.p499-option[onclick*="${p499.bogieType}"]`);
-      if(opt)opt.classList.add('selected');
-    }
   }
   else if(p499.step==='quantity'){
     const isElectric=p499.brakeType==='electric';
@@ -1337,20 +1333,20 @@ function renderPage499(){
     const max=isElectric?6:5;
     let opts='';
     for(let i=1;i<=max;i++){
-      const sel=(isElectric?p499.isolatedAxles===i:p499.isolatedBogies===i)?' selected':'';
-      opts+=`<div class="p499-option${sel}" onclick="p499SelectQuantity(${i})">${i}</div>`;
+      const sel=(isElectric?p499.isolatedAxles===i:p499.isolatedBogies===i);
+      opts+=`<div class="p499-option${sel?' selected':''}" onclick="window.p499SelectQuantity(${i})">${i}</div>`;
     }
     const canCalc=isElectric?!!p499.isolatedAxles:!!p499.isolatedBogies;
     body.innerHTML=`
       <div class="p499-step-title">${title}</div>
       <div class="p499-options full">${opts}</div>
       <div class="p499-nav">
-        <button class="p499-btn" onclick="p499GoStep('${isElectric?'brake':'bogie'}')">RETOUR</button>
-        <button class="p499-btn primary" id="p499BtnCalc"${canCalc?'':' disabled'} onclick="p499Calculate()">CALCULER</button>
+        <button class="p499-btn" onclick="window.p499GoStep('${isElectric?'brake':'bogie'}')">RETOUR</button>
+        <button class="p499-btn primary"${canCalc?'':' disabled'} onclick="window.p499Calculate()">CALCULER</button>
       </div>`;
   }
   else if(p499.step==='result'){
-    const r=p499ComputeResult();
+    const r=window.p499ComputeResult();
     body.innerHTML=`
       <div class="p499-result">
         <div class="p499-speed ${r.speedClass}">${r.speedLimit}</div>
@@ -1360,56 +1356,56 @@ function renderPage499(){
       <div class="p499-emergency${r.showEmergency?' show':''}">SECOURS</div>
       <div class="p499-info">${r.infoHTML}</div>
       <div class="p499-nav">
-        <button class="p499-btn" onclick="p499FullReset();renderPage499();p499GoStep('start');">NOUVEAU CALCUL</button>
-        <button class="p499-btn primary" onclick="closePage499()">FERMER</button>
+        <button class="p499-btn" onclick="window.p499FullReset();window.renderPage499();">NOUVEAU CALCUL</button>
+        <button class="p499-btn primary" onclick="window.closePage499()">FERMER</button>
       </div>`;
   }
-}
+};
 
-function p499GoStep(step){
+window.p499GoStep = function(step){
   p499.step=step;
-  renderPage499();
-}
+  window.renderPage499();
+};
 
-function p499SelectBrake(type){
+window.p499SelectBrake = function(type){
   p499.brakeType=type;
   p499.bogieType=null;
   p499.isolatedBogies=null;
   p499.isolatedAxles=null;
-  renderPage499();
-}
+  window.renderPage499();
+};
 
-function p499SelectBogie(type){
+window.p499SelectBogie = function(type){
   p499.bogieType=type;
   p499.isolatedBogies=null;
-  renderPage499();
-}
+  window.renderPage499();
+};
 
-function p499SelectQuantity(num){
+window.p499SelectQuantity = function(num){
   if(p499.brakeType==='electric')p499.isolatedAxles=num;
   else p499.isolatedBogies=num;
-  renderPage499();
-}
+  window.renderPage499();
+};
 
-function p499AfterBrake(){
+window.p499AfterBrake = function(){
   if(p499.brakeType==='electromagnetic'||p499.brakeType==='electric'){
     p499.bogieType='motor';
-    p499GoStep('quantity');
+    window.p499GoStep('quantity');
   }else{
-    p499GoStep('bogie');
+    window.p499GoStep('bogie');
   }
-}
+};
 
-function p499AfterBogie(){
-  p499GoStep('quantity');
-}
+window.p499AfterBogie = function(){
+  window.p499GoStep('quantity');
+};
 
-function p499Calculate(){
+window.p499Calculate = function(){
   p499.step='result';
-  renderPage499();
-}
+  window.renderPage499();
+};
 
-function p499ComputeResult(){
+window.p499ComputeResult = function(){
   let speedLimit=0,remainingBogies=0,showEmergency=false,warning='',isolatedBogiesEquivalent=0,showEquivalent=false;
   let configText='';
 
@@ -1421,24 +1417,24 @@ function p499ComputeResult(){
     else{isolatedBogiesEquivalent=3;speedLimit=0;showEmergency=true;}
     remainingBogies=5-isolatedBogiesEquivalent;showEquivalent=true;
   }else if(p499.brakeType==='mechanical'){
-    configText=`Frein mécanique - ${p499.bogieType.toUpperCase()}`;
+    configText=`Frein mécanique - ${(p499.bogieType||'').toUpperCase()}`;
     if(p499.bogieType==='c2b'){
       if(p499.isolatedBogies===1){isolatedBogiesEquivalent=2;remainingBogies=3;speedLimit=30;showEquivalent=true;}
       else if(p499.isolatedBogies===2){isolatedBogiesEquivalent=4;remainingBogies=1;speedLimit=0;showEmergency=true;showEquivalent=true;}
       else{isolatedBogiesEquivalent=5;remainingBogies=0;speedLimit=0;showEmergency=true;}
     }else{
-      isolatedBogiesEquivalent=p499.isolatedBogies;
+      isolatedBogiesEquivalent=p499.isolatedBogies||0;
       if(p499.isolatedBogies===1){remainingBogies=4;speedLimit=70;}
       else if(p499.isolatedBogies===2){remainingBogies=3;speedLimit=30;}
-      else{remainingBogies=5-p499.isolatedBogies;speedLimit=0;showEmergency=true;}
+      else{remainingBogies=5-(p499.isolatedBogies||0);speedLimit=0;showEmergency=true;}
     }
   }else if(p499.brakeType==='electromagnetic'){
     configText='Frein électromagnétique - BOGIE MOTEUR et/ou PORTEUR';
-    isolatedBogiesEquivalent=p499.isolatedBogies*2;
+    isolatedBogiesEquivalent=(p499.isolatedBogies||0)*2;
     if(isolatedBogiesEquivalent===2)speedLimit=30;
     else if(isolatedBogiesEquivalent>=4){speedLimit=0;showEmergency=true;}
     remainingBogies=Math.max(0,5-isolatedBogiesEquivalent);
-    showEquivalent=p499.isolatedBogies<3;
+    showEquivalent=(p499.isolatedBogies||0)<3;
   }
 
   let speedClass='';
@@ -1456,7 +1452,7 @@ function p499ComputeResult(){
   if(warning)infoHTML+=`<div style="color:var(--red);margin-top:8px;font-size:0.65rem;line-height:1.3;">⚠ ${warning}</div>`;
 
   return{speedLimit,speedClass,showEmergency,infoHTML};
-}
+};
 
 /* ═══ IOS LOGIC ═══ */
 function findIOS(q){
@@ -1496,7 +1492,7 @@ function renderGuideCard(){const card=$('guideCard');if(!guideOn||stepIdx>=guide
 function showEndCard(msg){const card=$('guideCard');card.classList.add('show');$('gLabel').textContent='TERMINÉ';$('gIosId').textContent='';$('gStepLbl').textContent='';$('gBody').textContent=msg;$('gYes').style.display='none';$('gNo').style.display='none';$('gPrev').style.display='none';$('gNext').style.display='none';$('gCancel').textContent='FERMER';$('gCancel').style.display='inline-flex';}
 function goHome(){micWasOnBeforeHome=micOn;cancelProc();curIOS=null;$('iosCard').classList.remove('show');$('guideCard').classList.remove('show');$('endBar').classList.remove('show');$('page499Card').classList.remove('show');$('spSearch').value='';closeMultiSelect();page499Active=false;if(micOn){stopListening();micOn=false;micMutedForSpeech=true;setUI('muted');$('statusTxt').textContent='Micro coupé';}addMsg('🏠 Retour à l\'accueil.');speak("Retour à l'accueil.",()=>{micMutedForSpeech=false;if(micWasOnBeforeHome){micOn=true;startListening();setUI('idle');$('statusTxt').textContent='Micro actif';}});}
 
-function showMultiSelect(alias,iosIds){$('guideCard').classList.remove('show');$('page499Card').classList.remove('show');multiSelectActive=true;const zone=$('dynamicZone');let html='<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "'+alias+'" correspond à plusieurs IOS</h3></div><div class="selection-list">';iosIds.forEach((id)=>{const io=IOS_DB[id];if(io){const pc=io.pri==='h'?'h':(io.pri==='m'?'m':'l');const pt=io.pri==='h'?'URG':(io.pri==='m'?'MOY':'INF');html+=`<div class="selection-item" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-arrow">→</span></div>`;}});html+='</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>';zone.innerHTML=html;addMsg('Plusieurs IOS correspondent.');speak("Plusieurs IOS correspondent.");}
+function showMultiSelect(alias,iosIds){$('guideCard').classList.remove('show');$('page499Card').classList.remove('show');multiSelectActive=true;const zone=$('dynamicZone');let html='<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "'+alias+'" correspond à plusieurs IOS</h3></div><div class="selection-list">';iosIds.forEach((id)=>{const io=IOS_DB[id];if(io){html+=`<div class="selection-item" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-arrow">→</span></div>`;}});html+='</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>';zone.innerHTML=html;addMsg('Plusieurs IOS correspondent.');speak("Plusieurs IOS correspondent.");}
 function selectFromMulti(iosId){closeMultiSelect();const io=IOS_DB[iosId];if(io)loadIOS(io);}
 function cancelMultiSelect(){closeMultiSelect();addMsg('❌ Sélection annulée.');speak('Sélection annulée.');}
 function closeMultiSelect(){multiSelectActive=false;$('dynamicZone').innerHTML='';}
@@ -1509,11 +1505,11 @@ function openRecap(){$('recapBody').textContent=genRecap();$('recapBg').classLis
 function closeRecap(){$('recapBg').classList.remove('on');}
 function printRecap(){const w=window.open('','','width=680,height=600');w.document.write('<pre>'+$('recapBody').textContent+'</pre>');w.document.close();w.print();}
 
-function buildList(){const ul=$('modalList');ul.innerHTML='';const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));for(const id of ids){const io=IOS_DB[id];const r=document.createElement('div');r.className='ios-row';const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l';const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF';r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span>';r.addEventListener('click',()=>{closeList();if(!isProcActive())loadIOS(io);else toast('Terminez la procédure en cours.');});ul.appendChild(r);}}
+function buildList(){const ul=$('modalList');ul.innerHTML='';const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));for(const id of ids){const io=IOS_DB[id];const r=document.createElement('div');r.className='ios-row';r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span>';r.addEventListener('click',()=>{closeList();if(!isProcActive())loadIOS(io);else toast('Terminez la procédure en cours.');});ul.appendChild(r);}}
 function openList(){buildList();$('listBg').classList.add('on');}
 function closeList(){$('listBg').classList.remove('on');}
 
-function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">page 499 / barème de vitesse</span> — Ouvrir la page 499</li><li><span class="cmd-pill">guidage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler</span> — Stopper</li><li><span class="cmd-pill">accueil</span> — Retour</li></ul><h4>📋 Page 499 - Commandes vocales</h4><p>Une fois la page ouverte :<br><span class="cmd-pill">frein mécanique</span> <span class="cmd-pill">frein électrique</span> <span class="cmd-pill">CE1</span> <span class="cmd-pill">C1</span> <span class="cmd-pill">1, 2, 3...</span> <span class="cmd-pill">suivant</span> <span class="cmd-pill">calculer</span></p><h4>🔇 Micro</h4><p>Le micro se coupe automatiquement pendant la lecture vocale.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`;$('infoBg').classList.add('on');}
+function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">page 499 / barème de vitesse</span> — Ouvrir la page 499</li><li><span class="cmd-pill">guidage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler</span> — Stopper</li><li><span class="cmd-pill">accueil</span> — Retour</li></ul><h4>📋 Page 499 - Commandes vocales</h4><p>Une fois la page ouverte :<br><span class="cmd-pill">frein mécanique</span> <span class="cmd-pill">frein électrique</span> <span class="cmd-pill">frein électromagnétique</span><br><span class="cmd-pill">CE1</span> <span class="cmd-pill">C1</span> <span class="cmd-pill">C2B</span> <span class="cmd-pill">CE2</span><br><span class="cmd-pill">1, 2, 3...</span> <span class="cmd-pill">suivant</span> <span class="cmd-pill">calculer</span></p><h4>🔇 Micro</h4><p>Le micro se coupe automatiquement pendant la lecture vocale.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`;$('infoBg').classList.add('on');}
 function closeInfo(){$('infoBg').classList.remove('on');}
 function isProcActive(){return guideOn||isSpeaking||iosInfoShown||multiSelectActive||page499Active;}
 
@@ -1540,7 +1536,6 @@ const CMDS={
   learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i],
   fullscreen:[/\bplein\s+écran\b/i,/\bfull\s*screen\b/i],
   page499:[/\bpage\s*499\b/i,/\bbarème\s+de\s+vitesse\b/i,/\bvitesse\s+limite\b/i,/\bincident\s+de\s+frein\b/i],
-  // Commandes spécifiques page 499 - patterns très larges
   brakeMech:[/\bfrein\s+mécanique\b/i,/\bmécanique\b/i],
   brakeElec:[/\bfrein\s+[ée]lectrique\b/i,/\b[ée]lectrique\b/i],
   brakeMag:[/\bfrein\s+[ée]lectromagnétique\b/i,/\b[ée]lectromagnétique\b/i,/\bmagnétique\b/i],
@@ -1561,49 +1556,42 @@ function handlePage499Voice(txt){
   if(!page499Active)return false;
   const t=txt.toLowerCase().trim();
 
-  // Fermer la page 499
-  if(CMDS.close499.some(r=>r.test(t))){closePage499();return true;}
-  if(match(t,'cancel')||match(t,'home')){closePage499();return true;}
+  if(CMDS.close499.some(r=>r.test(t))){window.closePage499();return true;}
+  if(match(t,'cancel')||match(t,'home')){window.closePage499();return true;}
 
-  // Navigation générale dans la page 499
   if(match(t,'next')){
-    if(p499.step==='brake')p499AfterBrake();
-    else if(p499.step==='bogie')p499AfterBogie();
-    else if(p499.step==='quantity')p499Calculate();
+    if(p499.step==='brake')window.p499AfterBrake();
+    else if(p499.step==='bogie')window.p499AfterBogie();
+    else if(p499.step==='quantity')window.p499Calculate();
     return true;
   }
   if(match(t,'prev')){
-    if(p499.step==='brake')p499GoStep('start');
-    else if(p499.step==='bogie')p499GoStep('brake');
-    else if(p499.step==='quantity'){if(p499.brakeType==='electric'||p499.brakeType==='electromagnetic')p499GoStep('brake');else p499GoStep('bogie');}
-    else if(p499.step==='result'){p499FullReset();renderPage499();p499GoStep('start');}
+    if(p499.step==='brake')window.p499GoStep('start');
+    else if(p499.step==='bogie')window.p499GoStep('brake');
+    else if(p499.step==='quantity'){if(p499.brakeType==='electric'||p499.brakeType==='electromagnetic')window.p499GoStep('brake');else window.p499GoStep('bogie');}
+    else if(p499.step==='result'){window.p499FullReset();window.renderPage499();}
     return true;
   }
-  if(match(t,'calc')&&p499.step==='quantity'){p499Calculate();return true;}
+  if(match(t,'calc')&&p499.step==='quantity'){window.p499Calculate();return true;}
 
-  // Étape frein
   if(p499.step==='brake'){
-    if(CMDS.brakeMech.some(r=>r.test(t))){p499SelectBrake('mechanical');return true;}
-    if(CMDS.brakeElec.some(r=>r.test(t))){p499SelectBrake('electric');return true;}
-    if(CMDS.brakeMag.some(r=>r.test(t))){p499SelectBrake('electromagnetic');return true;}
+    if(CMDS.brakeMech.some(r=>r.test(t))){window.p499SelectBrake('mechanical');return true;}
+    if(CMDS.brakeElec.some(r=>r.test(t))){window.p499SelectBrake('electric');return true;}
+    if(CMDS.brakeMag.some(r=>r.test(t))){window.p499SelectBrake('electromagnetic');return true;}
   }
 
-  // Étape bogie
   if(p499.step==='bogie'){
-    if(CMDS.bogieCE1.some(r=>r.test(t))){p499SelectBogie('ce1');return true;}
-    if(CMDS.bogieC2B.some(r=>r.test(t))){p499SelectBogie('c2b');return true;}
-    if(CMDS.bogieCE2.some(r=>r.test(t))){p499SelectBogie('ce2');return true;}
-    if(CMDS.bogieC1.some(r=>r.test(t))){p499SelectBogie('c1');return true;}
+    if(CMDS.bogieCE1.some(r=>r.test(t))){window.p499SelectBogie('ce1');return true;}
+    if(CMDS.bogieC2B.some(r=>r.test(t))){window.p499SelectBogie('c2b');return true;}
+    if(CMDS.bogieCE2.some(r=>r.test(t))){window.p499SelectBogie('ce2');return true;}
+    if(CMDS.bogieC1.some(r=>r.test(t))){window.p499SelectBogie('c1');return true;}
   }
 
-  // Étape quantité - reconnaissance des nombres
   if(p499.step==='quantity'){
     const wordMap={un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7};
-    for(const[word,num]of Object.entries(wordMap)){
-      if(t.includes(word)){p499SelectQuantity(num);return true;}
-    }
+    for(const[word,num]of Object.entries(wordMap)){if(t.includes(word)){window.p499SelectQuantity(num);return true;}}
     const numMatch=t.match(/\b(\d)\b/);
-    if(numMatch){const num=parseInt(numMatch[1]);const max=p499.brakeType==='electric'?6:5;if(num>=1&&num<=max){p499SelectQuantity(num);return true;}}
+    if(numMatch){const num=parseInt(numMatch[1]);const max=p499.brakeType==='electric'?6:5;if(num>=1&&num<=max){window.p499SelectQuantity(num);return true;}}
   }
 
   return false;
@@ -1614,11 +1602,7 @@ function processVoice(raw){
   if(isSpeaking||micMutedForSpeech){console.log('🔇 Entrée ignorée');return;}
   addMsg(txt,'user');LearningEngine.logUsage('voice_command',{text:txt.substring(0,100)});
 
-  /* ═══ PAGE 499 ACTIVE ═══ */
-  if(page499Active){
-    if(handlePage499Voice(txt))return;
-    return;
-  }
+  if(page499Active){if(handlePage499Voice(txt))return;return;}
 
   if(multiSelectActive){const nm=txt.match(/(\d{1,3})/);if(nm){const iid=nm[1].padStart(3,'0');if(IOS_DB[iid]){selectFromMulti(iid);return;}}if(match(txt,'cancel')||match(txt,'home')){cancelMultiSelect();return;}return;}
 
@@ -1627,7 +1611,7 @@ function processVoice(raw){
 
   if(match(txt,'learn')){const lm=txt.match(/apprends?\s+(.+?)\s*=\s*(.+?)$/i);if(lm){const w=lm[1].trim();const c=lm[2].trim().toLowerCase();LearningEngine.learnSynonym(c,w);addMsg(`🧠 Appris : "${w}" → "${c}"`);speak('Appris.');return;}}
   if(match(txt,'fullscreen')){FullscreenManager.toggle();return;}
-  if(match(txt,'page499')){openPage499();return;}
+  if(match(txt,'page499')){window.openPage499();return;}
   if(match(txt,'inutile')){const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien.','Ah ouais ? C\'est toi le bon à rien.'][Math.floor(Math.random()*3)];addMsg(r);speak(r);return;}
   if(match(txt,'cancel')){cancelProc();return;}
   if(match(txt,'home')){goHome();return;}
@@ -1693,15 +1677,15 @@ $('recapX').addEventListener('click',closeRecap);$('recapClose2').addEventListen
 $('recapBg').addEventListener('click',e=>{if(e.target===$('recapBg'))closeRecap();});
 $('recapPrint').addEventListener('click',printRecap);
 $('clearChat').addEventListener('click',()=>{$('chatLog').innerHTML='';addMsg('Historique effacé.');});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').classList.contains('on'))closeInfo();else if($('recapBg').classList.contains('on'))closeRecap();else if($('listBg').classList.contains('on'))closeList();else if(multiSelectActive)cancelMultiSelect();else if(page499Active)closePage499();else if(FullscreenManager.isFullscreen)FullscreenManager.exit();else{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');}}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').classList.contains('on'))closeInfo();else if($('recapBg').classList.contains('on'))closeRecap();else if($('listBg').classList.contains('on'))closeList();else if(multiSelectActive)cancelMultiSelect();else if(page499Active)window.closePage499();else if(FullscreenManager.isFullscreen)FullscreenManager.exit();else{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');}}});
 
 async function initApp(){
-  console.log('🚀 IAOS T4 v9.1 · Page 499 optimisée');
+  console.log('🚀 IAOS T4 v9.2 · Page 499 - Corrections tactiles et vocales');
   await LearningEngine.init();FullscreenManager.init();updateFirebaseUI();
   if(hasVoice){synth.getVoices();getVoice();}
   setUI('idle');micOn=true;startListening();
-  console.log('✅ IAOS T4 prêt');
-  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v9.1'});
+  console.log('✅ IAOS T4 prêt - Page 499 fonctionnelle');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v9.2'});
 }
 initApp();
 
