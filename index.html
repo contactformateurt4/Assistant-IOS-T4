@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#080c0f">
 <title>IAOS T4 · DUALIS U53700 · Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;600;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -31,14 +31,6 @@
   --text-dim:#546e7a;
   --text-bright:#eceff1;
   --rail:#1a2535;
-  /* Variables page 499 */
-  --primary-499:#4285F4;
-  --warning-499:#EA4335;
-  --success-499:#34A853;
-  --bg-499:#F8F9FA;
-  --card-499:#FFFFFF;
-  --text-499:#202124;
-  --border-499:#DADCE0;
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;position:relative;overflow:hidden}
@@ -124,15 +116,8 @@ body::after{
 .status-text.blocked{color:var(--amber)}
 .status-text.learning{color:var(--purple)}
 
-.mic-zone{
-  display:flex;flex-direction:column;align-items:center;gap:14px;
-  width:100%;max-width:520px;
-}
-.mic-outer{
-  width:150px;height:150px;
-  position:relative;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;user-select:none;
-}
+.mic-zone{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:520px}
+.mic-outer{width:150px;height:150px;position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
 .ring{position:absolute;border-radius:50%;border:1px solid rgba(245,197,24,0.2);transition:border-color 0.3s ease}
 .ring-1{width:68px;height:68px;animation:pulse1 2.6s ease-in-out infinite}
 .ring-2{width:98px;height:98px;animation:pulse1 2.6s ease-in-out infinite 0.45s}
@@ -174,7 +159,7 @@ body::after{
 .cmd-tag.active-hint{color:var(--gold);border-color:rgba(245,197,24,0.5);background:rgba(245,197,24,0.08);animation:tagPulse 2s ease-in-out infinite}
 @keyframes tagPulse{0%,100%{opacity:0.7}50%{opacity:1}}
 
-/* ═══ PAGE 499 CARD ═══ */
+/* ═══ PAGE 499 ═══ */
 .page499-card{
   width:100%;max-width:520px;
   background:var(--surface);
@@ -204,32 +189,43 @@ body::after{
   padding:0 16px 8px;
   text-transform:uppercase;
 }
+.p499-body{padding:0}
+.p499-step-title{
+  font-size:0.65rem;
+  color:var(--gold-dim);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  padding:10px 14px 6px;
+}
 .p499-options{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:6px;
-  padding:10px 14px;
+  padding:6px 14px 10px;
 }
-.p499-options.full{grid-template-columns:1fr}
+.p499-options.full{grid-template-columns:1fr 1fr 1fr}
 .p499-option{
-  padding:10px;
+  padding:12px 8px;
   background:var(--surface2);
-  border:1px solid var(--border);
+  border:2px solid var(--border);
   border-radius:2px;
   text-align:center;
   cursor:pointer;
   transition:all 0.15s ease;
   font-family:'Rajdhani',sans-serif;
   font-size:0.8rem;
-  font-weight:500;
+  font-weight:600;
   color:var(--text-dim);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
 }
-.p499-option:hover{background:rgba(245,197,24,0.06);border-color:var(--gold-dim);color:var(--gold)}
-.p499-option.selected{background:rgba(245,197,24,0.08);border-color:var(--gold);color:var(--gold)}
+.p499-option:active{transform:scale(0.96)}
+.p499-option:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.06)}
+.p499-option.selected{border-color:var(--gold);color:var(--gold);background:rgba(245,197,24,0.1);box-shadow:0 0 10px rgba(245,197,24,0.15)}
 .p499-warning{
   color:var(--red);
-  padding:10px 14px;
-  font-size:0.7rem;
+  padding:8px 14px;
+  font-size:0.65rem;
   line-height:1.4;
   background:rgba(255,59,59,0.06);
   border-top:1px solid rgba(255,59,59,0.2);
@@ -239,7 +235,7 @@ body::after{
 .p499-warning.show{display:block}
 .p499-result{
   text-align:center;
-  padding:16px;
+  padding:20px 16px;
 }
 .p499-speed{
   font-family:'Orbitron',sans-serif;
@@ -250,7 +246,7 @@ body::after{
   transition:all 0.3s ease;
 }
 .p499-speed.danger{color:var(--red);text-shadow:0 0 20px rgba(255,59,59,0.5)}
-.p499-speed.warning{color:var(--amber);text-shadow:0 0 20px rgba(255,179,0,0.5)}
+.p499-speed.warning-color{color:var(--amber);text-shadow:0 0 20px rgba(255,179,0,0.5)}
 .p499-speed.success{color:var(--green);text-shadow:0 0 20px rgba(57,255,135,0.4)}
 .p499-unit{font-size:1rem;color:var(--gold-dim)}
 .p499-label{font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-top:5px}
@@ -288,18 +284,26 @@ body::after{
   flex:1;
   font-family:'Orbitron',sans-serif;font-size:0.48rem;
   letter-spacing:1.5px;text-transform:uppercase;
-  padding:8px 10px;border-radius:2px;
+  padding:10px 8px;border-radius:2px;
   border:1px solid var(--border);
   background:rgba(255,255,255,0.03);
   color:var(--text-dim);cursor:pointer;
   transition:all 0.18s ease;
   white-space:nowrap;
   text-align:center;
+  -webkit-tap-highlight-color:transparent;
 }
+.p499-btn:active{transform:scale(0.96)}
 .p499-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.06)}
-.p499-btn:disabled{opacity:0.3;cursor:not-allowed}
+.p499-btn:disabled{opacity:0.3;cursor:not-allowed;pointer-events:none}
 .p499-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
-.p499-btn.primary:hover{background:rgba(245,197,24,0.18)}
+.p499-btn.primary:hover:not(:disabled){background:rgba(245,197,24,0.18)}
+.p499-reminder{
+  font-size:0.6rem;color:var(--text-dim);
+  padding:8px 14px;
+  line-height:1.4;
+  border-top:1px solid var(--border);
+}
 
 .guide-card{
   width:100%;max-width:520px;
@@ -327,11 +331,8 @@ body::after{
 .gcard-btn{font-family:'Orbitron',sans-serif;font-size:0.52rem;letter-spacing:1.5px;text-transform:uppercase;padding:8px 14px;border-radius:2px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text-dim);cursor:pointer;transition:all 0.18s ease;white-space:nowrap}
 .gcard-btn:hover{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.06)}
 .gcard-btn.yes{border-color:rgba(57,255,135,0.4);color:var(--green);background:rgba(57,255,135,0.05)}
-.gcard-btn.yes:hover{background:rgba(57,255,135,0.12);border-color:var(--green)}
 .gcard-btn.no{border-color:rgba(255,59,59,0.4);color:var(--red);background:rgba(255,59,59,0.05)}
-.gcard-btn.no:hover{background:rgba(255,59,59,0.12);border-color:var(--red)}
 .gcard-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.08)}
-.gcard-btn.primary:hover{background:rgba(245,197,24,0.18)}
 
 .selection-card{width:100%;max-width:520px;background:var(--surface);border:1px solid var(--gold-dim);border-radius:4px;overflow:hidden;animation:slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1)}
 .selection-header{padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(245,197,24,0.05)}
@@ -341,14 +342,9 @@ body::after{
 .selection-item:hover{background:rgba(245,197,24,0.08)}
 .selection-item-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.75rem;min-width:55px;letter-spacing:1px}
 .selection-item-desc{font-size:0.78rem;color:var(--text);flex:1;line-height:1.3}
-.selection-item-prio{font-family:'Space Mono',monospace;font-size:0.42rem;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:2px}
-.selection-item-prio.h{background:rgba(255,59,59,0.12);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
-.selection-item-prio.m{background:rgba(255,179,0,0.1);color:var(--amber);border:1px solid rgba(255,179,0,0.3)}
-.selection-item-prio.l{background:rgba(57,255,135,0.06);color:var(--green);border:1px solid rgba(57,255,135,0.2)}
 .selection-arrow{color:var(--gold-dim);font-size:0.7rem}
 .selection-cancel{padding:10px 16px;border-top:1px solid var(--border);text-align:center}
-.selection-cancel-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:2px;cursor:pointer;transition:all 0.18s ease}
-.selection-cancel-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
+.selection-cancel-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:2px;cursor:pointer}
 
 .toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-10px);background:var(--surface2);border:1px solid var(--gold-dim);border-radius:3px;padding:9px 22px;font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:1px;color:var(--gold);opacity:0;pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease;z-index:500;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -359,41 +355,29 @@ body::after{
 .side-panel.open{transform:none}
 .sp-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
 .sp-header h3{font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
-.sp-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
-.sp-close:hover{color:var(--gold);border-color:var(--gold-dim)}
+.sp-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem}
 .sp-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-.sp-body::-webkit-scrollbar{width:3px}
-.sp-body::-webkit-scrollbar-thumb{background:var(--border)}
 .ios-card{background:var(--surface2);border:1px solid var(--border);border-radius:3px;overflow:hidden;display:none}
 .ios-card.show{display:block}
 .ios-card-head{padding:12px 14px;border-bottom:1px solid var(--border)}
 .ios-card-code{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;color:var(--gold);letter-spacing:2px}
 .ios-card-desc{font-size:0.82rem;color:var(--text);margin-top:5px;line-height:1.4}
-.ios-card-actions{padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.ios-card-actions{padding:10px 14px;display:flex;gap:7px;flex-wrap:wrap}
 .ac-btn{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;padding:6px 13px;border-radius:2px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text-dim);cursor:pointer;transition:all 0.18s ease}
 .ac-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
 .ac-btn.green{border-color:rgba(57,255,135,0.4);color:var(--green);background:rgba(57,255,135,0.05)}
-.ac-btn.green:hover{background:rgba(57,255,135,0.12);border-color:var(--green)}
 .ac-btn.red{border-color:rgba(255,59,59,0.35);color:var(--red);background:rgba(255,59,59,0.04)}
-.ac-btn.red:hover{background:rgba(255,59,59,0.1);border-color:var(--red)}
-.ios-card-info{padding:10px 14px;font-size:0.78rem;color:var(--text-dim);line-height:1.5}
 
 .sp-search-row{display:flex;gap:6px}
-.sp-search-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text-bright);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;padding:9px 12px;outline:none;transition:border-color 0.2s ease}
-.sp-search-input::placeholder{color:var(--text-dim);font-size:0.78rem}
+.sp-search-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:3px;color:var(--text-bright);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:500;padding:9px 12px;outline:none}
 .sp-search-input:focus{border-color:var(--gold-dim)}
-.sp-search-go{background:rgba(245,197,24,0.08);border:1px solid var(--gold-dim);color:var(--gold);border-radius:3px;padding:9px 14px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase;transition:all 0.18s ease;white-space:nowrap}
-.sp-search-go:hover{background:rgba(245,197,24,0.18)}
+.sp-search-go{background:rgba(245,197,24,0.08);border:1px solid var(--gold-dim);color:var(--gold);border-radius:3px;padding:9px 14px;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:1px;text-transform:uppercase}
 
 .sp-transcript{background:var(--surface2);border:1px solid var(--border);border-radius:3px;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:180px}
-.sp-transcript-header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sp-transcript-header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--border)}
 .sp-transcript-header span{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase}
 .sp-transcript-clear{background:none;border:1px solid var(--border);color:var(--text-dim);font-size:0.55rem;padding:2px 7px;border-radius:2px;cursor:pointer}
-.sp-transcript-clear:hover{color:var(--gold);border-color:var(--gold-dim)}
-.sp-transcript-msgs{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth;max-height:250px}
-.sp-transcript-msgs::-webkit-scrollbar{width:3px}
-.sp-transcript-msgs::-webkit-scrollbar-track{background:transparent}
-.sp-transcript-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sp-transcript-msgs{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;max-height:250px}
 
 .t-msg{display:flex;flex-direction:column;gap:2px;animation:msgIn 0.2s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -402,41 +386,26 @@ body::after{
 .t-bubble{font-size:0.72rem;line-height:1.4;padding:5px 9px;border-radius:2px;max-width:92%;word-break:break-word}
 .t-msg.user .t-bubble{background:rgba(191,128,255,0.08);border:1px solid rgba(191,128,255,0.25);color:var(--text)}
 .t-msg.ai .t-bubble{background:rgba(245,197,24,0.06);border:1px solid rgba(245,197,24,0.18);color:var(--text)}
-.t-msg.learning .t-bubble{background:rgba(191,128,255,0.1);border:1px solid rgba(191,128,255,0.35);color:var(--purple)}
 
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-bg.on{opacity:1;pointer-events:auto}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;width:min(92%,460px);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.9);overflow:hidden;animation:modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
-@keyframes modalIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:none}}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;width:min(92%,460px);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.9);overflow:hidden}
 .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
 .modal-head h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
-.modal-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
-.modal-x:hover{color:var(--gold);border-color:var(--gold-dim)}
+.modal-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem}
 .modal-list{overflow-y:auto;flex:1;padding:6px}
-.modal-list::-webkit-scrollbar{width:3px}
-.modal-list::-webkit-scrollbar-thumb{background:var(--border)}
 .ios-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:2px;cursor:pointer;transition:background 0.15s ease;border-bottom:1px solid rgba(30,45,61,0.5)}
 .ios-row:hover{background:rgba(245,197,24,0.06)}
-.ios-row-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.72rem;min-width:52px;letter-spacing:1px}
-.ios-row-desc{font-size:0.78rem;color:var(--text);flex:1;line-height:1.3}
-.ios-row-p{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:2px}
-.ios-row-p.h{background:rgba(255,59,59,0.12);color:var(--red);border:1px solid rgba(255,59,59,0.3)}
-.ios-row-p.m{background:rgba(255,179,0,0.1);color:var(--amber);border:1px solid rgba(255,179,0,0.3)}
-.ios-row-p.l{background:rgba(57,255,135,0.06);color:var(--green);border:1px solid rgba(57,255,135,0.2)}
+.ios-row-num{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--gold);font-size:0.72rem;min-width:52px}
+.ios-row-desc{font-size:0.78rem;color:var(--text);flex:1}
 
 .recap-bg{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .recap-bg.on{opacity:1;pointer-events:auto}
-.recap-modal{background:#0d1117;border:1px solid var(--border);border-radius:4px;width:min(94%,520px);max-height:86vh;display:flex;flex-direction:column;box-shadow:0 20px 70px rgba(0,0,0,0.95)}
+.recap-modal{background:#0d1117;border:1px solid var(--border);border-radius:4px;width:min(94%,520px);max-height:86vh;display:flex;flex-direction:column}
 .recap-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.5)}
 .recap-head h3{font-family:'Orbitron',sans-serif;font-size:0.62rem;letter-spacing:3px;color:var(--gold)}
-.recap-close{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer}
-.recap-close:hover{color:var(--gold);border-color:var(--gold-dim)}
 .recap-body{flex:1;overflow-y:auto;padding:18px;font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text);line-height:1.7;white-space:pre-wrap}
-.recap-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--border);background:rgba(0,0,0,0.4)}
-.recap-btn{font-family:'Orbitron',sans-serif;font-size:0.52rem;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:2px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text-dim);cursor:pointer;transition:all 0.18s}
-.recap-btn:hover{border-color:var(--gold-dim);color:var(--gold)}
-.recap-btn.primary{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.07)}
-.recap-btn.primary:hover{background:rgba(245,197,24,0.16)}
+.recap-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--border)}
 
 .end-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(8,12,15,0.99),rgba(13,17,23,0.96));border-top:1px solid var(--border);backdrop-filter:blur(16px);padding:14px 18px;z-index:90;transform:translateY(100%);transition:transform 0.3s ease}
 .end-bar.show{transform:none}
@@ -446,36 +415,31 @@ body::after{
 .info-bg{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .info-bg.on{opacity:1;pointer-events:auto}
 .info-modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;width:min(92%,500px);max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
-.info-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.4)}
+.info-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
 .info-head h3{font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
-.info-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center}
-.info-x:hover{color:var(--gold);border-color:var(--gold-dim)}
+.info-x{background:none;border:1px solid var(--border);color:var(--text-dim);width:28px;height:28px;border-radius:2px;cursor:pointer}
 .info-content{flex:1;overflow-y:auto;padding:18px;font-size:0.82rem;line-height:1.6;color:var(--text)}
 .info-content h4{font-family:'Orbitron',sans-serif;font-size:0.56rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border)}
-.info-content h4:first-child{margin-top:0}
 .info-content ul{margin-left:18px;margin-bottom:8px}
 .info-content li{margin:4px 0;line-height:1.5}
 .cmd-pill{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--gold);background:rgba(245,197,24,0.07);border:1px solid rgba(245,197,24,0.2);border-radius:2px;padding:1px 6px}
 
 .sync-panel{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
-.sync-panel span{font-size:0.6rem;color:var(--text-dim);font-family:'Space Mono',monospace;letter-spacing:1px}
+.sync-panel span{font-size:0.6rem;color:var(--text-dim);font-family:'Space Mono',monospace}
 .sync-status{width:8px;height:8px;border-radius:50%}
 .sync-status.online{background:var(--green);box-shadow:0 0 8px var(--green)}
-.sync-status.offline{background:var(--red);box-shadow:0 0 8px var(--red)}
-.sync-status.syncing{background:var(--amber);box-shadow:0 0 8px var(--amber);animation:syncPulse 0.8s infinite}
+.sync-status.offline{background:var(--red)}
+.sync-status.syncing{background:var(--amber);animation:syncPulse 0.8s infinite}
 @keyframes syncPulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
-.fullscreen-fab{position:fixed;bottom:80px;right:20px;z-index:600;width:44px;height:44px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s ease;box-shadow:0 4px 12px rgba(0,0,0,0.5);-webkit-tap-highlight-color:transparent}
-.fullscreen-fab:hover,.fullscreen-fab:active{border-color:var(--gold-dim);color:var(--gold);background:rgba(245,197,24,0.1)}
-.fullscreen-fab.active{border-color:var(--green);color:var(--green);background:rgba(57,255,135,0.1)}
+.fullscreen-fab{position:fixed;bottom:80px;right:20px;z-index:600;width:44px;height:44px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.25s ease;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
+.fullscreen-fab:hover{border-color:var(--gold-dim);color:var(--gold)}
+.fullscreen-fab.active{border-color:var(--green);color:var(--green)}
 
-.fullscreen-banner{position:fixed;top:0;left:0;right:0;z-index:700;background:linear-gradient(180deg,rgba(13,17,23,0.98),rgba(13,17,23,0.9));border-bottom:1px solid var(--gold-dim);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(-100%);transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1);backdrop-filter:blur(10px)}
+.fullscreen-banner{position:fixed;top:0;left:0;right:0;z-index:700;background:linear-gradient(180deg,rgba(13,17,23,0.98),rgba(13,17,23,0.9));border-bottom:1px solid var(--gold-dim);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(-100%);transition:transform 0.4s cubic-bezier(0.22,0.61,0.36,1)}
 .fullscreen-banner.show{transform:translateY(0)}
-.fullscreen-banner-text{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;color:var(--gold);line-height:1.3;flex:1}
-.fullscreen-banner-btn{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:3px;background:rgba(245,197,24,0.15);border:1px solid var(--gold-dim);color:var(--gold);cursor:pointer;white-space:nowrap;transition:all 0.18s ease}
-.fullscreen-banner-btn:hover{background:rgba(245,197,24,0.25)}
-.fullscreen-banner-close{background:none;border:none;color:var(--text-dim);font-size:1rem;cursor:pointer;padding:4px}
-.fullscreen-banner-close:hover{color:var(--gold)}
+.fullscreen-banner-text{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;color:var(--gold);flex:1}
+.fullscreen-banner-btn{font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:3px;background:rgba(245,197,24,0.15);border:1px solid var(--gold-dim);color:var(--gold);cursor:pointer}
 
 @media(max-width:420px){
   .logo{font-size:1.3rem}
@@ -537,52 +501,11 @@ body::after{
     <div class="gcard-actions" id="gActions"><button class="gcard-btn yes" id="gYes" style="display:none">✓ OUI</button><button class="gcard-btn no" id="gNo" style="display:none">✗ NON</button><button class="gcard-btn" id="gPrev">← PRÉC.</button><button class="gcard-btn primary" id="gNext">SUIVANT →</button><button class="gcard-btn" id="gCancel">ANNULER</button></div>
   </div>
 
-  <!-- ═══ PAGE 499 CARD ═══ -->
+  <!-- ═══ PAGE 499 ═══ -->
   <div class="page499-card" id="page499Card">
     <div class="p499-header">PAGE 499</div>
     <div class="p499-subtitle">Barème de vitesse limite en cas d'incident de frein</div>
-    <div id="p499Step1">
-      <div style="padding:10px 14px;font-size:0.7rem;color:var(--text-dim);line-height:1.4;">
-        <strong style="color:var(--gold);">ATTENTION :</strong> Cet assistant ne remplace pas l'application du guide de dépannage !<br><br>
-        Sélectionnez successivement : type de frein, type de bogie, nombre de bogies/essieux isolés.
-      </div>
-      <div class="p499-nav"><button class="p499-btn primary" onclick="p499Start()">COMMENCER</button></div>
-    </div>
-    <div id="p499Step2" style="display:none">
-      <div style="padding:8px 14px;font-size:0.65rem;color:var(--gold-dim);text-transform:uppercase;letter-spacing:1px;">Type de frein isolé</div>
-      <div class="p499-options" id="p499BrakeOptions">
-        <div class="p499-option" data-value="mechanical" onclick="p499SelectBrake('mechanical')">Frein mécanique</div>
-        <div class="p499-option" data-value="electromagnetic" onclick="p499SelectBrake('electromagnetic')">Frein électromagnétique</div>
-        <div class="p499-option" data-value="electric" onclick="p499SelectBrake('electric')">Frein électrique</div>
-      </div>
-      <div class="p499-warning" id="p499MixedWarning">En cas de mixité d'isolement, respecter la limitation la plus restrictive.</div>
-      <div class="p499-nav"><button class="p499-btn" onclick="p499Reset()">RETOUR</button><button class="p499-btn primary" id="p499NextFromBrake" disabled onclick="p499NextAfterBrake()">CONTINUER</button></div>
-    </div>
-    <div id="p499Step3" style="display:none">
-      <div style="padding:8px 14px;font-size:0.65rem;color:var(--gold-dim);text-transform:uppercase;letter-spacing:1px;">Type de bogie</div>
-      <div class="p499-options" id="p499BogieOptions">
-        <div class="p499-option" data-value="ce1" onclick="p499SelectBogie('ce1')">CE1</div>
-        <div class="p499-option" data-value="c1" onclick="p499SelectBogie('c1')">C1</div>
-        <div class="p499-option" data-value="c2b" onclick="p499SelectBogie('c2b')">C2B</div>
-        <div class="p499-option" data-value="ce2" onclick="p499SelectBogie('ce2')">CE2</div>
-      </div>
-      <div class="p499-nav"><button class="p499-btn" onclick="p499BackToBrake()">RETOUR</button><button class="p499-btn primary" id="p499NextFromBogie" disabled onclick="p499NextAfterBogie()">CONTINUER</button></div>
-    </div>
-    <div id="p499Step4" style="display:none">
-      <div style="padding:8px 14px;font-size:0.65rem;color:var(--gold-dim);text-transform:uppercase;letter-spacing:1px;" id="p499SelectionTitle">Nombre de bogies isolés</div>
-      <div class="p499-options full" id="p499SelectionOptions"></div>
-      <div class="p499-nav"><button class="p499-btn" onclick="p499BackToBogie()">RETOUR</button><button class="p499-btn primary" id="p499CalculateBtn" disabled onclick="p499Calculate()">CALCULER</button></div>
-    </div>
-    <div id="p499Result" style="display:none">
-      <div class="p499-result">
-        <div class="p499-speed" id="p499SpeedValue">0</div>
-        <div class="p499-unit">KM/h</div>
-        <div class="p499-label">Vitesse maximale autorisée</div>
-      </div>
-      <div class="p499-emergency" id="p499Emergency">SECOURS</div>
-      <div class="p499-info" id="p499Info"></div>
-      <div class="p499-nav"><button class="p499-btn" onclick="p499FullReset()">NOUVEAU CALCUL</button><button class="p499-btn primary" onclick="closePage499()">FERMER</button></div>
-    </div>
+    <div class="p499-body" id="p499Body"></div>
   </div>
 </div>
 
@@ -609,81 +532,64 @@ const firebaseConfig = {
   appId: "1:315508710422:web:2d8a24d44b9a5125cce937"
 };
 
-let firebaseAvailable = false, db = null, firebaseRefs = {}, firebaseConnected = false;
-try {
-  if (typeof firebase === 'undefined') throw new Error('Firebase SDK non chargé');
-  firebase.initializeApp(firebaseConfig); db = firebase.database(); firebaseAvailable = true;
-  firebaseRefs = { learning: db.ref('learning'), synonyms: db.ref('learning/synonyms'), corrections: db.ref('learning/corrections'), usageStats: db.ref('learning/usageStats'), iosSearches: db.ref('learning/iosSearches'), learnedAssociations: db.ref('learning/learnedAssociations'), connected: db.ref('.info/connected') };
-  firebaseRefs.connected.on('value', (snap) => { firebaseConnected = snap.val() === true; updateFirebaseUI(); if (firebaseConnected) { LearningEngine.syncFromFirebase(); } });
-} catch(e) { console.error('❌ Firebase:', e.message); firebaseAvailable = false; updateFirebaseUI(); }
+let firebaseAvailable=false,db=null,firebaseRefs={},firebaseConnected=false;
+try{
+  if(typeof firebase==='undefined')throw new Error('Firebase SDK non chargé');
+  firebase.initializeApp(firebaseConfig);db=firebase.database();firebaseAvailable=true;
+  firebaseRefs={learning:db.ref('learning'),synonyms:db.ref('learning/synonyms'),corrections:db.ref('learning/corrections'),usageStats:db.ref('learning/usageStats'),iosSearches:db.ref('learning/iosSearches'),learnedAssociations:db.ref('learning/learnedAssociations'),connected:db.ref('.info/connected')};
+  firebaseRefs.connected.on('value',(snap)=>{firebaseConnected=snap.val()===true;updateFirebaseUI();if(firebaseConnected)LearningEngine.syncFromFirebase();});
+}catch(e){console.error('Firebase:',e.message);firebaseAvailable=false;updateFirebaseUI();}
 
-function updateFirebaseUI() {
-  const st = !firebaseAvailable ? 'Firebase: Erreur' : firebaseConnected ? 'Firebase: Connecté' : 'Firebase: En attente...';
-  const sc = !firebaseAvailable ? 'offline' : firebaseConnected ? 'online' : 'syncing';
-  const sl = document.getElementById('syncLabel'), sd = document.getElementById('syncDot'), fh = document.getElementById('fbHeaderStatus');
-  if (sl) sl.textContent = st; if (sd) sd.className = 'sync-status ' + sc;
-  if (fh) fh.textContent = firebaseConnected ? '🟢' : (firebaseAvailable ? '🟡' : '🔴');
+function updateFirebaseUI(){
+  const st=!firebaseAvailable?'Firebase: Erreur':firebaseConnected?'Firebase: Connecté':'Firebase: En attente...';
+  const sc=!firebaseAvailable?'offline':firebaseConnected?'online':'syncing';
+  const sl=document.getElementById('syncLabel'),sd=document.getElementById('syncDot'),fh=document.getElementById('fbHeaderStatus');
+  if(sl)sl.textContent=st;if(sd)sd.className='sync-status '+sc;
+  if(fh)fh.textContent=firebaseConnected?'🟢':(firebaseAvailable?'🟡':'🔴');
 }
 
-const FullscreenManager = {
-  isFullscreen: false, bannerDismissed: false, autoTriggered: false,
-  init() {
-    this.isSupported = !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen || document.documentElement.msRequestFullscreen);
-    if (!this.isSupported) { const fab = document.getElementById('fullscreenFab'), banner = document.getElementById('fullscreenBanner'); if (fab) fab.style.display = 'none'; if (banner) banner.style.display = 'none'; return; }
-    document.addEventListener('fullscreenchange', () => this.updateUI()); document.addEventListener('webkitfullscreenchange', () => this.updateUI()); document.addEventListener('MSFullscreenChange', () => this.updateUI());
-    const fab = document.getElementById('fullscreenFab'); if (fab) fab.addEventListener('click', (e) => { e.stopPropagation(); this.toggle(); });
-    const bb = document.getElementById('fullscreenBannerBtn'), bc = document.getElementById('fullscreenBannerClose');
-    if (bb) bb.addEventListener('click', () => { this.request(); this.dismissBanner(); });
-    if (bc) bc.addEventListener('click', () => this.dismissBanner());
-    this.setupAutoFullscreen(); this.updateUI();
+const FullscreenManager={
+  isFullscreen:false,bannerDismissed:false,autoTriggered:false,
+  init(){
+    this.isSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||document.documentElement.msRequestFullscreen);
+    if(!this.isSupported){const f=document.getElementById('fullscreenFab'),b=document.getElementById('fullscreenBanner');if(f)f.style.display='none';if(b)b.style.display='none';return;}
+    document.addEventListener('fullscreenchange',()=>this.updateUI());document.addEventListener('webkitfullscreenchange',()=>this.updateUI());
+    const fab=document.getElementById('fullscreenFab');if(fab)fab.addEventListener('click',(e)=>{e.stopPropagation();this.toggle();});
+    const bb=document.getElementById('fullscreenBannerBtn'),bc=document.getElementById('fullscreenBannerClose');
+    if(bb)bb.addEventListener('click',()=>{this.request();this.dismissBanner();});
+    if(bc)bc.addEventListener('click',()=>this.dismissBanner());
+    this.setupAutoFullscreen();this.updateUI();
   },
-  setupAutoFullscreen() {
-    if (this.isFullscreen) return;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (isIOS) { const bt = document.getElementById('fullscreenBannerText'); if (bt) bt.textContent = '📱 Ajoutez cette page à l\'écran d\'accueil pour le vrai plein écran'; setTimeout(() => this.showBanner(), 1500); return; }
-    const tf = (e) => { if (this.autoTriggered || this.isFullscreen) return; const tag = e.target.tagName.toLowerCase(), isInt = ['button','input','select','textarea','a'].includes(tag); const isOurs = e.target.closest('#fullscreenFab') || e.target.closest('#fullscreenBannerBtn') || e.target.closest('#fullscreenBannerClose') || e.target.closest('#micBtn') || e.target.closest('.hdr-btn') || e.target.closest('.gcard-btn') || e.target.closest('.ac-btn') || e.target.closest('.selection-item') || e.target.closest('.p499-option') || e.target.closest('.p499-btn'); if (isInt && !isOurs) return; this.autoTriggered = true; setTimeout(() => { this.request(); this.dismissBanner(); }, 300); };
-    document.addEventListener('click', tf, { once: false }); document.addEventListener('touchstart', tf, { once: false, passive: true });
-    setTimeout(() => { if (!this.isFullscreen && !this.bannerDismissed) this.showBanner(); }, 5000);
-    const cl = () => { if (this.isFullscreen) { document.removeEventListener('click', tf); document.removeEventListener('touchstart', tf); } };
-    document.addEventListener('fullscreenchange', cl); document.addEventListener('webkitfullscreenchange', cl);
+  setupAutoFullscreen(){
+    if(this.isFullscreen)return;
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    if(isIOS){const bt=document.getElementById('fullscreenBannerText');if(bt)bt.textContent="Ajoutez cette page à l'écran d'accueil";setTimeout(()=>this.showBanner(),1500);return;}
+    const tf=(e)=>{if(this.autoTriggered||this.isFullscreen)return;const tag=e.target.tagName.toLowerCase(),isInt=['button','input','select','textarea','a'].includes(tag);const isOurs=e.target.closest('#fullscreenFab')||e.target.closest('#micBtn')||e.target.closest('.hdr-btn')||e.target.closest('.gcard-btn')||e.target.closest('.ac-btn')||e.target.closest('.selection-item')||e.target.closest('.p499-option')||e.target.closest('.p499-btn');if(isInt&&!isOurs)return;this.autoTriggered=true;setTimeout(()=>{this.request();this.dismissBanner();},300);};
+    document.addEventListener('click',tf,{once:false});document.addEventListener('touchstart',tf,{once:false,passive:true});
+    setTimeout(()=>{if(!this.isFullscreen&&!this.bannerDismissed)this.showBanner();},5000);
   },
-  request() { try { const el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen().catch(()=>{}); else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen(); else if (el.msRequestFullscreen) el.msRequestFullscreen(); } catch(e) {} },
-  exit() { try { if (document.exitFullscreen) document.exitFullscreen().catch(()=>{}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); else if (document.msExitFullscreen) document.msExitFullscreen(); } catch(e) {} },
-  toggle() { this.isFullscreen ? this.exit() : (this.request(), this.dismissBanner()); },
-  updateUI() { this.isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement); const fab = document.getElementById('fullscreenFab'); if (fab) { fab.textContent = this.isFullscreen ? '✕' : '⛶'; fab.classList.toggle('active', this.isFullscreen); } if (this.isFullscreen) this.hideBanner(); },
-  showBanner() { const b = document.getElementById('fullscreenBanner'); if (b && !this.isFullscreen) b.classList.add('show'); },
-  hideBanner() { const b = document.getElementById('fullscreenBanner'); if (b) b.classList.remove('show'); },
-  dismissBanner() { this.bannerDismissed = true; this.hideBanner(); }
+  request(){try{const el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().catch(()=>{});else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();}catch(e){}},
+  exit(){try{if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}},
+  toggle(){this.isFullscreen?this.exit():(this.request(),this.dismissBanner());},
+  updateUI(){this.isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement);const fab=document.getElementById('fullscreenFab');if(fab){fab.textContent=this.isFullscreen?'✕':'⛶';fab.classList.toggle('active',this.isFullscreen);}},
+  showBanner(){const b=document.getElementById('fullscreenBanner');if(b&&!this.isFullscreen)b.classList.add('show');},
+  hideBanner(){const b=document.getElementById('fullscreenBanner');if(b)b.classList.remove('show');},
+  dismissBanner(){this.bannerDismissed=true;this.hideBanner();}
 };
 
-const LearningEngine = {
-  localCache: {}, globalCache: {}, initialized: false,
-  async init() { const saved = localStorage.getItem('iaos_learning_cache'); if (saved) { try { this.localCache = JSON.parse(saved); } catch(e) {} } if (firebaseAvailable && firebaseConnected) await this.syncFromFirebase(); this.initialized = true; },
-  async syncFromFirebase() { if (!firebaseAvailable || !db) return; try { const snap = await firebaseRefs.learning.once('value'); const data = snap.val() || {}; this.globalCache = { synonyms: data.synonyms || {}, corrections: data.corrections || {}, learnedAssociations: data.learnedAssociations || {} }; } catch(e) {} },
-  async learnSynonym(command, newWord, confidence = 1) { if (!this.localCache.synonyms) this.localCache.synonyms = {}; if (!this.localCache.synonyms[command]) this.localCache.synonyms[command] = []; if (!this.localCache.synonyms[command].includes(newWord)) { this.localCache.synonyms[command].push(newWord); this.saveLocal(); } if (firebaseAvailable && firebaseConnected) { try { const ref = firebaseRefs.synonyms.child(command); const snap = await ref.once('value'); const existing = snap.val() || []; if (!existing.includes(newWord)) { existing.push(newWord); await ref.set(existing); await this.logUsage('synonym_learned', { command, word: newWord, confidence }); } else { await this.incrementUsage(command, newWord); } } catch(e) {} } },
-  async learnAssociation(unknownWord, knownCommand, context = {}) { if (!this.localCache.learnedAssociations) this.localCache.learnedAssociations = {}; this.localCache.learnedAssociations[unknownWord.toLowerCase()] = { command: knownCommand, context, learnedAt: Date.now(), usageCount: (this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount || 0) + 1 }; this.saveLocal(); if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current) => { if (!current) return { command: knownCommand, context, learnedAt: Date.now(), usageCount: 1 }; current.usageCount = (current.usageCount || 0) + 1; return current; }); } catch(e) {} } },
-  async logIOSSearch(query, foundIOS, success) { if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.iosSearches.push().set({ query: query.toLowerCase().trim(), foundIOS: foundIOS || null, success: !!success, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {} } },
-  async logUsage(action, data = {}) { if (firebaseAvailable && firebaseConnected) { try { await firebaseRefs.usageStats.push().set({ action, data, timestamp: firebase.database.ServerValue.TIMESTAMP }); } catch(e) {} } },
-  async incrementUsage(command, word) { if (firebaseAvailable && firebaseConnected) { try { const ref = db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`); await ref.transaction((count) => (count || 0) + 1); } catch(e) {} } },
-  matchWithLearning(txt, command, basePatterns) { if (basePatterns && basePatterns.some(r => r.test(txt))) return true; const ls = this.localCache.synonyms?.[command] || []; for (const s of ls) { if (txt.toLowerCase().includes(s.toLowerCase())) return true; } const gs = this.globalCache.synonyms?.[command] || []; for (const s of gs) { if (txt.toLowerCase().includes(s.toLowerCase())) return true; } return false; },
-  getAssociation(word) { const w = word.toLowerCase(); if (this.localCache.learnedAssociations?.[w]) return this.localCache.learnedAssociations[w]; if (this.globalCache.learnedAssociations?.[w]) return this.globalCache.learnedAssociations[w]; return null; },
-  getAllKnownWords() { const words = new Set(); Object.values(CMDS).flat().forEach(r => { const str = r.toString(); const match = str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi); if (match) match.forEach(m => words.add(m.replace(/\\/g,'').toLowerCase())); }); const ls = this.localCache.synonyms || {}; Object.values(ls).flat().forEach(s => words.add(s.toLowerCase())); const gs = this.globalCache.synonyms || {}; Object.values(gs).flat().forEach(s => words.add(s.toLowerCase())); return [...words]; },
-  saveLocal() { try { localStorage.setItem('iaos_learning_cache', JSON.stringify(this.localCache)); } catch(e) {} }
+const LearningEngine={
+  localCache:{},globalCache:{},initialized:false,
+  async init(){const saved=localStorage.getItem('iaos_learning_cache');if(saved){try{this.localCache=JSON.parse(saved);}catch(e){}}if(firebaseAvailable&&firebaseConnected)await this.syncFromFirebase();this.initialized=true;},
+  async syncFromFirebase(){if(!firebaseAvailable||!db)return;try{const snap=await firebaseRefs.learning.once('value');const data=snap.val()||{};this.globalCache={synonyms:data.synonyms||{},corrections:data.corrections||{},learnedAssociations:data.learnedAssociations||{}};}catch(e){}},
+  async learnSynonym(command,newWord,confidence=1){if(!this.localCache.synonyms)this.localCache.synonyms={};if(!this.localCache.synonyms[command])this.localCache.synonyms[command]=[];if(!this.localCache.synonyms[command].includes(newWord)){this.localCache.synonyms[command].push(newWord);this.saveLocal();}if(firebaseAvailable&&firebaseConnected){try{const ref=firebaseRefs.synonyms.child(command);const snap=await ref.once('value');const existing=snap.val()||[];if(!existing.includes(newWord)){existing.push(newWord);await ref.set(existing);await this.logUsage('synonym_learned',{command,word:newWord,confidence});}else{await this.incrementUsage(command,newWord);}}catch(e){}}},
+  async logUsage(action,data={}){if(firebaseAvailable&&firebaseConnected){try{await firebaseRefs.usageStats.push().set({action,data,timestamp:firebase.database.ServerValue.TIMESTAMP});}catch(e){}}},
+  async incrementUsage(command,word){if(firebaseAvailable&&firebaseConnected){try{const ref=db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`);await ref.transaction((count)=>(count||0)+1);}catch(e){}}},
+  matchWithLearning(txt,command,basePatterns){if(basePatterns&&basePatterns.some(r=>r.test(txt)))return true;const ls=this.localCache.synonyms?.[command]||[];for(const s of ls){if(txt.toLowerCase().includes(s.toLowerCase()))return true;}const gs=this.globalCache.synonyms?.[command]||[];for(const s of gs){if(txt.toLowerCase().includes(s.toLowerCase()))return true;}return false;},
+  getAllKnownWords(){const words=new Set();Object.values(CMDS).flat().forEach(r=>{const str=r.toString();const match=str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi);if(match)match.forEach(m=>words.add(m.replace(/\\/g,'').toLowerCase()));});const ls=this.localCache.synonyms||{};Object.values(ls).flat().forEach(s=>words.add(s.toLowerCase()));const gs=this.globalCache.synonyms||{};Object.values(gs).flat().forEach(s=>words.add(s.toLowerCase()));return[...words];},
+  saveLocal(){try{localStorage.setItem('iaos_learning_cache',JSON.stringify(this.localCache));}catch(e){}}
 };
 
-const AutonomousLearner = {
-  learningSession: null, unknownWords: {}, init() {},
-  isLearningAllowed() { return !isSpeaking && !this.learningSession && !micMutedForSpeech && !page499Active; },
-  detectUnknown(txt) { if (!this.isLearningAllowed()) return []; const words = txt.toLowerCase().split(/[\s,.;:!?]+/).filter(w => w.length > 2 && !/^\d+$/.test(w)); const knownWords = LearningEngine.getAllKnownWords(); const unknowns = words.filter(w => !knownWords.includes(w) && w.length > 3); if (unknowns.length > 0) { unknowns.forEach(w => { if (!this.unknownWords[w]) this.unknownWords[w] = { count: 0, contexts: [] }; this.unknownWords[w].count++; this.unknownWords[w].contexts.push({ fullText: txt, hasIOS: !!curIOS, iosId: curIOS?.id, inGuide: guideOn, stepIdx, timestamp: Date.now() }); }); } return unknowns; },
-  guessMeaning(unknownWord) { if (!this.isLearningAllowed()) return []; const suggestions = []; if (guideOn && guideSteps[stepIdx]?.d) { suggestions.push({ command: 'oui', confidence: 0.45 }); suggestions.push({ command: 'non', confidence: 0.45 }); } if (guideOn && !guideSteps[stepIdx]?.d) suggestions.push({ command: 'next', confidence: 0.55 }); if (document.getElementById('endBar').classList.contains('show')) { suggestions.push({ command: 'bulletin', confidence: 0.4 }); suggestions.push({ command: 'fermer', confidence: 0.4 }); } const knownWords = LearningEngine.getAllKnownWords(); const similar = this.findSimilarWords(unknownWord, knownWords); for (const sim of similar.slice(0, 2)) suggestions.push({ command: sim.word, confidence: sim.similarity * 0.6 }); const ea = LearningEngine.getAssociation(unknownWord); if (ea) suggestions.unshift({ command: ea.command, confidence: 0.9 }); return suggestions.sort((a, b) => b.confidence - a.confidence); },
-  findSimilarWords(word, dictionary) { return dictionary.map(w => ({ word: w, similarity: this.stringSimilarity(word, w) })).filter(s => s.similarity > 0.5).sort((a, b) => b.similarity - a.similarity).slice(0, 5); },
-  stringSimilarity(a, b) { a = a.toLowerCase(); b = b.toLowerCase(); if (a === b) return 1; if (a.length < 2 || b.length < 2) return 0; const pA = new Set(); for (let i = 0; i < a.length - 1; i++) pA.add(a.substring(i, i + 2)); const pB = new Set(); for (let i = 0; i < b.length - 1; i++) pB.add(b.substring(i, i + 2)); const inter = new Set([...pA].filter(x => pB.has(x))); return (2.0 * inter.size) / (pA.size + pB.size); },
-  async startLearningSession(unknownWord, suggestions) { if (isSpeaking || micMutedForSpeech || page499Active) return; if (!this.isLearningAllowed()) return; this.learningSession = { word: unknownWord, suggestions, startTime: Date.now(), resolved: false }; if (suggestions.length === 0) { const msg = `Je ne comprends pas "${unknownWord}". Pouvez-vous reformuler ?`; addMsg(msg, 'learning'); speak(msg); setTimeout(() => { if (this.learningSession && !this.learningSession.resolved) this.endSession(); }, 12000); return; } const best = suggestions[0]; const msg = `Je ne connais pas "${unknownWord}". Voulez-vous dire "${best.command}" ?`; addMsg(msg, 'learning'); speak(msg); setUI('learning'); setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) { if (suggestions.length > 1) { const second = suggestions[1]; const msg2 = `Ou peut-être "${second.command}" ? Répondez oui ou non.`; addMsg(msg2, 'learning'); speak(msg2); } setTimeout(() => { if (this.learningSession && !this.learningSession.resolved && !isSpeaking) this.endSession(); }, 10000); } }, 10000); },
-  endSession() { if (this.learningSession && !isSpeaking) { const word = this.learningSession.word; const msg = `Je n'ai pas compris "${word}". Dites "apprends ${word} = [commande]" pour m'apprendre.`; addMsg(msg, 'learning'); speak(msg); this.learningSession = null; setUI('idle'); } },
-  async confirmLearning(unknownWord, command) { await LearningEngine.learnSynonym(command, unknownWord); await LearningEngine.learnAssociation(unknownWord, command, { learnedVia: 'autonomous', context: curIOS?.id || 'none' }); const msg = `J'ai appris automatiquement : "${unknownWord}" = "${command}".`; addMsg(msg, 'learning'); speak(msg); this.learningSession = null; setUI('idle'); if (command === 'next') nextStep(); else if (command === 'oui') answerYes(); else if (command === 'non') answerNo(); else if (command === 'repeat' && lastSpokenText) speak(lastSpokenText); }
-};
-
-const IOS_DB = {
+const IOS_DB={
 '000':{id:'000',type:'MA',pri:'h',desc:'Boucle de sécurité des portes fermées verrouillées isolée',kw:['000','boucle','porte','verrou'],
   instr:['Arrêt 1er quai','Aviser PC — Appliquer GD'],
   tree:[{t:'Arrêtez le train au 1er quai disponible.',d:0},{t:'Avisez le PC immédiatement.',d:0},{t:'Appliquez le GD.',d:0},{t:'✅ Dépannage terminé.',d:0,fin:1}]},
@@ -1297,434 +1203,505 @@ const ALIAS_DB = {
   "surveillance": ["246"],
   "heterogene": ["247"]
 };
-for(let i=0;i<=247;i++){ const id = String(i).padStart(3,'0'); if(!IOS_DB[id]) IOS_DB[id] = { id, pri:'l', desc:'Information technique / retour maintenance', instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}], symboles:'', vitesse:'', tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}], kw:[] }; }
+for(let i=0;i<=247;i++){const id=String(i).padStart(3,'0');if(!IOS_DB[id])IOS_DB[id]={id,pri:'l',desc:'Information technique / retour maintenance',instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],symboles:'',vitesse:'',tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],kw:[]};}
 
-let curIOS = null, guideOn = false, guideSteps = [], stepIdx = 0, iosInfoShown = false;
-let micOn = true, isListening = false, isSpeaking = false, micMutedForSpeech = false;
-let recognition = null, restartTimer = null, earlyListenTimer = null, currentUtterance = null;
-let procStart = null, procEnd = null, procLog = [], cachedVoice = null;
-let lastSpokenText = '', lastUserQuery = '', multiSelectActive = false, micWasOnBeforeHome = true;
-let page499Active = false;
-let p499Selections = { brakeType: null, bogieType: null, isolatedBogies: null, isolatedAxles: null };
+let curIOS=null,guideOn=false,guideSteps=[],stepIdx=0,iosInfoShown=false;
+let micOn=true,isListening=false,isSpeaking=false,micMutedForSpeech=false;
+let recognition=null,restartTimer=null,earlyListenTimer=null,currentUtterance=null;
+let procStart=null,procEnd=null,procLog=[],cachedVoice=null;
+let lastSpokenText='',lastUserQuery='',multiSelectActive=false,micWasOnBeforeHome=true;
 
-const synth = window.speechSynthesis, hasVoice = !!synth;
-if(hasVoice){ synth.getVoices(); synth.onvoiceschanged = ()=>{ cachedVoice=null; getVoice(); }; }
+/* ═══ PAGE 499 STATE ═══ */
+let page499Active=false;
+let p499={step:'start',brakeType:null,bogieType:null,isolatedBogies:null,isolatedAxles:null};
+
+const synth=window.speechSynthesis,hasVoice=!!synth;
+if(hasVoice){synth.getVoices();synth.onvoiceschanged=()=>{cachedVoice=null;getVoice();};}
 
 function getVoice(){
-  if(cachedVoice) return cachedVoice; const vx = synth.getVoices(); if(!vx.length) return null;
-  const premiumVoices = [
-    { keywords: ['google','français','french'] },{ keywords: ['amelie','amélie'] },{ keywords: ['céline','celine'] },{ keywords: ['florence'] },{ keywords: ['chantal'] },{ keywords: ['audrey'] },{ keywords: ['capucine'] },
-    { keywords: ['hortense','microsoft','french'] },{ keywords: ['denise','microsoft','french'] },{ keywords: ['henri','microsoft','french'] },
-    { keywords: ['amelie','enhanced','premium'] },{ keywords: ['thomas','enhanced','premium'] }
-  ];
-  for (const pv of premiumVoices) { const match = vx.find(v => { const name = v.name.toLowerCase(); const lang = v.lang.toLowerCase(); const isFR = lang.startsWith('fr'); if (!isFR && pv.keywords.some(k => k.includes('fr'))) return false; return pv.keywords.every(k => name.includes(k.toLowerCase())); }); if (match) { cachedVoice = match; return match; } }
-  const fem = ['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine','denise','hortense'];
-  let v = vx.find(x=>x.lang.startsWith('fr') && fem.some(f=>x.name.toLowerCase().includes(f)));
-  if(!v) v = vx.find(x=>x.lang.startsWith('fr')); cachedVoice = v; return v;
+  if(cachedVoice)return cachedVoice;
+  const vx=synth.getVoices();if(!vx.length)return null;
+  const fem=['female','femme','féminin','feminin','siri','amelie','amélie','céline','celine','florence','chantal','audrey','capucine','denise','hortense','sophie','julie'];
+  let v=vx.find(x=>x.lang.startsWith('fr')&&fem.some(f=>x.name.toLowerCase().includes(f)));
+  if(!v)v=vx.find(x=>x.lang.startsWith('fr'));cachedVoice=v;return v;
 }
 
-function speak(txt, cb){
-  if(!hasVoice){ if(cb) cb(); return; }
-  if(isSpeaking) synth.cancel();
+function speak(txt,cb){
+  if(!hasVoice){if(cb)cb();return;}
+  if(isSpeaking)synth.cancel();
   clearTimeout(earlyListenTimer);
-  if (AutonomousLearner.learningSession) { AutonomousLearner.learningSession = null; }
-  const wasMicOn = micOn;
-  if (micOn) { stopListening(); micOn = false; micMutedForSpeech = true; setUI('speak'); }
-  let x = txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'').replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L').replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès').replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s").replace(/\bdes IOS\b/gi,'des i o s').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s').replace(/\bFS\b/g,'F S').replace(/\bFU\b/g,'F U').replace(/\bDJ\b/g,'D J').replace(/\bCVS\b/g,'C V S').replace(/\bKVB\b/g,'K V B').replace(/\bSTM\b/g,'S T M').replace(/\bSAI\b/g,'S A I').replace(/\bSAEIV\b/g,'S A E I V').replace(/\bETF\b/g,'E T F').replace(/\bEFAS\b/g,'E F A S').replace(/\bTETRA\b/g,'T E T R A').replace(/\bIHM\b/g,'I H M').replace(/\bUM\b/g,'U M').replace(/\bSTBS\b/g,'S T B S').replace(/\bBM\b/g,'B M').replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S').replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J').replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ').replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10)).replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10)).replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
-  lastSpokenText = x;
-  currentUtterance = new SpeechSynthesisUtterance(x); currentUtterance.lang='fr-FR'; currentUtterance.rate=0.95; currentUtterance.pitch=1.05; currentUtterance.volume=1.0;
-  const v = getVoice(); if(v) currentUtterance.voice=v;
-  isSpeaking=true; setUI('speak');
-  currentUtterance.onend = ()=>{ isSpeaking=false; micMutedForSpeech = false; clearTimeout(earlyListenTimer); setUI('idle'); if (wasMicOn && !micOn) { micOn = true; startListening(); } if(cb) cb(); currentUtterance=null; };
-  currentUtterance.onerror = ()=>{ isSpeaking=false; micMutedForSpeech = false; clearTimeout(earlyListenTimer); setUI('error'); if (wasMicOn && !micOn) { micOn = true; schedRestart(); } if(cb) cb(); currentUtterance=null; };
+  const wasMicOn=micOn;
+  if(micOn){stopListening();micOn=false;micMutedForSpeech=true;setUI('speak');}
+  let x=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'').replace(/\bAEL\b/gi,'A E L').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s').replace(/\bZaber\b/gi,'Zabèr').replace(/km\/h/gi,'kilomètres par heure').replace(/\s+/g,' ').trim();
+  lastSpokenText=x;
+  currentUtterance=new SpeechSynthesisUtterance(x);currentUtterance.lang='fr-FR';currentUtterance.rate=0.95;currentUtterance.pitch=1.05;currentUtterance.volume=1;
+  const v=getVoice();if(v)currentUtterance.voice=v;
+  isSpeaking=true;setUI('speak');
+  currentUtterance.onend=()=>{isSpeaking=false;micMutedForSpeech=false;clearTimeout(earlyListenTimer);setUI('idle');if(wasMicOn&&!micOn){micOn=true;startListening();}if(cb)cb();currentUtterance=null;};
+  currentUtterance.onerror=()=>{isSpeaking=false;micMutedForSpeech=false;clearTimeout(earlyListenTimer);setUI('error');if(wasMicOn&&!micOn){micOn=true;schedRestart();}if(cb)cb();currentUtterance=null;};
   synth.speak(currentUtterance);
 }
 
-function $(id){ return document.getElementById(id); }
+function $(id){return document.getElementById(id);}
 function setUI(state){
-  const dot = $('statusDot'), txt = $('statusTxt'), bars = $('bars'), mic = $('micBtn');
-  const hints = { idle:'Micro actif · Dites un numéro IOS', listen:'Écoute en cours…', speak:'Micro coupé · Lecture vocale', earlyListen:'Prêt à répondre…', blocked:'Procédure active', error:'Erreur', muted:'Micro coupé', learning:'Apprentissage…' };
-  dot.className = 'status-indicator ' + (state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':state==='learning'?'learning':'');
-  txt.className = 'status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':state==='learning'?'learning':'');
-  txt.textContent = hints[state] || hints.idle; bars.className = 'bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':state==='learning'?'learning':'');
-  mic.className = 'mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='learning'?'learning':'');
+  const dot=$('statusDot'),txt=$('statusTxt'),bars=$('bars'),mic=$('micBtn');
+  const hints={idle:'Micro actif · Dites un numéro IOS',listen:'Écoute en cours…',speak:'Micro coupé · Lecture vocale',earlyListen:'Prêt à répondre…',blocked:'Procédure active',error:'Erreur',muted:'Micro coupé',learning:'Apprentissage…'};
+  dot.className='status-indicator '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='blocked'?'blocked':state==='error'?'error':state==='learning'?'learning':'');
+  txt.className='status-text '+(state==='listen'?'listen':state==='speak'?'speak':state==='blocked'?'blocked':state==='learning'?'learning':'');
+  txt.textContent=hints[state]||hints.idle;
+  bars.className='bars '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='muted'?'muted':state==='learning'?'learning':'');
+  mic.className='mic-outer '+(state==='listen'?'listen':state==='speak'?'speak':state==='earlyListen'?'earlyListen':state==='error'?'error':state==='learning'?'learning':'');
 }
-function toast(msg, ms=2800){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),ms); }
-function addMsg(html, role='ai'){ const log=$('chatLog'); const d=document.createElement('div'); d.className='t-msg '+role; d.innerHTML='<div class="t-bubble">'+html+'</div>'; log.appendChild(d); log.scrollTop=log.scrollHeight; while(log.children.length>100) log.removeChild(log.firstChild); }
+function toast(msg,ms=2800){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms);}
+function addMsg(html,role='ai'){const log=$('chatLog');const d=document.createElement('div');d.className='t-msg '+role;d.innerHTML='<div class="t-bubble">'+html+'</div>';log.appendChild(d);log.scrollTop=log.scrollHeight;while(log.children.length>100)log.removeChild(log.firstChild);}
 
-/* ═══ PAGE 499 LOGIC ═══ */
-function openPage499() {
-  if (isProcActive()) { toast('Terminez la procédure en cours'); return; }
-  page499Active = true;
+/* ═══════════════════════════════════
+   PAGE 499 - MOTEUR PRINCIPAL
+═══════════════════════════════════ */
+function openPage499(){
+  if(isProcActive()&&!page499Active){toast('Terminez la procédure en cours');return;}
+  page499Active=true;
   $('guideCard').classList.remove('show');
   $('page499Card').classList.add('show');
-  p499Reset();
+  p499FullReset();
+  renderPage499();
   setUI('blocked');
   addMsg('📋 Page 499 - Barème de vitesse limite');
-  speak("Page 499. Barème de vitesse limite en cas d'incident de frein.");
+  speak("Page 499. Barème de vitesse limite en cas d'incident de frein. Sélectionnez le type de frein.");
 }
 
-function closePage499() {
-  page499Active = false;
+function closePage499(){
+  page499Active=false;
   $('page499Card').classList.remove('show');
   p499FullReset();
   setUI('idle');
   addMsg('Page 499 fermée.');
 }
 
-function p499Start() {
-  document.getElementById('p499Step1').style.display = 'none';
-  document.getElementById('p499Step2').style.display = 'block';
-  document.getElementById('p499Step3').style.display = 'none';
-  document.getElementById('p499Step4').style.display = 'none';
-  document.getElementById('p499Result').style.display = 'none';
+function p499FullReset(){
+  p499={step:'start',brakeType:null,bogieType:null,isolatedBogies:null,isolatedAxles:null};
 }
 
-function p499SelectBrake(type) {
-  document.querySelectorAll('#p499BrakeOptions .p499-option').forEach(o => o.classList.remove('selected'));
-  document.querySelector(`#p499BrakeOptions .p499-option[data-value="${type}"]`).classList.add('selected');
-  p499Selections.brakeType = type;
-  document.getElementById('p499NextFromBrake').disabled = false;
-  document.getElementById('p499MixedWarning').classList.toggle('show', type === 'electric');
-}
+function renderPage499(){
+  const body=$('p499Body');
+  body.innerHTML='';
 
-function p499NextAfterBrake() {
-  if (p499Selections.brakeType === 'electromagnetic' || p499Selections.brakeType === 'electric') {
-    p499Selections.bogieType = 'motor';
-    p499PrepareSelection();
-    document.getElementById('p499Step2').style.display = 'none';
-    document.getElementById('p499Step3').style.display = 'none';
-    document.getElementById('p499Step4').style.display = 'block';
-  } else {
-    document.getElementById('p499Step2').style.display = 'none';
-    document.getElementById('p499Step3').style.display = 'block';
-    document.getElementById('p499Step4').style.display = 'none';
+  if(p499.step==='start'){
+    body.innerHTML=`
+      <div class="p499-reminder">
+        <strong style="color:var(--gold);">ATTENTION :</strong> Cet assistant ne remplace pas l'application du guide de dépannage !<br><br>
+        Un test EFAS a été effectué en application du guide de dépannage annexe. Si le test EFAS est concluant, appliquer la page 499A « Barème de vitesse limite en cas d'incident de frein ».<br><br>
+        Sélectionnez successivement : type de frein, type de bogie, nombre de bogies/essieux isolés.
+      </div>
+      <div class="p499-nav"><button class="p499-btn primary" onclick="p499GoStep('brake')">COMMENCER</button></div>`;
   }
-}
-
-function p499SelectBogie(type) {
-  document.querySelectorAll('#p499BogieOptions .p499-option').forEach(o => o.classList.remove('selected'));
-  document.querySelector(`#p499BogieOptions .p499-option[data-value="${type}"]`).classList.add('selected');
-  p499Selections.bogieType = type;
-  document.getElementById('p499NextFromBogie').disabled = false;
-}
-
-function p499NextAfterBogie() {
-  p499PrepareSelection();
-  document.getElementById('p499Step2').style.display = 'none';
-  document.getElementById('p499Step3').style.display = 'none';
-  document.getElementById('p499Step4').style.display = 'block';
-}
-
-function p499PrepareSelection() {
-  const container = document.getElementById('p499SelectionOptions');
-  const title = document.getElementById('p499SelectionTitle');
-  container.innerHTML = '';
-  if (p499Selections.brakeType === 'electric') {
-    title.textContent = "Nombre d'essieux isolés";
-    for (let i = 1; i <= 6; i++) {
-      const opt = document.createElement('div'); opt.className = 'p499-option'; opt.textContent = i;
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('#p499SelectionOptions .p499-option').forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        p499Selections.isolatedAxles = i;
-        document.getElementById('p499CalculateBtn').disabled = false;
-      });
-      container.appendChild(opt);
-    }
-  } else {
-    title.textContent = "Nombre de bogies isolés";
-    for (let i = 1; i <= 5; i++) {
-      const opt = document.createElement('div'); opt.className = 'p499-option'; opt.textContent = i;
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('#p499SelectionOptions .p499-option').forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        p499Selections.isolatedBogies = i;
-        document.getElementById('p499CalculateBtn').disabled = false;
-      });
-      container.appendChild(opt);
+  else if(p499.step==='brake'){
+    body.innerHTML=`
+      <div class="p499-step-title">Type de frein isolé</div>
+      <div class="p499-options">
+        <div class="p499-option" onclick="p499SelectBrake('mechanical')">Frein mécanique</div>
+        <div class="p499-option" onclick="p499SelectBrake('electromagnetic')">Frein électromagnétique</div>
+        <div class="p499-option" onclick="p499SelectBrake('electric')">Frein électrique</div>
+      </div>
+      <div class="p499-warning${p499.brakeType==='electric'?' show':''}" id="p499MixedWarning">En cas de mixité d'isolement entre le frein électrique et les autres équipements de frein, il y a lieu de respecter la limitation de vitesse la plus restrictive.</div>
+      <div class="p499-nav">
+        <button class="p499-btn" onclick="closePage499()">RETOUR</button>
+        <button class="p499-btn primary" id="p499BtnBrake"${p499.brakeType?'':' disabled'} onclick="p499AfterBrake()">CONTINUER</button>
+      </div>`;
+    if(p499.brakeType){
+      const opt=document.querySelector(`.p499-option[onclick*="${p499.brakeType}"]`);
+      if(opt)opt.classList.add('selected');
     }
   }
-}
-
-function p499BackToBrake() { document.getElementById('p499Step3').style.display = 'none'; document.getElementById('p499Step2').style.display = 'block'; document.getElementById('p499NextFromBogie').disabled = true; }
-function p499BackToBogie() { document.getElementById('p499Step4').style.display = 'none'; document.getElementById('p499Step3').style.display = 'block'; document.getElementById('p499CalculateBtn').disabled = true; }
-
-function p499Calculate() {
-  document.getElementById('p499Step2').style.display = 'none';
-  document.getElementById('p499Step3').style.display = 'none';
-  document.getElementById('p499Step4').style.display = 'none';
-  document.getElementById('p499Result').style.display = 'block';
-
-  let speedLimit = 0, remainingBogies = 0, showEmergency = false, warning = '', isolatedBogiesEquivalent = 0, showEquivalent = false;
-  let configText = '';
-
-  if (p499Selections.brakeType === 'electric') {
-    configText = 'Frein électrique';
-    if (p499Selections.isolatedAxles === 1) { isolatedBogiesEquivalent = 0; speedLimit = 50; }
-    else if (p499Selections.isolatedAxles === 2) { isolatedBogiesEquivalent = 1; speedLimit = 50; warning = 'Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS'; }
-    else if (p499Selections.isolatedAxles <= 4) { isolatedBogiesEquivalent = 2; speedLimit = 30; warning = 'Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS'; }
-    else { isolatedBogiesEquivalent = 3; speedLimit = 0; showEmergency = true; }
-    remainingBogies = 5 - isolatedBogiesEquivalent;
-    showEquivalent = true;
-  } else if (p499Selections.brakeType === 'mechanical') {
-    configText = `Frein mécanique - ${p499Selections.bogieType.toUpperCase()}`;
-    if (p499Selections.bogieType === 'c2b') {
-      if (p499Selections.isolatedBogies === 1) { isolatedBogiesEquivalent = 2; remainingBogies = 3; speedLimit = 30; showEquivalent = true; }
-      else if (p499Selections.isolatedBogies === 2) { isolatedBogiesEquivalent = 4; remainingBogies = 1; speedLimit = 0; showEmergency = true; showEquivalent = true; }
-      else { isolatedBogiesEquivalent = 5; remainingBogies = 0; speedLimit = 0; showEmergency = true; }
-    } else {
-      if (p499Selections.isolatedBogies === 1) { remainingBogies = 4; speedLimit = 70; }
-      else if (p499Selections.isolatedBogies === 2) { remainingBogies = 3; speedLimit = 30; }
-      else { remainingBogies = 5 - p499Selections.isolatedBogies; speedLimit = 0; showEmergency = true; }
+  else if(p499.step==='bogie'){
+    body.innerHTML=`
+      <div class="p499-step-title">Type de bogie</div>
+      <div class="p499-options">
+        <div class="p499-option" onclick="p499SelectBogie('ce1')">CE1</div>
+        <div class="p499-option" onclick="p499SelectBogie('c1')">C1</div>
+        <div class="p499-option" onclick="p499SelectBogie('c2b')">C2B</div>
+        <div class="p499-option" onclick="p499SelectBogie('ce2')">CE2</div>
+      </div>
+      <div class="p499-nav">
+        <button class="p499-btn" onclick="p499GoStep('brake')">RETOUR</button>
+        <button class="p499-btn primary" id="p499BtnBogie"${p499.bogieType?'':' disabled'} onclick="p499AfterBogie()">CONTINUER</button>
+      </div>`;
+    if(p499.bogieType){
+      const opt=document.querySelector(`.p499-option[onclick*="${p499.bogieType}"]`);
+      if(opt)opt.classList.add('selected');
     }
-  } else if (p499Selections.brakeType === 'electromagnetic') {
-    configText = 'Frein électromagnétique - BOGIE MOTEUR et/ou PORTEUR';
-    isolatedBogiesEquivalent = p499Selections.isolatedBogies * 2;
-    if (isolatedBogiesEquivalent === 2) { speedLimit = 30; }
-    else if (isolatedBogiesEquivalent >= 4) { speedLimit = 0; showEmergency = true; }
-    remainingBogies = Math.max(0, 5 - isolatedBogiesEquivalent);
-    showEquivalent = p499Selections.isolatedBogies < 3;
   }
-
-  const speedEl = document.getElementById('p499SpeedValue');
-  speedEl.textContent = speedLimit;
-  speedEl.className = 'p499-speed';
-  if (speedLimit === 0) speedEl.classList.add('danger');
-  else if (speedLimit === 30) speedEl.classList.add('warning');
-  else if (speedLimit >= 50) speedEl.classList.add('success');
-
-  document.getElementById('p499Emergency').classList.toggle('show', showEmergency);
-
-  let infoHTML = `<div class="p499-summary-item"><div class="p499-summary-label">Configuration</div><div class="p499-summary-value">${configText}</div></div>`;
-  if (p499Selections.brakeType === 'electric') {
-    infoHTML += `<div class="p499-summary-item"><div class="p499-summary-label">Essieux isolés</div><div class="p499-summary-value">${p499Selections.isolatedAxles} ${showEquivalent ? '(équivaut à ' + isolatedBogiesEquivalent + ' bogie(s))' : ''}</div></div>`;
-  } else {
-    infoHTML += `<div class="p499-summary-item"><div class="p499-summary-label">Bogies isolés</div><div class="p499-summary-value">${p499Selections.isolatedBogies} ${showEquivalent ? '(équivaut à ' + isolatedBogiesEquivalent + ' bogies)' : ''}</div></div>`;
+  else if(p499.step==='quantity'){
+    const isElectric=p499.brakeType==='electric';
+    const title=isElectric?"Nombre d'essieux isolés":"Nombre de bogies isolés";
+    const max=isElectric?6:5;
+    let opts='';
+    for(let i=1;i<=max;i++){
+      const sel=(isElectric?p499.isolatedAxles===i:p499.isolatedBogies===i)?' selected':'';
+      opts+=`<div class="p499-option${sel}" onclick="p499SelectQuantity(${i})">${i}</div>`;
+    }
+    const canCalc=isElectric?!!p499.isolatedAxles:!!p499.isolatedBogies;
+    body.innerHTML=`
+      <div class="p499-step-title">${title}</div>
+      <div class="p499-options full">${opts}</div>
+      <div class="p499-nav">
+        <button class="p499-btn" onclick="p499GoStep('${isElectric?'brake':'bogie'}')">RETOUR</button>
+        <button class="p499-btn primary" id="p499BtnCalc"${canCalc?'':' disabled'} onclick="p499Calculate()">CALCULER</button>
+      </div>`;
   }
-  infoHTML += `<div class="p499-summary-item"><div class="p499-summary-label">Bogies restants (US)</div><div class="p499-summary-value">${remainingBogies}</div></div>`;
-  if (warning) infoHTML += `<div style="color:var(--red);margin-top:8px;font-size:0.65rem;line-height:1.3;">⚠ ${warning}</div>`;
-  document.getElementById('p499Info').innerHTML = infoHTML;
+  else if(p499.step==='result'){
+    const r=p499ComputeResult();
+    body.innerHTML=`
+      <div class="p499-result">
+        <div class="p499-speed ${r.speedClass}">${r.speedLimit}</div>
+        <div class="p499-unit">KM/h</div>
+        <div class="p499-label">Vitesse maximale autorisée</div>
+      </div>
+      <div class="p499-emergency${r.showEmergency?' show':''}">SECOURS</div>
+      <div class="p499-info">${r.infoHTML}</div>
+      <div class="p499-nav">
+        <button class="p499-btn" onclick="p499FullReset();renderPage499();p499GoStep('start');">NOUVEAU CALCUL</button>
+        <button class="p499-btn primary" onclick="closePage499()">FERMER</button>
+      </div>`;
+  }
 }
 
-function p499Reset() { p499Selections = { brakeType: null, bogieType: null, isolatedBogies: null, isolatedAxles: null }; document.querySelectorAll('#page499Card .p499-option.selected').forEach(o => o.classList.remove('selected')); document.getElementById('p499NextFromBrake').disabled = true; document.getElementById('p499NextFromBogie').disabled = true; document.getElementById('p499CalculateBtn').disabled = true; document.getElementById('p499MixedWarning').classList.remove('show'); document.getElementById('p499Emergency').classList.remove('show'); p499Start(); }
-function p499FullReset() { p499Reset(); document.getElementById('p499Step2').style.display = 'none'; document.getElementById('p499Step3').style.display = 'none'; document.getElementById('p499Step4').style.display = 'none'; document.getElementById('p499Result').style.display = 'none'; document.getElementById('p499Step1').style.display = 'block'; }
+function p499GoStep(step){
+  p499.step=step;
+  renderPage499();
+}
 
-/* ═══ GUIDE & IOS ═══ */
-function showMultiSelect(alias, iosIds) { $('guideCard').classList.remove('show'); $('page499Card').classList.remove('show'); multiSelectActive = true; const zone = $('dynamicZone'); let html = '<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "' + alias + '" correspond à plusieurs IOS</h3></div><div class="selection-list">'; iosIds.forEach((id) => { const io = IOS_DB[id]; if (io) { const pc = io.pri === 'h' ? 'h' : (io.pri === 'm' ? 'm' : 'l'); const pt = io.pri === 'h' ? 'URG' : (io.pri === 'm' ? 'MOY' : 'INF'); html += `<div class="selection-item" data-ios="${io.id}" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-item-prio ${pc}">${pt}</span><span class="selection-arrow">→</span></div>`; } }); html += '</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>'; zone.innerHTML = html; addMsg(`Plusieurs IOS correspondent.`); speak("Plusieurs IOS correspondent."); }
-function selectFromMulti(iosId) { closeMultiSelect(); const io = IOS_DB[iosId]; if (io) { loadIOS(io); LearningEngine.logIOSSearch(lastUserQuery, iosId, true); } }
-function cancelMultiSelect() { closeMultiSelect(); addMsg('❌ Sélection annulée.'); speak('Sélection annulée.'); }
-function closeMultiSelect() { multiSelectActive = false; $('dynamicZone').innerHTML = ''; }
-window.selectFromMulti = selectFromMulti; window.cancelMultiSelect = cancelMultiSelect;
+function p499SelectBrake(type){
+  p499.brakeType=type;
+  p499.bogieType=null;
+  p499.isolatedBogies=null;
+  p499.isolatedAxles=null;
+  renderPage499();
+}
 
-function renderGuideCard(){ const card=$('guideCard'); if(!guideOn || stepIdx>=guideSteps.length){ card.classList.remove('show'); iosInfoShown=false; return; } const s=guideSteps[stepIdx]; if(s.fin){ card.classList.remove('show'); iosInfoShown=false; return; } card.classList.add('show'); $('gLabel').textContent='PROCÉDURE GUIDÉE'; $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`; $('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length; $('gBody').textContent=s.t; $('gYes').style.display=s.d?'inline-flex':'none'; $('gNo').style.display=s.d?'inline-flex':'none'; $('gPrev').style.display='inline-flex'; $('gNext').textContent='SUIVANT →'; $('gNext').style.display='inline-flex'; $('gCancel').textContent='ANNULER'; iosInfoShown=false; }
-function showIosInfoCard(){ if(!curIOS) return; const card=$('guideCard'); card.classList.add('show'); $('gLabel').textContent='IOS DÉTECTÉ'; $('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`; $('gStepLbl').textContent=curIOS.desc; $('gBody').textContent='Prêt à démarrer la procédure.'; $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').textContent='▶ DÉMARRER LE GUIDAGE'; $('gNext').style.display='inline-flex'; $('gCancel').textContent='ANNULER'; $('gCancel').style.display='inline-flex'; iosInfoShown=true; }
-function showEndCard(msg){ const card=$('guideCard'); card.classList.add('show'); $('gLabel').textContent='TERMINÉ'; $('gIosId').textContent=''; $('gStepLbl').textContent=''; $('gBody').textContent=msg; $('gYes').style.display='none'; $('gNo').style.display='none'; $('gPrev').style.display='none'; $('gNext').style.display='none'; $('gCancel').textContent='FERMER'; $('gCancel').style.display='inline-flex'; iosInfoShown=false; }
-function renderIosCard(ios){ $('iosCard').classList.add('show'); $('icCode').textContent='IOS-'+ios.id; $('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO'; $('icPrio').className='prio-tag prio-'+ios.pri; $('icDesc').textContent=ios.desc; $('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.'; }
+function p499SelectBogie(type){
+  p499.bogieType=type;
+  p499.isolatedBogies=null;
+  renderPage499();
+}
 
-function findIOS(q){ q=q.toLowerCase().trim(); lastUserQuery = q; const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i); if(m){ const id=m[1].padStart(3,'0'); if(IOS_DB[id]) { LearningEngine.logIOSSearch(q, id, true); return { single: IOS_DB[id] }; } } for(const [alias, ids] of Object.entries(ALIAS_DB)){ if(q.includes(alias)) { if (Array.isArray(ids)) { if (ids.length === 1) { const io = IOS_DB[ids[0]]; if (io) { LearningEngine.logIOSSearch(q, ids[0], true); return { single: io }; } } else { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: ids, alias: alias }; } } else if (typeof ids === 'string') { const io = IOS_DB[ids]; if (io) { LearningEngine.logIOSSearch(q, ids, true); return { single: io }; } } } } const matches = []; for(const io of Object.values(IOS_DB)){ if(io.desc.toLowerCase().includes(q)) matches.push(io.id); if(io.kw && io.kw.some(k=>q.includes(k))) { if (!matches.includes(io.id)) matches.push(io.id); } } if (matches.length === 1) { LearningEngine.logIOSSearch(q, matches[0], true); return { single: IOS_DB[matches[0]] }; } else if (matches.length > 1) { LearningEngine.logIOSSearch(q, 'multiple', true); return { multiple: matches, alias: q }; } LearningEngine.logIOSSearch(q, null, false); return null; }
-function loadIOS(ios){ curIOS=ios; guideOn=false; iosInfoShown=false; renderIosCard(ios); addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc); speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80)); showIosInfoCard(); procStart=null; procEnd=null; procLog=[]; LearningEngine.logUsage('ios_loaded', { ios: ios.id, pri: ios.pri }); }
-function startGuide(){ if(!curIOS) return; guideOn=true; guideSteps=[]; stepIdx=0; if(curIOS.instructions) for(const i of curIOS.instructions) guideSteps.push({t:i.t,d:0}); if(curIOS.symboles) guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0}); if(curIOS.vitesse) guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0}); for(const s of curIOS.tree) guideSteps.push(s); procStart=new Date(); procEnd=null; procLog=[]; iosInfoShown=false; renderGuideCard(); addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id); runStep(); LearningEngine.logUsage('guide_started', { ios: curIOS.id }); }
-function runStep(){ if(!guideOn || stepIdx>=guideSteps.length){ finishProc('✅ Fin de procédure.'); return; } const s=guideSteps[stepIdx]; if(s.fin){ finishProc(s.t||'✅ Procédure achevée.'); return; } renderGuideCard(); procLog.push(s.t); speak(s.t); }
-function answerYes(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(true); }
-function answerNo(){ if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d) return; branch(false); }
-function branch(yes){ const s=guideSteps[stepIdx]; const next=yes?(s.oui||[]):(s.non||[]); addMsg(yes?'✓ OUI':'✗ NON','user'); procLog.push(yes?'OUI':'NON'); if(!next.length){ finishProc('✅ Fin de procédure.'); return; } guideSteps=next; stepIdx=0; runStep(); }
-function nextStep(){ if(!guideOn){ if(iosInfoShown&&curIOS){ startGuide(); return; } return; } const s=guideSteps[stepIdx]; if(s&&s.d){ speak('Veuillez répondre par oui ou par non.'); return; } stepIdx++; runStep(); }
-function prevStep(){ if(!guideOn) return; if(stepIdx>0){ stepIdx--; runStep(); } else speak('Vous êtes à la première étape.'); }
-function cancelProc(){ guideOn=false; iosInfoShown=false; $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); addMsg('❌ Procédure annulée.'); speak('Procédure annulée.'); LearningEngine.logUsage('procedure_cancelled'); }
-function finishProc(msg){ guideOn=false; procEnd=new Date(); addMsg(msg); speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg); showEndCard(msg); $('endBar').classList.add('show'); LearningEngine.logUsage('procedure_finished', { ios: curIOS?.id, duration: procEnd - procStart }); }
-function goHome(){ micWasOnBeforeHome = micOn; cancelProc(); curIOS=null; $('iosCard').classList.remove('show'); $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); $('page499Card').classList.remove('show'); $('spSearch').value=''; closeMultiSelect(); page499Active = false; if (micOn) { stopListening(); micOn = false; micMutedForSpeech = true; setUI('muted'); $('statusTxt').textContent='Micro coupé'; } addMsg('🏠 Retour à l\'accueil.'); speak("Retour à l'accueil.", () => { micMutedForSpeech = false; if (micWasOnBeforeHome) { micOn = true; startListening(); setUI('idle'); $('statusTxt').textContent='Micro actif'; } }); }
+function p499SelectQuantity(num){
+  if(p499.brakeType==='electric')p499.isolatedAxles=num;
+  else p499.isolatedBogies=num;
+  renderPage499();
+}
 
-function ft(d){ return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-function fd(d){ return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
-function genRecap(){ if(!curIOS||!procStart) return ''; const e=procEnd||new Date(); return ['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n'); }
-function openRecap(){ $('recapBody').textContent=genRecap(); $('recapBg').classList.add('on'); }
-function closeRecap(){ $('recapBg').classList.remove('on'); }
-function printRecap(){ const w=window.open('','','width=680,height=600'); w.document.write('<pre>'+$('recapBody').textContent+'</pre>'); w.document.close(); w.print(); }
+function p499AfterBrake(){
+  if(p499.brakeType==='electromagnetic'||p499.brakeType==='electric'){
+    p499.bogieType='motor';
+    p499GoStep('quantity');
+  }else{
+    p499GoStep('bogie');
+  }
+}
 
-function buildList(){ const ul=$('modalList'); ul.innerHTML=''; const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b)); for(const id of ids){ const io=IOS_DB[id]; const r=document.createElement('div'); r.className='ios-row'; const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l'; const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF'; r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span><span class="ios-row-p '+pc+'">'+pt+'</span>'; r.addEventListener('click',()=>{ closeList(); if(!isProcActive()) loadIOS(io); else toast('Terminez la procédure en cours.'); }); ul.appendChild(r); } }
-function openList(){ buildList(); $('listBg').classList.add('on'); }
-function closeList(){ $('listBg').classList.remove('on'); }
+function p499AfterBogie(){
+  p499GoStep('quantity');
+}
 
-function openInfo(){ $('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">page 499 / barème de vitesse</span> — Ouvrir la page 499</li><li><span class="cmd-pill">guidage / commence le dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète / redis</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>📋 Page 499</h4><p>Une fois la page 499 ouverte, dites <span class="cmd-pill">frein mécanique</span>, <span class="cmd-pill">CE1</span>, <span class="cmd-pill">1</span> etc. pour sélectionner.</p><h4>🔇 Micro automatique</h4><p>Le micro se coupe automatiquement pendant la lecture vocale.</p><h4>🧠 Apprentissage autonome</h4><p>L'IAOS apprend tout seul.</p><h4>☁️ Firebase</h4><p>${firebaseConnected ? '✅ Connecté' : '🟡 En attente...'}</p>`; $('infoBg').classList.add('on'); }
-function closeInfo(){ $('infoBg').classList.remove('on'); }
-function isProcActive(){ return guideOn || isSpeaking || iosInfoShown || multiSelectActive || page499Active; }
+function p499Calculate(){
+  p499.step='result';
+  renderPage499();
+}
 
-const CMDS = {
+function p499ComputeResult(){
+  let speedLimit=0,remainingBogies=0,showEmergency=false,warning='',isolatedBogiesEquivalent=0,showEquivalent=false;
+  let configText='';
+
+  if(p499.brakeType==='electric'){
+    configText='Frein électrique';
+    if(p499.isolatedAxles===1){isolatedBogiesEquivalent=0;speedLimit=50;}
+    else if(p499.isolatedAxles===2){isolatedBogiesEquivalent=1;speedLimit=50;warning='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}
+    else if(p499.isolatedAxles<=4){isolatedBogiesEquivalent=2;speedLimit=30;warning='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}
+    else{isolatedBogiesEquivalent=3;speedLimit=0;showEmergency=true;}
+    remainingBogies=5-isolatedBogiesEquivalent;showEquivalent=true;
+  }else if(p499.brakeType==='mechanical'){
+    configText=`Frein mécanique - ${p499.bogieType.toUpperCase()}`;
+    if(p499.bogieType==='c2b'){
+      if(p499.isolatedBogies===1){isolatedBogiesEquivalent=2;remainingBogies=3;speedLimit=30;showEquivalent=true;}
+      else if(p499.isolatedBogies===2){isolatedBogiesEquivalent=4;remainingBogies=1;speedLimit=0;showEmergency=true;showEquivalent=true;}
+      else{isolatedBogiesEquivalent=5;remainingBogies=0;speedLimit=0;showEmergency=true;}
+    }else{
+      isolatedBogiesEquivalent=p499.isolatedBogies;
+      if(p499.isolatedBogies===1){remainingBogies=4;speedLimit=70;}
+      else if(p499.isolatedBogies===2){remainingBogies=3;speedLimit=30;}
+      else{remainingBogies=5-p499.isolatedBogies;speedLimit=0;showEmergency=true;}
+    }
+  }else if(p499.brakeType==='electromagnetic'){
+    configText='Frein électromagnétique - BOGIE MOTEUR et/ou PORTEUR';
+    isolatedBogiesEquivalent=p499.isolatedBogies*2;
+    if(isolatedBogiesEquivalent===2)speedLimit=30;
+    else if(isolatedBogiesEquivalent>=4){speedLimit=0;showEmergency=true;}
+    remainingBogies=Math.max(0,5-isolatedBogiesEquivalent);
+    showEquivalent=p499.isolatedBogies<3;
+  }
+
+  let speedClass='';
+  if(speedLimit===0)speedClass='danger';
+  else if(speedLimit===30)speedClass='warning-color';
+  else if(speedLimit>=50)speedClass='success';
+
+  let infoHTML=`<div class="p499-summary-item"><div class="p499-summary-label">Configuration</div><div class="p499-summary-value">${configText}</div></div>`;
+  if(p499.brakeType==='electric'){
+    infoHTML+=`<div class="p499-summary-item"><div class="p499-summary-label">Essieux isolés</div><div class="p499-summary-value">${p499.isolatedAxles} ${showEquivalent?'(équivaut à '+isolatedBogiesEquivalent+' bogie(s))':''}</div></div>`;
+  }else{
+    infoHTML+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies isolés</div><div class="p499-summary-value">${p499.isolatedBogies} ${showEquivalent?'(équivaut à '+isolatedBogiesEquivalent+' bogies)':''}</div></div>`;
+  }
+  infoHTML+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies restants (US)</div><div class="p499-summary-value">${remainingBogies}</div></div>`;
+  if(warning)infoHTML+=`<div style="color:var(--red);margin-top:8px;font-size:0.65rem;line-height:1.3;">⚠ ${warning}</div>`;
+
+  return{speedLimit,speedClass,showEmergency,infoHTML};
+}
+
+/* ═══ IOS LOGIC ═══ */
+function findIOS(q){
+  q=q.toLowerCase().trim();lastUserQuery=q;
+  const m=q.match(/(?:ios[.\s]*)?(\d{1,3})/i);
+  if(m){const id=m[1].padStart(3,'0');if(IOS_DB[id])return{single:IOS_DB[id]};}
+  for(const[alias,ids]of Object.entries(ALIAS_DB)){
+    if(q.includes(alias)){
+      if(Array.isArray(ids)){
+        if(ids.length===1){const io=IOS_DB[ids[0]];if(io)return{single:io};}
+        else return{multiple:ids,alias:alias};
+      }else if(typeof ids==='string'){const io=IOS_DB[ids];if(io)return{single:io};}
+    }
+  }
+  const matches=[];
+  for(const io of Object.values(IOS_DB)){
+    if(io.desc.toLowerCase().includes(q))matches.push(io.id);
+    if(io.kw&&io.kw.some(k=>q.includes(k))){if(!matches.includes(io.id))matches.push(io.id);}
+  }
+  if(matches.length===1)return{single:IOS_DB[matches[0]]};
+  else if(matches.length>1)return{multiple:matches,alias:q};
+  return null;
+}
+function loadIOS(ios){curIOS=ios;guideOn=false;iosInfoShown=false;renderIosCard(ios);addMsg('🔍 <strong>IOS-'+ios.id+'</strong> — '+ios.desc);speak("l'IOS "+parseInt(ios.id,10)+'. '+ios.desc.substring(0,80));showIosInfoCard();procStart=null;procEnd=null;procLog=[];}
+function renderIosCard(ios){$('iosCard').classList.add('show');$('icCode').textContent='IOS-'+ios.id;$('icPrio').textContent=ios.pri==='h'?'URGENCE':ios.pri==='m'?'MOYEN':'INFO';$('icPrio').className='prio-tag prio-'+ios.pri;$('icDesc').textContent=ios.desc;$('icInfo').textContent='📋 '+ios.tree.length+' étapes de procédure.';}
+function showIosInfoCard(){if(!curIOS)return;const card=$('guideCard');card.classList.add('show');$('gLabel').textContent='IOS DÉTECTÉ';$('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;$('gStepLbl').textContent=curIOS.desc;$('gBody').textContent='Prêt à démarrer la procédure.';$('gYes').style.display='none';$('gNo').style.display='none';$('gPrev').style.display='none';$('gNext').textContent='▶ DÉMARRER LE GUIDAGE';$('gNext').style.display='inline-flex';$('gCancel').textContent='ANNULER';$('gCancel').style.display='inline-flex';iosInfoShown=true;}
+function startGuide(){if(!curIOS)return;guideOn=true;guideSteps=[];stepIdx=0;if(curIOS.instructions)for(const i of curIOS.instructions)guideSteps.push({t:i.t,d:0});if(curIOS.symboles)guideSteps.unshift({t:'Symboles : '+curIOS.symboles,d:0});if(curIOS.vitesse)guideSteps.unshift({t:'Vitesse limite : '+curIOS.vitesse,d:0});for(const s of curIOS.tree)guideSteps.push(s);procStart=new Date();procEnd=null;procLog=[];iosInfoShown=false;renderGuideCard();addMsg('🚀 Guidage lancé pour IOS-'+curIOS.id);runStep();}
+function runStep(){if(!guideOn||stepIdx>=guideSteps.length){finishProc('✅ Fin de procédure.');return;}const s=guideSteps[stepIdx];if(s.fin){finishProc(s.t||'✅ Procédure achevée.');return;}renderGuideCard();procLog.push(s.t);speak(s.t);}
+function answerYes(){if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d)return;branch(true);}
+function answerNo(){if(!guideOn||!guideSteps[stepIdx]||!guideSteps[stepIdx].d)return;branch(false);}
+function branch(yes){const s=guideSteps[stepIdx];const next=yes?(s.oui||[]):(s.non||[]);addMsg(yes?'✓ OUI':'✗ NON','user');procLog.push(yes?'OUI':'NON');if(!next.length){finishProc('✅ Fin de procédure.');return;}guideSteps=next;stepIdx=0;runStep();}
+function nextStep(){if(!guideOn){if(iosInfoShown&&curIOS){startGuide();return;}return;}const s=guideSteps[stepIdx];if(s&&s.d){speak('Veuillez répondre par oui ou par non.');return;}stepIdx++;runStep();}
+function prevStep(){if(!guideOn)return;if(stepIdx>0){stepIdx--;runStep();}else speak('Vous êtes à la première étape.');}
+function cancelProc(){guideOn=false;iosInfoShown=false;$('guideCard').classList.remove('show');$('endBar').classList.remove('show');addMsg('❌ Procédure annulée.');speak('Procédure annulée.');}
+function finishProc(msg){guideOn=false;procEnd=new Date();addMsg(msg);speak(msg.includes('DÉPANNAGE')?'Dépannage terminé.':msg);showEndCard(msg);$('endBar').classList.add('show');}
+function renderGuideCard(){const card=$('guideCard');if(!guideOn||stepIdx>=guideSteps.length){card.classList.remove('show');iosInfoShown=false;return;}const s=guideSteps[stepIdx];if(s.fin){card.classList.remove('show');iosInfoShown=false;return;}card.classList.add('show');$('gLabel').textContent='PROCÉDURE GUIDÉE';$('gIosId').innerHTML='IOS-'+curIOS.id+` <span class="prio-tag prio-${curIOS.pri}">${curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'}</span>`;$('gStepLbl').textContent='Étape '+(stepIdx+1)+' / '+guideSteps.length;$('gBody').textContent=s.t;$('gYes').style.display=s.d?'inline-flex':'none';$('gNo').style.display=s.d?'inline-flex':'none';$('gPrev').style.display='inline-flex';$('gNext').textContent='SUIVANT →';$('gNext').style.display='inline-flex';$('gCancel').textContent='ANNULER';iosInfoShown=false;}
+function showEndCard(msg){const card=$('guideCard');card.classList.add('show');$('gLabel').textContent='TERMINÉ';$('gIosId').textContent='';$('gStepLbl').textContent='';$('gBody').textContent=msg;$('gYes').style.display='none';$('gNo').style.display='none';$('gPrev').style.display='none';$('gNext').style.display='none';$('gCancel').textContent='FERMER';$('gCancel').style.display='inline-flex';}
+function goHome(){micWasOnBeforeHome=micOn;cancelProc();curIOS=null;$('iosCard').classList.remove('show');$('guideCard').classList.remove('show');$('endBar').classList.remove('show');$('page499Card').classList.remove('show');$('spSearch').value='';closeMultiSelect();page499Active=false;if(micOn){stopListening();micOn=false;micMutedForSpeech=true;setUI('muted');$('statusTxt').textContent='Micro coupé';}addMsg('🏠 Retour à l\'accueil.');speak("Retour à l'accueil.",()=>{micMutedForSpeech=false;if(micWasOnBeforeHome){micOn=true;startListening();setUI('idle');$('statusTxt').textContent='Micro actif';}});}
+
+function showMultiSelect(alias,iosIds){$('guideCard').classList.remove('show');$('page499Card').classList.remove('show');multiSelectActive=true;const zone=$('dynamicZone');let html='<div class="selection-card" id="multiSelectCard"><div class="selection-header"><h3>🔍 "'+alias+'" correspond à plusieurs IOS</h3></div><div class="selection-list">';iosIds.forEach((id)=>{const io=IOS_DB[id];if(io){const pc=io.pri==='h'?'h':(io.pri==='m'?'m':'l');const pt=io.pri==='h'?'URG':(io.pri==='m'?'MOY':'INF');html+=`<div class="selection-item" onclick="selectFromMulti('${io.id}')"><span class="selection-item-num">IOS-${io.id}</span><span class="selection-item-desc">${io.desc}</span><span class="selection-arrow">→</span></div>`;}});html+='</div><div class="selection-cancel"><button class="selection-cancel-btn" onclick="cancelMultiSelect()">✕ ANNULER</button></div></div>';zone.innerHTML=html;addMsg('Plusieurs IOS correspondent.');speak("Plusieurs IOS correspondent.");}
+function selectFromMulti(iosId){closeMultiSelect();const io=IOS_DB[iosId];if(io)loadIOS(io);}
+function cancelMultiSelect(){closeMultiSelect();addMsg('❌ Sélection annulée.');speak('Sélection annulée.');}
+function closeMultiSelect(){multiSelectActive=false;$('dynamicZone').innerHTML='';}
+window.selectFromMulti=selectFromMulti;window.cancelMultiSelect=cancelMultiSelect;
+
+function ft(d){return d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function fd(d){return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function genRecap(){if(!curIOS||!procStart)return'';const e=procEnd||new Date();return['═══════════════════════════════════','    BULLETIN DE SERVICE — IAOS T4','═══════════════════════════════════','','📅 Date      : '+fd(procStart),'🔧 IOS       : '+curIOS.id,'📝 Desc.     : '+curIOS.desc,'⚠  Priorité  : '+(curIOS.pri==='h'?'URGENCE':curIOS.pri==='m'?'MOYEN':'INFO'),'⏱  Début     : '+ft(procStart),'⏱  Fin       : '+ft(e),'⏱  Durée     : '+Math.round((e-procStart)/60000)+' min','','📋 ÉTAPES EFFECTUÉES :',...procLog.map((s,i)=>'   '+(i+1)+'. '+s),'','✅ Statut : Terminé','═══════════════════════════════════'].join('\n');}
+function openRecap(){$('recapBody').textContent=genRecap();$('recapBg').classList.add('on');}
+function closeRecap(){$('recapBg').classList.remove('on');}
+function printRecap(){const w=window.open('','','width=680,height=600');w.document.write('<pre>'+$('recapBody').textContent+'</pre>');w.document.close();w.print();}
+
+function buildList(){const ul=$('modalList');ul.innerHTML='';const ids=Object.keys(IOS_DB).sort((a,b)=>parseInt(a)-parseInt(b));for(const id of ids){const io=IOS_DB[id];const r=document.createElement('div');r.className='ios-row';const pc=io.pri==='h'?'h':io.pri==='m'?'m':'l';const pt=io.pri==='h'?'URG':io.pri==='m'?'MOY':'INF';r.innerHTML='<span class="ios-row-num">IOS-'+io.id+'</span><span class="ios-row-desc">'+io.desc+'</span>';r.addEventListener('click',()=>{closeList();if(!isProcActive())loadIOS(io);else toast('Terminez la procédure en cours.');});ul.appendChild(r);}}
+function openList(){buildList();$('listBg').classList.add('on');}
+function closeList(){$('listBg').classList.remove('on');}
+
+function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">page 499 / barème de vitesse</span> — Ouvrir la page 499</li><li><span class="cmd-pill">guidage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler</span> — Stopper</li><li><span class="cmd-pill">accueil</span> — Retour</li></ul><h4>📋 Page 499 - Commandes vocales</h4><p>Une fois la page ouverte :<br><span class="cmd-pill">frein mécanique</span> <span class="cmd-pill">frein électrique</span> <span class="cmd-pill">CE1</span> <span class="cmd-pill">C1</span> <span class="cmd-pill">1, 2, 3...</span> <span class="cmd-pill">suivant</span> <span class="cmd-pill">calculer</span></p><h4>🔇 Micro</h4><p>Le micro se coupe automatiquement pendant la lecture vocale.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`;$('infoBg').classList.add('on');}
+function closeInfo(){$('infoBg').classList.remove('on');}
+function isProcActive(){return guideOn||isSpeaking||iosInfoShown||multiSelectActive||page499Active;}
+
+/* ═══ COMMANDES VOCALES ═══ */
+const CMDS={
   cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],
   home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],
-  guide: [/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i,/\bcommen[cs]e[rz]?\s+(le|un|une|la)\s+dépannage\b/i,/\bdépanne\s+(ce|le|un|une|la|mon|du|des)\s+défaut\b/i,/\bdépann[ée]r?\s+(l'ios|les? ios|le défaut|ce défaut)\b/i,/\bdépann[ée]r?\s+l[ea]\s+panne\b/i,/\bdémarre\s+(le|un|une|la|ce)\s+dépannage\b/i,/\baide\s+moi\s+[àa]\s+dépanner\b/i,/\baide\s+moi\b/i,/\bdépannage\b/i,/\bdépanner\b/i],
+  guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|exécutons?|appliquer|appliquez)\b/i,/\bcommen[cs]e[rz]?\s+(le|un|une|la)\s+dépannage\b/i,/\bdépanne\s+(ce|le|un|une|la|mon|du|des)\s+défaut\b/i,/\bdépann[ée]r?\s+(l'ios|les? ios|le défaut|ce défaut)\b/i,/\bdépann[ée]r?\s+l[ea]\s+panne\b/i,/\bdémarre\s+(le|un|une|la|ce)\s+dépannage\b/i,/\baide\s+moi\s+[àa]\s+dépanner\b/i,/\baide\s+moi\b/i,/\bdépannage\b/i,/\bdépanner\b/i],
   next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|fait|valider|valide?)\b/i],
-  prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i,/\b(?!retour\s+accueil)retour\b/i],
-  repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
+  prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i],
+  repeat:[/\b(répète?|redis|encore|répète\s+ça|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],
   greet:[/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],
   oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],
-  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i,/ha\s*nan/i,/ah\s*nan/i,/\bpas\s+du\s+tout\b/i,/\bpas\s+vraiment\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\bdisparu\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i,/\bque\s+dalle\b/i,/\bwalou\b/i,/\bmarche\s+pas\b/i,/\bpas\b/i],
+  non:[/\bnon\b/i,/\bnan\b/i,/\bnaan\b/i,/\bnada\b/i,/\bnope\b/i,/\bnah\b/i,/\bniet\b/i,/\bniks\b/i,/\bno\b/i,/n+[aeiou]*n+/i,/\bnégatif\b/i,/\bnegative\b/i,/c'est\s+mort/i],
   time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],
   date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],
   elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],
   list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],
   help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],
-  creator: [/\bqui\s+(t['a]|ta|t a)\s+cré[ée]\b/i,/\bqui\s+(t['a]|ta|t a)\s+con[çc]u\b/i,/\bqui\s+est\s+ton\s+concepteur\b/i,/\bqui\s+(t['a]|ta|t a)\s+programmé\b/i,/\bqui\s+est\s+ton\s+créateur\b/i,/\bton\s+créateur\b/i,/\bton\s+ma[iî]tre\b/i,/\bqui\s+es[\s-]tu\b/i,/\bqui\s+tu\s+es\b/i,/\btu\s+es\s+qui\b/i,/\bt'es\s+qui\b/i,/\bqui\s+ta\s+fait\b/i,/\bton\s+papa\b/i],
+  creator:[/\bqui\s+(t['a]|ta|t a)\s+cré[ée]\b/i,/\bqui\s+(t['a]|ta|t a)\s+con[çc]u\b/i,/\bqui\s+est\s+ton\s+concepteur\b/i,/\bqui\s+(t['a]|ta|t a)\s+programmé\b/i,/\bqui\s+est\s+ton\s+créateur\b/i,/\bton\s+créateur\b/i,/\bton\s+ma[iî]tre\b/i,/\bqui\s+es[\s-]tu\b/i,/\bqui\s+tu\s+es\b/i,/\btu\s+es\s+qui\b/i,/\bt'es\s+qui\b/i,/\bqui\s+ta\s+fait\b/i,/\bton\s+papa\b/i],
   inutile:[/\b(tu\s+sers\s+a\s+rien|tu\s+ne\s+sers\s+a\s+rien|tu\s+sers\s+[àa]\s+rien|tu\s+es\s+inutile|tu\s+es\s+nul|tu\s+vaux\s+rien|[àa]\s+quoi\s+tu\s+sers)\b/i],
   fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],
-  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i],
-  learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i,/\bapprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i],
+  bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i],
+  learn:[/\bapprends?\s+(.+?)\s*=\s*(.+?)$/i],
   fullscreen:[/\bplein\s+écran\b/i,/\bfull\s*screen\b/i],
-  page499:[/\bpage\s*499\b/i,/\bbarème\s+de\s+vitesse\b/i,/\bvitesse\s+limite\b/i,/\bincident\s+de\s+frein\b/i,/\b499\b/i]
-};
-
-// ═══ Commandes vocales pour la page 499 ═══
-const P499_VOICE = {
-  brakeMechanical:[/\bfrein\s+mécanique\b/i,/\bmécanique\b/i],
-  brakeElectromagnetic:[/\bfrein\s+[ée]lectromagnétique\b/i,/\b[ée]lectromagnétique\b/i],
-  brakeElectric:[/\bfrein\s+[ée]lectrique\b/i,/\b[ée]lectrique\b/i],
-  bogieCE1:[/\bce\s*1\b/i,/\bc\s*e\s*1\b/i],
-  bogieC1:[/\bc\s*1\b/i],
-  bogieC2B:[/\bc\s*2\s*b\b/i,/\bc\s*deux\s*b\b/i],
-  bogieCE2:[/\bce\s*2\b/i,/\bc\s*e\s*2\b/i],
-  number:[/\b(un|deux|trois|quatre|cinq|six|1|2|3|4|5|6)\b/i],
+  page499:[/\bpage\s*499\b/i,/\bbarème\s+de\s+vitesse\b/i,/\bvitesse\s+limite\b/i,/\bincident\s+de\s+frein\b/i],
+  // Commandes spécifiques page 499 - patterns très larges
+  brakeMech:[/\bfrein\s+mécanique\b/i,/\bmécanique\b/i],
+  brakeElec:[/\bfrein\s+[ée]lectrique\b/i,/\b[ée]lectrique\b/i],
+  brakeMag:[/\bfrein\s+[ée]lectromagnétique\b/i,/\b[ée]lectromagnétique\b/i,/\bmagnétique\b/i],
+  bogieCE1:[/\bce\s*1\b/i,/\bc\s*e\s*1\b/i,/\bce un\b/i],
+  bogieC1:[/\bc\s*1\b/i,/\bc un\b/i],
+  bogieC2B:[/\bc\s*2\s*b\b/i,/\bc\s*deux\s*b\b/i,/\bc 2 b\b/i],
+  bogieCE2:[/\bce\s*2\b/i,/\bc\s*e\s*2\b/i,/\bce deux\b/i],
+  calc:[/\bcalculer?\b/i,/\bcalcule?\b/i,/\brésultat\b/i],
   close499:[/\bfermer\s+(la\s+)?(page\s*)?499\b/i,/\bquitter\s+(la\s+)?(page\s*)?499\b/i]
 };
 
-function match(txt,key){ const learnedMatch = LearningEngine.matchWithLearning(txt, key, CMDS[key] || []); if (learnedMatch) return true; return CMDS[key]?.some(r=>r.test(txt)) || false; }
-function isNon(txt){ if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt)) return true; return CMDS.non.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'non', []); }
-function isOui(txt){ if(isNon(txt)) return false; return CMDS.oui.some(r=>r.test(txt)) || LearningEngine.matchWithLearning(txt, 'oui', []); }
+function match(txt,key){const learnedMatch=LearningEngine.matchWithLearning(txt,key,CMDS[key]||[]);if(learnedMatch)return true;return CMDS[key]?.some(r=>r.test(txt))||false;}
+function isNon(txt){if(/\b(oui|yes|affirmatif)\b.*\b(non|nan|pas)\b/i.test(txt))return true;return CMDS.non.some(r=>r.test(txt))||LearningEngine.matchWithLearning(txt,'non',[]);}
+function isOui(txt){if(isNon(txt))return false;return CMDS.oui.some(r=>r.test(txt))||LearningEngine.matchWithLearning(txt,'oui',[]);}
 
 /* ═══ GESTION VOCALE PAGE 499 ═══ */
-function handlePage499Voice(txt) {
-  const step2Visible = document.getElementById('p499Step2').style.display !== 'none';
-  const step3Visible = document.getElementById('p499Step3').style.display !== 'none';
-  const step4Visible = document.getElementById('p499Step4').style.display !== 'none';
+function handlePage499Voice(txt){
+  if(!page499Active)return false;
+  const t=txt.toLowerCase().trim();
 
-  if (P499_VOICE.close499.some(r => r.test(txt))) { closePage499(); return true; }
-  if (P499_VOICE.brakeMechanical.some(r => r.test(txt)) && step2Visible) { p499SelectBrake('mechanical'); return true; }
-  if (P499_VOICE.brakeElectromagnetic.some(r => r.test(txt)) && step2Visible) { p499SelectBrake('electromagnetic'); return true; }
-  if (P499_VOICE.brakeElectric.some(r => r.test(txt)) && step2Visible) { p499SelectBrake('electric'); return true; }
-  if (step2Visible && match(txt,'next')) { p499NextAfterBrake(); return true; }
-  if (P499_VOICE.bogieCE1.some(r => r.test(txt)) && step3Visible) { p499SelectBogie('ce1'); return true; }
-  if (P499_VOICE.bogieC2B.some(r => r.test(txt)) && step3Visible) { p499SelectBogie('c2b'); return true; }
-  if (P499_VOICE.bogieCE2.some(r => r.test(txt)) && step3Visible) { p499SelectBogie('ce2'); return true; }
-  if (P499_VOICE.bogieC1.some(r => r.test(txt)) && step3Visible) { p499SelectBogie('c1'); return true; }
-  if (step3Visible && match(txt,'next')) { p499NextAfterBogie(); return true; }
+  // Fermer la page 499
+  if(CMDS.close499.some(r=>r.test(t))){closePage499();return true;}
+  if(match(t,'cancel')||match(t,'home')){closePage499();return true;}
 
-  if (step4Visible) {
-    const numMatch = txt.match(P499_VOICE.number[0]);
-    if (numMatch) {
-      const wordMap = { un:1, deux:2, trois:3, quatre:4, cinq:5, six:6 };
-      let num = parseInt(numMatch[1]);
-      if (isNaN(num)) num = wordMap[numMatch[1].toLowerCase()] || 1;
-      const opts = document.querySelectorAll('#p499SelectionOptions .p499-option');
-      let found = false;
-      opts.forEach(o => { o.classList.remove('selected'); if (parseInt(o.textContent) === num) { o.classList.add('selected'); found = true; } });
-      if (found) {
-        if (p499Selections.brakeType === 'electric') p499Selections.isolatedAxles = num;
-        else p499Selections.isolatedBogies = num;
-        document.getElementById('p499CalculateBtn').disabled = false;
-      }
-      return true;
-    }
-    if (match(txt,'next')) { p499Calculate(); return true; }
+  // Navigation générale dans la page 499
+  if(match(t,'next')){
+    if(p499.step==='brake')p499AfterBrake();
+    else if(p499.step==='bogie')p499AfterBogie();
+    else if(p499.step==='quantity')p499Calculate();
+    return true;
   }
+  if(match(t,'prev')){
+    if(p499.step==='brake')p499GoStep('start');
+    else if(p499.step==='bogie')p499GoStep('brake');
+    else if(p499.step==='quantity'){if(p499.brakeType==='electric'||p499.brakeType==='electromagnetic')p499GoStep('brake');else p499GoStep('bogie');}
+    else if(p499.step==='result'){p499FullReset();renderPage499();p499GoStep('start');}
+    return true;
+  }
+  if(match(t,'calc')&&p499.step==='quantity'){p499Calculate();return true;}
+
+  // Étape frein
+  if(p499.step==='brake'){
+    if(CMDS.brakeMech.some(r=>r.test(t))){p499SelectBrake('mechanical');return true;}
+    if(CMDS.brakeElec.some(r=>r.test(t))){p499SelectBrake('electric');return true;}
+    if(CMDS.brakeMag.some(r=>r.test(t))){p499SelectBrake('electromagnetic');return true;}
+  }
+
+  // Étape bogie
+  if(p499.step==='bogie'){
+    if(CMDS.bogieCE1.some(r=>r.test(t))){p499SelectBogie('ce1');return true;}
+    if(CMDS.bogieC2B.some(r=>r.test(t))){p499SelectBogie('c2b');return true;}
+    if(CMDS.bogieCE2.some(r=>r.test(t))){p499SelectBogie('ce2');return true;}
+    if(CMDS.bogieC1.some(r=>r.test(t))){p499SelectBogie('c1');return true;}
+  }
+
+  // Étape quantité - reconnaissance des nombres
+  if(p499.step==='quantity'){
+    const wordMap={un:1,une:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7};
+    for(const[word,num]of Object.entries(wordMap)){
+      if(t.includes(word)){p499SelectQuantity(num);return true;}
+    }
+    const numMatch=t.match(/\b(\d)\b/);
+    if(numMatch){const num=parseInt(numMatch[1]);const max=p499.brakeType==='electric'?6:5;if(num>=1&&num<=max){p499SelectQuantity(num);return true;}}
+  }
+
   return false;
 }
 
 function processVoice(raw){
-  const txt=raw.trim(); if(!txt) return;
-  if (isSpeaking || micMutedForSpeech) { console.log('🔇 Entrée ignorée'); return; }
-  addMsg(txt,'user'); LearningEngine.logUsage('voice_command', { text: txt.substring(0, 100) });
-
-  if (multiSelectActive) { const nm = txt.match(/(\d{1,3})/); if (nm) { const iid = nm[1].padStart(3, '0'); if (IOS_DB[iid]) { selectFromMulti(iid); return; } } if (match(txt, 'cancel') || match(txt, 'home')) { cancelMultiSelect(); return; } return; }
-  if (AutonomousLearner.learningSession) { const s = AutonomousLearner.learningSession; if (isOui(txt)) { AutonomousLearner.confirmLearning(s.word, s.suggestions[0].command); return; } if (isNon(txt)) { s.suggestions.shift(); if (s.suggestions.length > 0) { const n = s.suggestions[0]; const msg = `Alors, "${s.word}" veut-il dire "${n.command}" ?`; addMsg(msg, 'learning'); speak(msg); return; } else { AutonomousLearner.endSession(); return; } } if (match(txt, 'learn')) { AutonomousLearner.learningSession = null; setUI('idle'); } else { AutonomousLearner.endSession(); return; } }
+  const txt=raw.trim();if(!txt)return;
+  if(isSpeaking||micMutedForSpeech){console.log('🔇 Entrée ignorée');return;}
+  addMsg(txt,'user');LearningEngine.logUsage('voice_command',{text:txt.substring(0,100)});
 
   /* ═══ PAGE 499 ACTIVE ═══ */
-  if (page499Active) {
-    if (handlePage499Voice(txt)) return;
-    if (match(txt, 'cancel') || match(txt, 'home')) { closePage499(); return; }
+  if(page499Active){
+    if(handlePage499Voice(txt))return;
     return;
   }
 
+  if(multiSelectActive){const nm=txt.match(/(\d{1,3})/);if(nm){const iid=nm[1].padStart(3,'0');if(IOS_DB[iid]){selectFromMulti(iid);return;}}if(match(txt,'cancel')||match(txt,'home')){cancelMultiSelect();return;}return;}
+
   const endActive=$('endBar').classList.contains('show');
-  if(endActive){ if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); addMsg('Fenêtre fermée.'); speak('Fenêtre fermée.'); return; } if(match(txt,'bulletin')||/\bb\s*s\b/i.test(txt)||/\bb[ée]\s*s\b/i.test(txt)||match(txt,'oui')){ $('endBar').classList.remove('show'); openRecap(); return; } }
+  if(endActive){if(match(txt,'fermer')||/\b(non|nan|no|nope|nah)\b/i.test(txt)){$('endBar').classList.remove('show');$('guideCard').classList.remove('show');addMsg('Fenêtre fermée.');speak('Fenêtre fermée.');return;}if(match(txt,'bulletin')||match(txt,'oui')){$('endBar').classList.remove('show');openRecap();return;}}
 
-  if(match(txt,'learn')){ const lm = txt.match(/apprends?\s+(.+?)\s*=\s*(.+?)$/i) || txt.match(/apprends?\s+que\s+(.+?)\s+veut\s+dire\s+(.+?)$/i); if (lm) { const w = lm[1].trim(); const c = lm[2].trim().toLowerCase(); LearningEngine.learnSynonym(c, w); addMsg(`🧠 Appris : "${w}" → "${c}"`); speak(`Appris.`); return; } }
-  if(match(txt,'fullscreen')){ FullscreenManager.toggle(); return; }
-  if(match(txt,'page499')){ openPage499(); return; }
-  if(match(txt,'inutile')){ const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien. Applique le guide de dépannage.','Ah ouais ? C\'est toi le bon à rien. Va suivre le guide de dépannage.'][Math.floor(Math.random()*3)]; addMsg(r); speak(r); return; }
-  if(match(txt,'cancel')){ cancelProc(); return; }
-  if(match(txt,'home')){ goHome(); return; }
-  if(match(txt,'greet')){ if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){ addMsg('Wa aleykoum salam.'); speak('Wa aleykoum salam.'); return; } addMsg('Bonjour ! IAOS T4 à votre service.'); speak('Bonjour !'); return; }
-  if(isProcActive()){ if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(guideOn&&guideSteps[stepIdx]){ speak(guideSteps[stepIdx].t); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; } if(match(txt,'prev')&&!match(txt,'home')){ if(guideOn){ prevStep(); return; } } if(match(txt,'next')){ nextStep(); return; } if(match(txt,'guide')&&curIOS&&!guideOn){ startGuide(); return; } if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){ if(isNon(txt)){ answerNo(); return; } if(isOui(txt)){ answerYes(); return; } } if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){ addMsg('⚠ Procédure en cours.'); speak("Occupé avec l'IOS "+parseInt(curIOS.id,10)); setUI('blocked'); setTimeout(()=>setUI('idle'),2200); return; } if (!AutonomousLearner.learningSession && !isSpeaking && !micMutedForSpeech) { const unk = AutonomousLearner.detectUnknown(txt); if (unk.length > 0) { const w = unk[0]; const sug = AutonomousLearner.guessMeaning(w); if (sug.length > 0 && sug[0].confidence > 0.3) { AutonomousLearner.startLearningSession(w, sug); return; } } } return; }
-  if(match(txt,'repeat')){ if(lastSpokenText){ speak(lastSpokenText); } else if(curIOS){ speak("l'IOS "+parseInt(curIOS.id,10)); } return; }
-  if(match(txt,'guide')){ if(curIOS){ startGuide(); return; } speak("Cherchez d'abord un i o s."); return; }
-  if(match(txt,'list')){ openList(); return; }
-  if(match(txt,'help')){ openInfo(); return; }
-  if(match(txt,'creator')){ addMsg('👤 Créé par <strong>Zaber, conducteur, moniteur, formateur et plus si affinité !</strong>'); speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.'); return; }
-  if(match(txt,'time')){ speak('Il est '+ft(new Date())); return; }
-  if(match(txt,'date')){ speak('Nous sommes le '+fd(new Date())); return; }
-  if(match(txt,'elapsed')){ if(!procStart){ speak('Aucune procédure en cours.'); return; } const d=new Date()-procStart,m=Math.floor(d/60000); speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.'); return; }
+  if(match(txt,'learn')){const lm=txt.match(/apprends?\s+(.+?)\s*=\s*(.+?)$/i);if(lm){const w=lm[1].trim();const c=lm[2].trim().toLowerCase();LearningEngine.learnSynonym(c,w);addMsg(`🧠 Appris : "${w}" → "${c}"`);speak('Appris.');return;}}
+  if(match(txt,'fullscreen')){FullscreenManager.toggle();return;}
+  if(match(txt,'page499')){openPage499();return;}
+  if(match(txt,'inutile')){const r=['C\'est toi qui ne sert à rien, boloss ! Va appliquer le guide de dépannage.','Boloss, c\'est toi qui ne sert à rien.','Ah ouais ? C\'est toi le bon à rien.'][Math.floor(Math.random()*3)];addMsg(r);speak(r);return;}
+  if(match(txt,'cancel')){cancelProc();return;}
+  if(match(txt,'home')){goHome();return;}
+  if(match(txt,'greet')){if(/salam(ou)?\s*(al[aei]y?koum?|aleikoum?)/i.test(txt)){addMsg('Wa aleykoum salam.');speak('Wa aleykoum salam.');return;}addMsg('Bonjour ! IAOS T4 à votre service.');speak('Bonjour !');return;}
+  if(isProcActive()){if(match(txt,'repeat')){if(lastSpokenText)speak(lastSpokenText);else if(guideOn&&guideSteps[stepIdx])speak(guideSteps[stepIdx].t);else if(curIOS)speak("l'IOS "+parseInt(curIOS.id,10));return;}if(match(txt,'prev')&&!match(txt,'home')){if(guideOn)prevStep();return;}if(match(txt,'next')){nextStep();return;}if(match(txt,'guide')&&curIOS&&!guideOn){startGuide();return;}if(guideOn&&guideSteps[stepIdx]&&guideSteps[stepIdx].d){if(isNon(txt)){answerNo();return;}if(isOui(txt)){answerYes();return;}}if(/\bios\b/i.test(txt)||txt.match(/\d{1,3}/)){addMsg('⚠ Procédure en cours.');speak("Occupé avec l'IOS "+parseInt(curIOS.id,10));setUI('blocked');setTimeout(()=>setUI('idle'),2200);return;}return;}
+  if(match(txt,'repeat')){if(lastSpokenText)speak(lastSpokenText);else if(curIOS)speak("l'IOS "+parseInt(curIOS.id,10));return;}
+  if(match(txt,'guide')){if(curIOS){startGuide();return;}speak("Cherchez d'abord un i o s.");return;}
+  if(match(txt,'list')){openList();return;}
+  if(match(txt,'help')){openInfo();return;}
+  if(match(txt,'creator')){addMsg('👤 Créé par <strong>Zaber, conducteur, moniteur, formateur et plus si affinité !</strong>');speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.');return;}
+  if(match(txt,'time')){speak('Il est '+ft(new Date()));return;}
+  if(match(txt,'date')){speak('Nous sommes le '+fd(new Date()));return;}
+  if(match(txt,'elapsed')){if(!procStart){speak('Aucune procédure en cours.');return;}const d=new Date()-procStart,m=Math.floor(d/60000);speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.');return;}
 
-  const result = findIOS(txt);
-  if (result) { if (result.single) { loadIOS(result.single); } else if (result.multiple) { showMultiSelect(result.alias, result.multiple); } return; }
-  if (!AutonomousLearner.learningSession && !isSpeaking && !micMutedForSpeech) { const unk = AutonomousLearner.detectUnknown(txt); if (unk.length > 0) { const w = unk[0]; const sug = AutonomousLearner.guessMeaning(w); if (sug.length > 0 && sug[0].confidence > 0.25) { AutonomousLearner.startLearningSession(w, sug); return; } } }
+  const result=findIOS(txt);
+  if(result){if(result.single)loadIOS(result.single);else if(result.multiple)showMultiSelect(result.alias,result.multiple);return;}
   speak('Aucun i o s trouvé.');
 }
 
-function schedRestart(){ clearTimeout(restartTimer); restartTimer=setTimeout(()=>{ if(micOn&&!isSpeaking&&!isListening&&!micMutedForSpeech) startListening(); },300); }
+function schedRestart(){clearTimeout(restartTimer);restartTimer=setTimeout(()=>{if(micOn&&!isSpeaking&&!isListening&&!micMutedForSpeech)startListening();},300);}
 function startListening(){
-  if(!('SpeechRecognition' in window)&&!('webkitSpeechRecognition' in window)){ toast('Reconnaissance vocale non supportée'); return; }
-  if(isSpeaking||isListening||micMutedForSpeech) return;
+  if(!('SpeechRecognition'in window)&&!('webkitSpeechRecognition'in window)){toast('Reconnaissance vocale non supportée');return;}
+  if(isSpeaking||isListening||micMutedForSpeech)return;
   try{
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition; recognition=new SR();
-    recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true; recognition.maxAlternatives=8;
-    let final=''; let silTimer=null;
-    recognition.onstart=()=>{ isListening=true; final=''; setUI('listen'); };
-    recognition.onresult=(ev)=>{ clearTimeout(silTimer); let interim=''; for(let i=ev.resultIndex;i<ev.results.length;i++){ if(ev.results[i].isFinal){ let best='',bestConf=0; for(let j=0;j<ev.results[i].length;j++){ if(ev.results[i][j].confidence>bestConf){ bestConf=ev.results[i][j].confidence; best=ev.results[i][j].transcript; } } if(best&&bestConf>0.02) final+=' '+best; } else{ interim+=ev.results[i][0].transcript; } } if(final.trim()&&!interim&&!isSpeaking&&!micMutedForSpeech){ const t=final.trim(); final=''; processVoice(t); } else{ silTimer=setTimeout(()=>{ if(final.trim()&&!isSpeaking&&!micMutedForSpeech){ const t=final.trim(); final=''; processVoice(t); } },900); } };
-    recognition.onerror=(e)=>{ isListening=false; final=''; if(e.error==='not-allowed'){ toast('Accès microphone refusé'); setUI('muted'); return; } setUI('idle'); if(micOn&&!isSpeaking&&!micMutedForSpeech) schedRestart(); };
-    recognition.onend=()=>{ isListening=false; if(final.trim()&&!isSpeaking&&!micMutedForSpeech){ processVoice(final.trim()); final=''; } if(micOn&&!isSpeaking&&!micMutedForSpeech) schedRestart(); else setUI('idle'); };
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;recognition=new SR();
+    recognition.lang='fr-FR';recognition.continuous=true;recognition.interimResults=true;recognition.maxAlternatives=8;
+    let final='';let silTimer=null;
+    recognition.onstart=()=>{isListening=true;final='';setUI('listen');};
+    recognition.onresult=(ev)=>{clearTimeout(silTimer);let interim='';for(let i=ev.resultIndex;i<ev.results.length;i++){if(ev.results[i].isFinal){let best='',bestConf=0;for(let j=0;j<ev.results[i].length;j++){if(ev.results[i][j].confidence>bestConf){bestConf=ev.results[i][j].confidence;best=ev.results[i][j].transcript;}}if(best&&bestConf>0.02)final+=' '+best;}else{interim+=ev.results[i][0].transcript;}}if(final.trim()&&!interim&&!isSpeaking&&!micMutedForSpeech){const t=final.trim();final='';processVoice(t);}else{silTimer=setTimeout(()=>{if(final.trim()&&!isSpeaking&&!micMutedForSpeech){const t=final.trim();final='';processVoice(t);}},900);}};
+    recognition.onerror=(e)=>{isListening=false;final='';if(e.error==='not-allowed'){toast('Accès microphone refusé');setUI('muted');return;}setUI('idle');if(micOn&&!isSpeaking&&!micMutedForSpeech)schedRestart();};
+    recognition.onend=()=>{isListening=false;if(final.trim()&&!isSpeaking&&!micMutedForSpeech){processVoice(final.trim());final='';}if(micOn&&!isSpeaking&&!micMutedForSpeech)schedRestart();else setUI('idle');};
     recognition.start();
-  }catch(e){ if(micOn&&!micMutedForSpeech) setTimeout(startListening,700); }
+  }catch(e){if(micOn&&!micMutedForSpeech)setTimeout(startListening,700);}
 }
-function stopListening(){ clearTimeout(restartTimer); if(recognition){ try{ recognition.stop(); }catch(e){} recognition=null; } isListening=false; setUI('idle'); }
-function toggleMic(){ if(isSpeaking||micMutedForSpeech) return; micOn=!micOn; if(micOn){ startListening(); toast('Microphone activé'); } else{ stopListening(); setUI('muted'); $('statusTxt').textContent='Micro coupé'; toast('Microphone coupé'); } }
+function stopListening(){clearTimeout(restartTimer);if(recognition){try{recognition.stop();}catch(e){}recognition=null;}isListening=false;setUI('idle');}
+function toggleMic(){if(isSpeaking||micMutedForSpeech)return;micOn=!micOn;if(micOn){startListening();toast('Microphone activé');}else{stopListening();setUI('muted');$('statusTxt').textContent='Micro coupé';toast('Microphone coupé');}}
 
-function updateClock(){ $('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-setInterval(updateClock,1000); updateClock();
+function updateClock(){$('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
 
 $('micBtn').addEventListener('click',toggleMic);
-$('panelBtn').addEventListener('click',()=>{ $('sidePanel').classList.add('open'); $('overlay').classList.add('on'); });
-$('overlay').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
-$('spClose').addEventListener('click',()=>{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); });
+$('panelBtn').addEventListener('click',()=>{$('sidePanel').classList.add('open');$('overlay').classList.add('on');});
+$('overlay').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
+$('spClose').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
 $('infoBtn').addEventListener('click',openInfo);
 $('infoX').addEventListener('click',closeInfo);
-$('infoBg').addEventListener('click',e=>{ if(e.target===$('infoBg')) closeInfo(); });
-function doSearch(val){ if(!val.trim()) return; if(isProcActive()){ toast('Procédure active'); return; } processVoice(val); }
-$('spSearch').addEventListener('keypress',e=>{ if(e.key==='Enter'){ doSearch(e.target.value); e.target.value=''; } });
-$('spSearchGo').addEventListener('click',()=>{ doSearch($('spSearch').value); $('spSearch').value=''; });
+$('infoBg').addEventListener('click',e=>{if(e.target===$('infoBg'))closeInfo();});
+function doSearch(val){if(!val.trim())return;if(isProcActive()){toast('Procédure active');return;}processVoice(val);}
+$('spSearch').addEventListener('keypress',e=>{if(e.key==='Enter'){doSearch(e.target.value);e.target.value='';}});
+$('spSearchGo').addEventListener('click',()=>{doSearch($('spSearch').value);$('spSearch').value='';});
 $('showListBtn').addEventListener('click',openList);
 $('listX').addEventListener('click',closeList);
-$('listBg').addEventListener('click',e=>{ if(e.target===$('listBg')) closeList(); });
-$('icGuide').addEventListener('click',()=>{ if(!isProcActive()||iosInfoShown) startGuide(); });
-$('icCancel').addEventListener('click',cancelProc); $('icHome').addEventListener('click',goHome); $('icNew').addEventListener('click',goHome);
-$('gYes').addEventListener('click',answerYes); $('gNo').addEventListener('click',answerNo);
-$('gNext').addEventListener('click',()=>{ if(iosInfoShown) startGuide(); else nextStep(); });
+$('listBg').addEventListener('click',e=>{if(e.target===$('listBg'))closeList();});
+$('icGuide').addEventListener('click',()=>{if(!isProcActive()||iosInfoShown)startGuide();});
+$('icCancel').addEventListener('click',cancelProc);$('icHome').addEventListener('click',goHome);$('icNew').addEventListener('click',goHome);
+$('gYes').addEventListener('click',answerYes);$('gNo').addEventListener('click',answerNo);
+$('gNext').addEventListener('click',()=>{if(iosInfoShown)startGuide();else nextStep();});
 $('gPrev').addEventListener('click',prevStep);
-$('gCancel').addEventListener('click',()=>{ if(!guideOn&&$('guideCard').classList.contains('show')){ $('guideCard').classList.remove('show'); $('endBar').classList.remove('show'); iosInfoShown=false; } else cancelProc(); });
-$('ebRecap').addEventListener('click',()=>{ $('endBar').classList.remove('show'); openRecap(); });
-$('ebClose').addEventListener('click',()=>{ $('endBar').classList.remove('show'); $('guideCard').classList.remove('show'); });
-$('recapX').addEventListener('click',closeRecap); $('recapClose2').addEventListener('click',closeRecap);
-$('recapBg').addEventListener('click',e=>{ if(e.target===$('recapBg')) closeRecap(); });
+$('gCancel').addEventListener('click',()=>{if(!guideOn&&$('guideCard').classList.contains('show')){$('guideCard').classList.remove('show');$('endBar').classList.remove('show');iosInfoShown=false;}else cancelProc();});
+$('ebRecap').addEventListener('click',()=>{$('endBar').classList.remove('show');openRecap();});
+$('ebClose').addEventListener('click',()=>{$('endBar').classList.remove('show');$('guideCard').classList.remove('show');});
+$('recapX').addEventListener('click',closeRecap);$('recapClose2').addEventListener('click',closeRecap);
+$('recapBg').addEventListener('click',e=>{if(e.target===$('recapBg'))closeRecap();});
 $('recapPrint').addEventListener('click',printRecap);
-$('clearChat').addEventListener('click',()=>{ $('chatLog').innerHTML=''; addMsg('Historique effacé.'); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('infoBg').classList.contains('on')) closeInfo(); else if($('recapBg').classList.contains('on')) closeRecap(); else if($('listBg').classList.contains('on')) closeList(); else if(multiSelectActive){ cancelMultiSelect(); } else if(page499Active){ closePage499(); } else if(FullscreenManager.isFullscreen){ FullscreenManager.exit(); } else{ $('sidePanel').classList.remove('open'); $('overlay').classList.remove('on'); } } });
+$('clearChat').addEventListener('click',()=>{$('chatLog').innerHTML='';addMsg('Historique effacé.');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').classList.contains('on'))closeInfo();else if($('recapBg').classList.contains('on'))closeRecap();else if($('listBg').classList.contains('on'))closeList();else if(multiSelectActive)cancelMultiSelect();else if(page499Active)closePage499();else if(FullscreenManager.isFullscreen)FullscreenManager.exit();else{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');}}});
 
-async function initApp() {
-  console.log('🚀 IAOS T4 v9.0 · Page 499 intégrée');
-  await LearningEngine.init(); AutonomousLearner.init(); FullscreenManager.init(); updateFirebaseUI();
-  if (hasVoice) { synth.getVoices(); getVoice(); }
-  setUI('idle'); micOn=true; startListening();
-  console.log('✅ IAOS T4 prêt - Page 499 disponible');
-  if (firebaseAvailable) { LearningEngine.logUsage('app_started', { timestamp: new Date().toISOString(), version: 'v9.0-page499' }); }
+async function initApp(){
+  console.log('🚀 IAOS T4 v9.1 · Page 499 optimisée');
+  await LearningEngine.init();FullscreenManager.init();updateFirebaseUI();
+  if(hasVoice){synth.getVoices();getVoice();}
+  setUI('idle');micOn=true;startListening();
+  console.log('✅ IAOS T4 prêt');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v9.1'});
 }
 initApp();
 
