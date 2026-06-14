@@ -63,7 +63,6 @@ body::after{
   pointer-events:none;z-index:1000;
 }
 
-/* ═══ ANIMATED GRID BACKGROUND ═══ */
 .bg-grid{
   position:fixed;inset:0;z-index:0;opacity:0.4;
   background-image:
@@ -74,7 +73,6 @@ body::after{
 }
 @keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
 
-/* ═══ FLOATING ORBS ═══ */
 .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;opacity:0.15}
 .orb-1{width:300px;height:300px;background:var(--cyan);top:-100px;left:-80px;animation:orbFloat1 12s ease-in-out infinite}
 .orb-2{width:250px;height:250px;background:var(--purple);bottom:-80px;right:-60px;animation:orbFloat2 15s ease-in-out infinite}
@@ -148,16 +146,16 @@ body::after{
 .status-bar:hover{border-color:var(--border-glow)}
 .status-indicator{
   width:10px;height:10px;border-radius:50%;flex-shrink:0;
-  background:var(--text-dim);transition:all 0.4s ease;
+  background:var(--text-dim);transition:all 0.3s ease;
   box-shadow:0 0 0 0 rgba(0,229,255,0);
 }
-.status-indicator.listen{background:var(--green);box-shadow:0 0 12px var(--green),0 0 24px rgba(0,255,136,0.3);animation:dotPulse 0.8s ease-in-out infinite}
-.status-indicator.speak{background:var(--purple);box-shadow:0 0 12px var(--purple),0 0 24px rgba(179,136,255,0.3);animation:dotPulse 0.6s ease-in-out infinite}
-.status-indicator.blocked{background:var(--amber);box-shadow:0 0 12px var(--amber),0 0 24px rgba(255,171,0,0.3)}
-.status-indicator.error{background:var(--red);box-shadow:0 0 12px var(--red),0 0 24px rgba(255,23,68,0.3);animation:dotPulse 0.3s ease-in-out infinite}
-.status-indicator.earlyListen{background:var(--gold);box-shadow:0 0 12px var(--gold),0 0 24px var(--gold-glow);animation:dotPulse 0.7s ease-in-out infinite}
-.status-indicator.learning{background:var(--purple);box-shadow:0 0 12px var(--purple),0 0 24px rgba(179,136,255,0.4);animation:dotPulse 0.4s ease-in-out infinite}
-@keyframes dotPulse{0%,100%{box-shadow:0 0 6px currentColor}50%{box-shadow:0 0 18px currentColor,0 0 30px currentColor}}
+.status-indicator.listen{background:var(--green);box-shadow:0 0 10px var(--green),0 0 20px rgba(0,255,136,0.3);animation:dotPulse 0.6s ease-in-out infinite}
+.status-indicator.speak{background:var(--purple);box-shadow:0 0 10px var(--purple),0 0 20px rgba(179,136,255,0.3);animation:dotPulse 0.5s ease-in-out infinite}
+.status-indicator.blocked{background:var(--amber);box-shadow:0 0 10px var(--amber),0 0 20px rgba(255,171,0,0.3)}
+.status-indicator.error{background:var(--red);box-shadow:0 0 10px var(--red),0 0 20px rgba(255,23,68,0.3);animation:dotPulse 0.25s ease-in-out infinite}
+.status-indicator.earlyListen{background:var(--gold);box-shadow:0 0 10px var(--gold),0 0 20px var(--gold-glow);animation:dotPulse 0.55s ease-in-out infinite}
+.status-indicator.learning{background:var(--purple);box-shadow:0 0 10px var(--purple),0 0 20px rgba(179,136,255,0.4);animation:dotPulse 0.35s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 5px currentColor}50%{box-shadow:0 0 14px currentColor,0 0 22px currentColor}}
 .status-text{color:var(--text-dim);flex:1;font-size:0.55rem;transition:color 0.3s}
 .status-text.listen{color:var(--green2)}
 .status-text.speak{color:var(--purple2)}
@@ -168,40 +166,34 @@ body::after{
   width:160px;height:160px;position:relative;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;user-select:none;
-  filter:drop-shadow(0 0 30px rgba(0,229,255,0.1));
+  filter:drop-shadow(0 0 20px rgba(0,229,255,0.08));
 }
-.mic-outer::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle,rgba(0,229,255,0.03) 0%,transparent 70%);
-  animation:micGlow 3s ease-in-out infinite;
-}
-@keyframes micGlow{0%,100%{opacity:0.3}50%{opacity:0.8}}
-.ring{position:absolute;border-radius:50%;border:1px solid rgba(0,229,255,0.15);transition:all 0.4s ease}
-.ring-1{width:72px;height:72px;animation:ringPulse 2s ease-in-out infinite}
-.ring-2{width:102px;height:102px;animation:ringPulse 2s ease-in-out infinite 0.35s}
-.ring-3{width:136px;height:136px;animation:ringPulse 2s ease-in-out infinite 0.7s}
-@keyframes ringPulse{0%,100%{opacity:0.2;transform:scale(0.96);border-color:rgba(0,229,255,0.12)}50%{opacity:0.7;transform:scale(1.04);border-color:rgba(0,229,255,0.35)}}
-.mic-outer.listen .ring{border-color:rgba(0,255,136,0.35);animation-duration:1s}
-.mic-outer.speak .ring{border-color:rgba(179,136,255,0.35);animation-duration:0.9s}
-.mic-outer.earlyListen .ring{border-color:rgba(0,229,255,0.45);animation-duration:0.95s}
-.mic-outer.error .ring{border-color:rgba(255,23,68,0.45);animation-duration:0.5s}
-.mic-outer.learning .ring{border-color:rgba(179,136,255,0.5);animation-duration:0.7s}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(0,229,255,0.15);transition:all 0.3s ease}
+.ring-1{width:72px;height:72px;animation:ringPulse 1.5s ease-in-out infinite}
+.ring-2{width:102px;height:102px;animation:ringPulse 1.5s ease-in-out infinite 0.25s}
+.ring-3{width:136px;height:136px;animation:ringPulse 1.5s ease-in-out infinite 0.5s}
+@keyframes ringPulse{0%,100%{opacity:0.25;transform:scale(0.97);border-color:rgba(0,229,255,0.12)}50%{opacity:0.65;transform:scale(1.03);border-color:rgba(0,229,255,0.3)}}
+.mic-outer.listen .ring{border-color:rgba(0,255,136,0.3);animation-duration:0.7s}
+.mic-outer.speak .ring{border-color:rgba(179,136,255,0.3);animation-duration:0.6s}
+.mic-outer.earlyListen .ring{border-color:rgba(0,229,255,0.4);animation-duration:0.65s}
+.mic-outer.error .ring{border-color:rgba(255,23,68,0.4);animation-duration:0.35s}
+.mic-outer.learning .ring{border-color:rgba(179,136,255,0.45);animation-duration:0.5s}
 
 .bars{position:relative;z-index:5;display:flex;align-items:center;gap:4px;height:50px;width:66px;justify-content:center}
-.bar{width:5px;border-radius:4px;background:var(--gold);box-shadow:0 0 8px rgba(0,229,255,0.4);transform-origin:bottom center;animation:barAnim 0.8s ease-in-out infinite}
+.bar{width:5px;border-radius:4px;background:var(--gold);box-shadow:0 0 6px rgba(0,229,255,0.35);transform-origin:bottom center;animation:barAnim 0.6s ease-in-out infinite}
 .bar:nth-child(1){height:14px;animation-delay:0s}
-.bar:nth-child(2){height:24px;animation-delay:0.1s}
-.bar:nth-child(3){height:36px;animation-delay:0.2s}
-.bar:nth-child(4){height:24px;animation-delay:0.3s}
-.bar:nth-child(5){height:14px;animation-delay:0.4s}
+.bar:nth-child(2){height:24px;animation-delay:0.07s}
+.bar:nth-child(3){height:36px;animation-delay:0.14s}
+.bar:nth-child(4){height:24px;animation-delay:0.21s}
+.bar:nth-child(5){height:14px;animation-delay:0.28s}
 @keyframes barAnim{0%,100%{transform:scaleY(0.4);opacity:0.4}50%{transform:scaleY(1);opacity:1}}
-.bars.listen .bar{background:var(--green);box-shadow:0 0 12px rgba(0,255,136,0.5);animation-duration:0.35s}
-.bars.speak .bar{background:var(--purple);box-shadow:0 0 12px rgba(179,136,255,0.5);animation-duration:0.4s}
-.bars.earlyListen .bar{background:var(--cyan);box-shadow:0 0 12px rgba(0,229,255,0.6);animation-duration:0.38s}
-.bars.error .bar{background:var(--red);animation:barErr 0.25s ease}
-.bars.learning .bar{background:var(--purple);box-shadow:0 0 12px rgba(179,136,255,0.5);animation-duration:0.3s}
+.bars.listen .bar{background:var(--green);box-shadow:0 0 10px rgba(0,255,136,0.45);animation-duration:0.25s}
+.bars.speak .bar{background:var(--purple);box-shadow:0 0 10px rgba(179,136,255,0.45);animation-duration:0.3s}
+.bars.earlyListen .bar{background:var(--cyan);box-shadow:0 0 10px rgba(0,229,255,0.5);animation-duration:0.28s}
+.bars.error .bar{background:var(--red);animation:barErr 0.2s ease}
+.bars.learning .bar{background:var(--purple);box-shadow:0 0 10px rgba(179,136,255,0.45);animation-duration:0.22s}
 @keyframes barErr{0%,100%{transform:scaleY(1) translateX(0)}25%{transform:scaleY(0.5) translateX(-4px)}75%{transform:scaleY(1.4) translateX(4px)}}
-.bars.muted .bar{background:var(--text-dim);box-shadow:none;animation:barAnim 2s ease-in-out infinite}
+.bars.muted .bar{background:var(--text-dim);box-shadow:none;animation:barAnim 1.5s ease-in-out infinite}
 
 .mic-tap-hint{font-family:'Space Mono',monospace;font-size:0.48rem;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;opacity:0.5}
 
@@ -1122,6 +1114,7 @@ const IOS_DB={
   "heterogene": ["247"]
 };
 
+for(let i=0;i<=247;i++){const id=String(i).padStart(3,'0');if(!IOS_DB[id])IOS_DB[id]={id,pri:'l',desc:'Information technique / retour maintenance',instructions:[{t:'Avisez le PC, conformez-vous aux instructions.'}],symboles:'',vitesse:'',tree:[{t:'Avisez le PC, conformez-vous aux instructions.',d:0,fin:1}],kw:[]}}
 
 let curIOS=null,guideOn=false,guideSteps=[],stepIdx=0,iosInfoShown=false;
 let micOn=true,isListening=false,isSpeaking=false,micMutedForSpeech=false;
@@ -1272,11 +1265,11 @@ $('clearChat').addEventListener('click',()=>{$('chatLog').innerHTML='';addMsg('H
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').classList.contains('on'))closeInfo();else if($('recapBg').classList.contains('on'))closeRecap();else if($('listBg').classList.contains('on'))closeList();else if(multiSelectActive){cancelMultiSelect()}else if(FullscreenManager.isFullscreen){FullscreenManager.exit()}else{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on')}}});
 
 async function initApp(){
-  console.log('🚀 IAOS T4 v8.2 - Logo cyan uni');
+  console.log('🚀 IAOS T4 v8.3 - Animations micro accélérées');
   await LearningEngine.init();AutonomousLearner.init();FullscreenManager.init();updateFirebaseUI();
   setUI('idle');micOn=true;startListening();
   console.log('✅ IAOS T4 prêt');
-  if(firebaseAvailable){LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v8.2-solid-logo'})}
+  if(firebaseAvailable){LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v8.3-fast-mic'})}
 }
 initApp();
 
