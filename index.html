@@ -347,6 +347,7 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(90deg,r
     <div class="sp-search-row"><input class="sp-search-input" id="spSearch" placeholder="IOS 061, boîte chaude…" autocomplete="off" spellcheck="false"><button class="sp-search-go" id="spSearchGo">GO</button></div>
     <button class="ac-btn" id="showListBtn" style="width:100%;text-align:center;padding:8px">📋 LISTE DES IOS</button>
     <button class="ac-btn" id="showSIListBtn" style="width:100%;text-align:center;padding:8px;border-color:rgba(0,180,216,0.4);color:var(--dualis-cyan);">🚦 LISTE DES SIGNAUX D'ITINÉRAIRE</button>
+    <button class="ac-btn" id="showPage499Btn" style="width:100%;text-align:center;padding:8px;border-color:rgba(255,107,53,0.4);color:var(--dualis-accent);">📋 PAGE 499 · BARÈME DE VITESSE</button>
     <div class="sync-panel" id="syncPanel"><span id="syncLabel">Firebase: Connexion...</span><div class="sync-status syncing" id="syncDot"></div></div>
     <div class="ios-card" id="iosCard">
       <div class="ios-card-head"><div class="ios-card-code" id="icCode">IOS-???</div><div style="margin-top:4px;display:flex;align-items:center;gap:6px"><span class="prio-tag" id="icPrio"></span></div><div class="ios-card-desc" id="icDesc"></div></div>
@@ -1090,7 +1091,7 @@ let lastSpokenText='',lastUserQuery='',multiSelectActive=false,micWasOnBeforeHom
 let page499Active=false;
 let p499Selections={brakeType:null,bogieType:null,isolatedBogies:null,isolatedAxles:null};
 let siActive=false,siCurrentSignal=null,siCurrentDirection=null;
-let searchMode='ios'; // 'ios' ou 'si'
+let searchMode='ios';
 
 /* ═══ SYNTHÈSE VOCALE ═══ */
 const synth=window.speechSynthesis,hasVoice=!!synth;
@@ -1601,11 +1602,9 @@ function processVoice(raw){
   if(match(txt,'date')){speak('Nous sommes le '+fd(new Date()));return;}
   if(match(txt,'elapsed')){if(!procStart){speak('Aucune procédure en cours.');return;}const d=new Date()-procStart,m=Math.floor(d/60000);speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.');return;}
 
-  // Traitement selon le mode de recherche actif
   if(searchMode==='si'){
     const siCmd=detectSICommand(txt);
     if(siCmd&&siCmd.signal){handleSICommand(siCmd);return;}
-    // En mode SI, on essaie aussi avec un numéro seul
     const numMatch=txt.match(/\b(\d{1,2})\b/);
     if(numMatch){
       const signal=findSIByNum(numMatch[1]);
@@ -1615,7 +1614,6 @@ function processVoice(raw){
     return;
   }
 
-  // Mode IOS
   const siCmd=detectSICommand(txt);
   if(siCmd&&siCmd.signal){handleSICommand(siCmd);return;}
 
@@ -1648,6 +1646,7 @@ $('spSearch').addEventListener('keypress',e=>{if(e.key==='Enter'){doSearch(e.tar
 $('spSearchGo').addEventListener('click',()=>{doSearch($('spSearch').value);$('spSearch').value='';});
 $('showListBtn').addEventListener('click',openList);
 $('showSIListBtn').addEventListener('click',openSIList);
+$('showPage499Btn').addEventListener('click',()=>{if(isProcActive()&&!page499Active){toast('Terminez la procédure en cours');}else{openPage499();}});
 $('listX').addEventListener('click',closeList);
 $('listBg').addEventListener('click',e=>{if(e.target===$('listBg'))closeList();});
 $('siListX').addEventListener('click',closeSIList);
@@ -1670,13 +1669,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').clas
 
 /* ═══ INIT ═══ */
 async function initApp(){
-  console.log('🚀 IAOS T4 v10.4 · Switch IOS/SI + Liste SI');
+  console.log('🚀 IAOS T4 v10.5 · Bouton Page 499 dans panneau diagnostic');
   await LearningEngine.init();AutonomousLearner.init();FullscreenManager.init();updateFirebaseUI();
   if(hasVoice){synth.getVoices();getVoice();}
   updateSearchModeUI();
   setUI('idle');micOn=true;startListening();
-  console.log('✅ IAOS T4 prêt — Switch IOS/SI actif, liste SI accessible');
-  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.4-switch'});
+  console.log('✅ IAOS T4 prêt — Page 499 accessible depuis le panneau');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.5-page499-btn'});
 }
 initApp();
 
