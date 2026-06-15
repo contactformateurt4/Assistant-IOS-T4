@@ -1082,7 +1082,17 @@ function speak(txt,cb){
   const wasMicOn=micOn;
   if(micOn){stopListening();micOn=false;micMutedForSpeech=true;setUI('speak');}
   let x=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
-    .replace(/\bAEL\b/gi,'A E L').replace(/\bael\b/gi,'A E L')
+    .replace(/\bAEL\b/gi,'aaeuuelle')
+    .replace(/\b1CM\b/g,'une cé èm')
+    .replace(/\b2CM\b/g,'deux cé èm')
+    .replace(/\b1 CM\b/g,'une cé èm')
+    .replace(/\b2 CM\b/g,'deux cé èm')
+    .replace(/\b1 TER\b/g,'une Tère')
+    .replace(/\b1TT\b/g,'une tété')
+    .replace(/\b2TT\b/g,'deux tété')
+    .replace(/\b1 TT\b/g,'une tété')
+    .replace(/\b2 TT\b/g,'deux tété')
+    .replace(/\b2BA\b/g,'deux Bé A')
     .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
     .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s")
     .replace(/\bdes IOS\b/gi,'des i o s').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
@@ -1094,11 +1104,6 @@ function speak(txt,cb){
     .replace(/\bBP\b/g,'B P').replace(/\bBPL\b/g,'B P L').replace(/\bLS\b/g,'L S')
     .replace(/\bCC\b/g,'C C').replace(/\bPC\b/g,'P C').replace(/\bPJ\b/g,'P J')
     .replace(/\bZaber\b/gi,'Zabèr')
-    .replace(/\b1TT\b/g,'un Té Té').replace(/\b2TT\b/g,'deux Té Té')
-    .replace(/\b1 TT\b/g,'un Té Té').replace(/\b2 TT\b/g,'deux Té Té')
-    .replace(/\b1CM\b/g,'un Cé Em').replace(/\b2CM\b/g,'deux Cé Em')
-    .replace(/\b1 CM\b/g,'un Cé Em').replace(/\b2 CM\b/g,'deux Cé Em')
-    .replace(/\b2BA\b/g,'deux Bé A').replace(/\b1 TER\b/g,'un ter')
     .replace(/\bSAS 1\b/g,'sas 1').replace(/\bSAS 2\b/g,'sas 2')
     .replace(/\bQ1 PJV\b/g,'quai 1').replace(/\bQ2 PJV\b/g,'quai 2')
     .replace(/\bVOIE A\b/g,'voie A').replace(/\bVOIE B\b/g,'voie B').replace(/\bVOIE C\b/g,'voie C')
@@ -1208,19 +1213,19 @@ const SI_ALL=Object.entries(SI_DATA).flatMap(([zone,sigs])=>sigs.map(s=>({...s,z
 const SI_DIR_PATTERNS=[
   {name:'SAS 1',  rx:[/\bsas[\s-]*1\b/i,/\bsas\s+un\b/i]},
   {name:'SAS 2',  rx:[/\bsas[\s-]*2\b/i,/\bsas\s+deux\b/i]},
-  {name:'1 TER',  rx:[/\b1\s*ter\b/i,/\bun\s+ter\b/i,/\bter\b/i]},
+  {name:'1 TER',  rx:[/\b1\s*ter\b/i,/\bun\s+ter\b/i,/\bune\s+tère\b/i,/\btère\b/i]},
   {name:'2BA',    rx:[/\b2[\s-]*ba\b/i,/\bdeux[\s-]*ba\b/i,/\bdeux\s+b[ée]\s+a\b/i]},
-  {name:'2TT',    rx:[/\b2[\s-]*t{1,2}\b/i,/\bdeux\s+t{1,2}\b/i,/\bdeux\s+té\s+té\b/i]},
-  {name:'1TT',    rx:[/\b1[\s-]*t{1,2}\b/i,/\bun\s+t{1,2}\b/i,/\bun\s+té\s+té\b/i]},
+  {name:'2TT',    rx:[/\b2[\s-]*t{1,2}\b/i,/\bdeux\s+t{1,2}\b/i,/\bdeux\s+té\s+té\b/i,/\bdeux\s+tété\b/i]},
+  {name:'1TT',    rx:[/\b1[\s-]*t{1,2}\b/i,/\bun\s+t{1,2}\b/i,/\bune\s+té\s+té\b/i,/\bune\s+tété\b/i]},
   {name:'DÉPART', rx:[/\bdépart\b/i,/\bdepart\b/i]},
   {name:'ARRIVÉE',rx:[/\barrivée?\b/i,/\barrivee?\b/i]},
   {name:'VOIE A', rx:[/\bvoie\s+a\b/i]},
   {name:'VOIE B', rx:[/\bvoie\s+b\b/i,/\bvoie\s+b[ée]\b/i]},
   {name:'VOIE C', rx:[/\bvoie\s+c\b/i,/\bvoie\s+s[ée]\b/i]},
-  {name:'2 CM',   rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i,/\bdeux\s+c[\s-]*m\b/i]},
-  {name:'2CM',    rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i]},
-  {name:'1CM',    rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i,/\bun\s+c[\s-]*m\b/i]},
-  {name:'1 CM',   rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i]},
+  {name:'2 CM',   rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i,/\bdeux\s+cé\s*èm\b/i,/\bdeux\s+c[\s-]*m\b/i]},
+  {name:'2CM',    rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i,/\bdeux\s+cé\s*èm\b/i]},
+  {name:'1CM',    rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i,/\bune\s+cé\s*èm\b/i,/\bune\s+c[\s-]*m\b/i]},
+  {name:'1 CM',   rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i,/\bune\s+cé\s*èm\b/i]},
   {name:'QUAI 1', rx:[/\bquai[\s-]*1\b/i,/\bquai\s+un\b/i]},
   {name:'QUAI 2', rx:[/\bquai[\s-]*2\b/i,/\bquai\s+deux\b/i]},
   {name:'Q1 PJV', rx:[/\bq[\s-]*1\b/i,/\bquai[\s-]*1\b/i,/\bquai\s+un\b/i]},
@@ -1561,12 +1566,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').clas
 
 /* ═══ INIT ═══ */
 async function initApp(){
-  console.log('🚀 IAOS T4 v10.2 · DUALIS + SI Pupitre intégré');
+  console.log('🚀 IAOS T4 v10.3 · Prononciations optimisées');
   await LearningEngine.init();AutonomousLearner.init();FullscreenManager.init();updateFirebaseUI();
   if(hasVoice){synth.getVoices();getVoice();}
   setUI('idle');micOn=true;startListening();
-  console.log('✅ IAOS T4 prêt — Toutes les fonctionnalités opérationnelles');
-  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.2-corrected'});
+  console.log('✅ IAOS T4 prêt — Prononciations : AEL→aaeuuelle, 1CM→une cé èm, 2CM→deux cé èm, 1TER→une Tère, 1TT→une tété, 2TT→deux tété');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.3-optimized'});
 }
 initApp();
 
