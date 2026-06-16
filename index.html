@@ -86,7 +86,7 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(90deg,r
 @keyframes tagPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 
 /* ═══ SWITCH IOS/SI ═══ */
-.search-mode-switch{display:flex;align-items:center;gap:8px;background:var(--dualis-surface);border:1px solid var(--dualis-border);border-radius:2px;padding:6px 12px;width:100%;max-width:520px;}
+.search-mode-switch{display:flex;align-items:center;gap:8px;background:var(--dualis-surface);border:1px solid var(--dualis-border);border-radius:2px;padding:6px 12px;width:100%;max-width:520px;flex-wrap:wrap;}
 .switch-label{font-family:'Space Mono',monospace;font-size:0.45rem;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;}
 .switch-track{width:52px;height:28px;background:var(--dualis-border);border-radius:14px;position:relative;cursor:pointer;transition:background 0.3s ease;flex-shrink:0;}
 .switch-track.si-mode{background:rgba(0,180,216,0.3);border:1px solid var(--dualis-cyan);}
@@ -94,6 +94,8 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(90deg,r
 .switch-track.si-mode .switch-thumb{transform:translateX(24px);background:var(--dualis-cyan);}
 .switch-mode-text{font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:1px;color:var(--dualis-accent);text-transform:uppercase;min-width:50px;text-align:center;}
 .switch-mode-text.si{color:var(--dualis-cyan);}
+.switch-p499-btn{font-family:'Space Mono',monospace;font-size:0.4rem;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:1px;border:1px solid rgba(255,107,53,0.35);background:rgba(255,107,53,0.06);color:var(--dualis-accent);cursor:pointer;transition:all 0.18s ease;white-space:nowrap;margin-left:auto;}
+.switch-p499-btn:hover{background:rgba(255,107,53,0.14);border-color:var(--dualis-accent);}
 
 /* ═══ PAGE 499 ═══ */
 .page499-card{width:100%;max-width:520px;background:var(--dualis-surface);border:1px solid var(--dualis-accent);border-radius:2px;overflow:hidden;display:none;animation:slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);}
@@ -369,13 +371,14 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(90deg,r
 <div class="app-body">
   <div class="status-bar"><div class="status-indicator" id="statusDot"></div><span class="status-text" id="statusTxt">Micro actif · Dites un numéro IOS</span></div>
   
-  <!-- SWITCH IOS/SI -->
+  <!-- SWITCH IOS/SI + BOUTON P499 -->
   <div class="search-mode-switch">
-    <span class="switch-label">MODE RECHERCHE</span>
+    <span class="switch-label">MODE</span>
     <div class="switch-track" id="searchModeSwitch" title="Cliquer pour basculer IOS / SI">
       <div class="switch-thumb"></div>
     </div>
     <span class="switch-mode-text" id="searchModeText">IOS</span>
+    <button class="switch-p499-btn" id="switchP499Btn" title="Ouvrir Page 499">📋 P499</button>
   </div>
   
   <div class="mic-zone">
@@ -457,7 +460,7 @@ try{if(typeof firebase==='undefined') throw new Error('Firebase SDK non chargé'
 function updateFirebaseUI(){const st=!firebaseAvailable?'Firebase: Erreur':firebaseConnected?'Firebase: Connecté':'Firebase: En attente...';const sc=!firebaseAvailable?'offline':firebaseConnected?'online':'syncing';const sl=document.getElementById('syncLabel'),sd=document.getElementById('syncDot'),fh=document.getElementById('fbHeaderStatus');if(sl)sl.textContent=st;if(sd)sd.className='sync-status '+sc;if(fh)fh.textContent=firebaseConnected?'🟢':(firebaseAvailable?'🟡':'🔴');}
 
 /* ═══ FULLSCREEN ═══ */
-const FullscreenManager={isFullscreen:false,bannerDismissed:false,autoTriggered:false,init(){this.isSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||document.documentElement.msRequestFullscreen);if(!this.isSupported){const fab=document.getElementById('fullscreenFab'),banner=document.getElementById('fullscreenBanner');if(fab)fab.style.display='none';if(banner)banner.style.display='none';return;}document.addEventListener('fullscreenchange',()=>this.updateUI());document.addEventListener('webkitfullscreenchange',()=>this.updateUI());document.addEventListener('MSFullscreenChange',()=>this.updateUI());const fab=document.getElementById('fullscreenFab');if(fab)fab.addEventListener('click',(e)=>{e.stopPropagation();this.toggle();});const bb=document.getElementById('fullscreenBannerBtn'),bc=document.getElementById('fullscreenBannerClose');if(bb)bb.addEventListener('click',()=>{this.request();this.dismissBanner();});if(bc)bc.addEventListener('click',()=>this.dismissBanner());this.setupAutoFullscreen();this.updateUI();},setupAutoFullscreen(){if(this.isFullscreen)return;const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(isIOS){setTimeout(()=>this.showBanner(),1500);return;}const tf=(e)=>{if(this.autoTriggered||this.isFullscreen)return;const tag=e.target.tagName.toLowerCase(),isInt=['button','input','select','textarea','a'].includes(tag);const isOurs=e.target.closest('#fullscreenFab')||e.target.closest('#fullscreenBannerBtn')||e.target.closest('#fullscreenBannerClose')||e.target.closest('#micBtn')||e.target.closest('.hdr-btn')||e.target.closest('.gcard-btn')||e.target.closest('.ac-btn')||e.target.closest('.selection-item')||e.target.closest('.p499-option')||e.target.closest('.p499-btn')||e.target.closest('.si-dir-btn')||e.target.closest('.si-nav')||e.target.closest('#searchModeSwitch');if(isInt&&!isOurs)return;this.autoTriggered=true;setTimeout(()=>{this.request();this.dismissBanner();},300);};document.addEventListener('click',tf,{once:false});document.addEventListener('touchstart',tf,{once:false,passive:true});setTimeout(()=>{if(!this.isFullscreen&&!this.bannerDismissed)this.showBanner();},5000);const cl=()=>{if(this.isFullscreen){document.removeEventListener('click',tf);document.removeEventListener('touchstart',tf);}};document.addEventListener('fullscreenchange',cl);document.addEventListener('webkitfullscreenchange',cl);},request(){try{const el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().catch(()=>{});else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}},exit(){try{if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}},toggle(){this.isFullscreen?this.exit():(this.request(),this.dismissBanner());},updateUI(){this.isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement);const fab=document.getElementById('fullscreenFab');if(fab){fab.textContent=this.isFullscreen?'✕':'⛶';fab.classList.toggle('active',this.isFullscreen);}if(this.isFullscreen)this.hideBanner();},showBanner(){const b=document.getElementById('fullscreenBanner');if(b&&!this.isFullscreen)b.classList.add('show');},hideBanner(){const b=document.getElementById('fullscreenBanner');if(b)b.classList.remove('show');},dismissBanner(){this.bannerDismissed=true;this.hideBanner();}};
+const FullscreenManager={isFullscreen:false,bannerDismissed:false,autoTriggered:false,init(){this.isSupported=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||document.documentElement.msRequestFullscreen);if(!this.isSupported){const fab=document.getElementById('fullscreenFab'),banner=document.getElementById('fullscreenBanner');if(fab)fab.style.display='none';if(banner)banner.style.display='none';return;}document.addEventListener('fullscreenchange',()=>this.updateUI());document.addEventListener('webkitfullscreenchange',()=>this.updateUI());document.addEventListener('MSFullscreenChange',()=>this.updateUI());const fab=document.getElementById('fullscreenFab');if(fab)fab.addEventListener('click',(e)=>{e.stopPropagation();this.toggle();});const bb=document.getElementById('fullscreenBannerBtn'),bc=document.getElementById('fullscreenBannerClose');if(bb)bb.addEventListener('click',()=>{this.request();this.dismissBanner();});if(bc)bc.addEventListener('click',()=>this.dismissBanner());this.setupAutoFullscreen();this.updateUI();},setupAutoFullscreen(){if(this.isFullscreen)return;const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(isIOS){setTimeout(()=>this.showBanner(),1500);return;}const tf=(e)=>{if(this.autoTriggered||this.isFullscreen)return;const tag=e.target.tagName.toLowerCase(),isInt=['button','input','select','textarea','a'].includes(tag);const isOurs=e.target.closest('#fullscreenFab')||e.target.closest('#fullscreenBannerBtn')||e.target.closest('#fullscreenBannerClose')||e.target.closest('#micBtn')||e.target.closest('.hdr-btn')||e.target.closest('.gcard-btn')||e.target.closest('.ac-btn')||e.target.closest('.selection-item')||e.target.closest('.p499-option')||e.target.closest('.p499-btn')||e.target.closest('.si-dir-btn')||e.target.closest('.si-nav')||e.target.closest('#searchModeSwitch')||e.target.closest('#switchP499Btn');if(isInt&&!isOurs)return;this.autoTriggered=true;setTimeout(()=>{this.request();this.dismissBanner();},300);};document.addEventListener('click',tf,{once:false});document.addEventListener('touchstart',tf,{once:false,passive:true});setTimeout(()=>{if(!this.isFullscreen&&!this.bannerDismissed)this.showBanner();},5000);const cl=()=>{if(this.isFullscreen){document.removeEventListener('click',tf);document.removeEventListener('touchstart',tf);}};document.addEventListener('fullscreenchange',cl);document.addEventListener('webkitfullscreenchange',cl);},request(){try{const el=document.documentElement;if(el.requestFullscreen)el.requestFullscreen().catch(()=>{});else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();else if(el.msRequestFullscreen)el.msRequestFullscreen();}catch(e){}},exit(){try{if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});else if(document.webkitExitFullscreen)document.webkitExitFullscreen();else if(document.msExitFullscreen)document.msExitFullscreen();}catch(e){}},toggle(){this.isFullscreen?this.exit():(this.request(),this.dismissBanner());},updateUI(){this.isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement);const fab=document.getElementById('fullscreenFab');if(fab){fab.textContent=this.isFullscreen?'✕':'⛶';fab.classList.toggle('active',this.isFullscreen);}if(this.isFullscreen)this.hideBanner();},showBanner(){const b=document.getElementById('fullscreenBanner');if(b&&!this.isFullscreen)b.classList.add('show');},hideBanner(){const b=document.getElementById('fullscreenBanner');if(b)b.classList.remove('show');},dismissBanner(){this.bannerDismissed=true;this.hideBanner();}};
 
 /* ═══ LEARNING ENGINE ═══ */
 const LearningEngine={localCache:{},globalCache:{},initialized:false,async init(){const saved=localStorage.getItem('iaos_learning_cache');if(saved){try{this.localCache=JSON.parse(saved);}catch(e){}}if(firebaseAvailable&&firebaseConnected)await this.syncFromFirebase();this.initialized=true;},async syncFromFirebase(){if(!firebaseAvailable||!db)return;try{const snap=await firebaseRefs.learning.once('value');const data=snap.val()||{};this.globalCache={synonyms:data.synonyms||{},corrections:data.corrections||{},learnedAssociations:data.learnedAssociations||{}};}catch(e){}},async learnSynonym(command,newWord,confidence=1){if(!this.localCache.synonyms)this.localCache.synonyms={};if(!this.localCache.synonyms[command])this.localCache.synonyms[command]=[];if(!this.localCache.synonyms[command].includes(newWord)){this.localCache.synonyms[command].push(newWord);this.saveLocal();}if(firebaseAvailable&&firebaseConnected){try{const ref=firebaseRefs.synonyms.child(command);const snap=await ref.once('value');const existing=snap.val()||[];if(!existing.includes(newWord)){existing.push(newWord);await ref.set(existing);await this.logUsage('synonym_learned',{command,word:newWord,confidence});}else{await this.incrementUsage(command,newWord);}}catch(e){}}},async learnAssociation(unknownWord,knownCommand,context={}){if(!this.localCache.learnedAssociations)this.localCache.learnedAssociations={};this.localCache.learnedAssociations[unknownWord.toLowerCase()]={command:knownCommand,context,learnedAt:Date.now(),usageCount:(this.localCache.learnedAssociations[unknownWord.toLowerCase()]?.usageCount||0)+1};this.saveLocal();if(firebaseAvailable&&firebaseConnected){try{await firebaseRefs.learnedAssociations.child(encodeURIComponent(unknownWord.toLowerCase())).transaction((current)=>{if(!current)return{command:knownCommand,context,learnedAt:Date.now(),usageCount:1};current.usageCount=(current.usageCount||0)+1;return current;});}catch(e){}}},async logIOSSearch(query,foundIOS,success){if(firebaseAvailable&&firebaseConnected){try{await firebaseRefs.iosSearches.push().set({query:query.toLowerCase().trim(),foundIOS:foundIOS||null,success:!!success,timestamp:firebase.database.ServerValue.TIMESTAMP});}catch(e){}}},async logUsage(action,data={}){if(firebaseAvailable&&firebaseConnected){try{await firebaseRefs.usageStats.push().set({action,data,timestamp:firebase.database.ServerValue.TIMESTAMP});}catch(e){}}},async incrementUsage(command,word){if(firebaseAvailable&&firebaseConnected){try{const ref=db.ref(`learning/usageCount/${command}/${encodeURIComponent(word)}`);await ref.transaction((count)=>(count||0)+1);}catch(e){}}},matchWithLearning(txt,command,basePatterns){if(basePatterns&&basePatterns.some(r=>r.test(txt)))return true;const ls=this.localCache.synonyms?.[command]||[];for(const s of ls){if(txt.toLowerCase().includes(s.toLowerCase()))return true;}const gs=this.globalCache.synonyms?.[command]||[];for(const s of gs){if(txt.toLowerCase().includes(s.toLowerCase()))return true;}return false;},getAssociation(word){const w=word.toLowerCase();if(this.localCache.learnedAssociations?.[w])return this.localCache.learnedAssociations[w];if(this.globalCache.learnedAssociations?.[w])return this.globalCache.learnedAssociations[w];return null;},getAllKnownWords(){const words=new Set();Object.values(CMDS).flat().forEach(r=>{const str=r.toString();const match=str.match(/\\([a-zéèêëàâîïôûùç'\-]+)/gi);if(match)match.forEach(m=>words.add(m.replace(/\\/g,'').toLowerCase()));});const ls=this.localCache.synonyms||{};Object.values(ls).flat().forEach(s=>words.add(s.toLowerCase()));const gs=this.globalCache.synonyms||{};Object.values(gs).flat().forEach(s=>words.add(s.toLowerCase()));return[...words];},saveLocal(){try{localStorage.setItem('iaos_learning_cache',JSON.stringify(this.localCache));}catch(e){}}};
@@ -1286,9 +1289,10 @@ const SI_DIR_PATTERNS=[
   {name:'MFM',    rx:[/\bmfm\b/i,/\bmont.?fer/i,/\bhôpital\s+de\s+montfermeil\b/i]}
 ];
 
+// ═══ CORRECTION : findSIByNum accepte maintenant 1 ou 2 chiffres sans zéro ═══
 function findSIByNum(numStr){
-  const n=parseInt(numStr);
-  return SI_ALL.find(s=>parseInt(s.id.replace(/\D/g,''))===n)||null;
+  const n=parseInt(numStr,10);
+  return SI_ALL.find(s=>parseInt(s.id.replace(/\D/g,''),10)===n)||null;
 }
 
 function matchSIDirection(txt,signal){
@@ -1494,7 +1498,7 @@ function buildSIList(){
 function openSIList(){buildSIList();$('siListBg').classList.add('on');}
 function closeSIList(){$('siListBg').classList.remove('on');}
 
-function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales IOS</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🚦 Pupitre SI — Commandes vocales</h4><ul><li><span class="cmd-pill">tracer le SI 32 en direction de la 2TT</span></li><li><span class="cmd-pill">tracer SI 66</span> → demande la direction</li><li><span class="cmd-pill">SI 11 direction départ</span></li><li>Directions : <span class="cmd-pill">départ</span> <span class="cmd-pill">arrivée</span> <span class="cmd-pill">1TT</span> (direction Aulnay) <span class="cmd-pill">2TT</span> (direction Bondy) <span class="cmd-pill">voie A</span> <span class="cmd-pill">quai 1</span> <span class="cmd-pill">1CM</span> (direction Hôpital de Montfermeil/Arboretum) <span class="cmd-pill">2CM</span> (direction Bondy)…</li><li><span class="cmd-pill">répéter</span> — Réécouter le résultat</li><li><span class="cmd-pill">annuler / fermer</span> — Quitter le SI</li></ul><h4>🔄 Switch IOS/SI</h4><p>Utilisez le <span class="cmd-pill">switch</span> sous la barre d'état pour basculer entre recherche IOS et SI. En mode SI, les numéros sont interprétés comme des signaux d'itinéraire.</p><h4>📋 Page 499</h4><ul><li><span class="cmd-pill">page 499</span> — Ouvrir le barème</li><li><span class="cmd-pill">frein mécanique / électrique</span></li><li><span class="cmd-pill">C E 1 / C 2 B</span> — Bogie</li><li><span class="cmd-pill">chiffre 1-6</span> — Nombre isolés</li></ul><h4>🔇 Micro automatique</h4><p>Le micro se coupe pendant la lecture vocale et se réactive automatiquement.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`; $('infoBg').classList.add('on');}
+function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales IOS</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🚦 Pupitre SI — Commandes vocales</h4><ul><li><span class="cmd-pill">tracer le SI 32 en direction de la 2TT</span></li><li><span class="cmd-pill">tracer SI 66</span> → demande la direction</li><li><span class="cmd-pill">SI 11 direction départ</span></li><li>Directions : <span class="cmd-pill">départ</span> <span class="cmd-pill">arrivée</span> <span class="cmd-pill">1TT</span> (direction Aulnay) <span class="cmd-pill">2TT</span> (direction Bondy) <span class="cmd-pill">voie A</span> <span class="cmd-pill">quai 1</span> <span class="cmd-pill">1CM</span> (direction Hôpital de Montfermeil/Arboretum) <span class="cmd-pill">2CM</span> (direction Bondy)…</li><li><span class="cmd-pill">répéter</span> — Réécouter le résultat</li><li><span class="cmd-pill">annuler / fermer</span> — Quitter le SI</li></ul><h4>🔄 Switch IOS/SI</h4><p>Utilisez le <span class="cmd-pill">switch</span> sous la barre d'état pour basculer entre recherche IOS et SI. En mode SI, les numéros sont interprétés comme des signaux d'itinéraire.</p><p>Bouton <span class="cmd-pill">P499</span> dans la barre de mode pour ouvrir la Page 499.</p><h4>📋 Page 499</h4><ul><li><span class="cmd-pill">page 499</span> — Ouvrir le barème</li><li><span class="cmd-pill">frein mécanique / électrique</span></li><li><span class="cmd-pill">C E 1 / C 2 B</span> — Bogie</li><li><span class="cmd-pill">chiffre 1-6</span> — Nombre isolés</li></ul><h4>🔇 Micro automatique</h4><p>Le micro se coupe pendant la lecture vocale et se réactive automatiquement.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`; $('infoBg').classList.add('on');}
 function closeInfo(){$('infoBg').classList.remove('on');}
 
 function isProcActive(){return guideOn||isSpeaking||iosInfoShown||multiSelectActive||page499Active||siActive;}
@@ -1598,6 +1602,7 @@ function processVoice(raw){
   if(match(txt,'repeat')){if(lastSpokenText){speak(lastSpokenText);}else if(curIOS){speak("l'IOS "+parseInt(curIOS.id,10));}return;}
   if(match(txt,'guide')){if(curIOS){startGuide();return;}speak("Cherchez d'abord un i o s.");return;}
   if(match(txt,'list')){openList();return;}
+  // ═══ CORRECTION : "afficher la liste des si" ouvre bien la liste SI ═══
   if(match(txt,'siList')){openSIList();return;}
   if(match(txt,'help')){openInfo();return;}
   if(match(txt,'creator')){addMsg('👤 Créé par <strong>Zaber, conducteur, moniteur, formateur et plus si affinité !</strong>');speak('Mon créateur est Zabèr, conducteur, moniteur, formateur et plus si affinité.');return;}
@@ -1605,9 +1610,11 @@ function processVoice(raw){
   if(match(txt,'date')){speak('Nous sommes le '+fd(new Date()));return;}
   if(match(txt,'elapsed')){if(!procStart){speak('Aucune procédure en cours.');return;}const d=new Date()-procStart,m=Math.floor(d/60000);speak('Temps écoulé : '+m+' minute'+(m>1?'s':'')+'.');return;}
 
+  // ═══ CORRECTION : En mode SI, recherche prioritaire ═══
   if(searchMode==='si'){
     const siCmd=detectSICommand(txt);
     if(siCmd&&siCmd.signal){handleSICommand(siCmd);return;}
+    // ═══ CORRECTION : Reconnaître un numéro seul (1-68) comme SI ═══
     const numMatch=txt.match(/\b(\d{1,2})\b/);
     if(numMatch){
       const signal=findSIByNum(numMatch[1]);
@@ -1617,6 +1624,7 @@ function processVoice(raw){
     return;
   }
 
+  // Mode IOS : on essaie d'abord SI puis IOS
   const siCmd=detectSICommand(txt);
   if(siCmd&&siCmd.signal){handleSICommand(siCmd);return;}
 
@@ -1638,6 +1646,7 @@ setInterval(updateClock,1000);updateClock();
 
 $('micBtn').addEventListener('click',toggleMic);
 $('searchModeSwitch').addEventListener('click',toggleSearchMode);
+$('switchP499Btn').addEventListener('click',()=>{if(isProcActive()&&!page499Active){toast('Terminez la procédure en cours');}else{openPage499();}});
 $('panelBtn').addEventListener('click',()=>{$('sidePanel').classList.add('open');$('overlay').classList.add('on');});
 $('overlay').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
 $('spClose').addEventListener('click',()=>{$('sidePanel').classList.remove('open');$('overlay').classList.remove('on');});
@@ -1672,13 +1681,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').clas
 
 /* ═══ INIT ═══ */
 async function initApp(){
-  console.log('🚀 IAOS T4 v10.6 · Prononciations optimisées SI/PJV/MFM');
+  console.log('🚀 IAOS T4 v10.7 · Corrections SI + Bouton P499');
   await LearningEngine.init();AutonomousLearner.init();FullscreenManager.init();updateFirebaseUI();
   if(hasVoice){synth.getVoices();getVoice();}
   updateSearchModeUI();
   setUI('idle');micOn=true;startListening();
-  console.log('✅ IAOS T4 prêt — SI→èss i, PJV→Arboretum, MFM→Hôpital de Montfermeil');
-  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.6-prononciations'});
+  console.log('✅ IAOS T4 prêt — Liste SI corrigée, SI sans zéro, Bouton P499');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.7-fixes'});
 }
 initApp();
 
