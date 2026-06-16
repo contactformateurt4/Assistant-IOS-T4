@@ -1106,6 +1106,7 @@ function speak(txt,cb){
   const wasMicOn=micOn;
   if(micOn){stopListening();micOn=false;micMutedForSpeech=true;setUI('speak');}
   let x=txt.replace(/[<[\]{}_*#✅🚨]/g,'').replace(/&[a-z]+;/g,'')
+    .replace(/\bSI\b/g,'èss i')
     .replace(/\bAEL\b/gi,'aaeuuelle')
     .replace(/\b1CM\b/g,'une cé èm')
     .replace(/\b2CM\b/g,'deux cé èm')
@@ -1117,6 +1118,8 @@ function speak(txt,cb){
     .replace(/\b1 TT\b/g,'une tété')
     .replace(/\b2 TT\b/g,'deux tété')
     .replace(/\b2BA\b/g,'deux Bé A')
+    .replace(/\bPJV\b/gi,'Arboretum')
+    .replace(/\bMFM\b/g,'Hôpital de Montfermeil')
     .replace(/\bl'IOS\b/gi,'li oès').replace(/\bl'ios\b/gi,'li oès')
     .replace(/\bun IOS\b/gi,'un i o s').replace(/\bd'IOS\b/gi,"d'i o s")
     .replace(/\bdes IOS\b/gi,'des i o s').replace(/\bIOS\b/g,'i o s').replace(/\bios\b/g,'i o s')
@@ -1131,10 +1134,10 @@ function speak(txt,cb){
     .replace(/\bSAS 1\b/g,'sas 1').replace(/\bSAS 2\b/g,'sas 2')
     .replace(/\bQ1 PJV\b/g,'quai 1').replace(/\bQ2 PJV\b/g,'quai 2')
     .replace(/\bVOIE A\b/g,'voie A').replace(/\bVOIE B\b/g,'voie B').replace(/\bVOIE C\b/g,'voie C')
-    .replace(/\bMFM\b/g,'M F M')
     .replace(/km\/h/gi,'kilomètres par heure').replace(/\bart\.\s*/gi,'article ')
     .replace(/i o s\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'i o s '+parseInt(a+b+c,10))
     .replace(/li oès\s*(\d)(\d)(\d)/gi,(_,a,b,c)=>'li oès '+parseInt(a+b+c,10))
+    .replace(/èss i\s*(\d+)/g,'èss i $1')
     .replace(/\b0+(\d+)/g,'$1').replace(/\s+/g,' ').trim();
   lastSpokenText=x;
   currentUtterance=new SpeechSynthesisUtterance(x);
@@ -1280,7 +1283,7 @@ const SI_DIR_PATTERNS=[
   {name:'QUAI 2', rx:[/\bquai[\s-]*2\b/i,/\bquai\s+deux\b/i]},
   {name:'Q1 PJV', rx:[/\bq[\s-]*1\b/i,/\bquai[\s-]*1\b/i,/\bquai\s+un\b/i]},
   {name:'Q2 PJV', rx:[/\bq[\s-]*2\b/i,/\bquai[\s-]*2\b/i,/\bquai\s+deux\b/i]},
-  {name:'MFM',    rx:[/\bmfm\b/i,/\bmont.?fer/i]}
+  {name:'MFM',    rx:[/\bmfm\b/i,/\bmont.?fer/i,/\bhôpital\s+de\s+montfermeil\b/i]}
 ];
 
 function findSIByNum(numStr){
@@ -1491,7 +1494,7 @@ function buildSIList(){
 function openSIList(){buildSIList();$('siListBg').classList.add('on');}
 function closeSIList(){$('siListBg').classList.remove('on');}
 
-function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales IOS</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🚦 Pupitre SI — Commandes vocales</h4><ul><li><span class="cmd-pill">tracer le SI 32 en direction de la 2TT</span></li><li><span class="cmd-pill">tracer SI 66</span> → demande la direction</li><li><span class="cmd-pill">SI 11 direction départ</span></li><li>Directions : <span class="cmd-pill">départ</span> <span class="cmd-pill">arrivée</span> <span class="cmd-pill">1TT</span> <span class="cmd-pill">2TT</span> <span class="cmd-pill">voie A</span> <span class="cmd-pill">quai 1</span> <span class="cmd-pill">1CM</span>…</li><li><span class="cmd-pill">répéter</span> — Réécouter le résultat</li><li><span class="cmd-pill">annuler / fermer</span> — Quitter le SI</li></ul><h4>🔄 Switch IOS/SI</h4><p>Utilisez le <span class="cmd-pill">switch</span> sous la barre d'état pour basculer entre recherche IOS et SI. En mode SI, les numéros sont interprétés comme des signaux d'itinéraire.</p><h4>📋 Page 499</h4><ul><li><span class="cmd-pill">page 499</span> — Ouvrir le barème</li><li><span class="cmd-pill">frein mécanique / électrique</span></li><li><span class="cmd-pill">C E 1 / C 2 B</span> — Bogie</li><li><span class="cmd-pill">chiffre 1-6</span> — Nombre isolés</li></ul><h4>🔇 Micro automatique</h4><p>Le micro se coupe pendant la lecture vocale et se réactive automatiquement.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`; $('infoBg').classList.add('on');}
+function openInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales IOS</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li><li><span class="cmd-pill">annuler / stop</span> — Stopper</li><li><span class="cmd-pill">accueil / menu</span> — Retour</li></ul><h4>🚦 Pupitre SI — Commandes vocales</h4><ul><li><span class="cmd-pill">tracer le SI 32 en direction de la 2TT</span></li><li><span class="cmd-pill">tracer SI 66</span> → demande la direction</li><li><span class="cmd-pill">SI 11 direction départ</span></li><li>Directions : <span class="cmd-pill">départ</span> <span class="cmd-pill">arrivée</span> <span class="cmd-pill">1TT</span> (direction Aulnay) <span class="cmd-pill">2TT</span> (direction Bondy) <span class="cmd-pill">voie A</span> <span class="cmd-pill">quai 1</span> <span class="cmd-pill">1CM</span> (direction Hôpital de Montfermeil/Arboretum) <span class="cmd-pill">2CM</span> (direction Bondy)…</li><li><span class="cmd-pill">répéter</span> — Réécouter le résultat</li><li><span class="cmd-pill">annuler / fermer</span> — Quitter le SI</li></ul><h4>🔄 Switch IOS/SI</h4><p>Utilisez le <span class="cmd-pill">switch</span> sous la barre d'état pour basculer entre recherche IOS et SI. En mode SI, les numéros sont interprétés comme des signaux d'itinéraire.</p><h4>📋 Page 499</h4><ul><li><span class="cmd-pill">page 499</span> — Ouvrir le barème</li><li><span class="cmd-pill">frein mécanique / électrique</span></li><li><span class="cmd-pill">C E 1 / C 2 B</span> — Bogie</li><li><span class="cmd-pill">chiffre 1-6</span> — Nombre isolés</li></ul><h4>🔇 Micro automatique</h4><p>Le micro se coupe pendant la lecture vocale et se réactive automatiquement.</p><h4>☁️ Firebase</h4><p>${firebaseConnected?'✅ Connecté':'🟡 En attente...'}</p>`; $('infoBg').classList.add('on');}
 function closeInfo(){$('infoBg').classList.remove('on');}
 
 function isProcActive(){return guideOn||isSpeaking||iosInfoShown||multiSelectActive||page499Active||siActive;}
@@ -1669,13 +1672,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').clas
 
 /* ═══ INIT ═══ */
 async function initApp(){
-  console.log('🚀 IAOS T4 v10.5 · Bouton Page 499 dans panneau diagnostic');
+  console.log('🚀 IAOS T4 v10.6 · Prononciations optimisées SI/PJV/MFM');
   await LearningEngine.init();AutonomousLearner.init();FullscreenManager.init();updateFirebaseUI();
   if(hasVoice){synth.getVoices();getVoice();}
   updateSearchModeUI();
   setUI('idle');micOn=true;startListening();
-  console.log('✅ IAOS T4 prêt — Page 499 accessible depuis le panneau');
-  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.5-page499-btn'});
+  console.log('✅ IAOS T4 prêt — SI→èss i, PJV→Arboretum, MFM→Hôpital de Montfermeil');
+  if(firebaseAvailable)LearningEngine.logUsage('app_started',{timestamp:new Date().toISOString(),version:'v10.6-prononciations'});
 }
 initApp();
 
