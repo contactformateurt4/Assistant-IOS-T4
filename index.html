@@ -448,10 +448,6 @@ body::after{content:'';position:fixed;inset:0;background:linear-gradient(90deg,r
   <div class="page499-card" id="page499Card">
     <div class="p499-header">PAGE 499</div>
     <div class="p499-subtitle">Barème de vitesse limite en cas d'incident de frein</div>
-    <div id="p499Step1" style="display:none">
-      <div style="padding:8px 12px;font-size:0.62rem;color:var(--text-dim);line-height:1.4;"><strong style="color:var(--dualis-accent);">ATTENTION :</strong> Cet assistant ne remplace pas l'application du guide de dépannage !<br><br>Sélectionnez successivement : type de frein, type de bogie, nombre de bogies/essieux isolés.</div>
-      <div class="p499-nav"><button class="p499-btn primary" id="p499StartBtn">COMMENCER</button></div>
-    </div>
     <div id="p499Step2" style="display:none">
       <div class="p499-section-title">Type de frein isolé</div>
       <div class="p499-options" id="p499BrakeOptions">
@@ -1193,169 +1189,79 @@ function upSMUI(){const tr=$('searchModeSwitch'),tx=$('searchModeText'),ph=$('sp
 function togSM(){sMode=sMode==='ios'?'si':'ios';upSMUI();toast('Mode : '+(sMode==='si'?"Signaux d'Itinéraire":'IOS (Codes défaut)'));speak('Mode '+(sMode==='si'?'signaux d\'itinéraire':'IOS'));}
 
 /* ═══ PAGE 499 ═══ */
-function p499Hide(){['p499Step1','p499Step2','p499Step3','p499Step4','p499Result'].forEach(id=>{const el=$(id);if(el)el.style.display='none';});}
+function p499Hide(){['p499Step2','p499Step3','p499Step4','p499Result'].forEach(id=>{const el=$(id);if(el)el.style.display='none';});}
 function p499Reset(){
   p499S={bt:null,bg:null,ib:null,ia:null};
   document.querySelectorAll('#page499Card .p499-option').forEach(o=>o.classList.remove('selected'));
-  setBtnDisabled('p499NextFromBrake',true);
-  setBtnDisabled('p499NextFromBogie',true);
-  setBtnDisabled('p499CalculateBtn',true);
+  setBtnDisabled('p499NextFromBrake',true);setBtnDisabled('p499NextFromBogie',true);setBtnDisabled('p499CalculateBtn',true);
   const mw=$('p499MixedWarning');if(mw)mw.classList.remove('show');
   const em=$('p499Emergency');if(em)em.classList.remove('show');
 }
+function setBtnDisabled(id,disabled){const btn=$(id);if(!btn)return;if(disabled)btn.classList.add('disabled');else btn.classList.remove('disabled');}
+function openP499(){if(isPA()&&!p499A){toast('Terminez la procédure');return;}p499A=true;$('guideCard').classList.remove('show');$('siCard').classList.remove('show');$('page499Card').classList.add('show');addMsg('📋 Page 499');p499Reset();p499Hide();$('p499Step2').style.display='block';speak("Page 499. Type de frein isolé.");}
+function closeP499(){p499A=false;$('page499Card').classList.remove('show');p499Reset();p499Hide();setUI('idle');addMsg('Page 499 fermée.');speak('Page 499 fermée.');}
 
-// FONCTION CLÉ: gérer l'état disabled des boutons avec classe CSS
-function setBtnDisabled(id,disabled){
-  const btn=$(id);
-  if(!btn)return;
-  if(disabled){
-    btn.classList.add('disabled');
-  }else{
-    btn.classList.remove('disabled');
-  }
-}
-
-function openP499(){
-  if(isPA()&&!p499A){toast('Terminez la procédure');return;}
-  p499A=true;$('guideCard').classList.remove('show');$('siCard').classList.remove('show');
-  $('page499Card').classList.add('show');addMsg('📋 Page 499 · Barème de vitesse limite');
-  p499Reset();p499Hide();$('p499Step2').style.display='block';
-  speak("Page 499. Type de frein isolé.");
-}
-function closeP499(){
-  p499A=false;$('page499Card').classList.remove('show');
-  p499Reset();p499Hide();setUI('idle');
-  addMsg('Page 499 fermée.');speak('Page 499 fermée.');
-}
-
-// Événements sur les conteneurs d'options
-$('p499BrakeOptions').addEventListener('click',function(e){
-  const opt=e.target.closest('.p499-option');
-  if(!opt)return;
-  this.querySelectorAll('.p499-option').forEach(o=>o.classList.remove('selected'));
-  opt.classList.add('selected');
-  p499S.bt=opt.dataset.val;
-  setBtnDisabled('p499NextFromBrake',false);
-  $('p499MixedWarning').classList.toggle('show',p499S.bt==='electric');
-  const lb={mechanical:'Frein mécanique',electromagnetic:'Frein électromagnétique',electric:'Frein électrique'};
-  addMsg('✓ '+(lb[p499S.bt]||p499S.bt));
-  speak((lb[p499S.bt]||p499S.bt)+' sélectionné.');
-});
-
-$('p499BogieOptions').addEventListener('click',function(e){
-  const opt=e.target.closest('.p499-option');
-  if(!opt)return;
-  this.querySelectorAll('.p499-option').forEach(o=>o.classList.remove('selected'));
-  opt.classList.add('selected');
-  p499S.bg=opt.dataset.val;
-  setBtnDisabled('p499NextFromBogie',false);
-  const nm={ce1:'C E 1',c1:'C 1',c2b:'C 2 B',ce2:'C E 2'};
-  const n=nm[p499S.bg]||p499S.bg.toUpperCase();
-  addMsg('✓ Bogie '+n);
-  speak('Bogie '+n+' sélectionné.');
-});
-
-// BOUTONS CONTINUER - avec vérification de classe disabled
-$('p499NextFromBrake').addEventListener('click',function(){
-  if(this.classList.contains('disabled'))return;
-  p499Hide();
-  if(p499S.bt==='electromagnetic'||p499S.bt==='electric'){
-    p499S.bg='motor';p499PrepNums();
-    $('p499Step4').style.display='block';
-    const ie=p499S.bt==='electric';
-    $('p499SelectionTitle').textContent=ie?"Nombre d'essieux isolés":"Nombre de bogies isolés";
-    speak(ie?"Nombre d'essieux isolés.":"Nombre de bogies isolés.");
-  }else{
-    $('p499Step3').style.display='block';
-    speak("Type de bogie.");
-  }
-});
-
-$('p499NextFromBogie').addEventListener('click',function(){
-  if(this.classList.contains('disabled'))return;
-  p499Hide();p499PrepNums();$('p499Step4').style.display='block';
-  speak('Nombre de bogies isolés.');
-});
-
-function p499PrepNums(){
-  const c=$('p499SelectionOptions'),t=$('p499SelectionTitle');
-  c.innerHTML='';const ie=p499S.bt==='electric',mx=ie?6:5;
-  t.textContent=ie?"Nombre d'essieux isolés":"Nombre de bogies isolés";
-  for(let i=1;i<=mx;i++){
-    const o=document.createElement('div');o.className='p499-option';o.textContent=i;
-    o.addEventListener('click',function(){
-      c.querySelectorAll('.p499-option').forEach(x=>x.classList.remove('selected'));
-      this.classList.add('selected');
-      if(ie)p499S.ia=i;else p499S.ib=i;
-      setBtnDisabled('p499CalculateBtn',false);
-      const lb=ie?`${i} essieu${i>1?'x':''}`:`${i} bogie${i>1?'s':''}`;
-      addMsg('✓ '+lb);speak(lb+' isolé. Appuyez sur Calculer.');
-    });
-    c.appendChild(o);
-  }
-}
-
-$('p499CalculateBtn').addEventListener('click',function(){
-  if(this.classList.contains('disabled'))return;
-  p499Calc();
-});
-
-function p499Calc(){
-  p499Hide();$('p499Result').style.display='block';
-  let sl=0,rb=0,se=false,wn='',ibe=0,she=false,ct='';
-  if(p499S.bt==='electric'){
-    ct='Frein électrique';const ax=p499S.ia||0;
-    if(ax===1){ibe=0;sl=50;}else if(ax===2){ibe=1;sl=50;wn='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}
-    else if(ax<=4){ibe=2;sl=30;wn='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}
-    else{ibe=3;sl=0;se=true;}rb=5-ibe;she=true;
-  }else if(p499S.bt==='mechanical'){
-    ct=`Frein mécanique - ${(p499S.bg||'').toUpperCase()}`;const bg=p499S.ib||0;
-    if(p499S.bg==='c2b'){if(bg===1){ibe=2;rb=3;sl=30;she=true;}else if(bg===2){ibe=4;rb=1;sl=0;se=true;she=true;}else{ibe=5;rb=0;sl=0;se=true;}}
-    else{if(bg===1){rb=4;sl=70;}else if(bg===2){rb=3;sl=30;}else{rb=5-bg;sl=0;se=true;}}
-  }else if(p499S.bt==='electromagnetic'){
-    ct='Frein électromagnétique';const bg=p499S.ib||0;ibe=bg*2;
-    if(ibe===2)sl=30;else if(ibe>=4){sl=0;se=true;}rb=Math.max(0,5-ibe);she=bg<3;
-  }
-  const seEl=$('p499SpeedValue');seEl.textContent=sl;seEl.className='p499-speed';
-  if(sl===0)seEl.classList.add('danger');else if(sl===30)seEl.classList.add('warning');else if(sl>=50)seEl.classList.add('success');
-  $('p499Emergency').classList.toggle('show',se);
-  let ih=`<div class="p499-summary-item"><div class="p499-summary-label">Configuration</div><div class="p499-summary-value">${ct}</div></div>`;
-  if(p499S.bt==='electric'){ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Essieux isolés</div><div class="p499-summary-value">${p499S.ia}${she&&ibe>0?' (équivaut à '+ibe+' bogie(s))':''}</div></div>`;}
-  else{ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies isolés</div><div class="p499-summary-value">${p499S.ib}${she?' (équivaut à '+ibe+' bogies)':''}</div></div>`;}
-  ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies restants (US)</div><div class="p499-summary-value">${rb}</div></div>`;
-  if(wn)ih+=`<div style="color:var(--dualis-red);margin-top:6px;font-size:0.6rem;line-height:1.3;">⚠ ${wn}</div>`;
-  $('p499Info').innerHTML=ih;
-  let tm=se?'SECOURS. Vitesse zéro kilomètre par heure.':`Vitesse maximale autorisée : ${sl} kilomètres par heure.`;
-  if(wn)tm+=' Attention : ne pas circuler dans la rampe.';
-  addMsg(`🚦 ${se?'SECOURS · Vitesse : 0':'Vitesse max : '+sl+' km/h'}`);speak(tm);
-}
-
+$('p499BrakeOptions').addEventListener('click',function(e){const opt=e.target.closest('.p499-option');if(!opt)return;this.querySelectorAll('.p499-option').forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');p499S.bt=opt.dataset.val;setBtnDisabled('p499NextFromBrake',false);$('p499MixedWarning').classList.toggle('show',p499S.bt==='electric');const lb={mechanical:'Frein mécanique',electromagnetic:'Frein électromagnétique',electric:'Frein électrique'};addMsg('✓ '+(lb[p499S.bt]||p499S.bt));speak((lb[p499S.bt]||p499S.bt)+' sélectionné.');});
+$('p499BogieOptions').addEventListener('click',function(e){const opt=e.target.closest('.p499-option');if(!opt)return;this.querySelectorAll('.p499-option').forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');p499S.bg=opt.dataset.val;setBtnDisabled('p499NextFromBogie',false);const nm={ce1:'C E 1',c1:'C 1',c2b:'C 2 B',ce2:'C E 2'};const n=nm[p499S.bg]||p499S.bg.toUpperCase();addMsg('✓ Bogie '+n);speak('Bogie '+n+' sélectionné.');});
+$('p499NextFromBrake').addEventListener('click',function(){if(this.classList.contains('disabled'))return;p499Hide();if(p499S.bt==='electromagnetic'||p499S.bt==='electric'){p499S.bg='motor';p499PrepNums();$('p499Step4').style.display='block';const ie=p499S.bt==='electric';$('p499SelectionTitle').textContent=ie?"Nombre d'essieux isolés":"Nombre de bogies isolés";speak(ie?"Nombre d'essieux isolés.":"Nombre de bogies isolés.");}else{$('p499Step3').style.display='block';speak("Type de bogie.");}});
+$('p499NextFromBogie').addEventListener('click',function(){if(this.classList.contains('disabled'))return;p499Hide();p499PrepNums();$('p499Step4').style.display='block';speak('Nombre de bogies isolés.');});
+function p499PrepNums(){const c=$('p499SelectionOptions'),t=$('p499SelectionTitle');c.innerHTML='';const ie=p499S.bt==='electric',mx=ie?6:5;t.textContent=ie?"Nombre d'essieux isolés":"Nombre de bogies isolés";for(let i=1;i<=mx;i++){const o=document.createElement('div');o.className='p499-option';o.textContent=i;o.addEventListener('click',function(){c.querySelectorAll('.p499-option').forEach(x=>x.classList.remove('selected'));this.classList.add('selected');if(ie)p499S.ia=i;else p499S.ib=i;setBtnDisabled('p499CalculateBtn',false);const lb=ie?`${i} essieu${i>1?'x':''}`:`${i} bogie${i>1?'s':''}`;addMsg('✓ '+lb);speak(lb+' isolé. Appuyez sur Calculer.');});c.appendChild(o);}}
+$('p499CalculateBtn').addEventListener('click',function(){if(this.classList.contains('disabled'))return;p499Calc();});
+function p499Calc(){p499Hide();$('p499Result').style.display='block';let sl=0,rb=0,se=false,wn='',ibe=0,she=false,ct='';if(p499S.bt==='electric'){ct='Frein électrique';const ax=p499S.ia||0;if(ax===1){ibe=0;sl=50;}else if(ax===2){ibe=1;sl=50;wn='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}else if(ax<=4){ibe=2;sl=30;wn='Ne pas circuler dans la rampe entre Maurice Audin et Clichy Montfermeil, sinon SECOURS';}else{ibe=3;sl=0;se=true;}rb=5-ibe;she=true;}else if(p499S.bt==='mechanical'){ct=`Frein mécanique - ${(p499S.bg||'').toUpperCase()}`;const bg=p499S.ib||0;if(p499S.bg==='c2b'){if(bg===1){ibe=2;rb=3;sl=30;she=true;}else if(bg===2){ibe=4;rb=1;sl=0;se=true;she=true;}else{ibe=5;rb=0;sl=0;se=true;}}else{if(bg===1){rb=4;sl=70;}else if(bg===2){rb=3;sl=30;}else{rb=5-bg;sl=0;se=true;}}}else if(p499S.bt==='electromagnetic'){ct='Frein électromagnétique';const bg=p499S.ib||0;ibe=bg*2;if(ibe===2)sl=30;else if(ibe>=4){sl=0;se=true;}rb=Math.max(0,5-ibe);she=bg<3;}const seEl=$('p499SpeedValue');seEl.textContent=sl;seEl.className='p499-speed';if(sl===0)seEl.classList.add('danger');else if(sl===30)seEl.classList.add('warning');else if(sl>=50)seEl.classList.add('success');$('p499Emergency').classList.toggle('show',se);let ih=`<div class="p499-summary-item"><div class="p499-summary-label">Configuration</div><div class="p499-summary-value">${ct}</div></div>`;if(p499S.bt==='electric'){ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Essieux isolés</div><div class="p499-summary-value">${p499S.ia}${she&&ibe>0?' (équivaut à '+ibe+' bogie(s))':''}</div></div>`;}else{ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies isolés</div><div class="p499-summary-value">${p499S.ib}${she?' (équivaut à '+ibe+' bogies)':''}</div></div>`;}ih+=`<div class="p499-summary-item"><div class="p499-summary-label">Bogies restants (US)</div><div class="p499-summary-value">${rb}</div></div>`;if(wn)ih+=`<div style="color:var(--dualis-red);margin-top:6px;font-size:0.6rem;line-height:1.3;">⚠ ${wn}</div>`;$('p499Info').innerHTML=ih;let tm=se?'SECOURS. Vitesse zéro kilomètre par heure.':`Vitesse maximale autorisée : ${sl} kilomètres par heure.`;if(wn)tm+=' Attention : ne pas circuler dans la rampe.';addMsg(`🚦 ${se?'SECOURS · Vitesse : 0':'Vitesse max : '+sl+' km/h'}`);speak(tm);}
 function p499FullR(){p499Reset();p499Hide();$('p499Step2').style.display='block';speak("Nouveau calcul. Type de frein.");}
-
-// BOUTONS RETOUR
 $('p499BackBtn1').addEventListener('click',closeP499);
-$('p499BackBtn2').addEventListener('click',function(){
-  p499Hide();$('p499Step2').style.display='block';
-  p499S.bg=null;setBtnDisabled('p499NextFromBogie',true);
-  speak("Type de frein isolé.");
-});
-$('p499BackBtn3').addEventListener('click',function(){
-  p499Hide();
-  if(p499S.bt==='electromagnetic'||p499S.bt==='electric'){
-    $('p499Step2').style.display='block';speak("Type de frein isolé.");
-  }else{
-    $('p499Step3').style.display='block';p499S.ib=null;p499S.ia=null;
-    setBtnDisabled('p499CalculateBtn',true);speak("Type de bogie.");
-  }
-});
+$('p499BackBtn2').addEventListener('click',function(){p499Hide();$('p499Step2').style.display='block';p499S.bg=null;setBtnDisabled('p499NextFromBogie',true);speak("Type de frein isolé.");});
+$('p499BackBtn3').addEventListener('click',function(){p499Hide();if(p499S.bt==='electromagnetic'||p499S.bt==='electric'){$('p499Step2').style.display='block';speak("Type de frein isolé.");}else{$('p499Step3').style.display='block';p499S.ib=null;p499S.ia=null;setBtnDisabled('p499CalculateBtn',true);speak("Type de bogie.");}});
 $('p499NewCalcBtn').addEventListener('click',p499FullR);
 $('p499CloseBtn').addEventListener('click',closeP499);
 
-/* ═══ SI ═══ */
+/* ═══ SI - CORRIGÉ POUR RECONNAÎTRE 1,2,3... ET UN,DEUX,TROIS... ═══ */
+// Table de correspondance mots → chiffres
+const WORD_TO_NUM={un:1,deux:2,trois:3,quatre:4,cinq:5,six:6,sept:7,huit:8,neuf:9,dix:10,onze:11,double:12,treize:13,quatorze:14,quinze:15,seize:16,'dix-sept':17,'dix-huit':18,'dix-neuf':19,vingt:20,'vingt-et-un':21,'vingt-deux':22,'vingt-trois':23,'vingt-quatre':24,'vingt-cinq':25,'vingt-six':26,'vingt-sept':27,'vingt-huit':28,'vingt-neuf':29,trente:30,'trente-et-un':31,'trente-deux':32,'trente-trois':33,'trente-quatre':34,'trente-cinq':35,'trente-six':36,'trente-sept':37,'trente-huit':38,'trente-neuf':39,quarante:40,'quarante-et-un':41,'quarante-deux':42,'quarante-trois':43,'quarante-quatre':44,'quarante-cinq':45,'quarante-six':46,'quarante-sept':47,'quarante-huit':48,'quarante-neuf':49,cinquante:50,'cinquante-et-un':51,'cinquante-deux':52,'cinquante-trois':53,'cinquante-quatre':54,'cinquante-cinq':55,'cinquante-six':56,'cinquante-sept':57,'cinquante-huit':58,'cinquante-neuf':59,soixante:60,'soixante-et-un':61,'soixante-deux':62,'soixante-trois':63,'soixante-quatre':64,'soixante-cinq':65,'soixante-six':66,'soixante-sept':67,'soixante-huit':68,'soixante-neuf':69,'soixante-dix':70};
+
+function parseNumber(txt){
+  // Essayer de trouver un nombre en chiffres
+  let m=txt.match(/\b(\d{1,3})\b/);
+  if(m)return parseInt(m[1],10);
+  // Essayer de trouver un nombre en lettres
+  const words=txt.toLowerCase().split(/[\s,.;:!?]+/);
+  for(let i=words.length-1;i>=0;i--){
+    // Vérifier les mots composés (ex: "vingt-deux")
+    if(i>0){
+      const compound=words[i-1]+'-'+words[i];
+      if(WORD_TO_NUM[compound])return WORD_TO_NUM[compound];
+    }
+    if(WORD_TO_NUM[words[i]])return WORD_TO_NUM[words[i]];
+  }
+  return null;
+}
+
 function fSIN(n){const x=parseInt(n,10);if(isNaN(x))return null;return SI_BY_NUM[x]||SI_ALL.find(s=>parseInt(s.id.replace(/\D/g,''),10)===x)||null;}
 const SDP=[{n:'SAS 1',rx:[/\bsas[\s-]*1\b/i,/\bsas\s+un\b/i]},{n:'SAS 2',rx:[/\bsas[\s-]*2\b/i,/\bsas\s+deux\b/i]},{n:'1 TER',rx:[/\b1\s*ter\b/i,/\bun\s+ter\b/i,/\bune\s+tère\b/i,/\btère\b/i]},{n:'2BA',rx:[/\b2[\s-]*ba\b/i,/\bdeux[\s-]*ba\b/i]},{n:'2TT',rx:[/\b2[\s-]*t{1,2}\b/i,/\bdeux\s+t{1,2}\b/i,/\bdeux\s+tété\b/i]},{n:'1TT',rx:[/\b1[\s-]*t{1,2}\b/i,/\bun\s+t{1,2}\b/i,/\bune\s+tété\b/i]},{n:'DÉPART',rx:[/\bdépart\b/i,/\bdepart\b/i]},{n:'ARRIVÉE',rx:[/\barrivée?\b/i,/\barrivee?\b/i]},{n:'VOIE A',rx:[/\bvoie\s+a\b/i]},{n:'VOIE B',rx:[/\bvoie\s+b\b/i,/\bvoie\s+b[ée]\b/i]},{n:'VOIE C',rx:[/\bvoie\s+c\b/i]},{n:'2 CM',rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i,/\bdeux\s+cé\s*èm\b/i]},{n:'2CM',rx:[/\b2[\s-]*cm\b/i,/\bdeux\s*cm\b/i]},{n:'1CM',rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i,/\bune\s+cé\s*èm\b/i]},{n:'1 CM',rx:[/\b1[\s-]*cm\b/i,/\bun\s*cm\b/i]},{n:'QUAI 1',rx:[/\bquai[\s-]*1\b/i,/\bquai\s+un\b/i]},{n:'QUAI 2',rx:[/\bquai[\s-]*2\b/i,/\bquai\s+deux\b/i]},{n:'Q1 PJV',rx:[/\bq[\s-]*1\b/i,/\bquai[\s-]*1\b/i]},{n:'Q2 PJV',rx:[/\bq[\s-]*2\b/i,/\bquai[\s-]*2\b/i]},{n:'MFM',rx:[/\bmfm\b/i,/\bmont.?fer/i,/\bhôpital\s+de\s+montfermeil\b/i]}];
 function mSDir(t,s){if(!s)return null;const av=Object.keys(s.directions);for(const p of SDP){if(!av.includes(p.n))continue;if(p.rx.some(r=>r.test(t)))return p.n;}for(const d of av){if(t.toLowerCase().includes(d.toLowerCase()))return d;}return null;}
-function dSI(t){const m=t.match(/\b(?:si|signal(?:\s+d'?itinéraire)?)\s*[-.]?\s*(\d{1,3})\b/i);const tr=/\btracer?\b/i.test(t)||/\btrace[rz]?\b/i.test(t);if(!m&&!tr)return null;let ns=m?m[1]:null;if(!ns&&tr){const x=t.match(/\b(\d{1,3})\b/);if(x)ns=x[1];}if(!ns)return null;const s=fSIN(ns);if(!s)return null;const d=mSDir(t,s);return{signal:s,direction:d};}
+
+function dSI(t){
+  // Détecter "SI X" ou "signal X"
+  const siMatch=t.match(/\b(?:si|signal(?:\s+d'?itinéraire)?)\s*[-.]?\s*(\d{1,3})\b/i);
+  const tracerMatch=/\btracer?\b/i.test(t)||/\btrace[rz]?\b/i.test(t);
+  
+  let num=null;
+  if(siMatch){
+    num=parseInt(siMatch[1],10);
+  }else if(tracerMatch){
+    num=parseNumber(t);
+  }
+  
+  // CORRECTION: Si pas trouvé via SI/tracer, chercher n'importe quel nombre
+  if(!num)num=parseNumber(t);
+  if(!num)return null;
+  
+  const s=fSIN(num);
+  if(!s)return null;
+  const d=mSDir(t,s);
+  return{signal:s,direction:d};
+}
+
 function rSIC(s,d){$('siCardId').textContent=s.id;$('siCardZone').textContent=s.zone;const nb=$('siNoteBar');if(s.note){nb.textContent='ℹ '+s.note;nb.classList.add('show');}else nb.classList.remove('show');const bt=$('siDirBtns');bt.innerHTML='';Object.keys(s.directions).forEach(x=>{const b=document.createElement('button');b.className='si-dir-btn'+(x===d?' active':'');b.textContent=x;b.onclick=()=>setSD(x);bt.appendChild(b);});const wr=$('siAspectWrap'),lr=$('siLampRow'),be=$('siBouton'),lg=$('siLampG'),ld=$('siLampD');if(d){const rc=s.directions[d];const il=s.special==='lampe'&&typeof rc==='object'&&rc.aspect;const ac=il?rc.aspect:(typeof rc==='string'?rc:'dir-median');const as={'dir-median':'median','dir-gauche':'gauche','dir-droite':'droite'}[ac]||'median';const an={'dir-median':'MÉDIAN','dir-gauche':'GAUCHE','dir-droite':'DROITE'}[ac]||'MÉDIAN';$('siAspectCircle').className=`si-aspect-circle ${ac}`;$('siAspectLbl').className=`si-aspect-lbl ${as}`;$('siAspectLbl').textContent=an;$('siDirTxt').textContent='Direction : '+d;wr.style.display='flex';if(il){lr.classList.add('show');lg.classList.toggle('active',rc.lampe==='gauche');ld.classList.toggle('active',rc.lampe==='droite');be.textContent='🔘 Au pupitre : '+rc.bouton;be.classList.add('show');}else{lr.classList.remove('show');lg.classList.remove('active');ld.classList.remove('active');be.classList.remove('show');}}else{wr.style.display='none';lr.classList.remove('show');be.classList.remove('show');}$('siCard').classList.add('show');}
 function setSD(d){siDir=d;const s=siSig;if(!s)return;const rc=s.directions[d];const il=s.special==='lampe'&&typeof rc==='object'&&rc.aspect;const ac=il?rc.aspect:(typeof rc==='string'?rc:'dir-median');const an={'dir-median':'médian','dir-gauche':'gauche','dir-droite':'droite'}[ac]||'médian';rSIC(s,d);addMsg(`✅ <strong>${s.id}</strong> → ${d} → Aspect <strong>${an.toUpperCase()}</strong>`);let tt=`${s.id} sera tracé en direction ${d}. Aspect ${an}.`;if(il)tt+=` Au pupitre : ${rc.bouton}. Lampe ${rc.lampe} allumée.`;if(s.note&&!il)tt+=` Attention : ${s.note}`;speak(tt);}
 function hSI(c){if(!c||!c.signal){speak('Signal non trouvé.');return;}siA=true;siSig=c.signal;siDir=null;$('guideCard').classList.remove('show');$('page499Card').classList.remove('show');if(c.direction){setSD(c.direction);}else{rSIC(c.signal,null);const ds=Object.keys(c.signal.directions);if(ds.length===1){setSD(ds[0]);}else{addMsg(`🚦 <strong>${c.signal.id}</strong> — ${c.signal.zone}`);speak(`${c.signal.id}. Zone ${c.signal.zone}. Directions disponibles : ${ds.join(', ')}.`);}}}
@@ -1398,22 +1304,40 @@ function oSIList(){const ul=$('siModalList');ul.innerHTML='';Object.entries(SI_D
 function cSIList(){$('siListBg').classList.remove('on');}
 
 /* ═══ CMDS ═══ */
-const CMDS={cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|dépannage|dépanner)\b/i],next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|valider|valide?|calculer?)\b/i],prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i,/\b(?!retour\s+accueil)retour\b/i],repeat:[/\b(répète?|redis|encore|répète\s+ça|what|repeat|pardon|hein|j'ai\s+pas\s+compris|reformule?)\b/i],greet:[/\b(bonjour|salut|salam|salamou|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],non:[/\bnon\b/i,/\bnan\b/i,/\bnope\b/i,/\bnah\b/i,/\bno\b/i,/\bnégatif\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i],time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],date:[/\b(quelle\s+date|donne\s+la\s+date|date\s+aujourd'hui)\b/i],elapsed:[/\b(temps\s+écoulé|durée|depuis\s+combien\s+de\s+temps)\b/i],list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],siList:[/\b(liste\s+des\s+(?:signaux|signal|si)\s+d'?itin[ée]raire|affiche?\s+(?:les?|la\s+liste\s+des?)\s+(?:signaux|signal|si)|tous\s+les\s+(?:signaux|si|signal))\b/i],help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],fermer:[/\b(fermer|ferme|close|fermez|clore|termine\s+la\s+fenêtre)\b/i],bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i,/\bb\s*s\b/i,/\bb[ée]\s*s\b/i],fullscreen:[/\bplein\s+écran\b/i,/\bfull\s*screen\b/i],page499:[/\bpage\s*499\b/i,/\bbarème\s+de\s+vitesse\b/i,/\bvitesse\s+limite\b/i,/\bincident\s+de\s+frein\b/i,/\b499\b/i],switchToSI:[/\bmode\s+si\b/i,/\bpasser?\s+(?:en|au)\s+mode\s+si\b/i,/\brecherche\s+si\b/i],switchToIOS:[/\bmode\s+ios\b/i,/\bpasser?\s+(?:en|au)\s+mode\s+ios\b/i,/\brecherche\s+ios\b/i]};
+const CMDS={cancel:[/\b(annuler?|stop|arrête|interromps?|abandonne?|cancel|quitte?)\b/i],home:[/\b(accueil|menu|retour\s+accueil|home|reset)\b/i],guide:[/\b(démarrer?|commencer?|lancer?|guidage|guide|start|go|dépannage|dépanner)\b/i],next:[/\b(suivant|passe\s+(à\s+la\s+suite|à\s+l'étape\s+suivante)|après|ensuite|prochaine?|continuer?|j'ai\s+fini|ok|c'est\s+bon|d'accord|next|terminé|effectué|fait|j'ai\s+fait|voilà|voila|valider|valide?|calculer?)\b/i],prev:[/\b(précédent|reviens?|retour\s+en\s+arrière|recule?|back|remonte?)\b/i],repeat:[/\b(répète?|redis|encore|what|repeat|pardon|hein|reformule?)\b/i],greet:[/\b(bonjour|salut|salam|coucou|hello|hi|hey|bonsoir|wesh|yo)\b/i],oui:[/\b(oui|ouais|yes|yep|affirmatif|exact|correct|bien\s+sûr|tout\s+à\s+fait|confirmé|validé|présent|allumé|ça\s+marche|actif|positif)\b/i],non:[/\bnon\b/i,/\bnan\b/i,/\bnope\b/i,/\bnah\b/i,/\bno\b/i,/\bnégatif\b/i,/\bfaux\b/i,/\bincorrect\b/i,/\babsent\b/i,/\béteint\b/i,/\bdésactivé\b/i,/\binactif\b/i,/\baucun\b/i,/\brien\b/i],time:[/\b(quelle\s+heure|il\s+est\s+quelle\s+heure)\b/i],date:[/\b(quelle\s+date|donne\s+la\s+date)\b/i],list:[/\b(liste\s+des\s+ios|tous\s+les\s+ios|affiche\s+la\s+liste)\b/i],siList:[/\b(liste\s+des\s+(?:signaux|signal|si)\s+d'?itin[ée]raire|affiche?\s+(?:les?|la\s+liste\s+des?)\s+(?:signaux|signal|si)|tous\s+les\s+(?:signaux|si|signal))\b/i],help:[/\b(aide|help|commandes|mode\s+d'emploi)\b/i],fermer:[/\b(fermer|ferme|close|fermez|clore)\b/i],bulletin:[/\b(récapitulatif|recapitulatif|bulletin|rapport|resume|résumé|recap|récap|bilan)\b/i],fullscreen:[/\bplein\s+écran\b/i],page499:[/\bpage\s*499\b/i,/\bbarème\s+de\s+vitesse\b/i],switchToSI:[/\bmode\s+si\b/i],switchToIOS:[/\bmode\s+ios\b/i]};
 function match(t,k){return LE.match(t,k,CMDS[k]||[]);}
 function isNon(t){return CMDS.non.some(r=>r.test(t));}
 function isOui(t){if(isNon(t))return false;return CMDS.oui.some(r=>r.test(t));}
 function isPA(){return gOn||isSp||iosSh||msActive||p499A||siA;}
 
 /* ═══ PROCESS VOICE ═══ */
-function pV(raw){const t=raw.trim();if(!t)return;if(isSp||mMute)return;addMsg(t,'user');LE.log('voice_command',{text:t.substring(0,100),mode:sMode});if(msActive){const m=t.match(/(\d{1,3})/);if(m){const id=m[1].padStart(3,'0');if(IOS_DB[id]){selFM(id);return;}}if(match(t,'cancel')||match(t,'home')){cancelMS();return;}return;}if(AL.ls){if(isOui(t)){AL.confirm(AL.ls.word,'oui');return;}if(isNon(t)){AL.end();return;}AL.end();return;}if(p499A){if(match(t,'cancel')||match(t,'home')){closeP499();return;}hP499V(t);return;}if(siA){if(match(t,'cancel')||match(t,'home')){closeSI();return;}if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}if(siSig){const d=mSDir(t,siSig);if(d){setSD(d);return;}}return;}const ea=$('endBar').classList.contains('show');if(ea){if(match(t,'fermer')||isNon(t)){$('endBar').classList.remove('show');$('guideCard').classList.remove('show');addMsg('Fenêtre fermée.');speak('Fenêtre fermée.');return;}if(match(t,'bulletin')||isOui(t)){$('endBar').classList.remove('show');oRecap();return;}}if(match(t,'fullscreen')){FM.toggle();return;}if(match(t,'page499')){openP499();return;}if(match(t,'switchToSI')){if(sMode!=='si'){sMode='si';upSMUI();speak('Mode SI activé.');}return;}if(match(t,'switchToIOS')){if(sMode!=='ios'){sMode='ios';upSMUI();speak('Mode IOS activé.');}return;}if(match(t,'cancel')){cancelP();return;}if(match(t,'home')){goHome();return;}if(match(t,'greet')){addMsg('Bonjour ! IAOS T4 à votre service.');speak('Bonjour !');return;}if(match(t,'list')){oList();return;}if(match(t,'siList')){oSIList();return;}if(match(t,'help')){oInfo();return;}if(match(t,'time')){speak('Il est '+ft(new Date()));return;}if(match(t,'date')){speak('Nous sommes le '+fd(new Date()));return;}if(isPA()){if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}if(match(t,'prev')&&!match(t,'home')){if(gOn)pStep();return;}if(match(t,'next')){nStep();return;}if(match(t,'guide')&&cIOS&&!gOn){sGuide();return;}if(gOn&&gSteps[sIdx]&&gSteps[sIdx].d){if(isNon(t)){aNo();return;}if(isOui(t)){aYes();return;}}const uk=AL.unk(t);if(uk.length>0){AL.start(uk[0]);return;}return;}if(sMode==='si'){const sc=dSI(t);if(sc&&sc.signal){hSI(sc);return;}const nm=t.match(/\b(\d{1,3})\b/);if(nm){const s=fSIN(nm[1]);if(s){hSI({signal:s,direction:null});return;}}speak('Signal non trouvé.');return;}const sc=dSI(t);if(sc&&sc.signal){hSI(sc);return;}if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}if(match(t,'guide')){if(cIOS){sGuide();return;}speak("Cherchez d'abord un IOS.");return;}const r=fIOS(t);if(r){if(r.single)lIOS(r.single);else if(r.multiple)showMS(r.alias,r.multiple);return;}const uk=AL.unk(t);if(uk.length>0){AL.start(uk[0]);return;}speak('Aucun IOS trouvé.');}
+function pV(raw){const t=raw.trim();if(!t)return;if(isSp||mMute)return;addMsg(t,'user');if(msActive){const m=t.match(/(\d{1,3})/);if(m){const id=m[1].padStart(3,'0');if(IOS_DB[id]){selFM(id);return;}}if(match(t,'cancel')||match(t,'home')){cancelMS();return;}return;}if(AL.ls){if(isOui(t)){AL.confirm(AL.ls.word,'oui');return;}if(isNon(t)){AL.end();return;}AL.end();return;}if(p499A){if(match(t,'cancel')||match(t,'home')){closeP499();return;}hP499V(t);return;}if(siA){if(match(t,'cancel')||match(t,'home')){closeSI();return;}if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}if(siSig){const d=mSDir(t,siSig);if(d){setSD(d);return;}}return;}const ea=$('endBar').classList.contains('show');if(ea){if(match(t,'fermer')||isNon(t)){$('endBar').classList.remove('show');$('guideCard').classList.remove('show');addMsg('Fenêtre fermée.');speak('Fenêtre fermée.');return;}if(match(t,'bulletin')||isOui(t)){$('endBar').classList.remove('show');oRecap();return;}}if(match(t,'fullscreen')){FM.toggle();return;}if(match(t,'page499')){openP499();return;}if(match(t,'switchToSI')){if(sMode!=='si'){sMode='si';upSMUI();speak('Mode SI activé.');}return;}if(match(t,'switchToIOS')){if(sMode!=='ios'){sMode='ios';upSMUI();speak('Mode IOS activé.');}return;}if(match(t,'cancel')){cancelP();return;}if(match(t,'home')){goHome();return;}if(match(t,'greet')){addMsg('Bonjour !');speak('Bonjour !');return;}if(match(t,'list')){oList();return;}if(match(t,'siList')){oSIList();return;}if(match(t,'help')){oInfo();return;}if(match(t,'time')){speak('Il est '+ft(new Date()));return;}if(match(t,'date')){speak(fd(new Date()));return;}if(isPA()){if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}if(match(t,'prev')&&!match(t,'home')){if(gOn)pStep();return;}if(match(t,'next')){nStep();return;}if(match(t,'guide')&&cIOS&&!gOn){sGuide();return;}if(gOn&&gSteps[sIdx]&&gSteps[sIdx].d){if(isNon(t)){aNo();return;}if(isOui(t)){aYes();return;}}const uk=AL.unk(t);if(uk.length>0){AL.start(uk[0]);return;}return;}
+  
+  // CORRECTION: En mode SI, utiliser parseNumber qui gère chiffres ET mots
+  if(sMode==='si'){
+    const sc=dSI(t);
+    if(sc&&sc.signal){hSI(sc);return;}
+    const num=parseNumber(t);
+    if(num){const s=fSIN(num);if(s){hSI({signal:s,direction:null});return;}}
+    speak('Signal non trouvé.');
+    return;
+  }
+  
+  const sc=dSI(t);if(sc&&sc.signal){hSI(sc);return;}
+  if(match(t,'repeat')){if(lastSp)speak(lastSp);return;}
+  if(match(t,'guide')){if(cIOS){sGuide();return;}speak("Cherchez d'abord un IOS.");return;}
+  const r=fIOS(t);if(r){if(r.single)lIOS(r.single);else if(r.multiple)showMS(r.alias,r.multiple);return;}
+  const uk=AL.unk(t);if(uk.length>0){AL.start(uk[0]);return;}
+  speak('Aucun IOS trouvé.');
+}
 
 function hP499V(t){
   const s2=$('p499Step2').style.display!=='none',s3=$('p499Step3').style.display!=='none',s4=$('p499Step4').style.display!=='none',sr=$('p499Result').style.display!=='none';
   if(match(t,'cancel')||match(t,'home')){closeP499();return;}
-  if(match(t,'repeat')){if(s2)speak("Type de frein isolé.");else if(s3)speak("Type de bogie.");else if(s4){const ie=p499S.bt==='electric';speak(`${ie?"Nombre d'essieux":"Nombre de bogies"} isolés.`);}else if(sr){const sp=$('p499SpeedValue').textContent;const ie=$('p499Emergency').classList.contains('show');speak(ie?'SECOURS. Vitesse zéro.':`Vitesse maximale : ${sp} kilomètres par heure.`);}return;}
-  if(s2){if(/\bfrein\s+m[ée]canique\b/i.test(t)||/\bm[ée]ca\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="mechanical"]').click();return;}if(/\bfrein\s+[ée]lectromagn[ée]tique\b/i.test(t)||/\b[ée]lectromag\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="electromagnetic"]').click();return;}if(/\bfrein\s+[ée]lectrique\b/i.test(t)||/\b[ée]lectrique\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="electric"]').click();return;}if(match(t,'next')||isOui(t)){if(p499S.bt)$('p499NextFromBrake').click();else speak("Sélectionnez d'abord un type de frein.");}return;}
-  if(s3){if(/\bc[\s-]*2[\s-]*b\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="c2b"]').click();return;}if(/\bce[\s-]*1\b/i.test(t)||/\bc[\s.]*e[\s.]*1\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="ce1"]').click();return;}if(/\bce[\s-]*2\b/i.test(t)||/\bc[\s.]*e[\s.]*2\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="ce2"]').click();return;}if(/\bc[\s-]*1\b/i.test(t)&&!/ce/i.test(t)){$('p499BogieOptions').querySelector('[data-val="c1"]').click();return;}if(match(t,'next')||isOui(t)){if(p499S.bg)$('p499NextFromBogie').click();else speak("Sélectionnez d'abord un type de bogie.");}return;}
-  if(s4){const ie=p499S.bt==='electric',mx=ie?6:5;const wm={un:1,deux:2,trois:3,quatre:4,cinq:5,six:6};const nm=t.match(/\b(un|deux|trois|quatre|cinq|six|\d+)\b/i);if(nm){let n=parseInt(nm[1]);if(isNaN(n))n=wm[nm[1].toLowerCase()]||0;if(n>=1&&n<=mx){const opts=$('p499SelectionOptions').querySelectorAll('.p499-option');opts.forEach(o=>{if(parseInt(o.textContent)===n)o.click();});return;}}if(match(t,'next')||isOui(t)||/\bcalculer?\b/i.test(t)){if(!$('p499CalculateBtn').classList.contains('disabled'))$('p499CalculateBtn').click();else speak(`Indiquez d'abord un nombre de 1 à ${mx}.`);}return;}
+  if(match(t,'repeat')){if(s2)speak("Type de frein.");else if(s3)speak("Type de bogie.");else if(s4){const ie=p499S.bt==='electric';speak(`${ie?"Nombre d'essieux":"Nombre de bogies"} isolés.`);}else if(sr){const sp=$('p499SpeedValue').textContent;const ie=$('p499Emergency').classList.contains('show');speak(ie?'SECOURS.':`Vitesse: ${sp} km/h.`);}return;}
+  if(s2){if(/\bfrein\s+m[ée]canique\b/i.test(t)||/\bm[ée]ca\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="mechanical"]').click();return;}if(/\bfrein\s+[ée]lectromagn[ée]tique\b/i.test(t)||/\b[ée]lectromag\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="electromagnetic"]').click();return;}if(/\bfrein\s+[ée]lectrique\b/i.test(t)||/\b[ée]lectrique\b/i.test(t)){$('p499BrakeOptions').querySelector('[data-val="electric"]').click();return;}if(match(t,'next')||isOui(t)){if(p499S.bt)$('p499NextFromBrake').click();else speak("Sélectionnez un type de frein.");}return;}
+  if(s3){if(/\bc[\s-]*2[\s-]*b\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="c2b"]').click();return;}if(/\bce[\s-]*1\b/i.test(t)||/\bc[\s.]*e[\s.]*1\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="ce1"]').click();return;}if(/\bce[\s-]*2\b/i.test(t)||/\bc[\s.]*e[\s.]*2\b/i.test(t)){$('p499BogieOptions').querySelector('[data-val="ce2"]').click();return;}if(/\bc[\s-]*1\b/i.test(t)&&!/ce/i.test(t)){$('p499BogieOptions').querySelector('[data-val="c1"]').click();return;}if(match(t,'next')||isOui(t)){if(p499S.bg)$('p499NextFromBogie').click();else speak("Sélectionnez un bogie.");}return;}
+  if(s4){const ie=p499S.bt==='electric',mx=ie?6:5;const nm=parseNumber(t);if(nm&&nm>=1&&nm<=mx){const opts=$('p499SelectionOptions').querySelectorAll('.p499-option');opts.forEach(o=>{if(parseInt(o.textContent)===nm)o.click();});return;}if(match(t,'next')||isOui(t)||/\bcalculer?\b/i.test(t)){if(!$('p499CalculateBtn').classList.contains('disabled'))$('p499CalculateBtn').click();else speak(`Indiquez un nombre de 1 à ${mx}.`);}return;}
   if(sr){if(/\bnouveau\s+calcul\b/i.test(t)||/\brecalcul/i.test(t)){$('p499NewCalcBtn').click();return;}if(match(t,'fermer')||isNon(t)){closeP499();return;}}
 }
 
@@ -1426,7 +1350,7 @@ function togMic(){if(isSp||mMute)return;micOn=!micOn;if(micOn){startL();toast('M
 const FM={fs:false,init(){this.ok=!!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen);if(!this.ok){const f=$('fullscreenFab'),b=$('fullscreenBanner');if(f)f.style.display='none';if(b)b.style.display='none';return;}document.addEventListener('fullscreenchange',()=>this.up());document.addEventListener('webkitfullscreenchange',()=>this.up());this.up();},req(){try{const e=document.documentElement;if(e.requestFullscreen)e.requestFullscreen().catch(()=>{});else if(e.webkitRequestFullscreen)e.webkitRequestFullscreen();}catch(e){}},exit(){try{if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});else if(document.webkitExitFullscreen)document.webkitExitFullscreen();}catch(e){}},toggle(){this.fs?this.exit():this.req();},up(){this.fs=!!(document.fullscreenElement||document.webkitFullscreenElement);const f=$('fullscreenFab');if(f){f.textContent=this.fs?'✕':'⛶';f.classList.toggle('active',this.fs);}}};
 
 /* ═══ INFO ═══ */
-function oInfo(){$('infoContent').innerHTML=`<h4>🎤 Commandes vocales IOS</h4><ul><li><span class="cmd-pill">IOS [numéro]</span> — Charger un IOS</li><li><span class="cmd-pill">guidage / dépannage</span> — Lancer procédure</li><li><span class="cmd-pill">suivant / ok</span> — Étape suivante</li><li><span class="cmd-pill">oui / non</span> — Répondre</li><li><span class="cmd-pill">répète</span> — Répéter</li></ul><h4>🚦 Pupitre SI</h4><ul><li><span class="cmd-pill">SI 1</span> ou <span class="cmd-pill">1</span> en mode SI</li><li>Directions : <span class="cmd-pill">départ</span> <span class="cmd-pill">arrivée</span> <span class="cmd-pill">1TT</span> <span class="cmd-pill">2TT</span></li></ul><h4>📋 Page 499</h4><ul><li><span class="cmd-pill">page 499</span> — Ouvrir le barème</li><li>Cliquer sur les options pour sélectionner</li></ul>`;$('infoBg').classList.add('on');}
+function oInfo(){$('infoContent').innerHTML=`<h4>Commandes IOS</h4><ul><li><span class="cmd-pill">IOS [N°]</span></li><li><span class="cmd-pill">guidage</span></li><li><span class="cmd-pill">suivant / oui / non</span></li></ul><h4>Pupitre SI</h4><ul><li><span class="cmd-pill">SI 1</span> ou <span class="cmd-pill">1</span> ou <span class="cmd-pill">un</span></li><li>Mots reconnus: un, deux, trois...</li></ul><h4>Page 499</h4><ul><li><span class="cmd-pill">page 499</span></li></ul>`;$('infoBg').classList.add('on');}
 function cInfo(){$('infoBg').classList.remove('on');}
 
 /* ═══ CLOCK ═══ */
@@ -1460,7 +1384,6 @@ $('recapPrint').addEventListener('click',pRecap);
 $('clearChat').addEventListener('click',()=>{$('chatLog').innerHTML='';addMsg('Historique effacé.');});
 $('siRepeatBtn').addEventListener('click',()=>{if(lastSp)speak(lastSp);});
 $('siCloseBtn').addEventListener('click',closeSI);
-$('p499StartBtn').addEventListener('click',()=>{p499Hide();$('p499Step2').style.display='block';speak("Type de frein.");});
 $('fullscreenFab').addEventListener('click',()=>FM.toggle());
 $('fullscreenBannerBtn').addEventListener('click',()=>{FM.req();$('fullscreenBanner').classList.remove('show');});
 $('fullscreenBannerClose').addEventListener('click',()=>{$('fullscreenBanner').classList.remove('show');});
@@ -1468,11 +1391,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('infoBg').clas
 
 /* ═══ INIT ═══ */
 async function initApp(){
-  console.log('IAOS T4 v12.0 · Bouton CONTINUER fix');
+  console.log('IAOS T4 v13.0 · SI: chiffres + mots');
   await LE.init();FM.init();upFBUI();
   if(hv){synth.getVoices();gVoice();}
   upSMUI();setUI('idle');upClock();setInterval(upClock,1000);
-  setTimeout(()=>{micOn=true;startL();console.log('✅ Prêt');if(fbAvail)LE.log('app_started',{timestamp:new Date().toISOString(),version:'v12.0-p499fix'});},500);
+  setTimeout(()=>{micOn=true;startL();console.log('✅ Prêt');if(fbAvail)LE.log('app_started',{timestamp:new Date().toISOString(),version:'v13.0-siwords'});},500);
 }
 initApp();
 
